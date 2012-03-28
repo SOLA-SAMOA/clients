@@ -108,17 +108,20 @@ public class LanguageCombobox extends JComboBox {
         }
     }
     private boolean showMessage = true;
-    private String[] languageStrings = {"English", "Italian", "नेपाली", "Samoan"};//John, Add Samoan
-    private String[] languageIconNames = {"en.jpg", "it.jpg", "np.png", "sm.jpg"};//John, Add "sm.jpg"
+   // private String[] languageStrings = {"English", "Italian", "नेपाली", "Samoan"};//John, Add Samoan
+     private String[] languageStrings = {"English", "Samoan"};//John, Add Samoan
+    //private String[] languageIconNames = {"en.jpg", "it.jpg", "np.png", "sm.jpg"};//John, Add "sm.jpg"
+    private String[] languageIconNames = {"en.jpg", "sm.jpg"};//John, Add "sm.jpg"
     private ImageIcon[] languageIcons;
     private Class<?> applicationMainClass;
     private static final Map<String, Integer> languagesMap = Collections.unmodifiableMap(new HashMap(2, 1.0f) {
 
         {
             put("en", 0);
-            put("it", 1);
-            put("np", 2);
-            put("sm", 3);
+            put("sm", 1);
+            //put("it", 1);
+            //put("np", 2);
+            
         }
     });
 
@@ -136,7 +139,8 @@ public class LanguageCombobox extends JComboBox {
     public LanguageCombobox(Class<?> applicationMainClass) {
         super();
         if (applicationMainClass != null) {
-            setModel(new javax.swing.DefaultComboBoxModel(new Integer[]{0, 1, 2, 3}));
+            //setModel(new javax.swing.DefaultComboBoxModel(new Integer[]{0, 1, 2, 3}));
+            setModel(new javax.swing.DefaultComboBoxModel(new Integer[]{0, 1}));
             this.applicationMainClass = applicationMainClass;
             addLanguageIcons();
             setRenderer(new ComboBoxRenderer());
