@@ -108,8 +108,8 @@ public class LanguageCombobox extends JComboBox {
         }
     }
     private boolean showMessage = true;
-    private String[] languageStrings = {"English", "Italian", "नेपाली"};
-    private String[] languageIconNames = {"en.jpg", "it.jpg", "np.png"};
+    private String[] languageStrings = {"English", "Italian", "नेपाली", "Samoan"};//John, Add Samoan
+    private String[] languageIconNames = {"en.jpg", "it.jpg", "np.png", "sm.jpg"};//John, Add "sm.jpg"
     private ImageIcon[] languageIcons;
     private Class<?> applicationMainClass;
     private static final Map<String, Integer> languagesMap = Collections.unmodifiableMap(new HashMap(2, 1.0f) {
@@ -118,6 +118,7 @@ public class LanguageCombobox extends JComboBox {
             put("en", 0);
             put("it", 1);
             put("np", 2);
+            put("sm", 3);
         }
     });
 
@@ -135,7 +136,7 @@ public class LanguageCombobox extends JComboBox {
     public LanguageCombobox(Class<?> applicationMainClass) {
         super();
         if (applicationMainClass != null) {
-            setModel(new javax.swing.DefaultComboBoxModel(new Integer[]{0, 1, 2}));
+            setModel(new javax.swing.DefaultComboBoxModel(new Integer[]{0, 1, 2, 3}));
             this.applicationMainClass = applicationMainClass;
             addLanguageIcons();
             setRenderer(new ComboBoxRenderer());
@@ -180,7 +181,9 @@ public class LanguageCombobox extends JComboBox {
                 LocalizationManager.setLanguage(applicationMainClass, "en", "US");
             } else if ("नेपाली".equalsIgnoreCase(languageStrings[language])) {
                 LocalizationManager.setLanguage(applicationMainClass, "np", "NP");
-            }
+            } else if ("samoan".equalsIgnoreCase(languageStrings[language])) {
+                LocalizationManager.setLanguage(applicationMainClass, "sm", "WS");
+            }//John, add else if statement for samoan
 
             if (showMessage) {
                 MessageUtility.displayMessage(ClientMessage.GENERAL_UPDATE_LANG);
