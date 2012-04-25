@@ -325,7 +325,7 @@ public class MainForm extends javax.swing.JFrame {
         menuView = new javax.swing.JMenu();
         menuLanguage = new javax.swing.JMenu();
         menuLangEN = new javax.swing.JMenuItem();
-        menuLangIT = new javax.swing.JMenuItem();
+        menuLangWS = new javax.swing.JMenuItem();
         menuLogLevel = new javax.swing.JMenu();
         menuAllLogLevel = new javax.swing.JMenuItem();
         menuDefaultLogLevel = new javax.swing.JMenuItem();
@@ -502,14 +502,15 @@ public class MainForm extends javax.swing.JFrame {
         });
         menuLanguage.add(menuLangEN);
 
-        menuLangIT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/flags/it.jpg"))); // NOI18N
-        menuLangIT.setText(bundle.getString("MainForm.menuLangIT.text")); // NOI18N
-        menuLangIT.addActionListener(new java.awt.event.ActionListener() {
+        menuLangWS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/flags/sm.jpg"))); // NOI18N
+        menuLangWS.setText(bundle.getString("MainForm.menuLangWS.text")); // NOI18N
+        menuLangWS.setActionCommand(bundle.getString("MainForm.menuLangWS.actionCommand")); // NOI18N
+        menuLangWS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuLangITActionPerformed(evt);
+                menuLangWSActionPerformed(evt);
             }
         });
-        menuLanguage.add(menuLangIT);
+        menuLanguage.add(menuLangWS);
 
         menuView.add(menuLanguage);
 
@@ -729,9 +730,9 @@ public class MainForm extends javax.swing.JFrame {
         setLanguage("en", "US");
     }//GEN-LAST:event_menuLangENActionPerformed
 
-    private void menuLangITActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLangITActionPerformed
-        setLanguage("it", "IT");
-    }//GEN-LAST:event_menuLangITActionPerformed
+    private void menuLangWSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLangWSActionPerformed
+        setLanguage("sm", "WS");
+    }//GEN-LAST:event_menuLangWSActionPerformed
 
     private void btnOpenBaUnitSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenBaUnitSearchActionPerformed
         searchBaUnit();
@@ -780,7 +781,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuDefaultLogLevel;
     private javax.swing.JMenuItem menuDocumentSearch;
     private javax.swing.JMenuItem menuLangEN;
-    private javax.swing.JMenuItem menuLangIT;
+    private javax.swing.JMenuItem menuLangWS;
     private javax.swing.JMenu menuLanguage;
     private javax.swing.JMenuItem menuLodgementReport;
     private javax.swing.JMenu menuLogLevel;
