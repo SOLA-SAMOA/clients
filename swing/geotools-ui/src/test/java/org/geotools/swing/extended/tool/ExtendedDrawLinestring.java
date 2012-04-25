@@ -29,52 +29,48 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.sola.clients.swing.gis;
 
-import java.lang.reflect.Field;
-import org.sola.common.logging.LogUtility;
-import org.sola.common.messaging.GisMessage;
-import org.sola.common.messaging.MessageUtility;
+package org.geotools.swing.extended.tool;
+
+import org.geotools.swing.tool.extended.*;
+import com.vividsolutions.jts.geom.Geometry;
+import java.util.HashMap;
+import org.geotools.geometry.jts.Geometries;
+import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.swing.extended.Map;
 
 /**
- * This class overrides the Messaging class of geotools ui in order to override the 
- * show message method of that geotools ui. By doing so, the messages that will be displayed in the
- * geotools ui can be replaced from the messages in the sola projects.
+ *
+ * This is used for testing purposes to show how to extend the {@see ExtendedEditGeometryTool}
  * 
  * @author Elton Manoku
  */
-public class Messaging extends org.geotools.swing.extended.util.Messaging {
+public class ExtendedDrawLinestring extends ExtendedEditGeometryTool{
+    private String toolName = "Linestring";
+    private String extraFields = "label:\"\",type:0";
+    private String layerResourceTest = "linestring.xml";
 
-    public Messaging() {
+    public ExtendedDrawLinestring(){
+        this.setToolName(toolName);
+        this.setLayerName(toolName);
+        this.setGeometryType(Geometries.LINESTRING);
+        this.setSldResource(layerResourceTest);
+        this.setExtraFieldsFormat(extraFields);
     }
-
-    /**
-     * This method is called in geotools ui to show messages.
-     * @param msg 
-     */
+    
     @Override
-    public void show(String messageCode, Object... args) {
-        String msgSolaCode = this.getSolaMessageCode(messageCode);
-        MessageUtility.displayMessage(messageCode, args);
+    public void setMapControl(Map mapControl){
+        super.setMapControl(mapControl);
+        this.layer.setFilterExpressionForSnapping("type=2");
+        this.getTargetSnappingLayers().add(this.layer);
     }
 
-    @Override
-    public String getMessageText(String messageCode, Object... args) {
-        String msgSolaCode = this.getSolaMessageCode(messageCode);
-        return MessageUtility.getLocalizedMessage(msgSolaCode, args).getMessage();
+   @Override
+    public SimpleFeature addFeature(Geometry geometry){
+        HashMap<String, Object> fieldsWithValues = new HashMap<String, Object>();
+        fieldsWithValues.put("type", 2);
+        fieldsWithValues.put("label", "aha");
+        return this.layer.addFeature(null, geometry, fieldsWithValues);
     }
-
-    private String getSolaMessageCode(String messageId) {
-        String solaMsgCode = messageId;
-        try {
-            Field field = GisMessage.class.getField(messageId);
-            solaMsgCode = field.get(null).toString();
-
-        } catch (NoSuchFieldException ex) {
-            //To be ignored
-        } catch (IllegalAccessException ex) {
-            LogUtility.log("Error trying to get message sola code for message id:" + messageId, ex);
-        }
-        return solaMsgCode;
-    }
+    
 }
