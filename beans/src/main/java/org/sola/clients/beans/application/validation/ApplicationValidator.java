@@ -27,6 +27,7 @@
  */
 package org.sola.clients.beans.application.validation;
 
+import javax.swing.JOptionPane;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import org.sola.clients.beans.application.ApplicationBean;
@@ -59,7 +60,28 @@ public class ApplicationValidator implements ConstraintValidator<ApplicationChec
                     MessageUtility.getLocalizedMessageText(
                     ClientMessage.CHECK_APP_CONTACT_PERSON_NULL)).addConstraintViolation();
         } else {
-            if (appBean.getContactPerson().getAddress() == null || 
+            //Make Agent mandatory and make First Name, Last Name and Address optional
+            //Hilton: 08-May-2012
+            if (appBean.getAgent()==null || 
+                    appBean.getAgent().getName().equals(" ")){
+                result = false;
+                constraintContext.buildConstraintViolationWithTemplate(
+                        MessageUtility.getLocalizedMessageText(
+                        ClientMessage.CHECK_APP_AGENT)).addConstraintViolation();
+                
+              //JOptionPane.showMessageDialog(null,"Uzumaki Naruto");
+            }
+            
+            /*if (appBean.getContactPerson().getAddress() == null || 
+                    appBean.getContactPerson().getAddress().getDescription() == null ||
+                    appBean.getContactPerson().getAddress().getDescription().isEmpty()) {
+                result = false;
+                constraintContext.buildConstraintViolationWithTemplate(
+                        MessageUtility.getLocalizedMessageText(
+                        ClientMessage.CHECK_APP_CONTACT_PERSON_ADDRESS)).addConstraintViolation();
+            }*/
+            
+            /*if (appBean.getContactPerson().getAddress() == null || 
                     appBean.getContactPerson().getAddress().getDescription() == null ||
                     appBean.getContactPerson().getAddress().getDescription().isEmpty()) {
                 result = false;
@@ -78,7 +100,7 @@ public class ApplicationValidator implements ConstraintValidator<ApplicationChec
                 constraintContext.buildConstraintViolationWithTemplate(
                         MessageUtility.getLocalizedMessageText(
                         ClientMessage.CHECK_APP_CONTACT_PERSON_LASTNAME)).addConstraintViolation();
-            }
+            }*/
         }
 
         return result;

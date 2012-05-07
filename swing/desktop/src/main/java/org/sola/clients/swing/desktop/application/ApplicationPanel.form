@@ -646,9 +646,6 @@
                                 <Component class="javax.swing.JLabel" name="labName">
                                   <Properties>
                                     <Property name="font" postCode="LafManager.getInstance().setLabProperties(labName);"/>
-                                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                                      <Image iconType="3" name="/images/common/red_asterisk.gif"/>
-                                    </Property>
                                     <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                                       <ComponentRef name="txtFirstName"/>
                                     </Property>
@@ -671,7 +668,7 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="labLastName" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace pref="236" max="32767" attributes="0"/>
+                                          <EmptySpace pref="247" max="32767" attributes="0"/>
                                       </Group>
                                       <Component id="txtLastName" alignment="0" pref="328" max="32767" attributes="0"/>
                                   </Group>
@@ -691,9 +688,6 @@
                                 <Component class="javax.swing.JLabel" name="labLastName">
                                   <Properties>
                                     <Property name="font" postCode="LafManager.getInstance().setLabProperties(labLastName);"/>
-                                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                                      <Image iconType="3" name="/images/common/red_asterisk.gif"/>
-                                    </Property>
                                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                                       <ResourceString bundle="org/sola/clients/swing/desktop/application/Bundle.properties" key="ApplicationPanel.labLastName.text" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                                     </Property>
@@ -763,9 +757,6 @@
                             <Component class="javax.swing.JLabel" name="labAddress">
                               <Properties>
                                 <Property name="font" postCode="LafManager.getInstance().setLabProperties(labAddress);"/>
-                                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                                  <Image iconType="3" name="/images/common/red_asterisk.gif"/>
-                                </Property>
                                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                                   <ResourceString bundle="org/sola/clients/swing/desktop/application/Bundle.properties" key="ApplicationPanel.labAddress.text" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                                 </Property>
@@ -1041,7 +1032,7 @@
                                   <Component id="cbxAgents" alignment="0" pref="328" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="labAgents" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="267" max="32767" attributes="0"/>
+                                      <EmptySpace pref="256" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -1060,6 +1051,9 @@
                             <Component class="javax.swing.JLabel" name="labAgents">
                               <Properties>
                                 <Property name="font" postCode="LafManager.getInstance().setLabProperties(labAgents);"/>
+                                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                  <Image iconType="3" name="/images/common/red_asterisk.gif"/>
+                                </Property>
                                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                                   <ResourceString bundle="org/sola/clients/swing/desktop/application/Bundle.properties" key="ApplicationPanel.labAgents.text" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                                 </Property>
