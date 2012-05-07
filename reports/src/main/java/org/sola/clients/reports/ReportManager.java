@@ -63,7 +63,7 @@ public class ReportManager {
         ApplicationBean[] beans = new ApplicationBean[1];
         beans[0] = appBean;
         JRDataSource jds = new JRBeanArrayDataSource(beans);
-        inputParameters.put("IMAGE_SCRITTA_GREEN", ReportManager.class.getResourceAsStream("/images/sola/caption_green.png"));
+        inputParameters.put("IMAGE_SCRITTA_GREEN", ReportManager.class.getResourceAsStream("/images/sola/govSamoa.gif"));
         inputParameters.put("WHICH_CALLER", "N");
 
         try {
@@ -135,7 +135,7 @@ public class ReportManager {
         ApplicationBean[] beans = new ApplicationBean[1];
         beans[0] = appBean;
         JRDataSource jds = new JRBeanArrayDataSource(beans);
-        inputParameters.put("IMAGE_SCRITTA_GREEN", ReportManager.class.getResourceAsStream("/images/sola/caption_orange.png"));
+        inputParameters.put("IMAGE_SCRITTA_GREEN", ReportManager.class.getResourceAsStream("/images/sola/govSamoa.gif"));
         inputParameters.put("WHICH_CALLER", "R");
 
         try {
