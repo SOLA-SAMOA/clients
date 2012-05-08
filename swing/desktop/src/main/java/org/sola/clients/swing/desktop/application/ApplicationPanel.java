@@ -1294,7 +1294,6 @@ public class ApplicationPanel extends ContentPanel {
         LafManager.getInstance().setTxtProperties(txtFirstName);
 
         LafManager.getInstance().setLabProperties(labName);
-        labName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/red_asterisk.gif"))); // NOI18N
         labName.setLabelFor(txtFirstName);
         labName.setText(bundle.getString("ApplicationPanel.labName.text")); // NOI18N
         labName.setIconTextGap(1);
@@ -1323,7 +1322,6 @@ public class ApplicationPanel extends ContentPanel {
         jPanel4.setName("jPanel4"); // NOI18N
 
         LafManager.getInstance().setLabProperties(labLastName);
-        labLastName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/red_asterisk.gif"))); // NOI18N
         labLastName.setText(bundle.getString("ApplicationPanel.labLastName.text")); // NOI18N
         labLastName.setIconTextGap(1);
         labLastName.setName("labLastName"); // NOI18N
@@ -1342,7 +1340,7 @@ public class ApplicationPanel extends ContentPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(labLastName)
-                .addContainerGap(236, Short.MAX_VALUE))
+                .addContainerGap(247, Short.MAX_VALUE))
             .addComponent(txtLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
@@ -1367,7 +1365,6 @@ public class ApplicationPanel extends ContentPanel {
         txtAddress.setHorizontalAlignment(JTextField.LEADING);
 
         LafManager.getInstance().setLabProperties(labAddress);
-        labAddress.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/red_asterisk.gif"))); // NOI18N
         labAddress.setText(bundle.getString("ApplicationPanel.labAddress.text")); // NOI18N
         labAddress.setIconTextGap(1);
         labAddress.setName("labAddress"); // NOI18N
@@ -1576,6 +1573,7 @@ public class ApplicationPanel extends ContentPanel {
         jPanel14.setName("jPanel14"); // NOI18N
 
         LafManager.getInstance().setLabProperties(labAgents);
+        labAgents.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/red_asterisk.gif"))); // NOI18N
         labAgents.setText(bundle.getString("ApplicationPanel.labAgents.text")); // NOI18N
         labAgents.setIconTextGap(1);
         labAgents.setName("labAgents"); // NOI18N
@@ -1600,7 +1598,7 @@ public class ApplicationPanel extends ContentPanel {
             .addComponent(cbxAgents, 0, 328, Short.MAX_VALUE)
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addComponent(labAgents)
-                .addContainerGap(267, Short.MAX_VALUE))
+                .addContainerGap(256, Short.MAX_VALUE))
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
