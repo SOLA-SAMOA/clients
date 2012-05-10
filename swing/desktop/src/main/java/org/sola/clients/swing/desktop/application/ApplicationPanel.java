@@ -99,7 +99,8 @@ public class ApplicationPanel extends ContentPanel {
     /**
      * This method is used by the form designer to create {@link ApplicationBean}.
      * It uses
-     * <code>applicationId</code> parameter passed to the form constructor.<br />
+     * <code>applicationId</code> parameter passed to the form constructor.<br
+     * />
      * <code>applicationId</code> should be initialized before
      * {@link ApplicationForm#initComponents} method call.
      */
@@ -373,7 +374,7 @@ public class ApplicationPanel extends ContentPanel {
 
         if (servicesManagementAllowed) {
             if (selectedService != null) {
-                btnViewService.setEnabled(true);
+                btnViewService.setEnabled(!selectedService.isNew());
                 btnCancelService.setEnabled(selectedService.isManagementAllowed()
                         && SecurityBean.isInRole(RolesConstants.APPLICATION_SERVICE_CANCEL));
                 btnStartService.setEnabled(selectedService.isManagementAllowed()
@@ -460,11 +461,8 @@ public class ApplicationPanel extends ContentPanel {
 
                 @Override
                 protected void taskDone() {
-                    if(!appBean.getSelectedService().getRequestTypeCode()
-                            .equalsIgnoreCase(RequestTypeBean.CODE_NEW_DIGITAL_TITLE)){
-                        ((PropertyPanel)getMainContentPanel()
-                                .getPanel(MainContentPanel.CARD_PROPERTY_PANEL))
-                                .showPriorTitileMessage();
+                    if (!appBean.getSelectedService().getRequestTypeCode().equalsIgnoreCase(RequestTypeBean.CODE_NEW_DIGITAL_TITLE)) {
+                        ((PropertyPanel) getMainContentPanel().getPanel(MainContentPanel.CARD_PROPERTY_PANEL)).showPriorTitileMessage();
                     }
                 }
             };
@@ -504,20 +502,31 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Validates application
+     * Checks if there are any changes on the form before proceeding with
+     * action.
      */
-    private void validateApplication() {
+    private boolean checkSaveBeforeAction() {
         if (MainForm.checkBeanState(appBean)) {
-            if (MessageUtility.displayMessage(ClientMessage.APPLICATION_SAVE_BEFORE_VALIDATION)
+            if (MessageUtility.displayMessage(ClientMessage.APPLICATION_SAVE_BEFORE_ACTION)
                     == MessageUtility.BUTTON_ONE) {
                 if (checkApplication()) {
                     saveApplication();
                 } else {
-                    return;
+                    return false;
                 }
             } else {
-                return;
+                return false;
             }
+        }
+        return true;
+    }
+
+    /**
+     * Validates application
+     */
+    private void validateApplication() {
+        if (!checkSaveBeforeAction()) {
+            return;
         }
 
         if (appBean.getId() != null) {
@@ -814,14 +823,14 @@ public class ApplicationPanel extends ContentPanel {
         };
         TaskManager.getInstance().runTask(t);
     }
-    
-    private void openSeachDocuments(){
+
+    private void openSeachDocuments() {
         DocumentSearchDialog form = new DocumentSearchDialog(null, true);
         form.addPropertyChangeListener(new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                if(evt.getPropertyName().equals(org.sola.clients.swing.ui.source.DocumentSearchPanel.SELECT_SOURCE)){
+                if (evt.getPropertyName().equals(org.sola.clients.swing.ui.source.DocumentSearchPanel.SELECT_SOURCE)) {
                     appBean.getSourceList().addAsNew((SourceBean) evt.getNewValue());
                     MessageUtility.displayMessage(ClientMessage.SOURCE_ADDED);
                 }
@@ -3099,6 +3108,10 @@ public class ApplicationPanel extends ContentPanel {
                 CacheManager.getApplicationActionTypes(), actionType).getDisplayValue();
         if (MessageUtility.displayMessage(msgCode, new String[]{localizedActionName}) == MessageUtility.BUTTON_ONE) {
 
+            if (!checkSaveBeforeAction()) {
+                return;
+            }
+
             SolaTask<List<ValidationResultBean>, List<ValidationResultBean>> t =
                     new SolaTask<List<ValidationResultBean>, List<ValidationResultBean>>() {
 
@@ -3215,12 +3228,18 @@ public class ApplicationPanel extends ContentPanel {
      * Calls "complete method for the selected service. "
      */
     private void completeService() {
-        if (appBean.getSelectedService() != null) {
+        final ApplicationServiceBean selectedService = appBean.getSelectedService();
 
-            final String serviceName = appBean.getSelectedService().getRequestType().getDisplayValue();
+        if (selectedService != null) {
+
+            final String serviceName = selectedService.getRequestType().getDisplayValue();
 
             if (MessageUtility.displayMessage(ClientMessage.APPLICATION_SERVICE_COMPLETE_WARNING,
                     new String[]{serviceName}) == MessageUtility.BUTTON_ONE) {
+
+                if (!checkSaveBeforeAction()) {
+                    return;
+                }
 
                 SolaTask t = new SolaTask<Void, Void>() {
 
@@ -3229,7 +3248,7 @@ public class ApplicationPanel extends ContentPanel {
                     @Override
                     protected Void doTask() {
                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_SERVICE_COMPLETING));
-                        result = appBean.getSelectedService().complete();
+                        result = selectedService.complete();
                         return null;
                     }
 
@@ -3253,12 +3272,18 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     private void revertService() {
-        if (appBean.getSelectedService() != null) {
+        final ApplicationServiceBean selectedService = appBean.getSelectedService();
 
-            final String serviceName = appBean.getSelectedService().getRequestType().getDisplayValue();
+        if (selectedService != null) {
+
+            final String serviceName = selectedService.getRequestType().getDisplayValue();
 
             if (MessageUtility.displayMessage(ClientMessage.APPLICATION_SERVICE_REVERT_WARNING,
                     new String[]{serviceName}) == MessageUtility.BUTTON_ONE) {
+
+                if (!checkSaveBeforeAction()) {
+                    return;
+                }
 
                 SolaTask t = new SolaTask<Void, Void>() {
 
@@ -3267,7 +3292,7 @@ public class ApplicationPanel extends ContentPanel {
                     @Override
                     protected Void doTask() {
                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_SERVICE_REVERTING));
-                        result = appBean.getSelectedService().revert();
+                        result = selectedService.revert();
                         return null;
                     }
 
@@ -3291,11 +3316,17 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     private void cancelService() {
-        if (appBean.getSelectedService() != null) {
+        final ApplicationServiceBean selectedService = appBean.getSelectedService();
 
-            final String serviceName = appBean.getSelectedService().getRequestType().getDisplayValue();
+        if (selectedService != null) {
+
+            final String serviceName = selectedService.getRequestType().getDisplayValue();
             if (MessageUtility.displayMessage(ClientMessage.APPLICATION_SERVICE_CANCEL_WARNING,
                     new String[]{serviceName}) == MessageUtility.BUTTON_ONE) {
+
+                if (!checkSaveBeforeAction()) {
+                    return;
+                }
 
                 SolaTask t = new SolaTask<Void, Void>() {
 
@@ -3304,7 +3335,7 @@ public class ApplicationPanel extends ContentPanel {
                     @Override
                     protected Void doTask() {
                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_SERVICE_CANCELING));
-                        result = appBean.getSelectedService().cancel();
+                        result = selectedService.cancel();
                         return null;
                     }
 
@@ -3352,7 +3383,7 @@ public class ApplicationPanel extends ContentPanel {
     private void removeSelectedSource() {
         if (appBean.getSelectedSource() != null) {
             //if (MessageUtility.displayMessage(ClientMessage.CONFIRM_DELETE_RECORD) == MessageUtility.BUTTON_ONE) {
-                appBean.removeSelectedSource();
+            appBean.removeSelectedSource();
             //}
         }
     }
