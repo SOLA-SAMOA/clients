@@ -67,6 +67,7 @@ public class PartyBean extends PartySummaryBean {
     public static final String FATHERSNAME_PROPERTY = "fathersName";
     public static final String GRANDFATHERSNAME_PROPERTY = "fathersLastName";
     public static final String ALIAS_PROPERTY = "alias";
+    public static final String TYPE_CODE_NATURAL_PERSON = "naturalPerson"; 
     
     @Email(message = ClientMessage.CHECK_INVALID_EMAIL, payload=Localized.class)
     private String email;

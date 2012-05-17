@@ -254,8 +254,8 @@ public class PartyPanel extends javax.swing.JPanel {
 
     private void enableIndividualFields(boolean enable) {
         txtLastName.setEnabled(enable);
-        txtFatherFirstName.setEnabled(enable);
-        txtFatherLastName.setEnabled(enable);
+        //txtFatherFirstName.setEnabled(enable); Samoa Customization
+        //txtFatherLastName.setEnabled(enable); Samoa Customization
         txtAlias.setEnabled(enable);
         cbxGender.setEnabled(enable);
         cbxIdType.setEnabled(enable);
@@ -689,10 +689,8 @@ public class PartyPanel extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(labFatherFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(107, Short.MAX_VALUE))
             .addComponent(txtFatherFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+            .addComponent(labFatherFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -719,10 +717,8 @@ public class PartyPanel extends javax.swing.JPanel {
         jPanel17.setLayout(jPanel17Layout);
         jPanel17Layout.setHorizontalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel17Layout.createSequentialGroup()
-                .addComponent(labFatherLastName)
-                .addContainerGap(143, Short.MAX_VALUE))
             .addComponent(txtFatherLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+            .addComponent(labFatherLastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
