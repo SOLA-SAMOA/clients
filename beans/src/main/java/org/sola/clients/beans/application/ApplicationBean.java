@@ -89,6 +89,7 @@ public class ApplicationBean extends ApplicationSummaryBean {
     private SolaList<ApplicationPropertyBean> propertyList;
     private PartyBean contactPerson;
     private byte[] location;
+    private int newLots;
     private BigDecimal servicesFee;
     private BigDecimal tax;
     private BigDecimal totalAmountPaid;
@@ -404,6 +405,14 @@ public class ApplicationBean extends ApplicationSummaryBean {
         propertySupport.firePropertyChange(SELECTED_SOURCE_PROPERTY, null, value);
     }
 
+    public int getNewLots() {
+        return newLots;
+    }
+
+    public void setNewLots(int newLots) {
+        this.newLots = newLots;
+    }
+    
     public BigDecimal getServicesFee() {
         return servicesFee;
     }
