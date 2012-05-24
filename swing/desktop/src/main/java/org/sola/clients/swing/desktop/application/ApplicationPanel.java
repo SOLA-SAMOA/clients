@@ -318,6 +318,7 @@ public class ApplicationPanel extends ContentPanel {
                 btnSave.setEnabled(false);
             }
         }
+        btnPrintFee.setVisible(false);
         saveAppState();
     }
 
