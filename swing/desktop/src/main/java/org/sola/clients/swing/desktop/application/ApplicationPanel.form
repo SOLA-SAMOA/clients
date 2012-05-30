@@ -314,11 +314,11 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="pnlHeader" alignment="0" pref="729" max="32767" attributes="2"/>
+          <Component id="pnlHeader" alignment="0" pref="721" max="32767" attributes="2"/>
           <Component id="jToolBar3" alignment="0" pref="660" max="32767" attributes="2"/>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="709" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="701" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -542,8 +542,8 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="jPanel12" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jPanel25" alignment="1" pref="684" max="32767" attributes="0"/>
-                                  <Component id="jPanel23" alignment="1" pref="615" max="32767" attributes="0"/>
+                                  <Component id="jPanel25" alignment="1" pref="615" max="32767" attributes="0"/>
+                                  <Component id="jPanel23" alignment="1" pref="676" max="32767" attributes="0"/>
                                   <Component id="groupPanel1" alignment="1" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -616,7 +616,7 @@
                                           <Component id="labName" min="-2" pref="111" max="-2" attributes="0"/>
                                           <EmptySpace pref="189" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="txtFirstName" alignment="0" pref="334" max="32767" attributes="0"/>
+                                      <Component id="txtFirstName" alignment="0" pref="330" max="32767" attributes="0"/>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
@@ -670,7 +670,7 @@
                                           <Component id="labLastName" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace pref="247" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="txtLastName" alignment="0" pref="334" max="32767" attributes="0"/>
+                                      <Component id="txtLastName" alignment="0" pref="330" max="32767" attributes="0"/>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
@@ -789,7 +789,7 @@
                                           <Component id="labPhone" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace pref="266" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="txtPhone" alignment="1" pref="334" max="32767" attributes="1"/>
+                                      <Component id="txtPhone" alignment="1" pref="330" max="32767" attributes="1"/>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
@@ -899,7 +899,7 @@
                                           <Component id="labEmail" min="-2" pref="140" max="-2" attributes="0"/>
                                           <EmptySpace pref="160" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="txtEmail" alignment="0" pref="334" max="32767" attributes="1"/>
+                                      <Component id="txtEmail" alignment="0" pref="330" max="32767" attributes="1"/>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
@@ -954,7 +954,7 @@
                                           <Component id="labPreferredWay" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace pref="141" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="cbxCommunicationWay" alignment="0" pref="334" max="32767" attributes="1"/>
+                                      <Component id="cbxCommunicationWay" alignment="0" pref="330" max="32767" attributes="1"/>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
@@ -1029,7 +1029,7 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="cbxAgents" alignment="0" pref="334" max="32767" attributes="0"/>
+                                  <Component id="cbxAgents" alignment="0" pref="330" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="labAgents" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace pref="256" max="32767" attributes="0"/>
@@ -1088,7 +1088,7 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtStatus" alignment="0" pref="334" max="32767" attributes="0"/>
+                                  <Component id="txtStatus" alignment="0" pref="330" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="labStatus" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace pref="265" max="32767" attributes="0"/>
@@ -1156,11 +1156,8 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="128" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Component id="txtAppNumber" alignment="0" pref="218" max="32767" attributes="0"/>
+                                  <Component id="txtAppNumber" alignment="0" pref="215" max="32767" attributes="0"/>
+                                  <Component id="jLabel1" alignment="0" pref="195" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                             <DimensionLayout dim="1">
@@ -1210,11 +1207,8 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="txtDate" alignment="0" pref="218" max="32767" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="labDate" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="113" max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="labDate" pref="195" max="32767" attributes="0"/>
+                                  <Component id="txtDate" alignment="0" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                             <DimensionLayout dim="1">
@@ -1238,25 +1232,23 @@
                                 <Property name="name" type="java.lang.String" value="labDate" noResource="true"/>
                               </Properties>
                             </Component>
-                            <Component class="javax.swing.JTextField" name="txtDate">
+                            <Component class="javax.swing.JFormattedTextField" name="txtDate">
                               <Properties>
-                                <Property name="editable" type="boolean" value="false"/>
+                                <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+                                  <Format subtype="0" type="1"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                                  <ResourceString bundle="org/sola/clients/swing/desktop/application/Bundle.properties" key="ApplicationPanel.txtDate.text" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                                </Property>
                                 <Property name="enabled" type="boolean" value="false"/>
                                 <Property name="focusable" type="boolean" value="false"/>
-                                <Property name="name" type="java.lang.String" value="txtDate" noResource="true"/>
-                                <Property name="requestFocusEnabled" type="boolean" value="false"/>
+                                <Property name="name" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                                  <ResourceString bundle="org/sola/clients/swing/desktop/application/Bundle.properties" key="ApplicationPanel.txtDate.name" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                                </Property>
                               </Properties>
                               <BindingProperties>
-                                <BindingProperty name="text" source="appBean" sourcePath="${lodgingDatetime}" target="txtDate" targetPath="text" updateStrategy="0" immediately="false">
-                                  <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
-                                  <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                                    <Connection code="new DateConverter()" type="code"/>
-                                  </Property>
-                                </BindingProperty>
+                                <BindingProperty name="value" source="appBean" sourcePath="${lodgingDatetime}" target="txtDate" targetPath="value" updateStrategy="0" immediately="false"/>
                               </BindingProperties>
-                              <AuxValues>
-                                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="txtDate.setComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));&#xa;txtDate.setHorizontalAlignment(JTextField.LEADING);"/>
-                              </AuxValues>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -1271,11 +1263,8 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="131" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Component id="txtCompleteBy" alignment="0" pref="218" max="32767" attributes="0"/>
+                                  <Component id="jLabel2" pref="195" max="32767" attributes="0"/>
+                                  <Component id="txtCompleteBy" alignment="0" max="32767" attributes="0"/>
                               </Group>
                             </DimensionLayout>
                             <DimensionLayout dim="1">
@@ -1298,21 +1287,22 @@
                                 <Property name="name" type="java.lang.String" value="jLabel2" noResource="true"/>
                               </Properties>
                             </Component>
-                            <Component class="javax.swing.JTextField" name="txtCompleteBy">
+                            <Component class="javax.swing.JFormattedTextField" name="txtCompleteBy">
                               <Properties>
-                                <Property name="editable" type="boolean" value="false"/>
+                                <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+                                  <Format subtype="0" type="1"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                                  <ResourceString bundle="org/sola/clients/swing/desktop/application/Bundle.properties" key="ApplicationPanel.txtCompleteBy.text" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                                </Property>
                                 <Property name="enabled" type="boolean" value="false"/>
                                 <Property name="focusable" type="boolean" value="false"/>
-                                <Property name="name" type="java.lang.String" value="txtCompleteBy" noResource="true"/>
-                                <Property name="requestFocusEnabled" type="boolean" value="false"/>
+                                <Property name="name" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                                  <ResourceString bundle="org/sola/clients/swing/desktop/application/Bundle.properties" key="ApplicationPanel.txtCompleteBy.name" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                                </Property>
                               </Properties>
                               <BindingProperties>
-                                <BindingProperty name="text" source="appBean" sourcePath="${expectedCompletionDate}" target="txtCompleteBy" targetPath="text" updateStrategy="0" immediately="false">
-                                  <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
-                                  <Property name="converter" type="org.jdesktop.beansbinding.Converter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                                    <Connection code="new DateConverter()" type="code"/>
-                                  </Property>
-                                </BindingProperty>
+                                <BindingProperty name="value" source="appBean" sourcePath="${expectedCompletionDate}" target="txtCompleteBy" targetPath="value" updateStrategy="0" immediately="false"/>
                               </BindingProperties>
                             </Component>
                           </SubComponents>
@@ -1341,7 +1331,7 @@
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="scrollFeeDetails1" alignment="0" pref="684" max="32767" attributes="3"/>
+                                  <Component id="scrollFeeDetails1" alignment="0" pref="676" max="32767" attributes="3"/>
                                   <Component id="tbServices" alignment="0" pref="615" max="32767" attributes="1"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -1631,7 +1621,7 @@
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="scrollPropertyDetails" alignment="0" pref="684" max="32767" attributes="1"/>
+                                  <Component id="scrollPropertyDetails" alignment="0" pref="676" max="32767" attributes="1"/>
                                   <Component id="jPanel20" alignment="0" max="32767" attributes="0"/>
                                   <Component id="tbPropertyDetails" alignment="0" max="32767" attributes="0"/>
                               </Group>
@@ -1861,7 +1851,7 @@
                                           <Component id="labFirstPart" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace pref="60" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="txtFirstPart" alignment="0" pref="125" max="32767" attributes="0"/>
+                                      <Component id="txtFirstPart" alignment="0" pref="123" max="32767" attributes="0"/>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
@@ -1911,7 +1901,7 @@
                                           <Component id="labLastPart" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace pref="61" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="txtLastPart" alignment="0" pref="125" max="32767" attributes="0"/>
+                                      <Component id="txtLastPart" alignment="0" pref="123" max="32767" attributes="0"/>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
@@ -1960,7 +1950,7 @@
                                           <Component id="labArea" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace pref="56" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="txtArea" alignment="0" pref="125" max="32767" attributes="0"/>
+                                      <Component id="txtArea" alignment="0" pref="123" max="32767" attributes="0"/>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
@@ -2009,7 +1999,7 @@
                                           <Component id="labValue" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace pref="78" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="txtValue" alignment="0" pref="125" max="32767" attributes="0"/>
+                                      <Component id="txtValue" alignment="0" pref="123" max="32767" attributes="0"/>
                                   </Group>
                                 </DimensionLayout>
                                 <DimensionLayout dim="1">
@@ -2103,7 +2093,7 @@
                           <Group type="102" attributes="0">
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="scrollDocuments" pref="442" max="32767" attributes="1"/>
+                                  <Component id="scrollDocuments" pref="434" max="32767" attributes="1"/>
                                   <Component id="jToolBar1" alignment="0" pref="373" max="32767" attributes="0"/>
                                   <Component id="jPanel1" alignment="0" max="32767" attributes="1"/>
                               </Group>
@@ -2124,7 +2114,7 @@
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="labDocRequired" min="-2" pref="24" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="scrollDocRequired" pref="364" max="32767" attributes="0"/>
+                                      <Component id="scrollDocRequired" pref="369" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
@@ -2356,7 +2346,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="addDocumentPanel" pref="418" max="32767" attributes="0"/>
+                                  <Component id="addDocumentPanel" pref="410" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -2503,8 +2493,11 @@
                           <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="scrollFeeDetails" alignment="0" pref="615" max="32767" attributes="0"/>
-                                  <Component id="jPanel2" alignment="0" min="-2" pref="579" max="-2" attributes="0"/>
+                                  <Component id="scrollFeeDetails" pref="676" max="32767" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="31" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>

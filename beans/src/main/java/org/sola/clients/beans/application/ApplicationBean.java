@@ -1,30 +1,26 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
- * (FAO). All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
+ * reserved.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this
- * list of conditions and the following disclaimer. 2. Redistributions in binary
- * form must reproduce the above copyright notice,this list of conditions and
- * the following disclaimer in the documentation and/or other materials provided
- * with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this
- * software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
+ * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
+ * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.beans.application;
@@ -60,9 +56,8 @@ import org.sola.webservices.transferobjects.casemanagement.ApplicationTO;
 import org.sola.webservices.transferobjects.search.PropertyVerifierTO;
 
 /**
- * Represents full object of the application in the domain model. Could be
- * populated from the {@link ApplicationTO} object.<br /> For more information
- * see data dictionary <b>Application</b> schema.
+ * Represents full object of the application in the domain model. Could be populated from the {@link ApplicationTO}
+ * object.<br /> For more information see data dictionary <b>Application</b> schema.
  */
 @ApplicationCheck
 public class ApplicationBean extends ApplicationSummaryBean {
@@ -83,7 +78,6 @@ public class ApplicationBean extends ApplicationSummaryBean {
     public static final String ASSIGNEE_ID_PROPERTY = "assigneeId";
     public static final String STATUS_TYPE_PROPERTY = "statusType";
     public static final String APPLICATION_PROPERTY = "application";
-    
     private ApplicationActionTypeBean actionBean;
     private String actionNotes;
     private SolaList<ApplicationPropertyBean> propertyList;
@@ -94,7 +88,7 @@ public class ApplicationBean extends ApplicationSummaryBean {
     private BigDecimal tax;
     private BigDecimal totalAmountPaid;
     private BigDecimal totalFee;
-    @Size(min=1, message = ClientMessage.CHECK_APP_SERVICES_NOT_EMPTY, payload=Localized.class)
+    @Size(min = 1, message = ClientMessage.CHECK_APP_SERVICES_NOT_EMPTY, payload = Localized.class)
     private SolaObservableList<ApplicationServiceBean> serviceList;
     private SolaList<SourceBean> sourceList;
     private SolaObservableList<ApplicationLogBean> appLogList;
@@ -106,12 +100,9 @@ public class ApplicationBean extends ApplicationSummaryBean {
     private ApplicationStatusTypeBean statusBean;
 
     /**
-     * Default constructor to create application bean. Initializes the following
-     * list of beans which are the parts of the application bean: <br /> {@link ApplicationActionTypeBean}
-     * <br /> {@link PartySummaryBean}
-     * <br /> {@link ApplicationPropertyBean}
-     * <br /> {@link ApplicationServiceBean}
-     * <br /> {@link SourceBean}
+     * Default constructor to create application bean. Initializes the following list of beans which
+     * are the parts of the application bean: <br /> {@link ApplicationActionTypeBean} <br /> {@link PartySummaryBean}
+     * <br /> {@link ApplicationPropertyBean} <br /> {@link ApplicationServiceBean} <br /> {@link SourceBean}
      */
     public ApplicationBean() {
         super();
@@ -140,8 +131,8 @@ public class ApplicationBean extends ApplicationSummaryBean {
     }
 
     /**
-     * Allow approval if the Application is assigned, has a status of lodged and
-     * all of the services are in an finalized state.
+     * Allow approval if the Application is assigned, has a status of lodged and all of the services
+     * are in an finalized state.
      *
      * @return
      */
@@ -252,8 +243,7 @@ public class ApplicationBean extends ApplicationSummaryBean {
     }
 
     /**
-     * Sets application status code and retrieves {@link ApplicationStatusTypeBean}
-     * from the cache.
+     * Sets application status code and retrieves {@link ApplicationStatusTypeBean} from the cache.
      *
      * @param value Application status code.
      */
@@ -273,9 +263,8 @@ public class ApplicationBean extends ApplicationSummaryBean {
     }
 
     /**
-     * Returns collection of {@link ApplicationBean} objects. This method is
-     * used by Jasper report designer to extract properties of application bean
-     * to help design a report.
+     * Returns collection of {@link ApplicationBean} objects. This method is used by Jasper report
+     * designer to extract properties of application bean to help design a report.
      */
     public static java.util.Collection generateCollection() {
         java.util.Vector collection = new java.util.Vector();
@@ -301,8 +290,7 @@ public class ApplicationBean extends ApplicationSummaryBean {
     }
 
     /**
-     * Sets application action code and retrieves {@link ApplicationActionTypeBean}
-     * from the cache.
+     * Sets application action code and retrieves {@link ApplicationActionTypeBean} from the cache.
      *
      * @param value Application action code.
      */
@@ -349,6 +337,9 @@ public class ApplicationBean extends ApplicationSummaryBean {
 
     public void setContactPerson(PartyBean value) {
         contactPerson = value;
+        if (value != null) {
+            contactPerson.setEmail(value.getEmail());
+        }
         propertySupport.firePropertyChange(CONTACT_PERSON_PROPERTY, null, value);
     }
 
@@ -412,7 +403,7 @@ public class ApplicationBean extends ApplicationSummaryBean {
     public void setNewLots(int newLots) {
         this.newLots = newLots;
     }
-    
+
     public BigDecimal getServicesFee() {
         return servicesFee;
     }
@@ -471,15 +462,28 @@ public class ApplicationBean extends ApplicationSummaryBean {
     }
 
     /**
-     * Adds new service ({@link ApplicationServiceBean}) into the application
-     * services list.
+     * Adds new service ({@link ApplicationServiceBean}) into the application services list.
      *
-     * @param requestTypeBean Request type (service) from available services
-     * list.
+     * @param requestTypeBean Request type (service) from available services list.
      */
     public void addService(RequestTypeBean requestTypeBean) {
         if (requestTypeBean != null && serviceList != null) {
             int order = 0;
+
+//             bug #122 (The same service can be added multiple times)is not a bug,  
+//             it was restricted before to duplicate services,
+//             but later we found that sometimes it is needed to have duplications (it could be more than 1service with the same name).
+//               for (Iterator<ApplicationServiceBean> it = serviceList.iterator(); it.hasNext();) {
+//                    ApplicationServiceBean appService = it.next();
+//                    System.out.println("appService.getRequestTypeCode() " + appService.getRequestTypeCode());
+//
+//                    if (requestTypeBean.getCode().equals(appService.getRequestTypeCode())) {
+//                        MessageUtility.displayMessage(ClientMessage.APPLICATION_ALREADYSELECTED_SERVICE);
+//                        return;
+//                    }
+//                }
+
+
             for (Iterator<ApplicationServiceBean> it = serviceList.iterator(); it.hasNext();) {
                 ApplicationServiceBean applicationServiceBean = it.next();
                 if (applicationServiceBean.getServiceOrder() > order) {
@@ -572,8 +576,8 @@ public class ApplicationBean extends ApplicationSummaryBean {
     }
 
     /**
-     * Adds new property object ({@link ApplicationPropertyBean}) into the list
-     * of application properties.
+     * Adds new property object ({@link ApplicationPropertyBean}) into the list of application
+     * properties.
      *
      * @param firstPart First part of the property's identification code.
      * @param lastPart Second part of the property's identification code.
@@ -601,9 +605,8 @@ public class ApplicationBean extends ApplicationSummaryBean {
     }
 
     /**
-     * Verifies selected property object. Checks if object exists in the
-     * database and on the map. Checks for the list of incomplete applications,
-     * related to the selected property object.
+     * Verifies selected property object. Checks if object exists in the database and on the map.
+     * Checks for the list of incomplete applications, related to the selected property object.
      */
     public boolean verifyProperty() {
         if (selectedProperty != null) {
