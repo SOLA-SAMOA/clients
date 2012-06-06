@@ -1,33 +1,32 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO).
- * All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
+ * reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
- *    1. Redistributions of source code must retain the above copyright notice,this list
- *       of conditions and the following disclaimer.
- *    2. Redistributions in binary form must reproduce the above copyright notice,this list
- *       of conditions and the following disclaimer in the documentation and/or other
- *       materials provided with the distribution.
- *    3. Neither the name of FAO nor the names of its contributors may be used to endorse or
- *       promote products derived from this software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
+ * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
+ * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.beans.application.validation;
 
-import javax.swing.JOptionPane;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import org.sola.clients.beans.application.ApplicationBean;
@@ -62,47 +61,107 @@ public class ApplicationValidator implements ConstraintValidator<ApplicationChec
         } else {
             //Make Agent mandatory and make First Name, Last Name and Address optional
             //Hilton: 08-May-2012
-            if (appBean.getAgent()==null || 
-                    appBean.getAgent().getName().equals(" ")){
+            if (appBean.getAgent() == null
+                    || appBean.getAgent().getName().equals(" ")) {
                 result = false;
                 constraintContext.buildConstraintViolationWithTemplate(
                         MessageUtility.getLocalizedMessageText(
                         ClientMessage.CHECK_APP_AGENT)).addConstraintViolation();
-                
-              //JOptionPane.showMessageDialog(null,"Uzumaki Naruto");
             }
-            
-            /*if (appBean.getContactPerson().getAddress() == null || 
-                    appBean.getContactPerson().getAddress().getDescription() == null ||
-                    appBean.getContactPerson().getAddress().getDescription().isEmpty()) {
-                result = false;
-                constraintContext.buildConstraintViolationWithTemplate(
-                        MessageUtility.getLocalizedMessageText(
-                        ClientMessage.CHECK_APP_CONTACT_PERSON_ADDRESS)).addConstraintViolation();
-            }*/
-            
-            /*if (appBean.getContactPerson().getAddress() == null || 
-                    appBean.getContactPerson().getAddress().getDescription() == null ||
-                    appBean.getContactPerson().getAddress().getDescription().isEmpty()) {
-                result = false;
-                constraintContext.buildConstraintViolationWithTemplate(
-                        MessageUtility.getLocalizedMessageText(
-                        ClientMessage.CHECK_APP_CONTACT_PERSON_ADDRESS)).addConstraintViolation();
+//            
+//            if (appBean.getContactPerson().getAddress() == null || 
+//                    appBean.getContactPerson().getAddress().getDescription() == null ||
+//                    appBean.getContactPerson().getAddress().getDescription().isEmpty()) {
+//                result = false;
+//                constraintContext.buildConstraintViolationWithTemplate(
+//                        MessageUtility.getLocalizedMessageText(
+//                        ClientMessage.CHECK_APP_CONTACT_PERSON_ADDRESS)).addConstraintViolation();
+//            }
+//            if (appBean.getContactPerson().getName() == null || appBean.getContactPerson().getName().isEmpty()) {
+//                result = false;
+//                constraintContext.buildConstraintViolationWithTemplate(
+//                        MessageUtility.getLocalizedMessageText(
+//                        ClientMessage.CHECK_APP_CONTACT_PERSON_NAME)).addConstraintViolation();
+//            }
+//            if (appBean.getContactPerson().getLastName() == null || appBean.getContactPerson().getLastName().isEmpty()) {
+//                result = false;
+//                constraintContext.buildConstraintViolationWithTemplate(
+//                        MessageUtility.getLocalizedMessageText(
+//                        ClientMessage.CHECK_APP_CONTACT_PERSON_LASTNAME)).addConstraintViolation();
+//            }
+
+            //AM 07-Jun-2012 Merge changes from core SOLA to validate phone numbers and email addresses
+            if (appBean.getContactPerson() != null) {
+                if (appBean.getContactPerson().getPhone() != null && !appBean.getContactPerson().getPhone().isEmpty()) {
+                    if (!isPhoneNumberValid(appBean.getContactPerson().getPhone())) {
+                        result = false;
+                        constraintContext.buildConstraintViolationWithTemplate(
+                                MessageUtility.getLocalizedMessageText(
+                                ClientMessage.CHECK_INVALID_PHONE)).addConstraintViolation();
+                    }
+                }
+                if (appBean.getContactPerson().getFax() != null && !appBean.getContactPerson().getFax().isEmpty()) {
+                    if (!isPhoneNumberValid(appBean.getContactPerson().getFax())) {
+                        result = false;
+                        constraintContext.buildConstraintViolationWithTemplate(
+                                MessageUtility.getLocalizedMessageText(
+                                ClientMessage.CHECK_INVALID_FAX)).addConstraintViolation();
+                    }
+                }
+                if (appBean.getContactPerson().getEmail() != null && !appBean.getContactPerson().getEmail().isEmpty()) {
+                    if (!isEmailValid(appBean.getContactPerson().getEmail())) {
+                        result = false;
+                        constraintContext.buildConstraintViolationWithTemplate(
+                                MessageUtility.getLocalizedMessageText(
+                                ClientMessage.CHECK_INVALID_EMAIL)).addConstraintViolation();
+                    }
+                }
             }
-            if (appBean.getContactPerson().getName() == null || appBean.getContactPerson().getName().isEmpty()) {
-                result = false;
-                constraintContext.buildConstraintViolationWithTemplate(
-                        MessageUtility.getLocalizedMessageText(
-                        ClientMessage.CHECK_APP_CONTACT_PERSON_NAME)).addConstraintViolation();
-            }
-            if (appBean.getContactPerson().getLastName() == null || appBean.getContactPerson().getLastName().isEmpty()) {
-                result = false;
-                constraintContext.buildConstraintViolationWithTemplate(
-                        MessageUtility.getLocalizedMessageText(
-                        ClientMessage.CHECK_APP_CONTACT_PERSON_LASTNAME)).addConstraintViolation();
-            }*/
         }
 
         return result;
+    }
+
+    /**
+     * isPhoneNumberValid: Validate phone number using Java reg ex. This method checks if the input
+     * string is a valid phone number.
+     *
+     * @param phoneNumber String. Phone number to validate
+     * @return boolean: true if phone number is valid, false otherwise.
+     */
+    public static boolean isPhoneNumberValid(String phoneNumber) {
+        boolean isValid = false;
+
+        //Initialize reg ex for phone number. 
+        String expression = "[0-9\\s]*+$";
+        CharSequence inputStr = phoneNumber;
+        Pattern pattern = Pattern.compile(expression);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        return isValid;
+    }
+
+    /**
+     * isEmailValid: Validate phone number using Java reg ex. This method checks if the input string
+     * is a valid email.
+     *
+     * @param email String.
+     * @return boolean: true if phone number is valid, false otherwise.
+     */
+    public static boolean isEmailValid(String email) {
+        boolean isValid = false;
+
+        //Initialize reg ex for email.  
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        CharSequence inputStr = email;
+        //Make the comparison case-insensitive.  
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        return isValid;
     }
 }
