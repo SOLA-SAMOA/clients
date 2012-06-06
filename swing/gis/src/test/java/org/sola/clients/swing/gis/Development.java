@@ -31,7 +31,8 @@ import java.awt.Component;
 import java.util.HashMap;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.sola.clients.swing.gis.TestCadastreTransactionChange;
+import org.sola.clients.beans.administrative.BaUnitBean;
+import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.clients.swing.gis.ui.controlsbundle.ControlsBundleForApplicationLocation;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKBWriter;
@@ -48,6 +49,7 @@ import org.sola.clients.swing.gis.ui.controlsbundle.ControlsBundleForCadastreRed
 import org.sola.clients.swing.gis.ui.controlsbundle.ControlsBundleViewer;
 import org.sola.services.boundary.wsclients.WSManager;
 import org.sola.webservices.spatial.MapDefinitionTO;
+import org.sola.webservices.transferobjects.administrative.BaUnitTO;
 
 /**
  * Unit test for simple App.
@@ -57,12 +59,12 @@ public class Development {
     /**
      * Test the controls bundle for setting the location of an application
      */
-    @Ignore
+    //@Ignore
     @Test
     public void testUIControlsBundleViewer() throws Exception {
         System.out.println("Test ControlsBundle for Viewer");
         System.err.println("Language from user.property:" + System.getProperty("user.language"));
-        WSManager.getInstance().initWebServices("test", "test".toCharArray(), this.getWSConfig());
+        SecurityBean.authenticate("test", "test".toCharArray(), this.getWSConfig());
         ControlsBundleViewer ctrl = new ControlsBundleViewer();
         this.displayControlsBundleForm(ctrl);
     }
@@ -74,10 +76,13 @@ public class Development {
     @Test
     public void testUIControlsBundleForBaUnit() throws Exception {
         System.out.println("Test ControlsBundle for setting cadastre objects");
-        WSManager.getInstance().initWebServices("test", "test".toCharArray(), this.getWSConfig());
+        SecurityBean.authenticate("test", "test".toCharArray(), this.getWSConfig());
+        BaUnitTO baUnitTO =WSManager.getInstance().getAdministrative().getBaUnitById("3068323");
+        BaUnitBean baUnitBean = new BaUnitBean();
+        TypeConverters.TransferObjectToBean(baUnitTO, BaUnitBean.class, baUnitBean);
 
         ControlsBundleForBaUnit ctrl = new ControlsBundleForBaUnit();
-        ctrl.setCadastreObjects("3068323");
+        ctrl.setCadastreObjects(baUnitBean.getCadastreObjectList());
         this.displayControlsBundleForm(ctrl);
     }
 
@@ -88,7 +93,7 @@ public class Development {
     @Test
     public void testUIControlsBundleForApplicationLocation() throws Exception {
         System.out.println("Test ControlsBundle for setting Application Location");
-        WSManager.getInstance().initWebServices("test", "test".toCharArray(), this.getWSConfig());
+        SecurityBean.authenticate("test", "test".toCharArray(), this.getWSConfig());
         MapDefinitionTO mapDef = PojoDataAccess.getInstance().getMapDefinition();
         WKTReader wktReader = new WKTReader();
         WKBWriter wkbWriter = new WKBWriter();
@@ -136,7 +141,7 @@ public class Development {
         this.displayControlsBundleForm(ctrl);
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void testUIControlsBundleForCadastreRedefinition() throws Exception {
         System.out.println("Test ControlsBundle for cadastre redefinition");
