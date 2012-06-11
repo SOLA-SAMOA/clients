@@ -4,6 +4,7 @@
  */
 package org.geotools.swing.extended.util;
 
+import java.awt.Toolkit;
 import java.io.File;
 import org.geotools.swing.extended.Map;
 import org.geotools.swing.extended.exception.InitializeMapException;
@@ -38,7 +39,7 @@ public class MapImageGeneratorTest {
      * Test of getImageAsFileLocation method, of class MapImageGenerator.
      */
     @Test
-    @Ignore
+    //@Ignore
     public void testGetImageAsFileLocation() throws Exception {
         System.out.println("getImageAsFileLocation");
         double imageWidth = 200.0;
@@ -47,7 +48,6 @@ public class MapImageGeneratorTest {
         int dpi = 96;
         String imageFormat = "png";
         MapImageGenerator instance = new MapImageGenerator(this.getMap());
-        String expResult = "";
         String result = instance.getImageAsFileLocation(
                 imageWidth, imageHeight, scale, dpi, imageFormat);
         System.out.print("Map image generated in:" + result);
