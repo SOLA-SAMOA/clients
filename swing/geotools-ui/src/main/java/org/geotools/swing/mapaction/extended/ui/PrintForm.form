@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
@@ -29,18 +29,20 @@
           <Group type="102" attributes="0">
               <EmptySpace pref="32" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="cmdPrint" alignment="1" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="lblTxtScale" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblCmdLayout" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblTxtMapTitle" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblCmdLayout" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblTxtScale" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="cmdLayout" pref="144" max="32767" attributes="0"/>
+                          <Component id="txtMapTitle" max="32767" attributes="0"/>
                           <Component id="txtScale" min="-2" pref="66" max="-2" attributes="0"/>
-                          <Component id="cmdLayout" alignment="0" min="-2" pref="144" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <Component id="cmdPrint" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -54,14 +56,19 @@
                   <Component id="cmdLayout" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblCmdLayout" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtScale" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblTxtScale" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace pref="14" max="32767" attributes="0"/>
-              <Component id="cmdPrint" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblTxtMapTitle" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtMapTitle" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblTxtScale" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtScale" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="cmdPrint" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -119,6 +126,23 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="lblTxtScale.setFont(UIManager.getFont(labFont));&#xa;lblTxtScale.setComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));&#xa;lblTxtScale.setHorizontalAlignment(JLabel.LEADING);"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtMapTitle">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/geotools/swing/mapaction/extended/ui/Bundle.properties" key="PrintForm.txtMapTitle.text" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/geotools/swing/mapaction/extended/ui/Bundle.properties" key="PrintForm.txtMapTitle.toolTipText" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblTxtMapTitle">
+      <Properties>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+          <ResourceString bundle="org/geotools/swing/mapaction/extended/ui/Bundle.properties" key="PrintForm.lblTxtMapTitle.text" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+        </Property>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

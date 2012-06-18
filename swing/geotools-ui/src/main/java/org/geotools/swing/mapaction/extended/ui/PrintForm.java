@@ -41,10 +41,7 @@ import java.awt.ComponentOrientation;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
+import javax.swing.*;
 import org.geotools.swing.extended.util.Messaging;
 import org.geotools.swing.mapaction.extended.print.PrintLayout;
 
@@ -109,7 +106,10 @@ public class PrintForm extends javax.swing.JDialog implements IPrintUi{
     
     @Override
     public java.util.Map<String, Object> getExtraFields(){
-        return new HashMap<String, Object>();
+        HashMap<String, Object> extraFields = new HashMap<String, Object>();
+        extraFields.put("{title}",this.txtMapTitle.getText());
+        return extraFields;
+        //return new HashMap<String, Object>();
     }
     
     /** This method is called from within the constructor to
@@ -126,6 +126,8 @@ public class PrintForm extends javax.swing.JDialog implements IPrintUi{
         lblCmdLayout = new javax.swing.JLabel();
         txtScale = new javax.swing.JTextField();
         lblTxtScale = new javax.swing.JLabel();
+        txtMapTitle = new javax.swing.JTextField();
+        lblTxtMapTitle = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -164,6 +166,11 @@ public class PrintForm extends javax.swing.JDialog implements IPrintUi{
         lblTxtScale.setComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
         lblTxtScale.setHorizontalAlignment(JLabel.LEADING);
 
+        txtMapTitle.setText(bundle.getString("PrintForm.txtMapTitle.text")); // NOI18N
+        txtMapTitle.setToolTipText(bundle.getString("PrintForm.txtMapTitle.toolTipText")); // NOI18N
+
+        lblTxtMapTitle.setText(bundle.getString("PrintForm.lblTxtMapTitle.text")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -171,15 +178,17 @@ public class PrintForm extends javax.swing.JDialog implements IPrintUi{
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(32, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmdPrint, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblTxtScale)
-                            .addComponent(lblCmdLayout))
+                            .addComponent(lblTxtMapTitle)
+                            .addComponent(lblCmdLayout)
+                            .addComponent(lblTxtScale))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtScale, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmdLayout, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmdLayout, 0, 144, Short.MAX_VALUE)
+                            .addComponent(txtMapTitle)
+                            .addComponent(txtScale, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(cmdPrint, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -189,13 +198,17 @@ public class PrintForm extends javax.swing.JDialog implements IPrintUi{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdLayout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblCmdLayout))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTxtScale))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                    .addComponent(lblTxtMapTitle)
+                    .addComponent(txtMapTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTxtScale)
+                    .addComponent(txtScale, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmdPrint)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -226,7 +239,9 @@ this.continueWithPrinting = false;
     private javax.swing.JComboBox cmdLayout;
     private javax.swing.JButton cmdPrint;
     private javax.swing.JLabel lblCmdLayout;
+    private javax.swing.JLabel lblTxtMapTitle;
     private javax.swing.JLabel lblTxtScale;
+    private javax.swing.JTextField txtMapTitle;
     private javax.swing.JTextField txtScale;
     // End of variables declaration//GEN-END:variables
 }
