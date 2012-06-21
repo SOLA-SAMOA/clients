@@ -6,14 +6,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="Css/style.css" rel="stylesheet" type="text/css" />
-        <title>SOLA Desktop and SOLA Admin Download Page</title>
+        <title>SOLA Samoa Desktop and SOLA Samoa Admin Download Page</title>
     </head>
     <body>
 
         <table width="80%" cellspacing="0" cellpadding="3">
             <tr>
                 <td colspan="2">  
-                    <h1><img src="Images/SolaLogo.png"/>Welcome to the download for the SOLA Web Start Alpha Release applications.</h1>
+                    <h1><img src="Images/SolaLogo.png"/>Welcome to the download for the SOLA Samoa Web Start applications.</h1>
                 </td>
             </tr>
             <tr>
@@ -21,7 +21,7 @@
                 <td> <br><br>
                     Solutions for Open Land Administration (SOLA) is an open source software system that aims to make computerized cadastre and registration systems more affordable and more sustainable in developing countries.
                     <br><br>
-                    This page will guide you through the installation of the SOLA Web Start Alpha Release applications which includes the SOLA Desktop Web Start and SOLA Admin Web Start. The installation package for both applications is approximately 70Mb.
+                    This page will guide you through the installation of the SOLA Samoa Web Start applications which includes the SOLA Desktop Web Start and SOLA Admin Web Start. The installation package for both applications is approximately 70Mb.
                     <br><br> 
                 </td>
             </tr>
@@ -33,7 +33,7 @@
             <tr>
                 <td width="20%"></td>   
                 <td>     
-                    The  Java SE Runtime Environment 7 is required for the SOLA Web Start applications. Java 7 can be downloaded from <a href="http://www.oracle.com/technetwork/java/javase/downloads/java-se-jre-7-download-432155.html" target="_blank" >here</a>.
+                    The  Java SE Runtime Environment 7 is required for the SOLA Web Start applications. To check your version of Java open a Windows command prompt (cmd) and type <b>java -version</b>. If the response does not indicate Java 1.7.0 is installed you will need to install Java 7. Java 7 can be downloaded from <a href="http://www.oracle.com/technetwork/java/javase/downloads/java-se-jre-7-download-432155.html" target="_blank" >here</a>.
                     <ol>
                         <li>    You will need to accept the Oracle Binary Code License Agreement for Java SE before downloading Java 7.</li>
                         <li>    Download the product appropriate for your operating system. Note that the Windows x86 products are for Windows 32bit operating systems and the Windows x64 product is for Windows 64bit operating systems.</li>
@@ -72,15 +72,19 @@
             <tr>
                 <td width="20%"></td>   
                 <td>
-                    <h2>Additional Information</h2>
+                    <h2>Un-installing the web start applications</h2>
+                </td>
+            </tr>
+            <tr>
+                <td width="20%"></td>  
+                <td>
+                    If you have problems installing the SOLA web start applications, or simply want to un-install the applications you can do so by
                     <ol>
-                        <li>	The SOLA Alpha Release User Guide provides details on installation troubleshooting. The User Guide is available from <a href="http://www.flossola.org/documents/development-snapshot" target="_blank" >http://www.flossola.org/documents/development-snapshot</a>.</li> 
-                        <li>	The installation will install a shortcut to the SOLA Desktop on your computer desktop. This shortcut may require further configuration. Refer to the User Guide for details. </li> 
-                        <li>        Refer to the User Guide or the SOLA Desktop Online Help for licensing details.</li>
-                        <li>	The Database used for the SOLA Desktop will be reverted daily at 0100 GMT. Any data changes you make will be lost.</li> 
-                        <li>	The SOLA Desktop Development Snapshot is an in-progress view of our work to date and includes partially complete functionality as well as some defects. For a list of known
-                            issues, refer to the Known Issues section in the User Guide or the SOLA Desktop Online Help. If you encounter an issue or bug that is not listed as a known issue, you can 
-                            notify the SOLA Development Team by sending an email to <a href="mailto:Neil.Pullar@fao.org">Neil.Pullar@fao.org</a>.</li>
+                        <li>	From Windows Control Panel, open the <b>Java</b> control panel</li> 
+                        <li>	On the General tab, click the View... button</li>
+                        <li>	In the Java Cache Viewer dialog, select all SOLA web start applications and click the red X tool bar button</li>
+                        <li>	In the Java Cache Viewer dialog, select the Resources option from the Show: combo box, then select all resources and remove them using the red X tool bar button</li>
+                        <li>    Close the Java control panel</li>
                     </ol>
                 </td>
             </tr> 
