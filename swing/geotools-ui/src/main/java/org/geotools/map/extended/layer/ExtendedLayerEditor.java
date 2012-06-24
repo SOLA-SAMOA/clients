@@ -1,28 +1,26 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO).
- * All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
+ * reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
- *    1. Redistributions of source code must retain the above copyright notice,this list
- *       of conditions and the following disclaimer.
- *    2. Redistributions in binary form must reproduce the above copyright notice,this list
- *       of conditions and the following disclaimer in the documentation and/or other
- *       materials provided with the distribution.
- *    3. Neither the name of FAO nor the names of its contributors may be used to endorse or
- *       promote products derived from this software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
+ * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
+ * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 /*
@@ -47,10 +45,10 @@ import org.geotools.swing.extended.util.Messaging;
 
 /**
  * The layer is used to handle the editing of features. Features in this layer can be added, removed
- * and also the vertexes can be modified and snapped. <br/>
- * It adds an extra {@see ExtendedLayerGraphics}
- * to show vertexes of the features.
- * 
+ * and also the vertexes can be modified and snapped. <br/> It adds an extra {
+ *
+ * @see ExtendedLayerGraphics} to show vertexes of the features.
+ *
  * @author Elton Manoku
  */
 public class ExtendedLayerEditor extends ExtendedLayerGraphics {
@@ -62,12 +60,13 @@ public class ExtendedLayerEditor extends ExtendedLayerGraphics {
 
     /**
      * It creates an instance of this layer.
+     *
      * @param name Name of the layer. It should be unique.
      * @param geometryType The type of geometry.
      * @param styleResource The resource where the style is found
-     * @param extraFieldsFormat If there are more fields than geometry, are defined here in 
-     * the format as accepted by DataUtility of Geotools.
-     * @throws InitializeLayerException 
+     * @param extraFieldsFormat If there are more fields than geometry, are defined here in the
+     * format as accepted by DataUtility of Geotools.
+     * @throws InitializeLayerException
      */
     public ExtendedLayerEditor(
             String name,
@@ -78,14 +77,15 @@ public class ExtendedLayerEditor extends ExtendedLayerGraphics {
     }
 
     /**
-     * It creates an instance of this layer where it is possible to provide also a style for 
-     * the vertices. The other parameters are the same as in the other constructor.
+     * It creates an instance of this layer where it is possible to provide also a style for the
+     * vertices. The other parameters are the same as in the other constructor.
+     *
      * @param name
      * @param geometryType
      * @param styleResource
      * @param styleResourceForVertexes The sld definition of the vertices style.
      * @param extraFieldsFormat
-     * @throws InitializeLayerException 
+     * @throws InitializeLayerException
      */
     public ExtendedLayerEditor(
             String name,
@@ -102,7 +102,9 @@ public class ExtendedLayerEditor extends ExtendedLayerGraphics {
     }
 
     /**
-     * The list of {@see VertexInformation} for the features in this layer
+     * The list of {
+     *
+     * @see VertexInformation} for the features in this layer
      */
     public final List<VertexInformation> getVertexList() {
         return vertexList;
@@ -115,8 +117,9 @@ public class ExtendedLayerEditor extends ExtendedLayerGraphics {
     }
 
     /**
-     * For description see the same method being overridden. <br/>
-     * Additionally, it populates the list of vertexes 
+     * For description see the same method being overridden. <br/> Additionally, it populates the
+     * list of vertexes
+     *
      * @param fid
      * @param geom
      * @param fieldsWithValues
@@ -125,32 +128,46 @@ public class ExtendedLayerEditor extends ExtendedLayerGraphics {
     @Override
     public SimpleFeature addFeature(String fid, com.vividsolutions.jts.geom.Geometry geom,
             java.util.HashMap<String, Object> fieldsWithValues) {
+        return addFeature(fid, geom, fieldsWithValues, true);
+    }
+
+    public SimpleFeature addFeature(String fid, com.vividsolutions.jts.geom.Geometry geom,
+            java.util.HashMap<String, Object> fieldsWithValues, boolean redraw) {
 
         SimpleFeature featureAdded = super.addFeature(fid, geom, fieldsWithValues);
         this.addVertexes(featureAdded);
-        this.getMapControl().refresh();
+        if (redraw) {
+            this.getMapControl().refresh();
+        }
         return featureAdded;
     }
 
     /**
-     * For description see the same method being overridden. <br/>
-     * Additionally removes all related vertexes with the feature being removed.
+     * For description see the same method being overridden. <br/> Additionally removes all related
+     * vertexes with the feature being removed.
+     *
      * @param fid
-     * @return 
+     * @return
      */
     @Override
     public SimpleFeature removeFeature(String fid) {
+        return removeFeature(fid, true);
+    }
+
+    public SimpleFeature removeFeature(String fid, boolean redraw) {
         SimpleFeature result = super.removeFeature(fid);
         if (result != null) {
             this.removeVertexes(result);
         }
-        this.getMapControl().refresh();
+        if (redraw) {
+            this.getMapControl().refresh();
+        }
         return result;
     }
 
     /**
-     * For description see the same method being overridden. <br/>
-     * Additionally, removes also the vertexes.
+     * For description see the same method being overridden. <br/> Additionally, removes also the
+     * vertexes.
      */
     @Override
     public void removeFeatures() {
@@ -168,9 +185,11 @@ public class ExtendedLayerEditor extends ExtendedLayerGraphics {
 
     /**
      * It searches for a vertex in the layer within the distance. It returns the first found vertex.
-     * @param fromPosition Position from where to search for. Normally is the mouse position in the map
+     *
+     * @param fromPosition Position from where to search for. Normally is the mouse position in the
+     * map
      * @param distance The distance to search around the position
-     * @return 
+     * @return
      */
     public VertexInformation getFirstVertexWithinDistance(
             DirectPosition2D fromPosition, double distance) {
@@ -185,9 +204,10 @@ public class ExtendedLayerEditor extends ExtendedLayerGraphics {
 
     /**
      * It changes the position of a vertex.
+     *
      * @param vertexInformation Vertex to change
      * @param newPosition The new position of the vertex.
-     * @return 
+     * @return
      */
     public SimpleFeature changeVertex(
             VertexInformation vertexInformation, DirectPosition2D newPosition) {

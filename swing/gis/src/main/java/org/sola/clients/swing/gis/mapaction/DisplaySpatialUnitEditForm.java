@@ -23,47 +23,51 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package org.sola.clients.swing.gis.to;
+package org.sola.clients.swing.gis.mapaction;
 
-import java.util.List;
-import org.sola.webservices.transferobjects.cadastre.CadastreObjectTargetTO;
-import org.sola.webservices.transferobjects.cadastre.SpatialUnitChangeTO;
-import org.sola.webservices.transferobjects.cadastre.SurveyPointTO;
-import org.sola.webservices.transferobjects.transaction.TransactionSourceTO;
+import org.geotools.swing.extended.Map;
+import org.geotools.swing.mapaction.extended.ExtendedAction;
+import org.sola.clients.swing.gis.layer.SpatialUnitEditLayer;
+import org.sola.clients.swing.gis.ui.control.SpatialUnitEditForm;
+import org.sola.common.messaging.GisMessage;
+import org.sola.common.messaging.MessageUtility;
 
 /**
- * It extends the TO which is generated from the web service with the set method which disappears
- * during the auto generation from the representation of the TO object in the server. This method is
- * needed in order to use the generic mapper to translate from data bean to TO and viceversa.
- *
- * @author Elton Manoku
+ * Map Action that displays the SpatialUnitEditForm allowing the user to edit the label for the
+ * spatial unit feature.
  */
-public class TransactionCadastreChangeExtraTO
-        extends org.sola.webservices.transferobjects.transaction.TransactionCadastreChangeTO {
+public class DisplaySpatialUnitEditForm extends ExtendedAction {
 
-    public void setCadastreObjectList(List<CadastreObjectExtraTO> newCadastreObjectList) {
-        for (CadastreObjectExtraTO coExtraTO : newCadastreObjectList) {
-            this.cadastreObjectList.add(coExtraTO);
+    /**
+     * Name of this MapAction - spatial-unit-edit-show
+     */
+    public final static String MAPACTION_NAME = "spatial-unit-edit-show";
+    private SpatialUnitEditLayer layer;
+    private SpatialUnitEditForm displayFrom;
+
+    /**
+     * Constructor for the map action.
+     *
+     * @param mapObj The map object to associate the tool with
+     * @param layer The SpatialUnitEditLayer to associate the tool with.
+     */
+    public DisplaySpatialUnitEditForm(Map mapObj, SpatialUnitEditLayer layer) {
+        super(mapObj, MAPACTION_NAME, MessageUtility.getLocalizedMessage(
+                GisMessage.SPATIAL_UNIT_TOOLTIP_EDIT_FORM).getMessage(),
+                "resources/table-pencil.png");
+        this.layer = layer;
+    }
+
+    /**
+     * Displays the SpatialUnitEditForm to the user. If the form is hidden or not visible, it will
+     * appear on top of the other forms.
+     */
+    @Override
+    public void onClick() {
+        if (displayFrom == null) {
+            displayFrom = new SpatialUnitEditForm(layer.getSpatialUnitChangeListBean(),
+                    null, false);
         }
-    }
-
-    public void setTransactionSourceList(List<TransactionSourceTO> transactionSourceList) {
-        this.transactionSourceList = transactionSourceList;
-    }
-
-    public void setSurveyPointList(List<SurveyPointTO> surveyPointList) {
-        this.surveyPointList = surveyPointList;
-    }
-
-    public void setCadastreObjectTargetList(List<CadastreObjectTargetTO> cadastreObjectTargetList) {
-        this.cadastreObjectTargetList = cadastreObjectTargetList;
-    }
-
-    public void setSpatialUnitChangeList(List<SpatialUnitChangeTO> spatialUnitChangeList) {
-        this.spatialUnitChangeList = spatialUnitChangeList;
+        displayFrom.setVisible(true);
     }
 }

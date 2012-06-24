@@ -23,47 +23,37 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package org.sola.clients.swing.gis.to;
+package org.sola.clients.swing.gis.beans;
 
-import java.util.List;
-import org.sola.webservices.transferobjects.cadastre.CadastreObjectTargetTO;
-import org.sola.webservices.transferobjects.cadastre.SpatialUnitChangeTO;
-import org.sola.webservices.transferobjects.cadastre.SurveyPointTO;
-import org.sola.webservices.transferobjects.transaction.TransactionSourceTO;
+import org.sola.clients.beans.AbstractBindingBean;
+import org.sola.clients.beans.controls.SolaObservableList;
 
 /**
- * It extends the TO which is generated from the web service with the set method which disappears
- * during the auto generation from the representation of the TO object in the server. This method is
- * needed in order to use the generic mapper to translate from data bean to TO and viceversa.
- *
- * @author Elton Manoku
+ * Manages a list of {@linkplain SpatialUnitChangeBean} to simplify binding the list of beans to a
+ * form. 
  */
-public class TransactionCadastreChangeExtraTO
-        extends org.sola.webservices.transferobjects.transaction.TransactionCadastreChangeTO {
+public class SpatialUnitChangeListBean extends AbstractBindingBean {
 
-    public void setCadastreObjectList(List<CadastreObjectExtraTO> newCadastreObjectList) {
-        for (CadastreObjectExtraTO coExtraTO : newCadastreObjectList) {
-            this.cadastreObjectList.add(coExtraTO);
-        }
+    public static final String SELECTED_SPATIAL_UNIT_CHANGE_PROPERTY = "selectedSpatialUnitChange";
+    private SolaObservableList<SpatialUnitChangeBean> spatialUnitChanges;
+    private SpatialUnitChangeBean selectedSpatialUnitChange;
+
+    public SpatialUnitChangeListBean() {
+        super();
+        spatialUnitChanges = new SolaObservableList<SpatialUnitChangeBean>();
     }
 
-    public void setTransactionSourceList(List<TransactionSourceTO> transactionSourceList) {
-        this.transactionSourceList = transactionSourceList;
+    public SolaObservableList<SpatialUnitChangeBean> getSpatialUnitChanges() {
+        return spatialUnitChanges;
     }
 
-    public void setSurveyPointList(List<SurveyPointTO> surveyPointList) {
-        this.surveyPointList = surveyPointList;
+    public SpatialUnitChangeBean getSelectedSpatialUnitChange() {
+        return selectedSpatialUnitChange;
     }
 
-    public void setCadastreObjectTargetList(List<CadastreObjectTargetTO> cadastreObjectTargetList) {
-        this.cadastreObjectTargetList = cadastreObjectTargetList;
-    }
-
-    public void setSpatialUnitChangeList(List<SpatialUnitChangeTO> spatialUnitChangeList) {
-        this.spatialUnitChangeList = spatialUnitChangeList;
+    public void setSelectedSpatialUnitChange(SpatialUnitChangeBean newValue) {
+        SpatialUnitChangeBean oldValue = this.selectedSpatialUnitChange;
+        this.selectedSpatialUnitChange = newValue;
+        propertySupport.firePropertyChange(SELECTED_SPATIAL_UNIT_CHANGE_PROPERTY, oldValue, newValue);
     }
 }

@@ -29,20 +29,21 @@
  */
 package org.sola.clients.swing.gis.ui.controlsbundle;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.extended.layer.ExtendedFeatureLayer;
 import org.geotools.swing.extended.exception.InitializeLayerException;
 import org.sola.clients.swing.gis.beans.TransactionCadastreChangeBean;
 import org.sola.clients.swing.gis.data.PojoDataAccess;
 import org.sola.clients.swing.gis.layer.CadastreChangeNewCadastreObjectLayer;
 import org.sola.clients.swing.gis.layer.CadastreChangeNewSurveyPointLayer;
 import org.sola.clients.swing.gis.layer.CadastreChangeTargetCadastreObjectLayer;
+import org.sola.clients.swing.gis.layer.SpatialUnitEditLayer;
 import org.sola.clients.swing.gis.mapaction.CadastreChangeNewCadastreObjectListFormShow;
 import org.sola.clients.swing.gis.mapaction.CadastreChangePointSurveyListFormShow;
-import org.sola.clients.swing.gis.tool.CadastreBoundarySelectTool;
-import org.sola.clients.swing.gis.tool.CadastreChangeNewParcelTool;
-import org.sola.clients.swing.gis.tool.CadastreChangeNodeTool;
-import org.sola.clients.swing.gis.tool.CadastreChangeSelectParcelTool;
+import org.sola.clients.swing.gis.mapaction.CadastreRedefinitionReset;
+import org.sola.clients.swing.gis.tool.*;
 import org.sola.webservices.transferobjects.cadastre.CadastreObjectTO;
 
 /**
@@ -100,7 +101,8 @@ public final class ControlsBundleForCadastreChange extends ControlsBundleForTran
      */
     protected boolean transactionIsStarted() {
         return (this.newPointsLayer.getFeatureCollection().size() > 0
-                || this.targetParcelsLayer.getFeatureCollection().size() > 0);
+                || this.targetParcelsLayer.getFeatureCollection().size() > 0
+                || this.spatialUnitEditLayer.getFeatureCollection().size() > 0);
     }
 
     /**
@@ -117,6 +119,8 @@ public final class ControlsBundleForCadastreChange extends ControlsBundleForTran
             boundsToZoom = this.newPointsLayer.getFeatureCollection().getBounds();
         } else if (this.targetParcelsLayer.getFeatureCollection().size() > 0) {
             boundsToZoom = this.targetParcelsLayer.getFeatureCollection().getBounds();
+        } else if (this.spatialUnitEditLayer.getFeatureCollection().size() > 0) {
+            boundsToZoom = this.spatialUnitEditLayer.getFeatureCollection().getBounds();
         }
         super.zoomToInterestingArea(boundsToZoom, applicationLocation);
     }
@@ -128,6 +132,7 @@ public final class ControlsBundleForCadastreChange extends ControlsBundleForTran
         transactionBean.setSurveyPointList(this.newPointsLayer.getSurveyPointList());
         transactionBean.setCadastreObjectTargetList(
                 this.targetParcelsLayer.getCadastreObjectTargetList());
+        transactionBean.setSpatialUnitChangeList(this.spatialUnitEditLayer.getSpatialUnitChangeList());
         return transactionBean;
     }
 
@@ -136,6 +141,9 @@ public final class ControlsBundleForCadastreChange extends ControlsBundleForTran
         super.addLayers();
         this.targetParcelsLayer = new CadastreChangeTargetCadastreObjectLayer();
         this.getMap().addLayer(targetParcelsLayer);
+
+        this.spatialUnitEditLayer = new SpatialUnitEditLayer();
+        this.getMap().addLayer(spatialUnitEditLayer);
 
         this.newCadastreObjectLayer = new CadastreChangeNewCadastreObjectLayer(
                 this.applicationNumber);
@@ -147,10 +155,14 @@ public final class ControlsBundleForCadastreChange extends ControlsBundleForTran
         this.targetParcelsLayer.setCadastreObjectTargetList(
                 transactionBean.getCadastreObjectTargetList());
 
+        this.spatialUnitEditLayer.setSpatialUnitChangeList(this.transactionBean.getSpatialUnitChangeList());
+
         this.newPointsLayer.setSurveyPointList(this.transactionBean.getSurveyPointList());
 
         this.newCadastreObjectLayer.setCadastreObjectList(
                 this.transactionBean.getCadastreObjectList());
+        
+        this.getMap().moveSelectionLayer();
     }
 
     @Override
@@ -185,10 +197,13 @@ public final class ControlsBundleForCadastreChange extends ControlsBundleForTran
                 this.newCadastreObjectLayer,
                 this.newCadastreObjectLayer.getVerticesLayer());
         this.getMap().addTool(cadastreBoundarySelectTool, this.getToolbar(), true);
+
         super.addToolsAndCommands();
         this.cadastreBoundaryEditTool.setTargetLayer(this.newCadastreObjectLayer);
         this.cadastreBoundaryEditTool.getTargetSnappingLayers().add(this.targetParcelsLayer);
-
+        // Allow the edit tool to snap to new points and new cadastre objects
+        this.editSpatialUnitTool.getTargetSnappingLayers().add(1, newPointsLayer);
+        this.editSpatialUnitTool.getTargetSnappingLayers().add(2, newCadastreObjectLayer);
     }
 
     /**

@@ -1,28 +1,26 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO).
- * All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
+ * reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
- *    1. Redistributions of source code must retain the above copyright notice,this list
- *       of conditions and the following disclaimer.
- *    2. Redistributions in binary form must reproduce the above copyright notice,this list
- *       of conditions and the following disclaimer in the documentation and/or other
- *       materials provided with the distribution.
- *    3. Neither the name of FAO nor the names of its contributors may be used to endorse or
- *       promote products derived from this software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
+ * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
+ * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 /*
@@ -56,7 +54,7 @@ import org.geotools.map.extended.layer.ExtendedFeatureLayer;
 
 /**
  * It extends the drawing tool to support also snapping to features in given target layers.
- * 
+ *
  * @author Elton Manoku
  */
 public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
@@ -80,7 +78,8 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
 
     /**
      * Gets features layers to be target for snapping
-     * @return 
+     *
+     * @return
      */
     public List<ExtendedFeatureLayer> getTargetSnappingLayers() {
         return targetSnappingLayers;
@@ -88,7 +87,8 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
 
     /**
      * Gets snap distance in pixels
-     * @return 
+     *
+     * @return
      */
     public int getSnapDistanceInPixels() {
         return snapDistanceInPixels;
@@ -96,7 +96,8 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
 
     /**
      * Sets snap distance in pixels
-     * @param snapDistanceInPixels 
+     *
+     * @param snapDistanceInPixels
      */
     public void setSnapDistanceInPixels(int snapDistanceInPixels) {
         this.snapDistanceInPixels = snapDistanceInPixels;
@@ -104,7 +105,8 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
 
     /**
      * Gets snapped target type
-     * @return 
+     *
+     * @return
      */
     public SNAPPED_TARGET_TYPE getSnappedTarget() {
         return snappedTarget;
@@ -112,7 +114,8 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
 
     /**
      * Gets snapping point
-     * @return 
+     *
+     * @return
      */
     public Point getSnappingPoint() {
         return snappingPoint;
@@ -120,8 +123,8 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
 
     /**
      * Sets the color used to draw the snapping point.
-     * 
-     * @param stylePointColorNoTargetFound 
+     *
+     * @param stylePointColorNoTargetFound
      */
     public void setStylePointColorNoTargetFound(Color stylePointColorNoTargetFound) {
         this.stylePointColorNoTargetFound = stylePointColorNoTargetFound;
@@ -129,16 +132,18 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
 
     /**
      * This parameter is not yet used.
-     * @param stylePointColorTargetFound 
+     *
+     * @param stylePointColorTargetFound
      */
     public void setStylePointColorTargetFound(Color stylePointColorTargetFound) {
         this.stylePointColorTargetFound = stylePointColorTargetFound;
     }
 
     /**
-     * It extends the functionality of the super type {@see ExtendedDrawTool}. <br/>
-     * Extra functionality:
-     * It calculates the snapping distance in meters and also redraws the snapping point.
+     * It extends the functionality of the super type {
+     *
+     * @see ExtendedDrawTool}. <br/> Extra functionality: It calculates the snapping distance in
+     * meters and also redraws the snapping point.
      */
     @Override
     protected void afterRendering() {
@@ -155,18 +160,19 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
     }
 
     /**
-     * It extends the functionality of the super type {@see ExtendedDrawTool}. <br/>
-     * Extra functionality:
-     * If a snapping target is found in range, it draws the snapping point to the target
-     * and also keeps a reference to the snapping point. <br/>
-     * If not it resets the snapping point to null.
-     * @param e 
+     * It extends the functionality of the super type {
+     *
+     * @see ExtendedDrawTool}. <br/> Extra functionality: If a snapping target is found in range, it
+     * draws the snapping point to the target and also keeps a reference to the snapping point.
+     * <br/> If not it resets the snapping point to null.
+     * @param e
      */
     @Override
     public void onMouseMoved(MapMouseEvent e) {
         super.onMouseMoved(e);
-        com.vividsolutions.jts.geom.Point newSnappingPoint =
+        com.vividsolutions.jts.geom.Point newSnappingPoint = 
                 this.getSnappingPoint(JTS.toGeometry(e.getMapPosition()));
+        
         if (newSnappingPoint == null) {
             if (this.snappingPoint != null) {
                 Graphics2D g2D = this.getGraphicsToDrawSnappingPoint();
@@ -187,11 +193,12 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
     }
 
     /**
-     * It extends the functionality of the super type {@see SolaTool}. <br/>
-     * Extra functionality:
-     * It removes the snapping point from the display when the tool is disactivated.
-     * 
-     * @param selected 
+     * It extends the functionality of the super type {
+     *
+     * @see SolaTool}. <br/> Extra functionality: It removes the snapping point from the display
+     * when the tool is disactivated.
+     *
+     * @param selected
      */
     @Override
     public void onSelectionChanged(boolean selected) {
@@ -204,13 +211,13 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
     }
 
     /**
-     * It extends the functionality of the super type {@see ExtendedDrawTool}. <br/>
-     * Extra functionality:
-     * If there is a snappedTarget then the snappingPoint is used to get the clicked point
-     * instead of the point clicked.
-     * 
+     * It extends the functionality of the super type {
+     *
+     * @see ExtendedDrawTool}. <br/> Extra functionality: If there is a snappedTarget then the
+     * snappingPoint is used to get the clicked point instead of the point clicked.
+     *
      * @param ev
-     * @return 
+     * @return
      */
     @Override
     protected DirectPosition2D getOnClickPoint(MapMouseEvent ev) {
@@ -224,11 +231,11 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
     }
 
     /**
-     * It searches for points within the range of the mouse to snap to. 
-     * Priority is given to vertexes and then lines.
-     * 
+     * It searches for points within the range of the mouse to snap to. Priority is given to
+     * vertexes and then lines.
+     *
      * @param mousePosition
-     * @return 
+     * @return
      */
     private Point getSnappingPoint(Point mousePosition) {
 
@@ -290,9 +297,9 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
 
     /**
      * Gives a list of lines composing a geometry
-     * 
+     *
      * @param geom
-     * @return 
+     * @return
      */
     private List<LineString> getLines(Geometry geom) {
         List<LineString> result = new ArrayList<LineString>();
@@ -314,7 +321,8 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
 
     /**
      * Gets graphic component with style to draw the snapping point
-     * @return 
+     *
+     * @return
      */
     private Graphics2D getGraphicsToDrawSnappingPoint() {
         Graphics2D g2D = (Graphics2D) this.getMapControl().getGraphics();
@@ -326,19 +334,19 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
 
     /**
      * It draws the snapping point
-     * 
+     *
      * @param graphics2D
-     * @param vertex 
+     * @param vertex
      */
     protected void drawSnappingPoint(
             Graphics2D graphics2D, com.vividsolutions.jts.geom.Point vertex) {
         Point2D pointShape =
                 this.getMapControl().getPointInScreen(
                 new Point2D.Double(vertex.getX(), vertex.getY()));
-        int rectWidth = 12;        
-        graphics2D.drawLine( (int)pointShape.getX(), (int) pointShape.getY() - rectWidth/2, 
-                (int) pointShape.getX(), (int) pointShape.getY() + rectWidth/2);
-        graphics2D.drawLine( (int)pointShape.getX() - rectWidth/2, (int) pointShape.getY(), 
-                (int) pointShape.getX()  + rectWidth/2, (int) pointShape.getY());
+        int rectWidth = 12;
+        graphics2D.drawLine((int) pointShape.getX(), (int) pointShape.getY() - rectWidth / 2,
+                (int) pointShape.getX(), (int) pointShape.getY() + rectWidth / 2);
+        graphics2D.drawLine((int) pointShape.getX() - rectWidth / 2, (int) pointShape.getY(),
+                (int) pointShape.getX() + rectWidth / 2, (int) pointShape.getY());
     }
 }
