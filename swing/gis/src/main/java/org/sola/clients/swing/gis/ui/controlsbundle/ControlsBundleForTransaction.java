@@ -31,8 +31,11 @@ package org.sola.clients.swing.gis.ui.controlsbundle;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.extended.layer.ExtendedFeatureLayer;
 import org.geotools.map.extended.layer.ExtendedImageLayer;
 import org.geotools.map.extended.layer.ExtendedLayer;
 import org.geotools.swing.extended.exception.InitializeLayerException;
@@ -44,8 +47,9 @@ import org.sola.clients.swing.gis.data.PojoDataAccess;
 import org.sola.clients.swing.gis.data.PojoFeatureSource;
 import org.sola.clients.swing.gis.layer.CadastreBoundaryPointLayer;
 import org.sola.clients.swing.gis.layer.PojoLayer;
-import org.sola.clients.swing.gis.tool.CadastreBoundaryEditTool;
-import org.sola.clients.swing.gis.tool.CadastreBoundarySelectTool;
+import org.sola.clients.swing.gis.layer.SpatialUnitEditLayer;
+import org.sola.clients.swing.gis.mapaction.DisplaySpatialUnitEditForm;
+import org.sola.clients.swing.gis.tool.*;
 import org.sola.common.messaging.GisMessage;
 
 /**
@@ -63,6 +67,8 @@ public abstract class ControlsBundleForTransaction extends ControlsBundleForWork
     private static final String IMAGE_LAYER_TITLE = "Image";
     protected CadastreBoundaryPointLayer cadastreBoundaryPointLayer = null;
     protected CadastreBoundaryEditTool cadastreBoundaryEditTool;
+    protected SpatialUnitEditLayer spatialUnitEditLayer = null;
+    protected EditSpatialUnitTool editSpatialUnitTool;
 
     /**
      * It sets up the bundle. It calls the adding layer method and adding tools method. It also
@@ -152,6 +158,38 @@ public abstract class ControlsBundleForTransaction extends ControlsBundleForWork
         this.getMap().addTool(this.cadastreBoundaryEditTool, this.getToolbar(), false);
         this.getMap().addTool(new AddDirectImageTool(this.imageLayer), this.getToolbar(), true);
         this.getMap().addMapAction(new RemoveDirectImage(this.getMap()), this.getToolbar(), true);
+
+        //Spatial Unit Edit Tools
+        ExtendedFeatureLayer hydroLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("hydro");
+        ExtendedFeatureLayer parcelsLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("parcels");
+        ExtendedFeatureLayer roadLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("road_cl");
+        List<ExtendedFeatureLayer> selectionLayers = new ArrayList<ExtendedFeatureLayer>();
+        selectionLayers.add(hydroLayer);
+        selectionLayers.add(roadLayer);
+        this.getMap().addTool(new SelectSpatialUnitTool(selectionLayers, this.spatialUnitEditLayer),
+                this.getToolbar(), true);
+
+        editSpatialUnitTool = new EditSpatialUnitTool(this.spatialUnitEditLayer);
+        editSpatialUnitTool.getTargetSnappingLayers().add(parcelsLayer);
+        editSpatialUnitTool.getTargetSnappingLayers().add(hydroLayer);
+        editSpatialUnitTool.getTargetSnappingLayers().add(roadLayer);
+        this.getMap().addTool(editSpatialUnitTool, this.getToolbar(), true);
+
+        this.getMap().addMapAction(new DisplaySpatialUnitEditForm(
+                this.getMap(), this.spatialUnitEditLayer),
+                this.getToolbar(),
+                true);
+
+        NewSpatialUnitHydroTool addHydroTool = new NewSpatialUnitHydroTool(this.spatialUnitEditLayer,
+                this.spatialUnitEditLayer.mapLayerToLevel(hydroLayer.getLayerName()));
+        addHydroTool.getTargetSnappingLayers().add(parcelsLayer);
+        addHydroTool.getTargetSnappingLayers().add(hydroLayer);
+        this.getMap().addTool(addHydroTool, this.getToolbar(), true);
+
+        NewSpatialUnitRoadTool addRoadTool = new NewSpatialUnitRoadTool(this.spatialUnitEditLayer,
+                this.spatialUnitEditLayer.mapLayerToLevel(roadLayer.getLayerName()));
+        addRoadTool.getTargetSnappingLayers().add(roadLayer);
+        this.getMap().addTool(addRoadTool, this.getToolbar(), true);
     }
 
     @Override
@@ -168,5 +206,7 @@ public abstract class ControlsBundleForTransaction extends ControlsBundleForWork
      */
     public void setReadOnly(boolean readOnly) {
         this.getMap().getMapActionByName(CadastreBoundarySelectTool.NAME).setEnabled(!readOnly);
+        this.getMap().getMapActionByName(EditSpatialUnitTool.NAME).setEnabled(!readOnly);
+        this.getMap().getMapActionByName(SelectSpatialUnitTool.NAME).setEnabled(!readOnly);
     }
 }

@@ -35,9 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.clients.beans.validation.ValidationResultBean;
-import org.sola.common.MappingManager;
 import org.sola.clients.swing.gis.data.PojoDataAccess;
 import org.sola.clients.swing.gis.to.TransactionCadastreChangeExtraTO;
+import org.sola.common.MappingManager;
 import org.sola.webservices.transferobjects.transaction.TransactionCadastreChangeTO;
 
 /**
@@ -51,6 +51,7 @@ public class TransactionCadastreChangeBean extends TransactionBean{
     private List<CadastreObjectTargetBean> cadastreObjectTargetList = 
             new ArrayList<CadastreObjectTargetBean>();
     private List<SurveyPointBean> surveyPointList = new ArrayList<SurveyPointBean>();
+    private List<SpatialUnitChangeBean> spatialUnitChangeList = new ArrayList<SpatialUnitChangeBean>();
 
     /**
      * Gets list of new cadastre objects
@@ -92,6 +93,14 @@ public class TransactionCadastreChangeBean extends TransactionBean{
      */
     public void setSurveyPointList(List<SurveyPointBean> surveyPointList) {
         this.surveyPointList = surveyPointList;
+    }
+
+    public List<SpatialUnitChangeBean> getSpatialUnitChangeList() {
+        return spatialUnitChangeList;
+    }
+
+    public void setSpatialUnitChangeList(List<SpatialUnitChangeBean> spatialUnitChangeList) {
+        this.spatialUnitChangeList = spatialUnitChangeList;
     }
      
     @Override

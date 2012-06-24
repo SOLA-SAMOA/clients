@@ -796,6 +796,20 @@ public class Map extends JMapPane {
     }
 
     /**
+     * Moves the selection layer to the top of the list of layers so that selected objects are
+     * always displayed on top of other layers.
+     */
+    public void moveSelectionLayer() {
+        ExtendedLayerGraphics selectionLayer =
+                (ExtendedLayerGraphics) getSolaLayers().get(SELECTION_LAYER_NAME);
+        if (selectionLayer != null) {
+            Layer mapLayer = selectionLayer.getMapLayers().get(0);
+            int currentPos = this.getMapContent().layers().indexOf(mapLayer);
+            this.getMapContent().moveLayer(currentPos, this.getMapContent().layers().size() - 1);
+        }
+    }
+
+    /**
      * Adds the specified feature to the selection layer.
      *
      * @param id The identifier for the feature
