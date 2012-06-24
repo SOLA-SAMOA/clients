@@ -39,7 +39,6 @@ import javax.swing.JTextField;
 import net.sf.jasperreports.engine.JasperPrint;
 import org.jdesktop.observablecollections.ObservableList;
 import org.jdesktop.observablecollections.ObservableListListener;
-import org.sola.clients.beans.address.AddressBean;
 import org.sola.clients.beans.administrative.BaUnitBean;
 import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.beans.application.ApplicationDocumentsHelperBean;
@@ -49,7 +48,6 @@ import org.sola.clients.beans.cache.CacheManager;
 import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.clients.beans.digitalarchive.DocumentBean;
 import org.sola.clients.beans.party.PartyBean;
-import org.sola.clients.beans.party.PartyRoleBean;
 import org.sola.clients.beans.party.PartySummaryListBean;
 import org.sola.clients.beans.referencedata.*;
 import org.sola.clients.beans.security.SecurityBean;
@@ -57,7 +55,6 @@ import org.sola.clients.beans.source.SourceBean;
 import org.sola.clients.beans.validation.ValidationResultBean;
 import org.sola.clients.reports.ReportManager;
 import org.sola.clients.swing.common.LafManager;
-import org.sola.clients.swing.common.converters.DateConverter;
 import org.sola.clients.swing.common.tasks.SolaTask;
 import org.sola.clients.swing.common.tasks.TaskManager;
 import org.sola.clients.swing.desktop.MainForm;
@@ -73,6 +70,7 @@ import org.sola.clients.swing.ui.ContentPanel;
 import org.sola.clients.swing.ui.MainContentPanel;
 import org.sola.clients.swing.ui.renderers.*;
 import org.sola.clients.swing.ui.source.DocumentPanel;
+import org.sola.clients.swing.ui.source.FileBrowserForm;
 import org.sola.clients.swing.ui.validation.ValidationResultForm;
 import org.sola.common.RolesConstants;
 import org.sola.common.messaging.ClientMessage;
@@ -271,7 +269,7 @@ public class ApplicationPanel extends ContentPanel {
         menuArchive.setEnabled(appBean.canArchive()
                 && SecurityBean.isInRole(RolesConstants.APPLICATION_ARCHIVE));
         menuDispatch.setEnabled(appBean.canDespatch()
-                && SecurityBean.isInRole(RolesConstants.APPLICATION_DESPATCH));
+                && SecurityBean.isInRole(RolesConstants.APPLICATION_DISPATCH));
         menuRequisition.setEnabled(appBean.canRequisition()
                 && SecurityBean.isInRole(RolesConstants.APPLICATION_REQUISITE));
         menuResubmit.setEnabled(appBean.canResubmit()
@@ -3279,7 +3277,7 @@ public class ApplicationPanel extends ContentPanel {
                                 result = appBean.reject();
                             } else if (ApplicationActionTypeBean.ARCHIVE.equals(actionType)) {
                                 result = appBean.archive();
-                            } else if (ApplicationActionTypeBean.DESPATCH.equals(actionType)) {
+                            } else if (ApplicationActionTypeBean.DISPATCH.equals(actionType)) {
                                 result = appBean.despatch();
                             } else if (ApplicationActionTypeBean.LAPSE.equals(actionType)) {
                                 result = appBean.lapse();
@@ -3559,7 +3557,7 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     private void dispatchApplication() {
-        takeActionAgainstApplication(ApplicationActionTypeBean.DESPATCH);
+        takeActionAgainstApplication(ApplicationActionTypeBean.DISPATCH);
     }
 
     private void lapseApplication() {

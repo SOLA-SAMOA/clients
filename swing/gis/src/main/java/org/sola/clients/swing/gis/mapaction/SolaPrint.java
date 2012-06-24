@@ -29,20 +29,28 @@
  */
 package org.sola.clients.swing.gis.mapaction;
 
+import com.vividsolutions.jts.awt.PointShapeFactory.Point;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import org.geotools.swing.extended.Map;
+import org.geotools.swing.extended.exception.MapScaleException;
+import org.geotools.swing.extended.exception.PrintLayoutException;
 import org.geotools.swing.extended.util.MapImageGenerator;
+import org.geotools.swing.extended.util.Messaging;
 import org.geotools.swing.extended.util.ScalebarGenerator;
 import org.geotools.swing.mapaction.extended.Print;
 import org.geotools.swing.mapaction.extended.print.PrintLayout;
 import org.geotools.swing.mapaction.extended.print.TextLayout;
+import org.geotools.swing.mapaction.extended.ui.IPrintUi;
 import org.sola.clients.beans.application.ApplicationServiceBean;
 import org.sola.clients.beans.referencedata.RequestTypeBean;
 import org.sola.clients.beans.security.SecurityBean;
-
+import org.sola.clients.reports.ReportManager;
+import org.sola.clients.swing.common.tasks.SolaTask;
+import org.sola.clients.swing.common.tasks.TaskManager;
+import org.sola.clients.swing.gis.ui.control.SolaPrintViewerForm;
 /**
  * This map action extends the Print map action that handles the print of the map according to a
  * layout. The user name and date is added in the layout and also it logs against the application
@@ -54,8 +62,11 @@ public class SolaPrint extends Print {
 
     private final static String FIELD_USER = "{userName}";
     private final static String FIELD_DATE = "{date}";
+    private String mapImageLocation;
+    private String scalebarImageLocation;
+    private String layoutName;
     private String applicationId;
-
+    private IPrintUi printForm;
     public SolaPrint(Map map) {
         super(map);
     }
@@ -80,6 +91,9 @@ public class SolaPrint extends Print {
         super.onClick();
     }
 
+    
+    
+    
     /**
      * Additionally to the standard functionality of printing, it supplies the values of user and
      * date to the layout so it can print them as well. Also if the print succeeds it logs against
@@ -108,50 +122,5 @@ public class SolaPrint extends Print {
         serviceBean.saveInformationService();
 
         return printoutLocation;
-    }
-
-    /**
-     * This method is used to call an alternative print engine.
-     *
-     * @param layoutName A layout identifier. This can be used to distinguish between many layouts
-     * the user can choose from.
-     * @param scale This is the scale of the map for which the print will be done
-     */
-    protected void Print(String layoutName, Double scale) {
-        //This is the image width of the map. It is given in pixels or in points.
-        //Somehow you need to get it out of the jasper report.
-        Double mapImageWidth = 400.0;
-        //This is the image height of the map. It is given in pixels or in points.
-        //Somehow you need to get it out of the jasper report.
-        Double mapImageHeight = 400.0;
-        //This is the DPI. Normally the printer has a DPI, the monitor has a DPI. 
-        //Also Jasper engine should have a DPI.
-        int dpi = 96;
-        //Here you can change the image format for the map image
-        String imageFormat = "png";
-        
-        //This is the image width of the scalebar. It is given in pixels or in points.
-        //Somehow you need to get it out of the jasper report.
-        //The real width might change from the given size because the scalebar dynamicly looks
-        //for the best width. So it will be good in Jasper not to restrict the width/height of the
-        //scalebar.
-        Double scalebarImageWidth = 100.0;
-        try {
-            MapImageGenerator mapImageGenerator = new MapImageGenerator(this.getMapControl());
-            //This gives back the absolute location of the map image. This path you can use in the
-            //Jasper report.
-            String mapImageLocation = mapImageGenerator.getImageAsFileLocation(
-                    mapImageWidth, mapImageHeight, scale, dpi, imageFormat);
-
-            ScalebarGenerator scalebarGenerator = new ScalebarGenerator();
-            //This gives back the absolute location of the scalebar image. 
-            //This path you can use in the Jasper report.
-            String scalebarImageLocation = scalebarGenerator.getImageAsFileLocation(
-                    scale, scalebarImageWidth, dpi);
-            
-            //Here you need to go further with your code.
-            
-        } catch (IOException ex) {
-        }
     }
 }

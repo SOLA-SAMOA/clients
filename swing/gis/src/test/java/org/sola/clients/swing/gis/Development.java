@@ -59,7 +59,7 @@ public class Development {
     /**
      * Test the controls bundle for setting the location of an application
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testUIControlsBundleViewer() throws Exception {
         System.out.println("Test ControlsBundle for Viewer");
@@ -112,7 +112,7 @@ public class Development {
 
     private void displayControlsBundleForm(Component ctrl) {
         JDialog controlContainer = new JDialog();
-        controlContainer.setAlwaysOnTop(true);
+        //controlContainer.setAlwaysOnTop(true);
         controlContainer.setModal(true);
         ctrl.setPreferredSize(new Dimension(600, 600));
         controlContainer.getContentPane().add(ctrl);
@@ -123,7 +123,7 @@ public class Development {
     /**
      * Test the controls bundle for cadastre change
      */
-    @Ignore
+    //@Ignore
     @Test
     public void testUIControlsBundleForCadastreChange() throws Exception {
         System.out.println("Test ControlsBundle for cadastre change");

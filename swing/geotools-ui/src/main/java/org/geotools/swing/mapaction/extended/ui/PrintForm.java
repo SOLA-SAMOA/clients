@@ -92,13 +92,14 @@ public class PrintForm extends javax.swing.JDialog implements IPrintUi{
 
     @Override
     public void setPrintLayoutList(List<PrintLayout> printLayoutList) {
+       
         this.printLayoutList = printLayoutList;
         this.cmdLayout.removeAllItems();
         for (PrintLayout layout : this.printLayoutList) {
             this.cmdLayout.addItem(layout);
         }
     }
-
+   
     @Override
     public void setVisibility(boolean visible){
         this.setVisible(visible);
@@ -176,7 +177,7 @@ public class PrintForm extends javax.swing.JDialog implements IPrintUi{
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
+                .addContainerGap(35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
