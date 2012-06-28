@@ -3305,6 +3305,10 @@ public class ApplicationPanel extends ContentPanel {
                                         new String[]{appBean.getNr()}).getMessage();
                                 openValidationResultForm(result, true, message);
                             }
+                             if (ApplicationActionTypeBean.APPROVE.equals(actionType)){
+                            showReport(ReportManager.getSurveyApproval(appBean));
+			    
+                            }
                             saveAppState();
                         }
                     };

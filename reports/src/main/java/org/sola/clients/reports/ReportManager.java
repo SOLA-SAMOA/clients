@@ -36,9 +36,12 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import org.sola.clients.beans.AbstractIdBean;
 
 import org.sola.clients.beans.administrative.BaUnitBean;
 import org.sola.clients.beans.application.*;
+import org.sola.clients.beans.party.PartyBean;
+import org.sola.clients.beans.party.PartySummaryBean;
 import org.sola.clients.beans.system.BrReportBean;
 import org.sola.clients.beans.security.SecurityBean;
 import org.sola.clients.beans.system.BrListBean;
@@ -303,6 +306,29 @@ public class ReportManager {
                     ReportManager.class.getResourceAsStream(
                     "/reports/maps/" + layoutName + "SolaPrintReport.jasper"), inputParameters, jds);
             return jasperPrint;
+        } catch (JRException ex) {
+            MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
+                    new Object[]{ex.getLocalizedMessage()});
+            return null;
+        }
+    }
+    //this is to generate the Survey Approval Report
+    //
+     public static JasperPrint getSurveyApproval(ApplicationBean appBean) {
+        HashMap inputParameters = new HashMap();
+        inputParameters.put("REPORT_LOCALE", Locale.getDefault());
+        inputParameters.put("today", new Date());
+        inputParameters.put("USER_NAME", SecurityBean.getCurrentUser().getFullUserName());
+        ApplicationBean[] beans = new ApplicationBean[1];
+        beans[0] = appBean;
+        JRDataSource jds = new JRBeanArrayDataSource(beans);
+         inputParameters.put("IMAGE_SCRITTA_GREEN", ReportManager.class.getResourceAsStream("/images/sola/govSamoa.gif"));
+         inputParameters.put("WHICH_CALLER", "N");
+        try {
+            return JasperFillManager.fillReport(
+                    ReportManager.class.getResourceAsStream("/reports/SurveyApproval.jasper"),
+                    inputParameters, jds);
+            
         } catch (JRException ex) {
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
                     new Object[]{ex.getLocalizedMessage()});
