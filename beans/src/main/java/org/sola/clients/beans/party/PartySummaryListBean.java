@@ -41,7 +41,7 @@ import org.sola.webservices.transferobjects.casemanagement.PartySummaryTO;
 public class PartySummaryListBean extends AbstractBindingBean {
 
     public static final String SELECTED_PARTYSUMMARY_PROPERTY = "selectedPartySummaryBean";
-    public static final String OTHER_AGENT_NAME = "Other";
+    public static final String OTHER_AGENT_NAME = ".*[Oo]ther.*";
     private SolaObservableList<PartySummaryBean> partySummaryListBean;
     private PartySummaryBean selectedPartySummary;
 
@@ -67,7 +67,7 @@ public class PartySummaryListBean extends AbstractBindingBean {
         // Make Other the first agent in the list
         PartySummaryBean otherAgent = null;
         for (PartySummaryBean party : partySummaryListBean) {
-            if (OTHER_AGENT_NAME.matches(party.getFullName())) {
+            if (party.getFullName().matches(OTHER_AGENT_NAME)) {
                 otherAgent = party;
                 break;
             }
