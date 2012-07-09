@@ -26,6 +26,7 @@
 package org.sola.clients.beans.application;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -467,8 +468,8 @@ public class ApplicationBean extends ApplicationSummaryBean {
      * @param requestTypeBean Request type (service) from available services list.
      */
     public void addService(RequestTypeBean requestTypeBean) {
-        
-       
+
+
         if (requestTypeBean != null && serviceList != null) {
             int order = 0;
 
@@ -484,11 +485,11 @@ public class ApplicationBean extends ApplicationSummaryBean {
 //                        return;
 //                    }
 //                }
-            
-             if (this.isFeePaid()) {
-              MessageUtility.displayMessage(ClientMessage.APPLICATION_WARNING_ADDEDSERVICE);
+
+            if (this.isFeePaid()) {
+                MessageUtility.displayMessage(ClientMessage.APPLICATION_WARNING_ADDEDSERVICE);
 //                        return;
-             }
+            }
             for (Iterator<ApplicationServiceBean> it = serviceList.iterator(); it.hasNext();) {
                 ApplicationServiceBean applicationServiceBean = it.next();
                 if (applicationServiceBean.getServiceOrder() > order) {
@@ -500,9 +501,9 @@ public class ApplicationBean extends ApplicationSummaryBean {
             newService.setApplicationId(this.getId());
             newService.setRequestTypeCode(requestTypeBean.getCode());
             newService.setServiceOrder(order + 1);
-            
-            
-            
+
+
+
             serviceList.add(newService);
         }
     }
@@ -592,7 +593,31 @@ public class ApplicationBean extends ApplicationSummaryBean {
      * @param value The value of parcel.
      */
     public void addProperty(String firstPart, String lastPart, BigDecimal area, BigDecimal value) {
+
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/sola/clients/swing/desktop/application/Bundle");
+
         if (propertyList != null) {
+            // property firstpart lastpart validation
+            if (firstPart.isEmpty() || firstPart == null || firstPart == "" || firstPart.trim().equals("")) {
+                MessageUtility.displayMessage(ClientMessage.CHECK_NOTNULL_FIRSTPART);
+                return;
+            }
+
+            if (lastPart.isEmpty() || lastPart == null || lastPart == "" || lastPart.trim().equals("")) {
+                MessageUtility.displayMessage(ClientMessage.CHECK_NOTNULL_LASTPART);
+                return;
+            }
+
+
+            if (firstPart.length() > 20) {
+                MessageUtility.displayMessage(ClientMessage.CHECK_FIELD_INVALID_LENGTH_PAR, new Object[]{bundle.getString("ApplicationPanel.labFirstPart.text")});
+                return;
+            }
+            if (lastPart.length() > 50) {
+                MessageUtility.displayMessage(ClientMessage.CHECK_FIELD_INVALID_LENGTH_PAR, new Object[]{bundle.getString("ApplicationPanel.labLastPart.text")});
+                return;
+            }
+
             ApplicationPropertyBean newProperty = new ApplicationPropertyBean();
             newProperty.setArea(area);
             newProperty.setNameFirstpart(firstPart);
@@ -670,6 +695,43 @@ public class ApplicationBean extends ApplicationSummaryBean {
         // Validation updates the Application, so need to reload to get the
         // lastest rowversion, etc. 
         this.reload();
+
+
+        ObservableList<ValidationResultBean> validationSorted1List = ObservableCollections.observableList(new ArrayList<ValidationResultBean>());
+        ObservableList<ValidationResultBean> validationSorted2List = ObservableCollections.observableList(new ArrayList<ValidationResultBean>());
+        ObservableList<ValidationResultBean> validationSorted3List = ObservableCollections.observableList(new ArrayList<ValidationResultBean>());
+        ObservableList<ValidationResultBean> validationSorted4List = ObservableCollections.observableList(new ArrayList<ValidationResultBean>());
+        ObservableList<ValidationResultBean> validationSortedList = ObservableCollections.observableList(new ArrayList<ValidationResultBean>());
+
+
+        for (ValidationResultBean resultBean : validationResults) {
+            if ((resultBean.getSeverity().contains("medium"))) {
+                validationSorted1List.add(0, resultBean);
+            } else {
+                validationSorted1List.add(resultBean);
+            }
+        }
+        validationSorted2List = validationSorted1List;
+
+        for (ValidationResultBean resultBean : validationSorted2List) {
+            if ((resultBean.getSeverity().contains("warning"))) {
+                validationSorted3List.add(0, resultBean);
+            } else {
+                validationSorted3List.add(resultBean);
+            }
+        }
+
+        validationSorted4List = validationSorted3List;
+
+        for (ValidationResultBean resultBean : validationSorted4List) {
+            if (resultBean.isSuccessful()) {
+                validationSortedList.add(resultBean);
+            } else {
+                validationSortedList.add(0, resultBean);
+            }
+        }
+        validationResults = validationSortedList;
+
         return validationResults;
     }
 
