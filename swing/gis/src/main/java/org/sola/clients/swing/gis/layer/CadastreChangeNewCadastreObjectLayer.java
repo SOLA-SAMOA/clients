@@ -74,7 +74,8 @@ public class CadastreChangeNewCadastreObjectLayer extends ExtendedLayerEditor{
     private List<CadastreObjectBean> cadastreObjectList = new ArrayList<CadastreObjectBean>();
     private Integer firstPartGenerator = 1;
     private Integer fidGenerator = 1;
-    private static final String LAST_PART_FORMAT = "SP %s";
+    //private static final String LAST_PART_FORMAT = "SP %s";
+    private static final String LAST_PART_FORMAT = "%s";
     private String lastPart = "";
     private DefaultTableModel tableModel = null;
     private Component hostForm = null;

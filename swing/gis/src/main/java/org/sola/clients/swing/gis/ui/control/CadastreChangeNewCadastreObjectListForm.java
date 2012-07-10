@@ -114,7 +114,7 @@ public class CadastreChangeNewCadastreObjectListForm extends javax.swing.JDialog
 
             },
             new String [] {
-                "Nr", "First part", "Last part", "Official Area (m2)"
+                "Nr", "Lot Number", "Plan Number", "Official Area (m2)"
             }
         ) {
             Class[] types = new Class [] {
@@ -135,7 +135,10 @@ public class CadastreChangeNewCadastreObjectListForm extends javax.swing.JDialog
         jScrollPane1.setViewportView(table);
         table.getColumnModel().getColumn(0).setResizable(false);
         table.getColumnModel().getColumn(0).setPreferredWidth(2);
-        table.getColumnModel().getColumn(3).setResizable(false);
+        table.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("CadastreChangeNewCadastreObjectListForm.table.columnModel.title0")); // NOI18N
+        table.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("CadastreChangeNewCadastreObjectListForm.table.columnModel.title1")); // NOI18N
+        table.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("CadastreChangeNewCadastreObjectListForm.table.columnModel.title2")); // NOI18N
+        table.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("CadastreChangeNewCadastreObjectListForm.table.columnModel.title3")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
