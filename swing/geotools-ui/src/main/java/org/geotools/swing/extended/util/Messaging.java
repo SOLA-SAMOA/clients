@@ -55,7 +55,8 @@ public class Messaging {
         REMOVE_ALL_FEATURES_ERROR,
         LAYER_NOT_ADDED_ERROR,
         WMSLAYER_NOT_INITIALIZED_ERROR,
-        WMSLAYER_LAYER_NOT_FOUND_ERROR,
+        WMSLAYER_LAYER_RENDER_ERROR,
+        WMSLAYER_VERSION_MISSING_ERROR,
         UTILITIES_SLD_DOESNOT_EXIST_ERROR,
         UTILITIES_SLD_LOADING_ERROR,
         UTILITIES_COORDSYS_COULDNOT_BE_CREATED_ERROR,
@@ -82,7 +83,9 @@ public class Messaging {
         ADD_DIRECT_IMAGE_DEFINE_ORIENTATION_POINT_1_IN_IMAGE,
         ADD_DIRECT_IMAGE_DEFINE_ORIENTATION_POINT_2_IN_IMAGE,
         ADD_DIRECT_IMAGE_LOAD_IMAGE,
-        MAP_SCALE_ERROR
+        MAP_SCALE_ERROR,
+        MIN_DISPLAY_SCALE,
+        SCALE_LABEL
     };
     private static Messaging messaging = new Messaging();
 
@@ -140,8 +143,10 @@ public class Messaging {
             msgBody = "Layer could not be added.";
         } else if (messageId.equals(Messaging.Ids.WMSLAYER_NOT_INITIALIZED_ERROR.toString())) {
             msgBody = "WMS Layer is not initialized.";
-        } else if (messageId.equals(Messaging.Ids.WMSLAYER_LAYER_NOT_FOUND_ERROR.toString())) {
-            msgBody = "Layer %s not found in the wms server.";
+        } else if (messageId.equals(Messaging.Ids.WMSLAYER_LAYER_RENDER_ERROR.toString())) {
+            msgBody = "WMS Layer is not rendered.";
+        } else if (messageId.equals(Messaging.Ids.WMSLAYER_VERSION_MISSING_ERROR.toString())) {
+            msgBody = "Version of WMS Server is missing.";
         } else if (messageId.equals(Messaging.Ids.UTILITIES_SLD_DOESNOT_EXIST_ERROR.toString())) {
             msgBody = "SLD Resource %s does not exist.";
         } else if (messageId.equals(Messaging.Ids.UTILITIES_SLD_LOADING_ERROR.toString())) {
@@ -197,7 +202,11 @@ public class Messaging {
         } else if (messageId.equals(Messaging.Ids.PRINT_LAYOUT_GENERATION_ERROR.toString())){
             msgBody = "Error while generating the print layout.";            
         }else if(messageId.equals(Messaging.Ids.MAP_SCALE_ERROR.toString())){
-            msgBody = "Map scale calculation error.";
+            msgBody = "Invalid map scale";
+        }else if(messageId.equals(Messaging.Ids.MIN_DISPLAY_SCALE.toString())){
+            msgBody = "< 0.01";
+        }else if(messageId.equals(Messaging.Ids.SCALE_LABEL.toString())){
+            msgBody = "Scale:.";
         }
         return msgBody;
     }
