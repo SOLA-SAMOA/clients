@@ -598,23 +598,24 @@ public class ApplicationBean extends ApplicationSummaryBean {
 
         if (propertyList != null) {
             // property firstpart lastpart validation
-            if (firstPart.isEmpty() || firstPart == null || firstPart == "" || firstPart.trim().equals("")) {
+            if (firstPart == null || (firstPart != null && firstPart.trim().isEmpty())) {
                 MessageUtility.displayMessage(ClientMessage.CHECK_NOTNULL_FIRSTPART);
                 return;
             }
 
-            if (lastPart.isEmpty() || lastPart == null || lastPart == "" || lastPart.trim().equals("")) {
+            if (lastPart == null || (lastPart != null && lastPart.trim().isEmpty())) {
                 MessageUtility.displayMessage(ClientMessage.CHECK_NOTNULL_LASTPART);
                 return;
             }
 
-
             if (firstPart.length() > 20) {
-                MessageUtility.displayMessage(ClientMessage.CHECK_FIELD_INVALID_LENGTH_PAR, new Object[]{bundle.getString("ApplicationPanel.labFirstPart.text")});
+                MessageUtility.displayMessage(ClientMessage.CHECK_FIELD_INVALID_LENGTH_PAR, 
+                        new Object[]{bundle.getString("ApplicationPanel.labFirstPart.text")});
                 return;
             }
             if (lastPart.length() > 50) {
-                MessageUtility.displayMessage(ClientMessage.CHECK_FIELD_INVALID_LENGTH_PAR, new Object[]{bundle.getString("ApplicationPanel.labLastPart.text")});
+                MessageUtility.displayMessage(ClientMessage.CHECK_FIELD_INVALID_LENGTH_PAR, 
+                        new Object[]{bundle.getString("ApplicationPanel.labLastPart.text")});
                 return;
             }
 
