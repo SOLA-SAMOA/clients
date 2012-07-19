@@ -139,11 +139,11 @@ public abstract class SolaControlsBundle extends ControlsBundle {
         public void addLayerConfig(ConfigMapLayerTO configMapLayer)
             throws InitializeLayerException, SchemaException {
         if (configMapLayer.getTypeCode().equals("wms")) {
-            String wmsServerURL = configMapLayer.getWmsUrl();
+            String wmsServerURL = configMapLayer.getUrl();
             ArrayList<String> wmsLayerNames = new ArrayList<String>();
             String[] layerNameList = configMapLayer.getWmsLayers().split(";");
-            String wmsVersion = "1.1.0";
-            String format = "image/jpeg";
+            String wmsVersion = configMapLayer.getWmsVersion();
+            String format = configMapLayer.getWmsFormat();
             java.util.Collections.addAll(wmsLayerNames, layerNameList);
             this.getMap().addLayerWms(
                     configMapLayer.getId(), configMapLayer.getTitle(), wmsServerURL, wmsLayerNames,
@@ -199,3 +199,4 @@ public abstract class SolaControlsBundle extends ControlsBundle {
                 GisMessage.LEFT_PANEL_TAB_FIND_TITLE), panel);
     }
 }
+

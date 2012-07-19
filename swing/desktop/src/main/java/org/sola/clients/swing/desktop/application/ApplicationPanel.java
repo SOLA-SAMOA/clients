@@ -3203,7 +3203,8 @@ public class ApplicationPanel extends ContentPanel {
                 @Override
                 public Void doTask() {
                     setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_DOCUMENT_OPENING));
-                    DocumentBean.openDocument(appBean.getSelectedSource().getArchiveDocument().getId());
+                    DocumentBean.openDocument(appBean.getSelectedSource().getArchiveDocument().getId(),
+                            appBean.getSelectedSource().getArchiveDocument().getFileName());
                     return null;
                 }
             };
