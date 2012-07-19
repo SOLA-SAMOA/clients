@@ -43,8 +43,8 @@ import org.sola.clients.swing.gis.mapaction.SolaPrint;
 import org.sola.clients.swing.gis.tool.InformationTool;
 import org.sola.clients.swing.gis.ui.control.SearchPanel;
 import org.sola.common.messaging.GisMessage;
-import org.sola.webservices.spatial.ConfigMapLayerTO;
-import org.sola.webservices.spatial.MapDefinitionTO;
+import org.sola.webservices.search.ConfigMapLayerTO;
+import org.sola.webservices.search.MapDefinitionTO;
 
 
 
