@@ -127,6 +127,7 @@ public class CreateParcelForm extends javax.swing.JDialog {
 private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
     if(parcelPanel.getCadastreObject().validate(true).size()<=0){
         parcelPanel.getCadastreObject().setStatusCode("pending");
+        parcelPanel.getCadastreObject().setTypeCode("parcel");
         this.firePropertyChange(SELECTED_PARCEL, null, parcelPanel.getCadastreObject());
         this.dispose();
     }
