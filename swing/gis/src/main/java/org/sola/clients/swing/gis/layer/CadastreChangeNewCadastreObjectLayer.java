@@ -76,6 +76,7 @@ public class CadastreChangeNewCadastreObjectLayer extends ExtendedLayerEditor{
     private Integer fidGenerator = 1;
     //private static final String LAST_PART_FORMAT = "SP %s";
     private static final String LAST_PART_FORMAT = "%s";
+    private static final String FIRST_PART_FORMAT = "Lot %s";
     private String lastPart = "";
     private DefaultTableModel tableModel = null;
     private Component hostForm = null;
@@ -214,7 +215,7 @@ public class CadastreChangeNewCadastreObjectLayer extends ExtendedLayerEditor{
         if (fieldsWithValues == null) {
             fieldsWithValues = new HashMap<String, Object>();
             fieldsWithValues.put(CadastreChangeNewCadastreObjectLayer.LAYER_FIELD_FIRST_PART,
-                    firstPartGenerator.toString());
+                    String.format(FIRST_PART_FORMAT, firstPartGenerator.toString()));
             fieldsWithValues.put(CadastreChangeNewCadastreObjectLayer.LAYER_FIELD_LAST_PART, 
                     this.lastPart);
             fieldsWithValues.put(CadastreChangeNewCadastreObjectLayer.LAYER_FIELD_OFFICIAL_AREA, 

@@ -44,6 +44,11 @@ public class RrrTypeBean extends AbstractCodeBean {
     public static final String PARTY_REQUIRED_PROPERTY = "partyRequired";
     public static final String SHARE_CHECK_PROPERTY = "shareCheck";
     
+    public static final String SYSTEM_RRR_TYPE_CODE_PRIMARY = "primary";
+    public static final String SYSTEM_RRR_TYPE_CODE_EASEMENT = "easement";
+    public static final String RRR_TYPE_CODE_SERVITUDE = "servitude";
+    public static final String RRR_TYPE_CODE_DOMINANT = "dominant"; 
+    
     @CodeBeanNotEmpty(message="Select group type.")
     private RrrGroupTypeBean rrrGroupType;
     private boolean primary;
