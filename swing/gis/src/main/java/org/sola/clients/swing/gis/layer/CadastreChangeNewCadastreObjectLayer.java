@@ -76,7 +76,7 @@ public class CadastreChangeNewCadastreObjectLayer extends ExtendedLayerEditor{
     private Integer fidGenerator = 1;
     //private static final String LAST_PART_FORMAT = "SP %s";
     private static final String LAST_PART_FORMAT = "%s";
-    private static final String FIRST_PART_FORMAT = "Lot %s";
+    private static final String FIRST_PART_FORMAT = "LOT %s";
     private String lastPart = "";
     private DefaultTableModel tableModel = null;
     private Component hostForm = null;
