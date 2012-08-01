@@ -451,6 +451,7 @@ public class RrrBean extends AbstractTransactionedBean {
             }
             getNotation().generateId();
             getNotation().resetVersion();
+            getNotation().setReferenceNr(null);
             if (removeBaUnitId) {
                 getNotation().setBaUnitId(null);
             }
