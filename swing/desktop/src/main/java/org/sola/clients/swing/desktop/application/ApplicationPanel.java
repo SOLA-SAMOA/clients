@@ -229,8 +229,9 @@ public class ApplicationPanel extends ContentPanel {
                     customizeDocumentsButtons();
                 } else if (evt.getPropertyName().equals(ApplicationBean.AGENT_PROPERTY)) {
                     copyAgentContact(appBean); // Customization for Samoa
+                } else if (evt.getPropertyName().equals(ApplicationBean.FEE_PAID_PROPERTY)) {
+                    setDefaultFeePaidAmount();
                 }
-
             }
         });
 
@@ -238,6 +239,18 @@ public class ApplicationPanel extends ContentPanel {
         customizeApplicationForm();
         customizePropertyButtons();
         customizeDocumentsButtons();
+    }
+
+    /**
+     * Sets the amount paid value when the Paid checkbox is set if the current total paid is 0.
+     */
+    private void setDefaultFeePaidAmount() {
+        if (appBean.isFeePaid()) {
+            if (appBean.getTotalAmountPaid() == null
+                    || BigDecimal.ZERO.compareTo(appBean.getTotalAmountPaid()) == 0) {
+                appBean.setTotalAmountPaid(appBean.getTotalFee());
+            }
+        }
     }
 
     /**
@@ -744,11 +757,12 @@ public class ApplicationPanel extends ContentPanel {
         }
     }
 
-    /** 
+    /**
      * Customization for Samoa. Retrieves the full party details for the agent so that the agent
-     * contact information can be displayed in the contact details section. 
+     * contact information can be displayed in the contact details section.
+     *
      * @param applicationBean
-     * @return 
+     * @return
      */
     private PartyBean getAgentContact(ApplicationBean applicationBean) {
         if (applicationBean.getAgent() == null || applicationBean.getAgent().getId() == null
@@ -769,7 +783,7 @@ public class ApplicationPanel extends ContentPanel {
      * contact details on the agent record should be automatically copied across as the Contact
      * Person details. Note that the user can continue to edit the contact person details if
      * necessary. Any changes to the default agent contact information will get stored as a new
-     * party in the database. 
+     * party in the database.
      */
     private void copyAgentContact(ApplicationBean applicationBean) {
         PartyBean contactPerson = applicationBean.getContactPerson();
@@ -786,14 +800,15 @@ public class ApplicationPanel extends ContentPanel {
             if (agentContact.getAddress() != null) {
                 contactPerson.getAddress().setDescription(agentContact.getAddress().getDescription());
             }
-        } 
+        }
     }
 
     /**
-     * Customization for Samoa. Determines if the details displayed in the Contact 
-     * Person section match the agent contact details.
+     * Customization for Samoa. Determines if the details displayed in the Contact Person section
+     * match the agent contact details.
+     *
      * @param applicationBean
-     * @return 
+     * @return
      */
     private boolean isAgentContact(ApplicationBean applicationBean) {
         boolean result = false;
@@ -817,22 +832,23 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Customization for Samoa. Utility function to compare the values for two strings. 
-     * NULL strings are treated as empty string to allow use of the equals function. 
+     * Customization for Samoa. Utility function to compare the values for two strings. NULL strings
+     * are treated as empty string to allow use of the equals function.
+     *
      * @param str1
      * @param str2
-     * @return 
+     * @return
      */
     private boolean compareStrings(String str1, String str2) {
-        str1 = str1 == null ? "" : str1.trim(); 
-        str2 = str2 == null ? "" : str2.trim(); 
+        str1 = str1 == null ? "" : str1.trim();
+        str2 = str2 == null ? "" : str2.trim();
         return str1.equals(str2);
     }
 
     /**
-     * Customization for Samoa. Contacts are optional, so mark any agent contact or blank
-     * contact details for deletion prior to saving the application. This is to avoid having a 
-     * large number of duplicate parties in the database. 
+     * Customization for Samoa. Contacts are optional, so mark any agent contact or blank contact
+     * details for deletion prior to saving the application. This is to avoid having a large number
+     * of duplicate parties in the database.
      */
     private void removeDefaultContact(ApplicationBean applicationBean) {
         if (isAgentContact(applicationBean)) {
@@ -3325,9 +3341,9 @@ public class ApplicationPanel extends ContentPanel {
                                         new String[]{appBean.getNr()}).getMessage();
                                 openValidationResultForm(result, true, message);
                             }
-                             if (ApplicationActionTypeBean.APPROVE.equals(actionType)){
-                            showReport(ReportManager.getSurveyApproval(appBean));
-			    
+                            if (ApplicationActionTypeBean.APPROVE.equals(actionType)) {
+                                showReport(ReportManager.getSurveyApproval(appBean));
+
                             }
                             saveAppState();
                         }
