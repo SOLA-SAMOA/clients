@@ -53,7 +53,7 @@ import org.geotools.swing.extended.tool.ExtendedDrawLinestring;
 import org.geotools.swing.mapaction.extended.Print;
 import org.geotools.swing.mapaction.extended.RemoveDirectImage;
 import org.geotools.swing.tool.extended.AddDirectImageTool;
-import org.geotools.swing.tool.extended.ExtendedDrawPolygon;
+import org.geotools.swing.extended.tool.ExtendedDrawPolygon;
 import org.geotools.swing.tool.extended.ExtendedDrawToolWithSnapping;
 
 /**
@@ -86,7 +86,7 @@ public class Development {
                 //                String.format("%s\\src\\test\\java\\org\\sola\\clients\\geotools\\ui\\sample\\data\\Samoa_Parcels.shp", 
                 String.format("%s\\src\\test\\java\\org\\geotools\\swing\\extended\\sample\\data\\parcels.shp",
                 directory.getAbsolutePath());
-        mapCtrl.getMap().addLayerShapefile(
+        ExtendedFeatureLayer shapeLayer =  mapCtrl.getMap().addLayerShapefile(
                 "Shape layer", "Title of shape layer", shapeFile, "polygon.xml");
         //mapCtrl.getMap().addLayerWms("wmsLayer", "WMS Layer", 
         //        wmsServerURL, wmsLayerNames, true,  "1.1.0", "image/png");

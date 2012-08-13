@@ -1,28 +1,26 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO).
- * All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
+ * reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
- *    1. Redistributions of source code must retain the above copyright notice,this list
- *       of conditions and the following disclaimer.
- *    2. Redistributions in binary form must reproduce the above copyright notice,this list
- *       of conditions and the following disclaimer in the documentation and/or other
- *       materials provided with the distribution.
- *    3. Neither the name of FAO nor the names of its contributors may be used to endorse or
- *       promote products derived from this software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
+ * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
+ * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 /*
@@ -83,9 +81,13 @@ public class CadastreRedefinitionAddNodeTool extends CadastreRedefinitionAbstrac
         if (nodeBean == null) {
             return;
         }
+        //nodeBean has already been added in the layer. Here it is retrieved as a feature
         SimpleFeature nodeFeature =
-                this.cadastreObjectNodeModifiedLayer.getFeatureCollection().getFeature(
-                nodeBean.getId());
+                this.cadastreObjectNodeModifiedLayer.getFeatureByNodeId(nodeBean.getId());
+
+        //The list of ids of cadastre objects that are related by this node is compiled here.
+        // Do not rely on the spatial check to retrieve the cadastre objects because they might
+        // be spatially different in the client than they are in the database.
         List<String> cadastreObjectTargetIds = new ArrayList<String>();
         for (CadastreObjectBean coBean : nodeBean.getCadastreObjectList()) {
             cadastreObjectTargetIds.add(coBean.getId());
@@ -107,7 +109,7 @@ public class CadastreRedefinitionAddNodeTool extends CadastreRedefinitionAbstrac
         CadastreObjectNodeTO nodeTO =
                 this.dataAccess.getCadastreService().getCadastreObjectNodePotential(
                 env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY(),
-                this.getMapControl().getSrid());
+                this.getMapControl().getSrid(), this.cadastreObjectType);
         if (nodeTO == null) {
             return null;
         }
@@ -125,10 +127,9 @@ public class CadastreRedefinitionAddNodeTool extends CadastreRedefinitionAbstrac
     private void insertNode(SimpleFeature nodeFeature, List<String> cadastreObjectTargetIds) {
         Geometry nodeFeatureGeom = (Geometry) nodeFeature.getDefaultGeometry();
         Coordinate coordinate = nodeFeatureGeom.getCoordinate();
-        for (String cadastreObjectTargetId : cadastreObjectTargetIds) {
+        for (String cadastreObjectId : cadastreObjectTargetIds) {
             SimpleFeature cadastreObjectFeature =
-                    this.cadastreObjectModifiedLayer.getFeatureCollection().getFeature(
-                    cadastreObjectTargetId);
+                    this.cadastreObjectModifiedLayer.getFeatureByCadastreObjectId(cadastreObjectId);
             if (cadastreObjectFeature == null) {
                 continue;
             }

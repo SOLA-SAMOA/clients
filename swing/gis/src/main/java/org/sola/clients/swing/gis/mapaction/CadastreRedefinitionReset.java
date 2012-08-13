@@ -48,7 +48,7 @@ public final class CadastreRedefinitionReset extends ExtendedAction {
     private ControlsBundleForCadastreRedefinition mapControl;
 
     public CadastreRedefinitionReset(ControlsBundleForCadastreRedefinition mapControl) {
-        super(mapControl.getMap(), "cadastre-redefinition-reset",
+        super(mapControl.getMap(), MAPACTION_NAME,
                 MessageUtility.getLocalizedMessage(
                 GisMessage.CADASTRE_REDEFINITION_RESET_TOOLTIP).getMessage(),
                 "resources/cadastre-redefinition-reset.png");

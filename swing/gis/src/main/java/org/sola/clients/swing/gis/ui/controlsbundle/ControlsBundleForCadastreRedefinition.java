@@ -1,28 +1,26 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO).
- * All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
+ * reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
- *    1. Redistributions of source code must retain the above copyright notice,this list
- *       of conditions and the following disclaimer.
- *    2. Redistributions in binary form must reproduce the above copyright notice,this list
- *       of conditions and the following disclaimer in the documentation and/or other
- *       materials provided with the distribution.
- *    3. Neither the name of FAO nor the names of its contributors may be used to endorse or
- *       promote products derived from this software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
+ * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
+ * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 /*
@@ -31,9 +29,14 @@
  */
 package org.sola.clients.swing.gis.ui.controlsbundle;
 
+import com.vividsolutions.jts.geom.Geometry;
+import java.util.List;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swing.extended.exception.InitializeLayerException;
+import org.geotools.swing.extended.util.GeometryUtility;
 import org.geotools.swing.mapaction.extended.ExtendedAction;
+import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.swing.gis.beans.TransactionCadastreRedefinitionBean;
 import org.sola.clients.swing.gis.data.PojoDataAccess;
 import org.sola.clients.swing.gis.layer.CadastreRedefinitionNodeLayer;
@@ -43,11 +46,12 @@ import org.sola.clients.swing.gis.tool.CadastreBoundarySelectTool;
 import org.sola.clients.swing.gis.tool.CadastreRedefinitionAddNodeTool;
 import org.sola.clients.swing.gis.tool.CadastreRedefinitionBoundarySelectTool;
 import org.sola.clients.swing.gis.tool.CadastreRedefinitionModifyNodeTool;
+import org.sola.webservices.transferobjects.cadastre.CadastreObjectTO;
 
 /**
- * A control bundle that is used for cadastre redefinition process. 
- * The necessary tools and layers are added in the bundle.
- * 
+ * A control bundle that is used for cadastre redefinition process. The necessary tools and layers
+ * are added in the bundle.
+ *
  * @author Elton Manoku
  */
 public final class ControlsBundleForCadastreRedefinition extends ControlsBundleForTransaction {
@@ -57,37 +61,43 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
     private CadastreRedefinitionObjectLayer cadastreObjectModifiedLayer = null;
 
     /**
-     * Constructor.
-     * It sets up the bundle by adding layers and tools that are relevant.
-     * Finally, it zooms in the interested zone. The interested zone is defined 
-     * in the following order: <br/>
-     * If bean has modified cadastre objects it is zoomed there, 
-     * otherwise if baUnitId is present it is zoomed
-     * there else it is zoomed in the application location.
-     * 
-     * @param transactionBean  The transaction bean. If this is already populated it means 
-     * the transaction is being opened again for change.
-     * @param baUnitId Id of the property that is defined in the application as a target for 
-     * this cadastre change.
-     * @param applicationLocation Location of application that starts the cadastre change
+     * Constructor. It sets up the bundle by adding layers and tools that are relevant. Finally, it
+     * zooms in the interested zone. The interested zone is defined in the following order: <br/> If
+     * bean has modified cadastre objects it is zoomed there, otherwise if baUnitId is present it is
+     * zoomed there else it is zoomed in the application location.
+     *
+     * @param applicationBean The application where the transaction is started identifiers
+     * @param transactionStarterId The id of the starter of the application. This will be the
+     * service id.
+     * @param baUnitId Id of the property that is defined in the application as a target for this
+     * cadastre redefinition.
      */
     public ControlsBundleForCadastreRedefinition(
-            TransactionCadastreRedefinitionBean transactionBean,
+            ApplicationBean applicationBean,
+            String transactionStarterId,
             String baUnitId,
-            byte[] applicationLocation) {
-        super();
-        this.transactionBean = transactionBean;
-        if (this.transactionBean == null) {
-            this.transactionBean = new TransactionCadastreRedefinitionBean();
-        }
+            String targetCadastreObjectType) {
+        super(applicationBean, transactionStarterId);
         this.Setup(PojoDataAccess.getInstance());
-        this.zoomToInterestingArea(null, applicationLocation);
+        this.setTargetCadastreObjectTypeConfiguration(targetCadastreObjectType);
+        this.setTransaction();
+        ReferencedEnvelope interestingArea = null;
+        if (!this.transactionIsStarted()) {
+            interestingArea = this.getExtentOfCadastreObjectsOfBaUnit(baUnitId);
+        }
+        this.zoomToInterestingArea(interestingArea, applicationBean.getLocation());
+    }
+
+    @Override
+    protected boolean transactionIsStarted() {
+        return (this.cadastreObjectModifiedLayer.getFeatureCollection().size() > 0);
     }
 
     @Override
     protected void zoomToInterestingArea(
             ReferencedEnvelope interestingArea, byte[] applicationLocation) {
-        if (this.cadastreObjectModifiedLayer.getFeatureCollection().size() > 0) {
+        if (interestingArea == null 
+                && this.cadastreObjectModifiedLayer.getFeatureCollection().size() > 0) {
             interestingArea = this.cadastreObjectModifiedLayer.getFeatureCollection().getBounds();
         }
         super.zoomToInterestingArea(interestingArea, applicationLocation);
@@ -96,10 +106,22 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
     @Override
     public TransactionCadastreRedefinitionBean getTransactionBean() {
         this.transactionBean.setCadastreObjectNodeTargetList(
-                this.cadastreObjectNodeModifiedLayer.getNodeTargetList());
+                this.cadastreObjectNodeModifiedLayer.getBeanListForTransaction());
         this.transactionBean.setCadastreObjectTargetList(
-                this.cadastreObjectModifiedLayer.getCadastreObjectTargetList());
+                this.cadastreObjectModifiedLayer.getBeanListForTransaction());
+        this.transactionBean.setSourceIdList(this.getDocumentsPanel().getSourceIds());
         return this.transactionBean;
+    }
+
+    @Override
+    public final void setTransaction() {
+        this.transactionBean = PojoDataAccess.getInstance().getTransactionCadastreRedefinition(
+                getTransactionStarterId());
+        this.cadastreObjectModifiedLayer.setBeanList(
+                this.transactionBean.getCadastreObjectTargetList());
+        this.cadastreObjectNodeModifiedLayer.setBeanList(
+                this.transactionBean.getCadastreObjectNodeTargetList());
+        this.getDocumentsPanel().setSourceIds(this.transactionBean.getSourceIdList());
     }
 
     @Override
@@ -108,50 +130,49 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
         this.cadastreObjectModifiedLayer = new CadastreRedefinitionObjectLayer();
         this.getMap().addLayer(this.cadastreObjectModifiedLayer);
 
-        this.cadastreObjectModifiedLayer.addCadastreObjectTargetList(
-                this.transactionBean.getCadastreObjectTargetList());
-
         this.cadastreObjectNodeModifiedLayer = new CadastreRedefinitionNodeLayer();
         this.getMap().addLayer(this.cadastreObjectNodeModifiedLayer);
-
-        this.cadastreObjectNodeModifiedLayer.addNodeTargetList(
-                this.transactionBean.getCadastreObjectNodeTargetList());
-
     }
+    private CadastreRedefinitionAddNodeTool addNodeTool;
+    private CadastreRedefinitionModifyNodeTool modifyNodeTool;
+    private CadastreRedefinitionBoundarySelectTool boundarySelectTool;
 
     @Override
     protected void addToolsAndCommands() {
-        this.getMap().addTool(
-                new CadastreRedefinitionAddNodeTool(
+        this.addNodeTool = new CadastreRedefinitionAddNodeTool(
                 this.getPojoDataAccess(),
                 this.cadastreObjectNodeModifiedLayer,
-                this.cadastreObjectModifiedLayer),
-                this.getToolbar(),
-                true);
-        this.getMap().addTool(
-                new CadastreRedefinitionModifyNodeTool(
+                this.cadastreObjectModifiedLayer);
+        this.getMap().addTool(this.addNodeTool, this.getToolbar(), true);
+        this.modifyNodeTool = new CadastreRedefinitionModifyNodeTool(
                 this.getPojoDataAccess(),
                 this.cadastreObjectNodeModifiedLayer,
-                this.cadastreObjectModifiedLayer),
-                this.getToolbar(),
-                true);
+                this.cadastreObjectModifiedLayer);
+        this.getMap().addTool(this.modifyNodeTool, this.getToolbar(), true);
 
         this.getMap().addMapAction(new CadastreRedefinitionReset(this), this.getToolbar(), true);
-        CadastreBoundarySelectTool cadastreBoundarySelectTool =
+        this.boundarySelectTool =
                 new CadastreRedefinitionBoundarySelectTool(
                 this.getPojoDataAccess(),
                 this.cadastreBoundaryPointLayer,
                 this.cadastreObjectModifiedLayer,
                 this.cadastreObjectNodeModifiedLayer);
-        this.getMap().addTool(cadastreBoundarySelectTool, this.getToolbar(), true);
+        this.getMap().addTool(this.boundarySelectTool, this.getToolbar(), true);
         super.addToolsAndCommands();
         this.cadastreBoundaryEditTool.setTargetLayer(cadastreObjectModifiedLayer);
     }
 
+    @Override
+    protected void setTargetCadastreObjectTypeConfiguration(String targetCadastreObjectType) {
+        this.addNodeTool.setCadastreObjectType(targetCadastreObjectType);
+        this.modifyNodeTool.setCadastreObjectType(targetCadastreObjectType);
+        this.boundarySelectTool.setCadastreObjectType(targetCadastreObjectType);
+    }
+
     public void reset() {
-        this.cadastreObjectModifiedLayer.removeFeatures();
-        this.cadastreObjectNodeModifiedLayer.removeFeatures();
-        ExtendedAction action = this.getMap().getMapActionByName(CadastreBoundarySelectTool.NAME);
+        this.cadastreObjectModifiedLayer.getBeanList().clear();
+        this.cadastreObjectNodeModifiedLayer.getBeanList().clear();
+        ExtendedAction action = this.getMap().getMapActionByName(CadastreBoundarySelectTool.MAP_ACTION_NAME);
         if (action != null) {
             ((CadastreBoundarySelectTool) action.getAttachedTool()).clearSelection();
             this.getMap().refresh();
@@ -167,5 +188,26 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
                 CadastreRedefinitionModifyNodeTool.NAME).setEnabled(!readOnly);
         this.getMap().getMapActionByName(
                 CadastreRedefinitionReset.MAPACTION_NAME).setEnabled(!readOnly);
+    }
+
+    /**
+     * Gets the extent of the cadastre objects that are related with the baUnitId
+     *
+     * @param baUnitId
+     */
+    private ReferencedEnvelope getExtentOfCadastreObjectsOfBaUnit(String baUnitId) {
+        List<CadastreObjectTO> cadastreObjects =
+                this.getPojoDataAccess().getCadastreService().getCadastreObjectsByBaUnit(baUnitId);
+        ReferencedEnvelope envelope = null;
+        for (CadastreObjectTO cadastreObject : cadastreObjects) {
+            Geometry geom = GeometryUtility.getGeometryFromWkb(cadastreObject.getGeomPolygon());
+            ReferencedEnvelope tmpEnvelope = JTS.toEnvelope(geom);
+            if (envelope == null) {
+                envelope = tmpEnvelope;
+            } else {
+                envelope.expandToInclude(tmpEnvelope);
+            }
+        }
+        return envelope;
     }
 }

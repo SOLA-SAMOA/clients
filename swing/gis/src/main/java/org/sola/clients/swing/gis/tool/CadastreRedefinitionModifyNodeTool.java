@@ -37,8 +37,8 @@ import org.geotools.geometry.Envelope2D;
 import org.opengis.feature.simple.SimpleFeature;
 import org.sola.clients.swing.gis.beans.CadastreObjectNodeBean;
 import org.sola.clients.swing.gis.data.PojoDataAccess;
-import org.sola.clients.swing.gis.layer.CadastreRedefinitionObjectLayer;
 import org.sola.clients.swing.gis.layer.CadastreRedefinitionNodeLayer;
+import org.sola.clients.swing.gis.layer.CadastreRedefinitionObjectLayer;
 import org.sola.clients.swing.gis.to.CadastreObjectNodeExtraTO;
 import org.sola.common.mapping.MappingManager;
 import org.sola.common.messaging.GisMessage;
@@ -83,8 +83,7 @@ public class CadastreRedefinitionModifyNodeTool extends CadastreRedefinitionAbst
             if (nodeBean == null) {
                 return;
             }
-            nodeFeature = this.cadastreObjectNodeModifiedLayer.getFeatureCollection().getFeature(
-                    nodeBean.getId());
+        nodeFeature = this.cadastreObjectNodeModifiedLayer.getFeatureByNodeId(nodeBean.getId());
             nodeIsNewFromServer = true;
         }
         if (nodeFeature == null) {
@@ -106,7 +105,7 @@ public class CadastreRedefinitionModifyNodeTool extends CadastreRedefinitionAbst
         CadastreObjectNodeTO nodeTO =
                 this.dataAccess.getCadastreService().getCadastreObjectNode(
                 env.getMinX(), env.getMinY(), env.getMaxX(), env.getMaxY(),
-                this.getMapControl().getSrid());
+                this.getMapControl().getSrid(), this.cadastreObjectType);
         
         if (nodeTO == null) {
             return null;
@@ -129,7 +128,6 @@ public class CadastreRedefinitionModifyNodeTool extends CadastreRedefinitionAbst
             this.cadastreObjectModifiedLayer.getFeatureCollection().notifyListeners(
                     cadastreObjectFeature, CollectionEvent.FEATURES_CHANGED);
         }
-        this.cadastreObjectNodeModifiedLayer.removeFeature(nodeFeature.getID());
-        this.getMapControl().refresh();
+        this.cadastreObjectNodeModifiedLayer.removeFeature(nodeFeature.getID(), true);
     }
 }
