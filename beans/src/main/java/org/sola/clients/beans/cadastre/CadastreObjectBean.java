@@ -184,7 +184,7 @@ public class CadastreObjectBean extends AbstractTransactionedBean {
         if(nameFirstpart!=null){
             result = nameFirstpart;
             if(nameLastpart!=null){
-                result += "/" + nameLastpart;
+                result += " Plan " + nameLastpart;
             }
         }
         return result;

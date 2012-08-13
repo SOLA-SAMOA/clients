@@ -46,18 +46,24 @@ import org.geotools.swing.extended.Map;
 
 /**
  * It is a generator of an image from the current status of the map layers. <br/> In the sides of
- * the image generated, are added the coordinates of the extent.
+ * the image generated, are added the coordinates of the extent. The frame can be omitted by
+ * setting the drawFrame field to false. 
  *
  * @author Elton Manoku
  */
 public class MapImageGenerator {
 
+    public final static String IMAGE_FORMAT_PNG = "png";
+    public final static String IMAGE_FORMAT_BMP = "bmp";
+    public final static String IMAGE_FORMAT_JPG = "jpg";
+    
     private final static String TEMPORARY_IMAGE_FILE_LOCATION =
             System.getProperty("user.home") + File.separator + "sola";
     private final static String TEMPORARY_IMAGE_FILE = "map";
     private Map map;
     private Color textColor = Color.RED;
     private Font textFont = new Font(Font.SANS_SERIF, Font.BOLD, 10);
+    private boolean drawFrame = true;
 
     /**
      * Constructor of the generator.
@@ -105,6 +111,30 @@ public class MapImageGenerator {
     }
 
     /**
+     * Indicates if the image will be framed with coordinates
+     */
+    public boolean isDrawFrame() {
+        return drawFrame;
+    }
+
+    /** 
+     * When true, a frame will be drawn around the image with coordinates. If false, the frame will
+     * be omitted. Default true. 
+     * @param drawFrame 
+     */
+    public void setDrawFrame(boolean drawFrame) {
+        this.drawFrame = drawFrame;
+    }
+
+    /**
+     * Returns the map control used as the source of image generation. 
+     * @return 
+     */
+    protected Map getMap() {
+        return map;
+    }
+
+    /**
      * It generates the image.
      *
      * @param imageWidth The image width
@@ -144,51 +174,55 @@ public class MapImageGenerator {
         renderer.setMapContent(this.map.getMapContent());
         Rectangle rectangle = new Rectangle(imageWidth, imageHeight);
         renderer.paint(graphics, rectangle, extent);
-        graphics.setColor(Color.BLACK);
-        graphics.drawRect(0, 0, imageWidth - 1, imageHeight - 1);
-        graphics.setFont(this.textFont);
-        graphics.setColor(this.textColor);
+        if (isDrawFrame()) {
+            graphics.setColor(Color.BLACK);
+            graphics.drawRect(0, 0, imageWidth - 1, imageHeight - 1);
+            graphics.setFont(this.textFont);
+            graphics.setColor(this.textColor);
 
-        this.drawText(graphics, String.format("%s N", (int) extent.getMaxY()),
-                imageWidth / 2, 10, true);
-        this.drawText(graphics, String.format("%s N", (int) extent.getMinY()),
-                imageWidth / 2, imageHeight - 3, true);
-        AffineTransform originalTransform = graphics.getTransform();
-        graphics.rotate(-Math.PI / 2, 10, imageHeight / 2);
-        this.drawText(graphics, String.format("%s E", (int) extent.getMinX()),
-                10, imageHeight / 2, false);
-        graphics.setTransform(originalTransform);
-        graphics.rotate(Math.PI / 2, imageWidth - 10, imageHeight / 2);
-        this.drawText(graphics, String.format("%s E", (int) extent.getMaxX()),
-                imageWidth - 100, imageHeight / 2, false);
-        graphics.setTransform(originalTransform);
+            this.drawText(graphics, String.format("%s N", (int) extent.getMaxY()),
+                    imageWidth / 2, 10, true);
+            this.drawText(graphics, String.format("%s N", (int) extent.getMinY()),
+                    imageWidth / 2, imageHeight - 3, true);
+            AffineTransform originalTransform = graphics.getTransform();
+            graphics.rotate(-Math.PI / 2, 10, imageHeight / 2);
+            this.drawText(graphics, String.format("%s E", (int) extent.getMinX()),
+                    10, imageHeight / 2, false);
+            graphics.setTransform(originalTransform);
+            graphics.rotate(Math.PI / 2, imageWidth - 10, imageHeight / 2);
+            this.drawText(graphics, String.format("%s E", (int) extent.getMaxX()),
+                    imageWidth - 100, imageHeight / 2, false);
+            graphics.setTransform(originalTransform);
+        } else {
+            graphics.drawImage(bi, 0, 0, null);
+        }
 
         return bi;
     }
 
     /**
      * It generates the image and it saves it in a temporary file.
-     * 
+     *
      * @param imageWidth The width in pixels/pointers of the image
      * @param imageHeight The height in pixels/pointers of the image
      * @param scale The desired scale
-     * @param dpi The dpi of the target. 
-     * If it is a pdf generation it is the dpi of the pdf generator
+     * @param dpi The dpi of the target. If it is a pdf generation it is the dpi of the pdf
+     * generator
      * @param imageFormat Acceptable formats for the image. Potential values can be jpg, png, bmp
      * @return The absolute path where the image is stored
-     * @throws IOException 
+     * @throws IOException
      */
     public String getImageAsFileLocation(double imageWidth, double imageHeight, double scale,
-            int dpi, String imageFormat) throws IOException{
+            int dpi, String imageFormat) throws IOException {
         File location = new File(TEMPORARY_IMAGE_FILE_LOCATION);
         if (!location.exists()) {
             location.mkdirs();
         }
-        String pathToResult = TEMPORARY_IMAGE_FILE_LOCATION + File.separator 
+        String pathToResult = TEMPORARY_IMAGE_FILE_LOCATION + File.separator
                 + TEMPORARY_IMAGE_FILE + "." + imageFormat;
         File outputFile = new File(pathToResult);
         BufferedImage bufferedImage = this.getImage(imageWidth, imageHeight, scale, dpi);
-            ImageIO.write(bufferedImage, imageFormat, outputFile);
+        ImageIO.write(bufferedImage, imageFormat, outputFile);
         return pathToResult;
     }
 
