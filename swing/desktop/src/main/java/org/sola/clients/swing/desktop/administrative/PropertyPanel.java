@@ -43,6 +43,7 @@ import org.sola.clients.beans.referencedata.*;
 import org.sola.clients.beans.security.SecurityBean;
 import org.sola.clients.beans.source.SourceBean;
 import org.sola.clients.beans.source.SourceListBean;
+import org.sola.clients.reports.ReportManager;
 import org.sola.clients.swing.common.LafManager;
 import org.sola.clients.swing.common.tasks.SolaTask;
 import org.sola.clients.swing.common.tasks.TaskManager;
@@ -59,7 +60,6 @@ import org.sola.clients.swing.ui.renderers.SimpleComboBoxRenderer;
 import org.sola.clients.swing.ui.renderers.TableCellListRenderer;
 import org.sola.clients.swing.ui.source.DocumentsPanel;
 import org.sola.common.RolesConstants;
-import org.sola.common.SOLAException;
 import org.sola.common.logging.LogUtility;
 import org.sola.common.messaging.ClientMessage;
 import org.sola.common.messaging.MessageUtility;
@@ -775,8 +775,8 @@ public class PropertyPanel extends ContentPanel {
         }
 
         // if (ApplicationServiceBean.saveInformationService(RequestTypeBean.CODE_TITLE_SERACH)) {
-        //showReport(ReportManager.getBaUnitReport(getBaUnit(
-        //        baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart())));
+        showReport(ReportManager.getBaUnitReport(getBaUnit(
+                baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart())));
         // }
     }
 
