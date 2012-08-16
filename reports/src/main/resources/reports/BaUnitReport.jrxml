@@ -228,6 +228,7 @@
 		</field>
 	</subDataset>
 	<parameter name="USER" class="java.lang.String"/>
+	<parameter name="SAMOA_EMBLEM" class="java.io.InputStream"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>

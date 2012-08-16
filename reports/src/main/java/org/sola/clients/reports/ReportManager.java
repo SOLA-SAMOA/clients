@@ -117,7 +117,7 @@ public class ReportManager {
         BaUnitBean[] beans = new BaUnitBean[1];
         beans[0] = baUnitBean;
         JRDataSource jds = new JRBeanArrayDataSource(beans);
-        inputParameters.put("SAMOA_EMBLEM", ReportManager.class.getResourceAsStream("/images/sola/samEmlem.png"));
+        inputParameters.put("SAMOA_EMBLEM", ReportManager.class.getResourceAsStream("/images/sola/samEmblem.png"));
         try {
             return JasperFillManager.fillReport(
                     ReportManager.class.getResourceAsStream("/reports/BaUnitReport.jasper"),
