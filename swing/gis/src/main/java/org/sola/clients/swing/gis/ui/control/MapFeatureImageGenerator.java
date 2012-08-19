@@ -116,7 +116,7 @@ public class MapFeatureImageGenerator extends MapImageGenerator {
                 getMap().addLayer(drawLayer);
                 HashMap<String, Object> fields = new HashMap<String, Object>();
                 fields.put(LAYER_FIELD_LABEL, label);
-                SimpleFeature feature = drawLayer.addFeature("1", geom, fields);
+                SimpleFeature feature = drawLayer.addFeature("1", geom, fields, true);
 
                 // Zoom to the area of the new geometry. Buffer the shape by 1 unit to prevent
                 // any truncation of the image. 

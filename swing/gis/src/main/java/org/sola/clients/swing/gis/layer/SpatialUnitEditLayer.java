@@ -266,7 +266,7 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
         // Clear the features on the map and from the bean list. 
         // Note that addFeature will add the bean back into the bean list. 
         listBean.getSpatialUnitChanges().clear();
-        removeFeatures();
+        removeFeatures(true);
         if (spatialUnitChanges != null && !spatialUnitChanges.isEmpty()) {
             for (SpatialUnitChangeBean bean : spatialUnitChanges) {
                 this.listBean.getSpatialUnitChanges().add(bean);
@@ -377,28 +377,18 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
      * java.lang.String, boolean, boolean) addFeature} instead.
      */
     @Override
-    public SimpleFeature addFeature(String fid, byte[] geomAsBytes,
-            HashMap<String, Object> fieldsWithValues) throws ParseException {
-        return null;
-    }
-
-    /**
-     * Not implemented. Use {@linkplain #addFeature(java.lang.String, byte[], java.lang.String,
-     * java.lang.String, boolean, boolean) addFeature} instead.
-     */
-    @Override
-    public SimpleFeature addFeature(String fid,
-            Geometry geom, HashMap<String, Object> fieldsWithValues) {
-        return null;
-    }
-
-    /**
-     * Not implemented. Use {@linkplain #addFeature(java.lang.String, byte[], java.lang.String,
-     * java.lang.String, boolean, boolean) addFeature} instead.
-     */
-    @Override
     public SimpleFeature addFeature(String fid,
             Geometry geom, HashMap<String, Object> fieldsWithValues, boolean redraw) {
+        return null;
+    }
+
+    /**
+     * Not implemented. Use {@linkplain #addFeature(java.lang.String, byte[], java.lang.String,
+     * java.lang.String, boolean, boolean) addFeature} instead.
+     */
+    @Override
+    public SimpleFeature addFeature(String fid,
+            byte[] geom, HashMap<String, Object> fieldsWithValues, boolean redraw) {
         return null;
     }
 
@@ -408,8 +398,8 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
      * the spatialUnitChange collection.
      */
     @Override
-    public void removeFeatures() {
-        super.removeFeatures();
+    public void removeFeatures(boolean refreshMap) {
+        super.removeFeatures(refreshMap);
         this.listBean.getSpatialUnitChanges().clear();
     }
 }

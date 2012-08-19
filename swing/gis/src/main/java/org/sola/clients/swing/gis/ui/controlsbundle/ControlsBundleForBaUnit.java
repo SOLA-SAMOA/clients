@@ -29,9 +29,11 @@
  */
 package org.sola.clients.swing.gis.ui.controlsbundle;
 
+import com.vividsolutions.jts.io.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.geometry.jts.Geometries;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.extended.layer.ExtendedLayerGraphics;
 import org.geotools.swing.extended.exception.InitializeLayerException;
 import org.sola.clients.beans.cadastre.CadastreObjectBean;
@@ -48,7 +50,7 @@ import org.sola.webservices.transferobjects.cadastre.CadastreObjectTO;
  *
  * @author Elton Manoku
  */
-public final class ControlsBundleForBaUnit extends ControlsBundleForWorkingWithCO {
+public final class ControlsBundleForBaUnit extends SolaControlsBundle {
 
     ExtendedLayerGraphics layerForCadastreObjects;
     private final String CADASTRE_OBJECTS_LAYERNAME = "Current property cadastre objects";
@@ -85,7 +87,41 @@ public final class ControlsBundleForBaUnit extends ControlsBundleForWorkingWithC
         for (CadastreObjectBean coBean : cadastreObjectBeanList) {
             cadastreObjects.add(MappingManager.getMapper().map(coBean, CadastreObjectTO.class));
         }
-        layerForCadastreObjects.removeFeatures();
+        layerForCadastreObjects.removeFeatures(false);
         this.addCadastreObjectsInLayer(layerForCadastreObjects, cadastreObjects);
+    }
+
+    /**
+     * Adds from the list of cadastre objects features in layer.
+     *
+     * @param inLayer
+     * @param cadastreObjects
+     */
+    private void addCadastreObjectsInLayer(
+            ExtendedLayerGraphics inLayer, List<CadastreObjectTO> cadastreObjects) {
+        if (cadastreObjects == null || cadastreObjects.isEmpty()) {
+            return;
+        }
+
+        try {
+            boolean featureAdded = false;
+            for (CadastreObjectTO cadastreObject : cadastreObjects) {
+                if (cadastreObject.getGeomPolygon() == null){
+                    continue;
+                }
+                inLayer.addFeature(cadastreObject.getId(),
+                        cadastreObject.getGeomPolygon(), null, false);
+                featureAdded = true;
+            }
+            if (featureAdded) {
+                ReferencedEnvelope envelope = inLayer.getFeatureCollection().getBounds();
+                envelope.expandBy(10);
+                this.getMap().setDisplayArea(envelope);
+            }
+        } catch (ParseException ex) {
+            Messaging.getInstance().show(GisMessage.CADASTRE_CHANGE_ERROR_ADD_CO);
+            org.sola.common.logging.LogUtility.log(
+                    GisMessage.CADASTRE_CHANGE_ERROR_ADD_CO, ex);
+        }
     }
 }

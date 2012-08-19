@@ -73,7 +73,7 @@ public class CadastreObjectSearch extends FreeTextSearch {
                         ClientMessage.PROGRESS_MSG_MAP_SEARCHING,
                         new String[]{""}).getMessage());
                 try {
-                    // Allow a small delay on the background thread so that the tread can be cancelled
+                    // Allow a small delay on the background thread so that the thread can be cancelled
                     // before executing the search if the user is still typing. 
                     Thread.sleep(500);
                     TypeConverters.TransferObjectListToBeanList(
@@ -95,5 +95,6 @@ public class CadastreObjectSearch extends FreeTextSearch {
             }
         };
         TaskManager.getInstance().runTask(searchTask);
+
     }
 }

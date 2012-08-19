@@ -49,8 +49,13 @@ public class PartyQuickSearch extends FreeTextSearch {
 
     public PartyQuickSearch() {
         super();
+        this.setMinimalSearchStringLength(1);
         searchParams = new PartySearchParamsBean();
         this.setMinimalSearchStringLength(2);
+    }
+
+    public PartySearchParamsBean getSearchParams() {
+        return searchParams;
     }
 
     @Override
@@ -60,10 +65,8 @@ public class PartyQuickSearch extends FreeTextSearch {
         if (searchTask != null && TaskManager.getInstance().isTaskRunning(searchTask.getId())) {
             TaskManager.getInstance().removeTask(searchTask);
         }
-
         searchParams.setName(searchString);
-        final PartySearchParamsBean paramsBean = searchParams;
-
+        // Use a SolaTask to make the search much smoother. 
         final List<PartySearchResultBean> searchResult = new LinkedList<PartySearchResultBean>();
         listModel.clear();
         searchTask = new SolaTask<Void, Void>() {
@@ -75,11 +78,11 @@ public class PartyQuickSearch extends FreeTextSearch {
                         ClientMessage.PROGRESS_MSG_MAP_SEARCHING,
                         new String[]{""}).getMessage());
                 try {
-                    // Allow a small delay on the background thread so that the tread can be cancelled
+                    // Allow a small delay on the background thread so that the thread can be cancelled
                     // before executing the search if the user is still typing. 
                     Thread.sleep(500);
                     PartySearchParamsTO params = TypeConverters.BeanToTrasferObject(
-                            paramsBean, PartySearchParamsTO.class);
+                            searchParams, PartySearchParamsTO.class);
                     TypeConverters.TransferObjectListToBeanList(
                             WSManager.getInstance().getSearchService().searchParties(params),
                             PartySearchResultBean.class, (List) searchResult);
@@ -99,9 +102,5 @@ public class PartyQuickSearch extends FreeTextSearch {
             }
         };
         TaskManager.getInstance().runTask(searchTask);
-    }
-
-    public PartySearchParamsBean getSearchParams() {
-        return searchParams;
     }
 }

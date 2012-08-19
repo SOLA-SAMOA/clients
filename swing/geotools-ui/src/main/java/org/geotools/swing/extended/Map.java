@@ -59,18 +59,14 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.extended.layer.*;
 import org.geotools.swing.JMapPane;
-import org.geotools.swing.event.MapMouseAdapter;
-import org.geotools.swing.event.MapMouseEvent;
 import org.geotools.swing.event.MapPaneAdapter;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.extended.util.Messaging;
 import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.swing.extended.exception.InitializeLayerException;
 import org.geotools.swing.extended.exception.InitializeMapException;
-import org.geotools.swing.extended.exception.MapScaleException;
 import org.geotools.swing.mapaction.extended.ExtendedAction;
 import org.geotools.swing.tool.extended.ExtendedTool;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * This is an extension of the swing control {
@@ -288,7 +284,7 @@ public class Map extends JMapPane {
                 newMinX, newMaxX, newMinY, newMaxY, env.getCoordinateReferenceSystem());
 
         this.setDisplayArea(env);
-        this.refresh();
+        //this.refresh();
     }
 
     /**
@@ -553,7 +549,7 @@ public class Map extends JMapPane {
     public void addMapAction(
             AbstractAction action, boolean hasTool, JToolBar inToolbar, boolean enabled) {
         action.setEnabled(enabled);
-        AbstractButton btn = null;
+        AbstractButton btn;
         if (hasTool) {
             btn = new ExtendedToolItem(action);
         } else {
@@ -671,20 +667,12 @@ public class Map extends JMapPane {
     }
 
     /**
-     * Gets the current scale of the map.
+     * Gets the current scale of the map. The calculation happens according to OGC specification.
      *
-     * @return
+     * @return The scale
      */
-    public Double getScale() throws MapScaleException {
-        try {
-            return RendererUtilities.calculateScale(
-                    this.getDisplayArea(), this.getWidth(),
-                    this.getHeight(), null);
-        } catch (TransformException trnsEx) {
-            throw new MapScaleException(trnsEx);
-        } catch (FactoryException trnsEx) {
-            throw new MapScaleException(trnsEx);
-        }
+    public Double getScale() {
+        return RendererUtilities.calculateOGCScale(this.getDisplayArea(), this.getWidth(), null);
     }
 
     /**
@@ -802,7 +790,7 @@ public class Map extends JMapPane {
         ExtendedLayerGraphics selectionLayer =
                 (ExtendedLayerGraphics) getSolaLayers().get(SELECTION_LAYER_NAME);
         if (selectionLayer != null) {
-            selectionLayer.addFeature(id, geom, null);
+            selectionLayer.addFeature(id, geom, null, false);
         }
     }
 
@@ -814,7 +802,7 @@ public class Map extends JMapPane {
                 (ExtendedLayerGraphics) getSolaLayers().get(SELECTION_LAYER_NAME);
         if (selectionLayer != null
                 && selectionLayer.getFeatureCollection().size() > 0) {
-            selectionLayer.removeFeatures();
+            selectionLayer.removeFeatures(false);
         }
     }
 }

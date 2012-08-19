@@ -29,9 +29,11 @@ package org.sola.clients.swing.gis;
 
 import java.awt.Component;
 import java.util.HashMap;
+import java.util.Map;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.sola.clients.beans.administrative.BaUnitBean;
+import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.clients.swing.gis.ui.controlsbundle.ControlsBundleForApplicationLocation;
 import com.vividsolutions.jts.geom.Geometry;
@@ -39,9 +41,9 @@ import com.vividsolutions.jts.io.WKBWriter;
 import com.vividsolutions.jts.io.WKTReader;
 import java.awt.Dimension;
 import javax.swing.JDialog;
+import org.geotools.swing.extended.util.GeometryUtility;
 import org.sola.clients.beans.security.SecurityBean;
-import org.sola.clients.swing.gis.beans.TransactionCadastreChangeBean;
-import org.sola.clients.swing.gis.beans.TransactionCadastreRedefinitionBean;
+import org.sola.clients.swing.gis.beans.CadastreObjectBean;
 import org.sola.clients.swing.gis.ui.controlsbundle.ControlsBundleForBaUnit;
 import org.sola.clients.swing.gis.ui.controlsbundle.ControlsBundleForCadastreChange;
 import org.sola.clients.swing.gis.data.PojoDataAccess;
@@ -50,6 +52,7 @@ import org.sola.clients.swing.gis.ui.controlsbundle.ControlsBundleViewer;
 import org.sola.services.boundary.wsclients.WSManager;
 import org.sola.webservices.search.MapDefinitionTO;
 import org.sola.webservices.transferobjects.administrative.BaUnitTO;
+import org.sola.webservices.transferobjects.casemanagement.ApplicationTO;
 
 /**
  * Unit test for simple App.
@@ -123,38 +126,49 @@ public class Development {
     /**
      * Test the controls bundle for cadastre change
      */
-    @Ignore
+   //@Ignore
     @Test
     public void testUIControlsBundleForCadastreChange() throws Exception {
         System.out.println("Test ControlsBundle for cadastre change");
-
-        SecurityBean.authenticate("test", "test".toCharArray(), this.getWSConfig());
-
-        TransactionCadastreChangeBean cadastreChangeBean =
-                PojoDataAccess.getInstance().getTransactionCadastreChange("4001");
-        ControlsBundleForCadastreChange ctrl =
-                new ControlsBundleForCadastreChange("333", cadastreChangeBean, "3068323", null);
-        ctrl.getMap().addMapAction(new TestCadastreTransactionChange(ctrl), ctrl.getToolbar(), true);
+        CadastreObjectBean bean = new CadastreObjectBean();
+        bean.setNameFirstpart("test");
+        bean.setNameLastpart("fund");
+        String[] fromFieldsOnly = new String[2];
+        fromFieldsOnly[0] = "nameFirstpart";
+        fromFieldsOnly[1] = "nameLastpart";
+        Map result = bean.getValues(fromFieldsOnly);
         
-       // ctrl.setReadOnly(true);
+        HashMap<String, Object> values = new HashMap<String, Object>();
+        values.put("nameFirstpart", "test2");
+        values.put("nameLastpart", "test2-last");
+        values.put("officialArea", 2.0);
+        bean.setValues(values);
+
+        WKTReader wktReader = new WKTReader();
+        Geometry geom = wktReader.read("POINT(1782978 5926627)");
+        byte[] geomAsBytes = GeometryUtility.getWkbFromGeometry((Geometry)geom.clone());
+        Geometry geom2 = GeometryUtility.getGeometryFromWkb(geomAsBytes.clone());
+        
+        SecurityBean.authenticate("test", "test".toCharArray(), this.getWSConfig());
+        
+        ControlsBundleForCadastreChange ctrl = new ControlsBundleForCadastreChange(
+                this.getApplicationBean("3000"), "4000", "3078053", "parcel");
+        
+        //ctrl.setReadOnly(true);
 
         this.displayControlsBundleForm(ctrl);
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void testUIControlsBundleForCadastreRedefinition() throws Exception {
         System.out.println("Test ControlsBundle for cadastre redefinition");
 
         SecurityBean.authenticate("test", "test".toCharArray(), this.getWSConfig());
 
-        TransactionCadastreRedefinitionBean transactionBean =
-                  PojoDataAccess.getInstance().getTransactionCadastreRedefinition("4000");
         ControlsBundleForCadastreRedefinition ctrl =
-                new ControlsBundleForCadastreRedefinition(transactionBean, "3068323", null);
-        ctrl.getMap().addMapAction(
-                new TestCadastreTransactionRedefinition(ctrl), ctrl.getToolbar(), true);
-        //ctrl.setReadOnly(true);
+                new ControlsBundleForCadastreRedefinition(
+                this.getApplicationBean("3001"), "4011", "3068323", "parcel");
         this.displayControlsBundleForm(ctrl);
     }
 
@@ -169,5 +183,13 @@ public class Development {
         wsConfig.put("SOLA_WS_SPATIAL_SERVICE_URL", "http://localhost:8080/sola/webservices/spatial-service?wsdl");
         wsConfig.put("SOLA_WS_ADMINISTRATIVE_SERVICE_URL", "http://localhost:8080/sola/webservices/administrative-service?wsdl");
         return wsConfig;
+    }
+    
+    private ApplicationBean getApplicationBean(String applicationId){
+        ApplicationTO appTO =
+                PojoDataAccess.getInstance().getWSManager().getCaseManagementService().getApplication(
+                applicationId);
+        
+        return TypeConverters.TransferObjectToBean(appTO, ApplicationBean.class, null);        
     }
 }
