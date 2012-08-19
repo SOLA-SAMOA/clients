@@ -47,6 +47,7 @@ public class DocumentsManagementPanel extends javax.swing.JPanel {
     private ApplicationDocumentsForm applicationDocumentsForm;
     private SolaList<SourceBean> sourceList;
     private boolean allowEdit = true;
+    private boolean allowAddingOfNewDocuments = true;
     
     /** Creates new instance of {@link DocumentsPanel}. */
     private DocumentsPanel createDocumentsPanel() {
@@ -159,6 +160,16 @@ public class DocumentsManagementPanel extends javax.swing.JPanel {
         return documentsPanel.getSourceListBean();
     }
     
+    /**
+     * Sets the property to allow new documents that are not defined in 
+     * application to be added in the list.
+     * 
+     * @param allow 
+     */
+    public void setAllowAddingOfNewDocuments(boolean allow){
+        allowAddingOfNewDocuments = allow;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -236,7 +247,7 @@ public class DocumentsManagementPanel extends javax.swing.JPanel {
         });
         jToolBar1.add(btnRemove);
 
-        btnView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/view.png"))); // NOI18N
+        btnView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/folder-open-document.png"))); // NOI18N
         btnView.setText(bundle.getString("DocumentsManagementPanel.btnView.text")); // NOI18N
         btnView.setFocusable(false);
         btnView.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -332,6 +343,7 @@ public class DocumentsManagementPanel extends javax.swing.JPanel {
         applicationDocumentsForm.setLocationRelativeTo(this);
         applicationDocumentsForm.addPropertyChangeListener(
                 SourceListBean.SELECTED_SOURCE_PROPERTY, listener);
+        applicationDocumentsForm.allowAddingOfNewDocuments(allowAddingOfNewDocuments);
         applicationDocumentsForm.setVisible(true);
         applicationDocumentsForm.removePropertyChangeListener(
                 SourceListBean.SELECTED_SOURCE_PROPERTY, listener);
