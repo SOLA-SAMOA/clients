@@ -116,7 +116,7 @@ public class MapFeatureImageGenerator extends MapImageGenerator {
                 getMap().addLayer(drawLayer);
                 HashMap<String, Object> fields = new HashMap<String, Object>();
                 fields.put(LAYER_FIELD_LABEL, label);
-                SimpleFeature feature = drawLayer.addFeature("1", geom, fields, true);
+                SimpleFeature feature = drawLayer.addFeature("1", geom, fields, false);
 
                 // Zoom to the area of the new geometry. Buffer the shape by 1 unit to prevent
                 // any truncation of the image. 
@@ -124,9 +124,8 @@ public class MapFeatureImageGenerator extends MapImageGenerator {
                 boundsToZoom.expandBy(1);
                 getMap().setDisplayArea(boundsToZoom);
 
-                // Generate an image of the feature using the default DPI of 72. 
-                result = getImageAsFileLocation(imageWidthPixels, imageHeightPixels, getMap().getScale(),
-                        72, imageFormat);
+                // Generate the image using the bounding envelope of the parcel. 
+                result = getImageAsFileLocation(imageWidthPixels, boundsToZoom, imageFormat);
             }
         } catch (Exception ex) {
             LogUtility.log("Unable to generate feature image for " + label, ex);

@@ -46,8 +46,8 @@ import org.geotools.swing.extended.Map;
 
 /**
  * It is a generator of an image from the current status of the map layers. <br/> In the sides of
- * the image generated, are added the coordinates of the extent. The frame can be omitted by
- * setting the drawFrame field to false. 
+ * the image generated, are added the coordinates of the extent. The frame can be omitted by setting
+ * the drawFrame field to false.
  *
  * @author Elton Manoku
  */
@@ -56,7 +56,6 @@ public class MapImageGenerator {
     public final static String IMAGE_FORMAT_PNG = "png";
     public final static String IMAGE_FORMAT_BMP = "bmp";
     public final static String IMAGE_FORMAT_JPG = "jpg";
-    
     private final static String TEMPORARY_IMAGE_FILE_LOCATION =
             System.getProperty("user.home") + File.separator + "sola";
     private final static String TEMPORARY_IMAGE_FILE = "map";
@@ -117,18 +116,20 @@ public class MapImageGenerator {
         return drawFrame;
     }
 
-    /** 
+    /**
      * When true, a frame will be drawn around the image with coordinates. If false, the frame will
-     * be omitted. Default true. 
-     * @param drawFrame 
+     * be omitted. Default true.
+     *
+     * @param drawFrame
      */
     public void setDrawFrame(boolean drawFrame) {
         this.drawFrame = drawFrame;
     }
 
     /**
-     * Returns the map control used as the source of image generation. 
-     * @return 
+     * Returns the map control used as the source of image generation.
+     *
+     * @return
      */
     protected Map getMap() {
         return map;
@@ -222,6 +223,28 @@ public class MapImageGenerator {
                 + TEMPORARY_IMAGE_FILE + "." + imageFormat;
         File outputFile = new File(pathToResult);
         BufferedImage bufferedImage = this.getImage(imageWidth, imageHeight, scale, dpi);
+        ImageIO.write(bufferedImage, imageFormat, outputFile);
+        return pathToResult;
+    }
+
+    /**
+     * Generates an image using the specified extent and saves the image to an image file. 
+     * @param imageWidth The width of the image in pixels
+     * @param extent The extent of the map window to use for the image
+     * @param imageFormat The format of the image. Potential values can be jpg, png, bmp
+     * @return The path and file name of the image file
+     * @throws IOException 
+     */
+    public String getImageAsFileLocation(int imageWidth, ReferencedEnvelope extent,
+            String imageFormat) throws IOException {
+        File location = new File(TEMPORARY_IMAGE_FILE_LOCATION);
+        if (!location.exists()) {
+            location.mkdirs();
+        }
+        String pathToResult = TEMPORARY_IMAGE_FILE_LOCATION + File.separator
+                + TEMPORARY_IMAGE_FILE + "." + imageFormat;
+        File outputFile = new File(pathToResult);
+        BufferedImage bufferedImage = this.getImage(imageWidth, extent);
         ImageIO.write(bufferedImage, imageFormat, outputFile);
         return pathToResult;
     }
