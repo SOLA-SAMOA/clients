@@ -1,30 +1,26 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
- * (FAO). All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
+ * reserved.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this
- * list of conditions and the following disclaimer. 2. Redistributions in binary
- * form must reproduce the above copyright notice,this list of conditions and
- * the following disclaimer in the documentation and/or other materials provided
- * with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this
- * software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
+ * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
+ * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.beans.controls;
@@ -46,8 +42,8 @@ import org.jdesktop.observablecollections.ObservableList;
 import org.jdesktop.observablecollections.ObservableListListener;
 
 /**
- * Provides observable list, together with filtered list excluding beans marked
- * for removal as well as beans with a given status.
+ * Provides observable list, together with filtered list excluding beans marked for removal as well
+ * as beans with a given status.
  */
 public class ExtendedList<E> extends AbstractList<E> implements ObservableList<E>, Serializable {
 
@@ -121,21 +117,18 @@ public class ExtendedList<E> extends AbstractList<E> implements ObservableList<E
     }
 
     /**
-     * Returns filter expression, used to filter items. If filter expression is
-     * set together with {@link ExtendedListFilter} instance, both expression
-     * and filter will be evaluated.
+     * Returns filter expression, used to filter items. If filter expression is set together with {@link ExtendedListFilter}
+     * instance, both expression and filter will be evaluated.
      */
     public String getFilterExpression() {
         return filterExpression;
     }
 
     /**
-     * Sets filter expression, used to filter items. OGNL language is used for
-     * building expressions read more at <a
-     * href="http://commons.apache.org/ognl/">
-     * http://commons.apache.org/ognl/</a>.<br /> If filter expression is set
-     * together with {@link ExtendedListFilter} instance, both expression and
-     * filter will be evaluated.
+     * Sets filter expression, used to filter items. OGNL language is used for building expressions
+     * read more at <a href="http://commons.apache.org/ognl/">
+     * http://commons.apache.org/ognl/</a>.<br /> If filter expression is set together with {@link ExtendedListFilter}
+     * instance, both expression and filter will be evaluated.
      */
     public void setFilterExpression(String filterExpression) {
         this.filterExpression = filterExpression;
@@ -143,16 +136,16 @@ public class ExtendedList<E> extends AbstractList<E> implements ObservableList<E
     }
 
     /**
-     * Returns {@link ExtendedListFilter} implementation instance, used to
-     * filter elements in the list.
+     * Returns {@link ExtendedListFilter} implementation instance, used to filter elements in the
+     * list.
      */
     public ExtendedListFilter getFilter() {
         return filter;
     }
 
     /**
-     * Sets {@link ExtendedListFilter} implementation instance, used to to
-     * filter elements in the list.
+     * Sets {@link ExtendedListFilter} implementation instance, used to to filter elements in the
+     * list.
      */
     public void setFilter(ExtendedListFilter filter) {
         this.filter = filter;
@@ -167,8 +160,8 @@ public class ExtendedList<E> extends AbstractList<E> implements ObservableList<E
     }
 
     /**
-     * Returns real index of the element in the list using {@code equals} method
-     * and reference address of the object.
+     * Returns real index of the element in the list using {@code equals} method and reference
+     * address of the object.
      *
      * @param element Element of the list.
      */
@@ -177,8 +170,8 @@ public class ExtendedList<E> extends AbstractList<E> implements ObservableList<E
     }
 
     /**
-     * Returns real index of the element in the list using {@code equals} method
-     * and reference address of the object.
+     * Returns real index of the element in the list using {@code equals} method and reference
+     * address of the object.
      *
      * @param element Index of the element in the list.
      */
@@ -187,8 +180,8 @@ public class ExtendedList<E> extends AbstractList<E> implements ObservableList<E
     }
 
     /**
-     * Static method to returns real index of the element in the list using {@code equals}
-     * method and reference address of the object.
+     * Static method to returns real index of the element in the list using {@code equals} method
+     * and reference address of the object.
      *
      * @param element Index of the element in the list.
      * @param list List to use for searching
@@ -299,8 +292,7 @@ public class ExtendedList<E> extends AbstractList<E> implements ObservableList<E
     }
 
     /**
-     * Adds property change listener for the list element to trigger filtering
-     * check.
+     * Adds property change listener for the list element to trigger filtering check.
      */
     private void addPropertyChangeListener(E element) {
         if (element != null && elementListener != null && supportsElementPropertyChanged) {
@@ -341,8 +333,8 @@ public class ExtendedList<E> extends AbstractList<E> implements ObservableList<E
     }
 
     /**
-     * Adds new element into the list and tracks it as newly added. This helps
-     * to take a decision whether to remove element from list or not.
+     * Adds new element into the list and tracks it as newly added. This helps to take a decision
+     * whether to remove element from list or not.
      *
      * @param element Object to add.
      */
@@ -402,10 +394,9 @@ public class ExtendedList<E> extends AbstractList<E> implements ObservableList<E
     }
 
     /**
-     * Checks given element of the list against filtering conditions. If element
-     * doesn't conform to the filer criteria, it will be removed from the
-     * filtered list. If element conforms to the filter criteria and not in the
-     * filtered list, it will be added.
+     * Checks given element of the list against filtering conditions. If element doesn't conform to
+     * the filer criteria, it will be removed from the filtered list. If element conforms to the
+     * filter criteria and not in the filtered list, it will be added.
      *
      * @param element Element object to refresh
      * @see #filter()
@@ -416,10 +407,9 @@ public class ExtendedList<E> extends AbstractList<E> implements ObservableList<E
     }
 
     /**
-     * Checks given element of the list against filtering conditions. If element
-     * doesn't conform to the filer criteria, it will be removed from the
-     * filtered list. If element conforms to the filter criteria and not in the
-     * filtered list, it will be added.
+     * Checks given element of the list against filtering conditions. If element doesn't conform to
+     * the filer criteria, it will be removed from the filtered list. If element conforms to the
+     * filter criteria and not in the filtered list, it will be added.
      *
      * @param index Index of the element to refresh.
      * @see #filter()
@@ -613,8 +603,8 @@ public class ExtendedList<E> extends AbstractList<E> implements ObservableList<E
          * Removes element from the filtered list at specified position.
          *
          * @param index Index of element in the list
-         * @param fireMainListEvent Boolean value indicating whether to trigger
-         * removal event on the the parent list or not.
+         * @param fireMainListEvent Boolean value indicating whether to trigger removal event on the
+         * the parent list or not.
          */
         private E remove(int index, boolean fireMainListEvent) {
             E oldValue = null;
@@ -682,8 +672,8 @@ public class ExtendedList<E> extends AbstractList<E> implements ObservableList<E
         }
 
         /**
-         * Checks filter criteria against the given element. Returns true if
-         * element conforms to the criteria.
+         * Checks filter criteria against the given element. Returns true if element conforms to the
+         * criteria.
          */
         private boolean isAllowedByFilter(E element) {
             boolean result = true;

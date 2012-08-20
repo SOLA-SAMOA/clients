@@ -26,6 +26,7 @@
 package org.sola.clients.swing.gis.ui.control;
 
 import org.sola.clients.swing.gis.beans.SpatialUnitChangeListBean;
+import org.sola.webservices.transferobjects.EntityAction;
 
 /**
  * Form allows users to edit details of Spatial Unit Features such as the label.
@@ -72,8 +73,12 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
 
     private void removeSelected() {
         if (spatialUnitChangeList.getSelectedSpatialUnitChange() != null) {
-            spatialUnitChangeList.getSpatialUnitChanges().remove(
-                    spatialUnitChangeList.getSelectedSpatialUnitChange());
+            if (this.tblSpatialUnitChanges.getCellEditor() != null) {
+                this.tblSpatialUnitChanges.getCellEditor().stopCellEditing();
+            }
+            spatialUnitChangeList.getSpatialUnitChanges().safeRemove(
+                    spatialUnitChangeList.getSelectedSpatialUnitChange(), EntityAction.DELETE);
+            // Clear the selected feature
             this.tblSpatialUnitChanges.clearSelection();
         }
     }
@@ -106,7 +111,7 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
         tblSpatialUnitChanges.setColumnSelectionAllowed(true);
         tblSpatialUnitChanges.getTableHeader().setReorderingAllowed(false);
 
-        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${spatialUnitChanges}");
+        org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${filteredSpatialUnitChanges}");
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, spatialUnitChangeList, eLProperty, tblSpatialUnitChanges, "");
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${label}"));
         columnBinding.setColumnName("Label");
@@ -114,14 +119,12 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${levelName}"));
         columnBinding.setColumnName("Level Name");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${deleteOnApproval}"));
         columnBinding.setColumnName("Delete On Approval");
         columnBinding.setColumnClass(Boolean.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${newFeature}"));
         columnBinding.setColumnName("New Feature");
         columnBinding.setColumnClass(Boolean.class);
-        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, spatialUnitChangeList, org.jdesktop.beansbinding.ELProperty.create("${selectedSpatialUnitChange}"), tblSpatialUnitChanges, org.jdesktop.beansbinding.BeanProperty.create("selectedElement"));
         bindingGroup.addBinding(binding);

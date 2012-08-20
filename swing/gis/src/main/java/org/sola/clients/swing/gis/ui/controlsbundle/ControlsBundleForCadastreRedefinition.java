@@ -60,6 +60,9 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
     private TransactionCadastreRedefinitionBean transactionBean;
     private CadastreRedefinitionNodeLayer cadastreObjectNodeModifiedLayer = null;
     private CadastreRedefinitionObjectLayer cadastreObjectModifiedLayer = null;
+    private CadastreRedefinitionAddNodeTool addNodeTool;
+    private CadastreRedefinitionModifyNodeTool modifyNodeTool;
+    private CadastreRedefinitionBoundarySelectTool boundarySelectTool;
 
     /**
      * Constructor. It sets up the bundle by adding layers and tools that are relevant. Finally, it
@@ -113,6 +116,7 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
         this.transactionBean.setCadastreObjectTargetList(
                 this.cadastreObjectModifiedLayer.getBeanListForTransaction());
         this.transactionBean.setSourceIdList(this.getDocumentsPanel().getSourceIds());
+        transactionBean.setSpatialUnitChangeList(this.spatialUnitEditLayer.getSpatialUnitChangeList());
         return this.transactionBean;
     }
 
@@ -125,6 +129,7 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
         this.cadastreObjectNodeModifiedLayer.setBeanList(
                 this.transactionBean.getCadastreObjectNodeTargetList());
         this.getDocumentsPanel().setSourceIds(this.transactionBean.getSourceIdList());
+        this.spatialUnitEditLayer.setSpatialUnitChangeList(this.transactionBean.getSpatialUnitChangeList());
     }
 
     @Override
@@ -139,11 +144,10 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
 
         this.spatialUnitEditLayer = new SpatialUnitEditLayer();
         this.getMap().addLayer(spatialUnitEditLayer);
-        this.spatialUnitEditLayer.setSpatialUnitChangeList(this.transactionBean.getSpatialUnitChangeList());
+        
+        this.getMap().moveSelectionLayer();
+        
     }
-    private CadastreRedefinitionAddNodeTool addNodeTool;
-    private CadastreRedefinitionModifyNodeTool modifyNodeTool;
-    private CadastreRedefinitionBoundarySelectTool boundarySelectTool;
 
     @Override
     protected void addToolsAndCommands() {

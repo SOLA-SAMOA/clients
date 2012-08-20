@@ -115,21 +115,19 @@
             </Property>
           </Properties>
           <BindingProperties>
-            <BindingProperty name="elements" source="spatialUnitChangeList" sourcePath="${spatialUnitChanges}" target="tblSpatialUnitChanges" targetPath="elements" updateStrategy="0" immediately="true">
+            <BindingProperty name="elements" source="spatialUnitChangeList" sourcePath="${filteredSpatialUnitChanges}" target="tblSpatialUnitChanges" targetPath="elements" updateStrategy="0" immediately="true">
               <Property name="name" type="java.lang.String" value=""/>
               <Subbinding sourcePath="${label}">
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
               </Subbinding>
               <Subbinding sourcePath="${levelName}">
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
               <Subbinding sourcePath="${deleteOnApproval}">
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Boolean.class"/>
               </Subbinding>
               <Subbinding sourcePath="${newFeature}">
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Boolean.class"/>
-                <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
               </Subbinding>
             </BindingProperty>
             <BindingProperty name="selectedElement" source="spatialUnitChangeList" sourcePath="${selectedSpatialUnitChange}" target="tblSpatialUnitChanges" targetPath="selectedElement" updateStrategy="0" immediately="false">

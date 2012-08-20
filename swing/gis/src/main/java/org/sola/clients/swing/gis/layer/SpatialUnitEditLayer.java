@@ -46,6 +46,7 @@ import org.sola.clients.swing.gis.beans.SpatialUnitChangeBean;
 import org.sola.clients.swing.gis.beans.SpatialUnitChangeListBean;
 import org.sola.common.messaging.GisMessage;
 import org.sola.common.messaging.MessageUtility;
+import org.sola.webservices.transferobjects.EntityAction;
 
 /**
  * Layer that supports the creation and editing of spatial unit features such as Hydro polygons and
@@ -118,7 +119,7 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
 
         // Configures a observerable list listener to remove any features that get removed 
         //from the listBean 
-        this.listBean.getSpatialUnitChanges().addObservableListListener(new ObservableListListener() {
+        this.listBean.getFilteredSpatialUnitChanges().addObservableListListener(new ObservableListListener() {
 
             @Override
             public void listElementsAdded(ObservableList ol, int i, int i1) {
@@ -138,6 +139,8 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
             }
         });
     }
+
+    ;
 
     /**
      * Highlights the geometry of the bean on the map to help users identify which feature they are
@@ -198,7 +201,9 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
                 }
                 if (ev.getEventType() == CollectionEvent.FEATURES_REMOVED) {
                     // Feature was removed, so remove the matching bean from the collection
-                    listBean.getSpatialUnitChanges().remove(bean);
+                    if (bean.getEntityAction() != EntityAction.DELETE) {
+                        listBean.getSpatialUnitChanges().safeRemove(bean, EntityAction.DELETE);
+                    }
                 }
             }
         }
@@ -270,10 +275,12 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
         if (spatialUnitChanges != null && !spatialUnitChanges.isEmpty()) {
             for (SpatialUnitChangeBean bean : spatialUnitChanges) {
                 this.listBean.getSpatialUnitChanges().add(bean);
-                boolean isNew = bean.getSpatialUnitId() == null;
-                String fid = isNew ? bean.getId() : bean.getSpatialUnitId();
-                addFeature(fid, bean.getGeom(), bean.getLevelName(), bean.getLabel(),
-                        bean.isDeleteOnApproval(), isNew);
+                if (bean.getEntityAction() != EntityAction.DELETE) {
+                    boolean isNew = bean.getSpatialUnitId() == null;
+                    String fid = isNew ? bean.getId() : bean.getSpatialUnitId();
+                    addFeature(fid, bean.getGeom(), bean.getLevelName(), bean.getLabel(),
+                            bean.isDeleteOnApproval(), isNew);
+                }
             }
             getMapControl().refresh();
         }
