@@ -110,7 +110,7 @@ public class ReportManager {
      *
      * @param appBean Application bean containing data for the report.
      */
-    public static JasperPrint getBaUnitReport(BaUnitBean baUnitBean) {
+    public static JasperPrint getBaUnitReport(BaUnitBean baUnitBean, String featureImageFileName) {
         HashMap inputParameters = new HashMap();
         inputParameters.put("REPORT_LOCALE", Locale.getDefault());
         inputParameters.put("USER", SecurityBean.getCurrentUser().getFullUserName());
@@ -118,6 +118,7 @@ public class ReportManager {
         beans[0] = baUnitBean;
         JRDataSource jds = new JRBeanArrayDataSource(beans);
         inputParameters.put("SAMOA_EMBLEM", ReportManager.class.getResourceAsStream("/images/sola/samEmblem.png"));
+        inputParameters.put("MAP_IMAGE", featureImageFileName);
         try {
             return JasperFillManager.fillReport(
                     ReportManager.class.getResourceAsStream("/reports/BaUnitReport.jasper"),

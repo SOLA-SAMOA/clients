@@ -776,7 +776,7 @@ public class PropertyPanel extends ContentPanel {
 
         // if (ApplicationServiceBean.saveInformationService(RequestTypeBean.CODE_TITLE_SERACH)) {
         showReport(ReportManager.getBaUnitReport(getBaUnit(
-                baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart())));
+                baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart()),featureImageFileName));
         // }
     }
 
