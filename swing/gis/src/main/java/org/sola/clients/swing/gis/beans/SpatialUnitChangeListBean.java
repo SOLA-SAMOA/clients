@@ -25,26 +25,40 @@
  */
 package org.sola.clients.swing.gis.beans;
 
+import org.jdesktop.observablecollections.ObservableList;
 import org.sola.clients.beans.AbstractBindingBean;
-import org.sola.clients.beans.controls.SolaObservableList;
+import org.sola.clients.beans.controls.SolaList;
 
 /**
  * Manages a list of {@linkplain SpatialUnitChangeBean} to simplify binding the list of beans to a
- * form. 
+ * form.
  */
 public class SpatialUnitChangeListBean extends AbstractBindingBean {
 
     public static final String SELECTED_SPATIAL_UNIT_CHANGE_PROPERTY = "selectedSpatialUnitChange";
-    private SolaObservableList<SpatialUnitChangeBean> spatialUnitChanges;
+    private SolaList<SpatialUnitChangeBean> spatialUnitChanges;
     private SpatialUnitChangeBean selectedSpatialUnitChange;
 
     public SpatialUnitChangeListBean() {
         super();
-        spatialUnitChanges = new SolaObservableList<SpatialUnitChangeBean>();
+        spatialUnitChanges = new SolaList<SpatialUnitChangeBean>();
     }
 
-    public SolaObservableList<SpatialUnitChangeBean> getSpatialUnitChanges() {
+    /**
+     * Returns the complete list of all spatial unit changes, including those marked for deletion.
+     *
+     * @return
+     */
+    public SolaList<SpatialUnitChangeBean> getSpatialUnitChanges() {
         return spatialUnitChanges;
+    }
+
+    /**
+     * Returns the list of spatial unit changes with excluding any changes that have been marked for
+     * deletion.
+     */
+    public ObservableList<SpatialUnitChangeBean> getFilteredSpatialUnitChanges() {
+        return spatialUnitChanges.getFilteredList();
     }
 
     public SpatialUnitChangeBean getSelectedSpatialUnitChange() {

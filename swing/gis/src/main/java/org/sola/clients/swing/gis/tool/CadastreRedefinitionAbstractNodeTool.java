@@ -52,9 +52,11 @@ import org.sola.common.messaging.GisMessage;
  *
  * @author Elton Manoku
  */
-public abstract class CadastreRedefinitionAbstractNodeTool extends ExtendedDrawRectangle {
+public abstract class CadastreRedefinitionAbstractNodeTool
+        extends ExtendedDrawRectangle implements TargetCadastreObjectTool {
 
     private CadastreRedefinitionNodeModifyForm form = null;
+    protected String cadastreObjectType;
     protected PojoDataAccess dataAccess;
     protected CadastreRedefinitionObjectLayer cadastreObjectModifiedLayer;
     protected CadastreRedefinitionNodeLayer cadastreObjectNodeModifiedLayer;
@@ -76,6 +78,10 @@ public abstract class CadastreRedefinitionAbstractNodeTool extends ExtendedDrawR
         this.form = new CadastreRedefinitionNodeModifyForm();
     }
 
+    @Override
+    public void setCadastreObjectType(String cadastreObjectType) {
+        this.cadastreObjectType = cadastreObjectType;
+    }
     /**
      * If the tool is selected/ made active, then the irregular boundary procedure is reseted.
      *
@@ -86,7 +92,7 @@ public abstract class CadastreRedefinitionAbstractNodeTool extends ExtendedDrawR
         super.onSelectionChanged(selected);
         if (selected) {
             ExtendedAction action =
-                    this.getMapControl().getMapActionByName(CadastreBoundarySelectTool.NAME);
+                    this.getMapControl().getMapActionByName(CadastreBoundarySelectTool.MAP_ACTION_NAME);
             if (action != null) {
                 ((CadastreBoundarySelectTool) action.getAttachedTool()).clearSelection();
                 this.getMapControl().refresh();
@@ -112,8 +118,7 @@ public abstract class CadastreRedefinitionAbstractNodeTool extends ExtendedDrawR
     protected final CadastreObjectNodeBean addNodeFromServer(Envelope2D env) {
         CadastreObjectNodeBean nodeBean = this.getNodeFromServer(env);
         if (nodeBean != null) {
-            this.cadastreObjectNodeModifiedLayer.addNodeTarget(
-                    nodeBean.getId(), nodeBean.getGeom());
+            this.cadastreObjectNodeModifiedLayer.addNodeTarget(nodeBean);
             this.cadastreObjectModifiedLayer.addCadastreObjects(nodeBean.getCadastreObjectList());
             this.getMapControl().refresh();
         }
@@ -208,6 +213,8 @@ public abstract class CadastreRedefinitionAbstractNodeTool extends ExtendedDrawR
             nodeFeatureGeom.getCoordinate().x = newCoordinateX;
             nodeFeatureGeom.getCoordinate().y = newCoordinateY;
             nodeFeatureGeom.geometryChanged();
+            this.cadastreObjectNodeModifiedLayer.getFeatureCollection().notifyListeners(
+                    nodeFeature, CollectionEvent.FEATURES_CHANGED);
             this.removeIfNodeNotUsed(nodeFeature);
             this.getMapControl().refresh();
         } else {
@@ -267,8 +274,7 @@ public abstract class CadastreRedefinitionAbstractNodeTool extends ExtendedDrawR
             }
         }
         if (success) {
-            this.cadastreObjectNodeModifiedLayer.removeFeature(nodeFeature.getID());
-            this.getMapControl().refresh();
+            this.cadastreObjectNodeModifiedLayer.removeFeature(nodeFeature.getID(), true);
         } else {
             for (SimpleFeature cadastreObjectFeature : cadastreObjects) {
                 if (backup.containsKey(cadastreObjectFeature.getID())) {
@@ -316,7 +322,7 @@ public abstract class CadastreRedefinitionAbstractNodeTool extends ExtendedDrawR
                 this.cadastreObjectModifiedLayer.getCadastreObjectFeatures(nodeFeature);
 
         if (cadastreObjects.isEmpty()) {
-            this.cadastreObjectNodeModifiedLayer.removeFeature(nodeFeature.getID());
+            this.cadastreObjectNodeModifiedLayer.removeFeature(nodeFeature.getID(), false);
             objectsAreRemoved = true;
         }
         return objectsAreRemoved;

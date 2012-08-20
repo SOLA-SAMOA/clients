@@ -46,6 +46,7 @@ import org.sola.clients.swing.gis.beans.SpatialUnitChangeBean;
 import org.sola.clients.swing.gis.beans.SpatialUnitChangeListBean;
 import org.sola.common.messaging.GisMessage;
 import org.sola.common.messaging.MessageUtility;
+import org.sola.webservices.transferobjects.EntityAction;
 
 /**
  * Layer that supports the creation and editing of spatial unit features such as Hydro polygons and
@@ -118,7 +119,7 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
 
         // Configures a observerable list listener to remove any features that get removed 
         //from the listBean 
-        this.listBean.getSpatialUnitChanges().addObservableListListener(new ObservableListListener() {
+        this.listBean.getFilteredSpatialUnitChanges().addObservableListListener(new ObservableListListener() {
 
             @Override
             public void listElementsAdded(ObservableList ol, int i, int i1) {
@@ -138,6 +139,8 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
             }
         });
     }
+
+    ;
 
     /**
      * Highlights the geometry of the bean on the map to help users identify which feature they are
@@ -198,7 +201,9 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
                 }
                 if (ev.getEventType() == CollectionEvent.FEATURES_REMOVED) {
                     // Feature was removed, so remove the matching bean from the collection
-                    listBean.getSpatialUnitChanges().remove(bean);
+                    if (bean.getEntityAction() != EntityAction.DELETE) {
+                        listBean.getSpatialUnitChanges().safeRemove(bean, EntityAction.DELETE);
+                    }
                 }
             }
         }
@@ -266,14 +271,16 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
         // Clear the features on the map and from the bean list. 
         // Note that addFeature will add the bean back into the bean list. 
         listBean.getSpatialUnitChanges().clear();
-        removeFeatures();
+        removeFeatures(true);
         if (spatialUnitChanges != null && !spatialUnitChanges.isEmpty()) {
             for (SpatialUnitChangeBean bean : spatialUnitChanges) {
                 this.listBean.getSpatialUnitChanges().add(bean);
-                boolean isNew = bean.getSpatialUnitId() == null;
-                String fid = isNew ? bean.getId() : bean.getSpatialUnitId();
-                addFeature(fid, bean.getGeom(), bean.getLevelName(), bean.getLabel(),
-                        bean.isDeleteOnApproval(), isNew);
+                if (bean.getEntityAction() != EntityAction.DELETE) {
+                    boolean isNew = bean.getSpatialUnitId() == null;
+                    String fid = isNew ? bean.getId() : bean.getSpatialUnitId();
+                    addFeature(fid, bean.getGeom(), bean.getLevelName(), bean.getLabel(),
+                            bean.isDeleteOnApproval(), isNew);
+                }
             }
             getMapControl().refresh();
         }
@@ -377,28 +384,18 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
      * java.lang.String, boolean, boolean) addFeature} instead.
      */
     @Override
-    public SimpleFeature addFeature(String fid, byte[] geomAsBytes,
-            HashMap<String, Object> fieldsWithValues) throws ParseException {
-        return null;
-    }
-
-    /**
-     * Not implemented. Use {@linkplain #addFeature(java.lang.String, byte[], java.lang.String,
-     * java.lang.String, boolean, boolean) addFeature} instead.
-     */
-    @Override
-    public SimpleFeature addFeature(String fid,
-            Geometry geom, HashMap<String, Object> fieldsWithValues) {
-        return null;
-    }
-
-    /**
-     * Not implemented. Use {@linkplain #addFeature(java.lang.String, byte[], java.lang.String,
-     * java.lang.String, boolean, boolean) addFeature} instead.
-     */
-    @Override
     public SimpleFeature addFeature(String fid,
             Geometry geom, HashMap<String, Object> fieldsWithValues, boolean redraw) {
+        return null;
+    }
+
+    /**
+     * Not implemented. Use {@linkplain #addFeature(java.lang.String, byte[], java.lang.String,
+     * java.lang.String, boolean, boolean) addFeature} instead.
+     */
+    @Override
+    public SimpleFeature addFeature(String fid,
+            byte[] geom, HashMap<String, Object> fieldsWithValues, boolean redraw) {
         return null;
     }
 
@@ -408,8 +405,8 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
      * the spatialUnitChange collection.
      */
     @Override
-    public void removeFeatures() {
-        super.removeFeatures();
+    public void removeFeatures(boolean refreshMap) {
+        super.removeFeatures(refreshMap);
         this.listBean.getSpatialUnitChanges().clear();
     }
 }

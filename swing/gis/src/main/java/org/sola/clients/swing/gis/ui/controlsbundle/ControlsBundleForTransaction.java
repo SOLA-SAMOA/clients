@@ -41,6 +41,8 @@ import org.geotools.map.extended.layer.ExtendedLayer;
 import org.geotools.swing.extended.exception.InitializeLayerException;
 import org.geotools.swing.mapaction.extended.RemoveDirectImage;
 import org.geotools.swing.tool.extended.AddDirectImageTool;
+import org.sola.clients.beans.application.ApplicationBean;
+import org.sola.clients.beans.referencedata.RequestTypeBean;
 import org.sola.clients.swing.gis.Messaging;
 import org.sola.clients.swing.gis.beans.TransactionBean;
 import org.sola.clients.swing.gis.data.PojoDataAccess;
@@ -50,6 +52,10 @@ import org.sola.clients.swing.gis.layer.PojoLayer;
 import org.sola.clients.swing.gis.layer.SpatialUnitEditLayer;
 import org.sola.clients.swing.gis.mapaction.DisplaySpatialUnitEditForm;
 import org.sola.clients.swing.gis.tool.*;
+import org.sola.clients.swing.gis.mapaction.SaveTransaction;
+import org.sola.clients.swing.gis.tool.CadastreBoundaryEditTool;
+import org.sola.clients.swing.gis.tool.CadastreBoundarySelectTool;
+import org.sola.clients.swing.gis.ui.control.MapDocumentsPanel;
 import org.sola.common.messaging.GisMessage;
 
 /**
@@ -59,17 +65,45 @@ import org.sola.common.messaging.GisMessage;
  *
  * @author Elton Manoku
  */
-public abstract class ControlsBundleForTransaction extends ControlsBundleForWorkingWithCO {
+public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
 
     private PojoLayer pendingLayer = null;
     private ExtendedImageLayer imageLayer = null;
-    private static final String IMAGE_LAYER_NAME = "imageLayer";
-    private static final String IMAGE_LAYER_TITLE = "Image";
+    private static final String IMAGE_LAYER_NAME = "temporary_image";
     protected CadastreBoundaryPointLayer cadastreBoundaryPointLayer = null;
     protected CadastreBoundaryEditTool cadastreBoundaryEditTool;
     protected SpatialUnitEditLayer spatialUnitEditLayer = null;
     protected EditSpatialUnitTool editSpatialUnitTool;
+    private String transactionStarterId;
+    private ApplicationBean applicationBean;
+    private MapDocumentsPanel documentsPanel;
 
+    
+    public ControlsBundleForTransaction(
+            ApplicationBean applicationBean, 
+            String transactionStarterId){
+        super();
+        this.applicationBean = applicationBean;
+        this.transactionStarterId = transactionStarterId;
+    }
+    
+    public static ControlsBundleForTransaction getInstance(
+            String requestTypeCode,
+            ApplicationBean applicationBean,
+            String transactionStarterId,
+            String baUnitId,
+            String targetCadastreObjectType){
+        ControlsBundleForTransaction instance = null;
+        if (requestTypeCode.equals(RequestTypeBean.CODE_CADASTRE_CHANGE)) {
+            instance = new ControlsBundleForCadastreChange(
+                    applicationBean, transactionStarterId, baUnitId, targetCadastreObjectType);
+        } else if (requestTypeCode.equals(RequestTypeBean.CODE_CADASTRE_REDEFINITION)) {
+            instance = new ControlsBundleForCadastreRedefinition(
+                    applicationBean, transactionStarterId, baUnitId, targetCadastreObjectType);
+        }
+        return instance;
+    }
+    
     /**
      * It sets up the bundle. It calls the adding layer method and adding tools method. It also
      * identifies the pending layer which will be refreshed if a transaction is being saved in the
@@ -81,12 +115,14 @@ public abstract class ControlsBundleForTransaction extends ControlsBundleForWork
     public void Setup(PojoDataAccess pojoDataAccess) {
         super.Setup(pojoDataAccess);
         try {
-
+            
             //Adding layers
             this.addLayers();
 
             //Adding tools and commands
             this.addToolsAndCommands();
+
+            this.addDocumentsPanel();
 
             for (ExtendedLayer solaLayer : this.getMap().getSolaLayers().values()) {
                 if (solaLayer.getClass().equals(PojoLayer.class)) {
@@ -104,6 +140,20 @@ public abstract class ControlsBundleForTransaction extends ControlsBundleForWork
         }
     }
 
+    @Override
+    protected void setupToolbar() {
+        this.getMap().addMapAction(new SaveTransaction(this), this.getToolbar(), true);
+        super.setupToolbar();
+    }
+
+    protected final MapDocumentsPanel getDocumentsPanel() {
+        return documentsPanel;
+    }
+
+    protected String getTransactionStarterId() {
+        return transactionStarterId;
+    }
+    
     /**
      * It zooms in the map where the transaction is happening
      *
@@ -135,6 +185,18 @@ public abstract class ControlsBundleForTransaction extends ControlsBundleForWork
      * @return
      */
     public abstract TransactionBean getTransactionBean();
+    
+    /**
+     * It sets the transaction.
+     */
+    public abstract void setTransaction();
+    
+    /**
+     * Gets if the transaction is already started before.
+     *
+     * @return True if the transaction was already started and now is read back for modifications
+     */
+    protected abstract boolean transactionIsStarted();
 
     /**
      * Adds layers that are needed for the transaction
@@ -142,7 +204,8 @@ public abstract class ControlsBundleForTransaction extends ControlsBundleForWork
      * @throws InitializeLayerException
      */
     protected void addLayers() throws InitializeLayerException {
-        this.imageLayer = new ExtendedImageLayer(IMAGE_LAYER_NAME, IMAGE_LAYER_TITLE);
+        this.imageLayer = new ExtendedImageLayer(IMAGE_LAYER_NAME, 
+                ((Messaging)Messaging.getInstance()).getLayerTitle(IMAGE_LAYER_NAME));
         this.getMap().addLayer(this.imageLayer);
         this.cadastreBoundaryPointLayer = new CadastreBoundaryPointLayer();
         this.getMap().addLayer(this.cadastreBoundaryPointLayer);
@@ -190,6 +253,7 @@ public abstract class ControlsBundleForTransaction extends ControlsBundleForWork
                 this.spatialUnitEditLayer.mapLayerToLevel(roadLayer.getLayerName()));
         addRoadTool.getTargetSnappingLayers().add(roadLayer);
         this.getMap().addTool(addRoadTool, this.getToolbar(), true);
+        this.setApplicationId(this.applicationBean.getId());
     }
 
     @Override
@@ -205,8 +269,28 @@ public abstract class ControlsBundleForTransaction extends ControlsBundleForWork
      * @param readOnly
      */
     public void setReadOnly(boolean readOnly) {
-        this.getMap().getMapActionByName(CadastreBoundarySelectTool.NAME).setEnabled(!readOnly);
         this.getMap().getMapActionByName(EditSpatialUnitTool.NAME).setEnabled(!readOnly);
         this.getMap().getMapActionByName(SelectSpatialUnitTool.NAME).setEnabled(!readOnly);
+        this.getMap().getMapActionByName(SaveTransaction.MAPACTION_NAME).setEnabled(!readOnly);
+        this.getMap().getMapActionByName(CadastreBoundarySelectTool.MAP_ACTION_NAME).setEnabled(!readOnly);
     }
+    
+    /**
+     * It configures the tools to handle the given type of cadastre objects.
+     * It must be called after the Setup method because the Setup method initiates the tools.
+     * 
+     * @param targetCadastreObjectType 
+     */
+    protected abstract void setTargetCadastreObjectTypeConfiguration(
+            String targetCadastreObjectType);
+
+    /**
+     * It adds the panel where the documents are managed
+     */
+    private void addDocumentsPanel() {
+        this.documentsPanel = new  MapDocumentsPanel(this, this.applicationBean);
+        this.addInLeftPanel(Messaging.getInstance().getMessageText(
+                GisMessage.LEFT_PANEL_TAB_DOCUMENTS_TITLE), this.documentsPanel);
+    }
+
 }
