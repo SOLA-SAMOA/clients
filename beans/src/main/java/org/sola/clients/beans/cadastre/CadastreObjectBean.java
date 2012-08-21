@@ -184,10 +184,21 @@ public class CadastreObjectBean extends AbstractTransactionedBean {
         if(nameFirstpart!=null){
             result = nameFirstpart;
             if(nameLastpart!=null){
-                result += " Plan " + nameLastpart;
+                result += " PLAN " + nameLastpart;
             }
         }
         return result;
+    }
+    
+    public String getLabel() {
+        String result = "";
+        if(nameFirstpart!=null){
+            result = nameFirstpart;
+            if(nameLastpart!=null){
+                result += System.getProperty("line.separator") + nameLastpart;
+            }
+        }
+        return result; 
     }
     
 }

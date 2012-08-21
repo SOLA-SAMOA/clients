@@ -65,7 +65,8 @@ public class SourceSummaryBean extends AbstractTransactionedBean {
     private String laNr;
     @NotNull(message = ClientMessage.CHECK_NOTNULL_RECORDATION, payload=Localized.class)
     private Date recordation;
-    @NotEmpty(message = ClientMessage.CHECK_NOTNULL_REFERENCENR, payload=Localized.class)
+    // Samoa customization - the reference number is optional
+    //@NotEmpty(message = ClientMessage.CHECK_NOTNULL_REFERENCENR, payload=Localized.class)
     private String referenceNr;
     private Date submission;
     @NotNull(message = ClientMessage.CHECK_NOTNULL_SOURCETYPE, payload=Localized.class)
