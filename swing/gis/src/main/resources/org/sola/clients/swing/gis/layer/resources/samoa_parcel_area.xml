@@ -32,7 +32,7 @@
                         </sld:AnchorPoint>
                         <sld:Displacement>
                             <sld:DisplacementX>0.0</sld:DisplacementX>
-                            <sld:DisplacementY>-16.0</sld:DisplacementY>
+                            <sld:DisplacementY>-20.0</sld:DisplacementY>
                         </sld:Displacement>
                     </sld:PointPlacement>
                 </sld:LabelPlacement>
