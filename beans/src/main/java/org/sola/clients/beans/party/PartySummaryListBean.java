@@ -25,6 +25,8 @@
  */
 package org.sola.clients.beans.party;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import org.jdesktop.observablecollections.ObservableList;
 import org.sola.clients.beans.AbstractBindingBean;
@@ -64,6 +66,21 @@ public class PartySummaryListBean extends AbstractBindingBean {
         partySummaryListBean.clear();
         TypeConverters.TransferObjectListToBeanList(lst, PartySummaryBean.class, (List) partySummaryListBean);
 
+        // Samoa Customization - Sort the Agents by their primary role and name see LH 27
+        Collections.sort(partySummaryListBean, new Comparator<PartySummaryBean>() {
+
+            @Override
+            public int compare(PartySummaryBean p1, PartySummaryBean p2) {
+                String p1Role = p1.getPrimaryRole() == null ? "" : p1.getPrimaryRole();
+                String p2Role = p2.getPrimaryRole() == null ? "" : p2.getPrimaryRole();
+                if (p1Role.equals(p2Role)) {
+                    return p1.toString().compareTo(p2.toString());
+                } else {
+                    return p1Role.compareTo(p2Role);
+                }
+            }
+        });
+
         // Make Other the first agent in the list
         PartySummaryBean otherAgent = null;
         for (PartySummaryBean party : partySummaryListBean) {
@@ -72,11 +89,12 @@ public class PartySummaryListBean extends AbstractBindingBean {
                 break;
             }
         }
-        if (otherAgent != null) {
+        if (otherAgent
+                != null) {
             partySummaryListBean.remove(otherAgent);
             partySummaryListBean.add(0, otherAgent);
         }
-
+        
         if (createDummyAgent) {
             PartySummaryBean dummyAgent = new PartySummaryBean();
             dummyAgent.setName(" ");

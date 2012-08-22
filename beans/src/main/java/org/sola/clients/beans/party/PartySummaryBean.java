@@ -32,6 +32,7 @@ import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.beans.cache.CacheManager;
 import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.clients.beans.party.validation.PartyIndividualValidationGroup;
+import org.sola.clients.beans.referencedata.PartyRoleTypeBean;
 import org.sola.clients.beans.referencedata.PartyTypeBean;
 import org.sola.clients.beans.validation.Localized;
 import org.sola.common.messaging.ClientMessage;
@@ -53,16 +54,18 @@ public class PartySummaryBean extends AbstractIdBean {
     public static final String TYPE_PROPERTY = "type";
     public static final String IS_RIGHTHOLDER_PROPERTY = "rightHolder";
     public static final String ROLE_CODE_PROPERTY = "roleCode";
-    
+    public static final String PRIMARY_ROLE_PROPERTY = "primaryRole";
     @NotEmpty(message = ClientMessage.CHECK_NOTNULL_NAME, payload = Localized.class)
-    @Length(max = 255, message =  ClientMessage.CHECK_FIELD_INVALID_LENGTH_NAME, payload=Localized.class)
+    @Length(max = 255, message = ClientMessage.CHECK_FIELD_INVALID_LENGTH_NAME, payload = Localized.class)
     private String name;
     @NotEmpty(message = ClientMessage.CHECK_NOTNULL_LASTNAME, payload = Localized.class, groups = PartyIndividualValidationGroup.class)
-    @Length(max = 50, message =  ClientMessage.CHECK_FIELD_INVALID_LENGTH_LASTNAME, payload=Localized.class)
+    @Length(max = 50, message = ClientMessage.CHECK_FIELD_INVALID_LENGTH_LASTNAME, payload = Localized.class)
     private String lastName;
     private String extId;
     private boolean rightHolder;
     private PartyTypeBean typeBean;
+    // Customization for SOLA Samoa -  see LH #27
+    private String primaryRole;
 
     public PartySummaryBean() {
         super();
@@ -100,13 +103,18 @@ public class PartySummaryBean extends AbstractIdBean {
     }
 
     /**
-     * @return The full name of the party  being the concatenation of the name and 
-     * lastName properties separated by a space.
+     * @return The full name of the party being the concatenation of the name and lastName
+     * properties separated by a space.
      */
     public String getFullName() {
         String fullName = getName() == null ? "" : getName();
-        fullName = getLastName() == null ? fullName : fullName + " " + getLastName(); 
-        return fullName.trim(); 
+        fullName = getLastName() == null ? fullName : fullName + " " + getLastName();
+        // Samoa Customization see LH #27
+        if (getPrimaryRole() != null) {
+            PartyRoleTypeBean bean = CacheManager.getBeanByCode(CacheManager.getPartyRoles(), getPrimaryRole());
+            fullName = bean == null ? fullName : fullName + " (" + bean.getDisplayValue() + ")";
+        }
+        return fullName.trim();
     }
 
     public PartyTypeBean getType() {
@@ -145,12 +153,22 @@ public class PartySummaryBean extends AbstractIdBean {
         propertySupport.firePropertyChange(IS_RIGHTHOLDER_PROPERTY, oldValue, this.rightHolder);
     }
 
+    public String getPrimaryRole() {
+        return primaryRole;
+    }
+
+    public void setPrimaryRole(String primaryRole) {
+        String oldValue = this.primaryRole;
+        this.primaryRole = primaryRole;
+        propertySupport.firePropertyChange(PRIMARY_ROLE_PROPERTY, oldValue, this.primaryRole);
+    }
+
     @Override
     public String toString() {
-        if ( !(String.format("%s", lastName).isEmpty())&&String.format("%s", lastName)==null&&String.format("%s", lastName)==""){
-            return String.format("%s %s", name, lastName);    
+        if (!(String.format("%s", lastName).isEmpty()) && String.format("%s", lastName) == null && String.format("%s", lastName) == "") {
+            return String.format("%s %s", name, lastName);
         } else {
             return String.format("%s", name);
-        }   
+        }
     }
 }
