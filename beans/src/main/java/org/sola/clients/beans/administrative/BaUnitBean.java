@@ -195,6 +195,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     private String estateType;
     private TypeActionBean pendingTypeAction;
     private BigDecimal calculatedAreaSize;
+    private String village;
+    private String district;
 
     public BigDecimal getCalculatedAreaSize() {
         return calculatedAreaSize;
@@ -203,6 +205,24 @@ public class BaUnitBean extends BaUnitSummaryBean {
     public void setCalculatedAreaSize(BigDecimal calculatedAreaSize) {
         this.calculatedAreaSize = calculatedAreaSize;
     }
+
+    public String getVillage() {
+        return village;
+    }
+
+    public void setVillage(String village) {
+        this.village = village;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+    
+    
     
     public BaUnitBean() {
         super();
