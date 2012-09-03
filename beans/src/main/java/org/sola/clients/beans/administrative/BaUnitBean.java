@@ -161,7 +161,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
 
             return notationBean;
         }
-    }
+    } 
     private static final String BAUNIT_ID_SEARCH = "system_search.cadastre_object_by_baunit_id";
     public static final String SELECTED_PARCEL_PROPERTY = "selectedParcel";
     public static final String SELECTED_RIGHT_PROPERTY = "selectedRight";
@@ -184,6 +184,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     private SolaList<RelatedBaUnitInfoBean> childBaUnits;
     private SolaList<RelatedBaUnitInfoBean> parentBaUnits;
     private SolaList<BaUnitAreaBean> baUnitAreaList;
+    private ObservableList<BaUnitNotationBean> baUnitCurrentNotationList;
+    private ObservableList<BaUnitNotationBean> baUnitPendingNotationList;
     
     private transient CadastreObjectBean selectedParcel;
     private transient RrrBean selectedRight;
@@ -234,7 +236,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
         parentBaUnits = new SolaList();
         sourceList = new SolaList();
         allBaUnitNotationList = new SolaObservableList<BaUnitNotationBean>();
-        rrrSharesList = new SolaObservableList<RrrShareWithStatus>();
+        rrrSharesList = new SolaObservableList<RrrShareWithStatus>();   
         rrrList.getFilteredList().addObservableListListener(new RrrListListener());
          
         sourceList.setExcludedStatuses(new String[]{StatusConstants.HISTORIC});
@@ -688,5 +690,22 @@ public class BaUnitBean extends BaUnitSummaryBean {
         BaUnitBean bean = new BaUnitBean();
         collection.add(bean);
         return collection;
+    }
+    
+    //Obtain Current vs Pending Notations
+    public ObservableList<BaUnitNotationBean> getBaUnitCurrentNotationList() {
+        return new SolaList(baUnitNotationList, null, new String[]{StatusConstants.CURRENT}).getFilteredList(); 
+    }
+    public ObservableList<BaUnitNotationBean> getBaUnitPendingNotationList() {
+        ObservableList<BaUnitNotationBean> list = new SolaList(baUnitNotationList, null, new String[]{StatusConstants.PENDING}).getFilteredList();
+        int listSize = list.size();
+        if (listSize == 0){
+            list.add(new BaUnitNotationBean());
+            list.get(0).setNotationText("Unregistered Dealings - Nil");
+        }
+        
+        return list;
+             
+        //return new SolaList(baUnitNotationList, null, new String[]{StatusConstants.PENDING}).getFilteredList(); 
     }
 }
