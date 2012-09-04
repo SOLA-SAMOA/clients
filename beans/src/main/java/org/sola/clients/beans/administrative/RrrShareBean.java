@@ -116,7 +116,7 @@ public class RrrShareBean extends AbstractVersionedBean {
         }
         return result;
     }
-
+    
     public void setRightHolderList(SolaList<PartySummaryBean> rightHolderList) {
         this.rightHolderList = rightHolderList;
     }

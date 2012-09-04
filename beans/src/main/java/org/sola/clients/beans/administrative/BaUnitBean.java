@@ -28,6 +28,8 @@ package org.sola.clients.beans.administrative;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import org.jdesktop.observablecollections.ObservableCollections;
@@ -38,6 +40,7 @@ import org.sola.clients.beans.cadastre.CadastreObjectBean;
 import org.sola.clients.beans.controls.SolaList;
 import org.sola.clients.beans.controls.SolaObservableList;
 import org.sola.clients.beans.converters.TypeConverters;
+import org.sola.clients.beans.party.PartySummaryBean;
 import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.clients.beans.referencedata.TypeActionBean;
 import org.sola.clients.beans.source.SourceBean;
@@ -47,7 +50,6 @@ import org.sola.services.boundary.wsclients.WSManager;
 import org.sola.webservices.transferobjects.EntityAction;
 import org.sola.webservices.transferobjects.administrative.BaUnitTO;
 import org.sola.webservices.transferobjects.search.SpatialSearchResultTO;
-import org.sola.webservices.transferobjects.administrative.BaUnitAreaTO;
 
 /**
  * Contains properties and methods to manage <b>BA Unit</b> object of the domain model. Could be
@@ -161,7 +163,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
 
             return notationBean;
         }
-    } 
+    }
     private static final String BAUNIT_ID_SEARCH = "system_search.cadastre_object_by_baunit_id";
     public static final String SELECTED_PARCEL_PROPERTY = "selectedParcel";
     public static final String SELECTED_RIGHT_PROPERTY = "selectedRight";
@@ -172,8 +174,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
     public static final String PENDING_ACTION_CODE_PROPERTY = "pendingActionCode";
     public static final String PENDING_ACTION_PROPERTY = "pendingTypeAction";
     public static final String SELECTED_BA_UNIT_AREA_PROPERTY = "selectedBaUnitArea";
-    
-    
+    public static final String NIL_UNREGISTERED_DEALINGS_TEXT = "Unregistered Dealings - Nil";
     private SolaList<RrrBean> rrrList;
     private SolaList<BaUnitNotationBean> baUnitNotationList;
     private SolaList<CadastreObjectBean> cadastreObjectList;
@@ -186,14 +187,13 @@ public class BaUnitBean extends BaUnitSummaryBean {
     private SolaList<BaUnitAreaBean> baUnitAreaList;
     private ObservableList<BaUnitNotationBean> baUnitCurrentNotationList;
     private ObservableList<BaUnitNotationBean> baUnitPendingNotationList;
-    
+    private List<PartySummaryBean> currentOwnersList;
     private transient CadastreObjectBean selectedParcel;
     private transient RrrBean selectedRight;
     private transient BaUnitNotationBean selectedBaUnitNotation;
     private transient RelatedBaUnitInfoBean selectedParentBaUnit;
     private transient RelatedBaUnitInfoBean selectedChildBaUnit;
     private transient BaUnitAreaBean selectedBaUnitArea;
-    
     private String estateType;
     private TypeActionBean pendingTypeAction;
     private BigDecimal calculatedAreaSize;
@@ -223,9 +223,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
     public void setDistrict(String district) {
         this.district = district;
     }
-    
-    
-    
+
     public BaUnitBean() {
         super();
         rrrList = new SolaList();
@@ -236,9 +234,9 @@ public class BaUnitBean extends BaUnitSummaryBean {
         parentBaUnits = new SolaList();
         sourceList = new SolaList();
         allBaUnitNotationList = new SolaObservableList<BaUnitNotationBean>();
-        rrrSharesList = new SolaObservableList<RrrShareWithStatus>();   
+        rrrSharesList = new SolaObservableList<RrrShareWithStatus>();
         rrrList.getFilteredList().addObservableListListener(new RrrListListener());
-         
+
         sourceList.setExcludedStatuses(new String[]{StatusConstants.HISTORIC});
         rrrList.setExcludedStatuses(new String[]{StatusConstants.HISTORIC, StatusConstants.PREVIOUS});
 
@@ -297,15 +295,15 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     public void removeSelectedParcel() {
-         if (selectedParcel != null && cadastreObjectList != null) {
+        if (selectedParcel != null && cadastreObjectList != null) {
             if (selectedParcel.getStatusCode().equalsIgnoreCase(CadastreObjectBean.PENDING_STATUS)) {
                 cadastreObjectList.safeRemove(selectedParcel, EntityAction.DELETE);
             } else {
                 cadastreObjectList.safeRemove(selectedParcel, EntityAction.DISASSOCIATE);
             }
         }
-        
-        
+
+
     }
 
     public void removeSelectedRight() {
@@ -644,22 +642,21 @@ public class BaUnitBean extends BaUnitSummaryBean {
                 WSManager.getInstance().getAdministrative().getBaUnitsByServiceId(serviceId),
                 BaUnitBean.class, null);
     }
-    
-    
-    /** 
-     * Returns o BA Unit Areas, for the Ba Unit Id. 
+
+    /**
+     * Returns o BA Unit Areas, for the Ba Unit Id.
+     *
      * @param baUnitId The ID of service, used pick up BA Units.
      */
-    public static BaUnitAreaBean getBaUnitArea(String baUnitId){
+    public static BaUnitAreaBean getBaUnitArea(String baUnitId) {
         return TypeConverters.TransferObjectToBean(
                 WSManager.getInstance().getAdministrative().getBaUnitAreas(baUnitId),
                 BaUnitAreaBean.class, null);
     }
-    
-    
-    
-    /** 
-     * Terminates/Cancel BaUnit. Creates pending record for further action. 
+
+    /**
+     * Terminates/Cancel BaUnit. Creates pending record for further action.
+     *
      * @param serviceId ID of the service, which terminates BaUnit.
      */
     public void terminateBaUnit(String serviceId) {
@@ -691,21 +688,95 @@ public class BaUnitBean extends BaUnitSummaryBean {
         collection.add(bean);
         return collection;
     }
-    
-    //Obtain Current vs Pending Notations
+
+    /**
+     * Returns the list of current notations for the property. Displayed in the First Schedule
+     * section of the Computer Folio certificate.
+     *
+     * @return
+     */
     public ObservableList<BaUnitNotationBean> getBaUnitCurrentNotationList() {
-        return new SolaList(baUnitNotationList, null, new String[]{StatusConstants.CURRENT}).getFilteredList(); 
-    }
-    public ObservableList<BaUnitNotationBean> getBaUnitPendingNotationList() {
-        ObservableList<BaUnitNotationBean> list = new SolaList(baUnitNotationList, null, new String[]{StatusConstants.PENDING}).getFilteredList();
-        int listSize = list.size();
-        if (listSize == 0){
-            list.add(new BaUnitNotationBean());
-            list.get(0).setNotationText("Unregistered Dealings - Nil");
+        ObservableList<BaUnitNotationBean> result = new SolaList(getAllBaUnitNotationList(), null, new String[]{StatusConstants.CURRENT}).getFilteredList();
+        for (BaUnitNotationBean bean : result) {
+            // Format the Notation text for display by including the 
+            bean.setNotationText(formatNotationText(bean.getNotationText(), bean.getReferenceNr()));
         }
-        
-        return list;
-             
-        //return new SolaList(baUnitNotationList, null, new String[]{StatusConstants.PENDING}).getFilteredList(); 
+        return sortNotations(result);
+    }
+
+    /**
+     * Returns the list of pending notations for the property. Displayed in the Notations section of
+     * the Computer Folio certificate.
+     *
+     * @return
+     */
+    public ObservableList<BaUnitNotationBean> getBaUnitPendingNotationList() {
+        ObservableList<BaUnitNotationBean> result = new SolaList(getAllBaUnitNotationList(), null, new String[]{StatusConstants.PENDING}).getFilteredList();
+        if (result.size() > 0) {
+            for (BaUnitNotationBean bean : result) {
+                // Format the Notation text for display by including the 
+                bean.setNotationText(formatNotationText(bean.getNotationText(), bean.getReferenceNr()));
+            }
+            result = sortNotations(result); 
+        } else {
+            BaUnitNotationBean dummy = new BaUnitNotationBean();
+            dummy.setNotationText(NIL_UNREGISTERED_DEALINGS_TEXT);
+            result.add(dummy);
+        }
+        return result;
+    }
+
+    /**
+     * Used to help format the notation text for display on the Computer Folio Certificate report.
+     *
+     * @param notationText
+     * @param refNr
+     * @return
+     */
+    private String formatNotationText(String notationText, String refNr) {
+        String result = notationText == null ? "" : notationText;
+        if (refNr != null && !result.matches(".*" + refNr + ".*")) {
+            result = refNr + " " + notationText;
+        }
+        return result;
+    }
+
+    /**
+     * Sorts the list of notations by the notation reference number. Removes any non digit
+     * characters before performing the sort.
+     *
+     * @param notationsList
+     * @return
+     */
+    private ObservableList<BaUnitNotationBean> sortNotations(ObservableList<BaUnitNotationBean> notationsList) {
+        // Sort the list of notations by the reference Nr
+        Collections.sort(notationsList, new Comparator<BaUnitNotationBean>() {
+
+            @Override
+            public int compare(BaUnitNotationBean note1, BaUnitNotationBean note2) {
+                // Remove any non digit characters from the string using reg expression. 
+                BigDecimal ref1 = note1 == null ? BigDecimal.ZERO : new BigDecimal(note1.getReferenceNr().replaceAll("[^0-9\\.]", ""));
+                BigDecimal ref2 = note2 == null ? BigDecimal.ZERO : new BigDecimal(note2.getReferenceNr().replaceAll("[^0-9\\.]", ""));
+                return ref1.compareTo(ref2);
+            }
+        });
+        return notationsList;
+    }
+
+    /**
+     * Retrieves the list of current owners for the ba unit based on the owner details for the
+     * primary Rrrs.
+     *
+     * @return
+     */
+    public List<PartySummaryBean> getCurrentOwnersList() {
+        List<PartySummaryBean> result = new ArrayList<PartySummaryBean>();
+        ObservableList<RrrBean> currentRrrList = new SolaList(getRrrList(), null, new String[]{StatusConstants.CURRENT}).getFilteredList();
+        for (RrrBean bean : currentRrrList) {
+            if (bean.isPrimary()) {
+                result.addAll(bean.getRightHolderList());
+            }
+        }
+        return result;
     }
 }

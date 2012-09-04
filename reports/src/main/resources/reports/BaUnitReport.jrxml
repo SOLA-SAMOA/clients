@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="581"/>
+	<property name="ireport.y" value="425"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -206,14 +206,11 @@
 		</field>
 	</subDataset>
 	<subDataset name="Ownership">
-		<field name="Owners" class="java.lang.String">
-			<fieldDescription><![CDATA[rrrShare.rightHoldersStringList]]></fieldDescription>
-		</field>
-		<field name="Share" class="java.lang.String">
-			<fieldDescription><![CDATA[rrrShare.share]]></fieldDescription>
-		</field>
-		<field name="Status" class="java.lang.String">
-			<fieldDescription><![CDATA[status]]></fieldDescription>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="fullName" class="java.lang.String">
+			<fieldDescription><![CDATA[fullName]]></fieldDescription>
 		</field>
 	</subDataset>
 	<subDataset name="Notations">
@@ -279,6 +276,9 @@
 		<fieldDescription><![CDATA[baUnitCurrentNotationList]]></fieldDescription>
 	</field>
 	<field name="baUnitPendingNotationList" class="org.jdesktop.observablecollections.ObservableList"/>
+	<field name="currentOwnersList" class="java.util.List">
+		<fieldDescription><![CDATA[currentOwnersList]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -374,7 +374,7 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="225" splitType="Stretch">
+		<band height="232" splitType="Stretch">
 			<textField isBlankWhenNull="true">
 				<reportElement x="55" y="111" width="222" height="14"/>
 				<textElement>
@@ -383,15 +383,15 @@
 				<textFieldExpression><![CDATA[$F{estateType}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement key="table 3" style="table 6" positionType="Float" x="55" y="207" width="195" height="14" backcolor="#FFFFFF"/>
+				<reportElement key="table 3" style="table 6" positionType="Float" x="51" y="207" width="195" height="14" backcolor="#FFFFFF"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Ownership">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{rrrSharesList}.toArray())]]></dataSourceExpression>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{currentOwnersList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
 					<jr:column width="366">
-						<jr:detailCell height="22" rowSpan="1">
+						<jr:detailCell height="15" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="366" height="20"/>
+								<reportElement x="0" y="0" width="366" height="14"/>
 								<box>
 									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -403,7 +403,7 @@
 									<font fontName="Arial Narrow" size="12"/>
 									<paragraph leftIndent="4" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{Owners}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{fullName}.trim()]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -488,9 +488,9 @@
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{baUnitCurrentNotationList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
 					<jr:column width="370">
-						<jr:detailCell height="5" rowSpan="1">
+						<jr:detailCell height="15" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="370" height="5"/>
+								<reportElement x="0" y="0" width="370" height="14"/>
 								<box>
 									<pen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -582,9 +582,9 @@
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{baUnitPendingNotationList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
 					<jr:column width="370">
-						<jr:detailCell height="14" rowSpan="1">
+						<jr:detailCell height="15" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="370" height="5"/>
+								<reportElement x="0" y="0" width="370" height="14"/>
 								<box>
 									<pen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
