@@ -96,6 +96,7 @@ public class ApplicationPanel extends ContentPanel {
     public static final String APPLICATION_SAVED_PROPERTY = "applicationSaved";
     private String applicationID;
     private PartyBean agentContact;
+    private boolean isDashboard = false;
 
     /**
      * This method is used by the form designer to create {@link ApplicationBean}. It uses
@@ -165,6 +166,18 @@ public class ApplicationPanel extends ContentPanel {
      */
     public ApplicationPanel(ApplicationBean application) {
         this.appBean = application;
+        initComponents();
+        postInit();
+    }
+    
+      /**
+     * This constructor is used to open existing application for editing.
+     *
+     * @param applicationId ID of application to open.
+     */
+    public ApplicationPanel(String applicationId, boolean dashBoard) {
+        this.applicationID = applicationId;
+        this.isDashboard = dashBoard;
         initComponents();
         postInit();
     }
@@ -1037,7 +1050,7 @@ public class ApplicationPanel extends ContentPanel {
     /**
      * Designer generated code
      */
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
@@ -2705,238 +2718,238 @@ public class ApplicationPanel extends ContentPanel {
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE).addContainerGap()));
 
         bindingGroup.bind();
-    }// </editor-fold>                        
+    }// </editor-fold>//GEN-END:initComponents
 
     /**
      * Validates user's data input and calls save operation on the {@link ApplicationBean}.
      */
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         saveApplication(false);
-    }
-
-    private void btnAddPropertyActionPerformed(java.awt.event.ActionEvent evt) {
+}//GEN-LAST:event_btnSaveActionPerformed
+    
+    private void btnAddPropertyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPropertyActionPerformed
         if (txtFirstPart.getText() == null || txtFirstPart.getText().equals("")
                 || txtLastPart.getText() == null || txtLastPart.getText().equals("")) {
             MessageUtility.displayMessage(ClientMessage.CHECK_FIRST_LAST_PROPERTY);
             return;
         }
-
+        
         BigDecimal area = null;
         BigDecimal value = null;
-
+        
         try {
             area = new BigDecimal(txtArea.getText());
         } catch (Exception e) {
         }
-
+        
         try {
             value = new BigDecimal(txtValue.getText());
         } catch (Exception e) {
         }
-
+        
         appBean.addProperty(txtFirstPart.getText(), txtLastPart.getText(), area, value);
         clearPropertyFields();
         txtFirstPart.requestFocus();
-    }
+    }//GEN-LAST:event_btnAddPropertyActionPerformed
 
     /**
      * Opens {@link FileBrowserForm} to select digital copy of the document and get it attached.
      */
-    private void tabDocumentsMouseClicked(java.awt.event.MouseEvent evt) {
+    private void tabDocumentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabDocumentsMouseClicked
         if (evt.getClickCount() == 2) {
             openAttachment();
         }
-    }
+    }//GEN-LAST:event_tabDocumentsMouseClicked
 
     /**
      * Removes attached digital copy from selected document.
      */
-    private void txtEmailFocusLost(java.awt.event.FocusEvent evt) {
+    private void txtEmailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtEmailFocusLost
         // Verify the email address is valid
         if (appBean.getContactPerson().getEmail() == null
                 || !appBean.getContactPerson().getEmail().equals(txtEmail.getText())) {
             txtEmail.setText(appBean.getContactPerson().getEmail());
         }
-    }
-
-    private void txtPhoneFocusLost(java.awt.event.FocusEvent evt) {
+    }//GEN-LAST:event_txtEmailFocusLost
+    
+    private void txtPhoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPhoneFocusLost
         // Verify the phone number is valid
         if (appBean.getContactPerson().getPhone() == null
                 || !appBean.getContactPerson().getPhone().equals(txtPhone.getText())) {
             txtPhone.setText(appBean.getContactPerson().getPhone());
         }
-    }
-
-    private void txtFaxFocusLost(java.awt.event.FocusEvent evt) {
+    }//GEN-LAST:event_txtPhoneFocusLost
+    
+    private void txtFaxFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFaxFocusLost
         // Verify the fax number is valid
         if (appBean.getContactPerson().getFax() == null
                 || !appBean.getContactPerson().getFax().equals(txtFax.getText())) {
             txtFax.setText(appBean.getContactPerson().getFax());
         }
-    }
-
-    private void contactPanelMouseClicked(java.awt.event.MouseEvent evt) {
+    }//GEN-LAST:event_txtFaxFocusLost
+    
+    private void contactPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contactPanelMouseClicked
         cbxAgents.requestFocus(false);
         txtFirstName.requestFocus();
-    }
-
-    private void propertyPanelMouseClicked(java.awt.event.MouseEvent evt) {
+    }//GEN-LAST:event_contactPanelMouseClicked
+    
+    private void propertyPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_propertyPanelMouseClicked
         cbxAgents.requestFocus(false);
         txtFirstPart.requestFocus();
-    }
-
-    private void documentPanelMouseClicked(java.awt.event.MouseEvent evt) {
+    }//GEN-LAST:event_propertyPanelMouseClicked
+    
+    private void documentPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_documentPanelMouseClicked
         cbxAgents.requestFocus(false);
-    }
-
-    private void feesPanelMouseClicked(java.awt.event.MouseEvent evt) {
+    }//GEN-LAST:event_documentPanelMouseClicked
+    
+    private void feesPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_feesPanelMouseClicked
         cbxAgents.requestFocus(false);
         formTxtServiceFee.requestFocus(true);
-    }
-
-    private void historyPanelMouseClicked(java.awt.event.MouseEvent evt) {
+    }//GEN-LAST:event_feesPanelMouseClicked
+    
+    private void historyPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historyPanelMouseClicked
         cbxAgents.requestFocus(false);
-    }
-
-    private void btnCalculateFeeActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_historyPanelMouseClicked
+    
+    private void btnCalculateFeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalculateFeeActionPerformed
         calculateFee();
-    }
-
-    private void btnValidateActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnCalculateFeeActionPerformed
+    
+    private void btnValidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValidateActionPerformed
         validateApplication();
-    }
-
-    private void btnPrintFeeActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnValidateActionPerformed
+    
+    private void btnPrintFeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintFeeActionPerformed
         printReceipt();
-    }
-
-    private void btnPrintStatusReportActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnPrintFeeActionPerformed
+    
+    private void btnPrintStatusReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintStatusReportActionPerformed
         printStatusReport();
-    }
-
-    private void menuApproveActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnPrintStatusReportActionPerformed
+    
+    private void menuApproveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuApproveActionPerformed
         approveApplication();
-    }
-
-    private void menuCancelActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuApproveActionPerformed
+    
+    private void menuCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCancelActionPerformed
         rejectApplication();
-    }
-
-    private void menuWithdrawActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuCancelActionPerformed
+    
+    private void menuWithdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuWithdrawActionPerformed
         withdrawApplication();
-    }
-
-    private void menuLapseActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuWithdrawActionPerformed
+    
+    private void menuLapseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLapseActionPerformed
         lapseApplication();
-    }
-
-    private void menuRequisitionActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuLapseActionPerformed
+    
+    private void menuRequisitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRequisitionActionPerformed
         requisitionApplication();
-    }
-
-    private void menuResubmitActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuRequisitionActionPerformed
+    
+    private void menuResubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuResubmitActionPerformed
         resubmitApplication();
-    }
-
-    private void menuDispatchActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuResubmitActionPerformed
+    
+    private void menuDispatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDispatchActionPerformed
         dispatchApplication();
-    }
-
-    private void menuArchiveActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuDispatchActionPerformed
+    
+    private void menuArchiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuArchiveActionPerformed
         archiveApplication();
-    }
-
-    private void btnAddServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuArchiveActionPerformed
+    
+    private void btnAddServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddServiceActionPerformed
         addService();
-    }
-
-    private void btnRemoveServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnAddServiceActionPerformed
+    
+    private void btnRemoveServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveServiceActionPerformed
         removeService();
-    }
-
-    private void btnUPServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnRemoveServiceActionPerformed
+    
+    private void btnUPServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUPServiceActionPerformed
         moveServiceUp();
-    }
-
-    private void btnDownServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnUPServiceActionPerformed
+    
+    private void btnDownServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownServiceActionPerformed
         moveServiceDown();
-    }
-
-    private void btnViewServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnDownServiceActionPerformed
+    
+    private void btnViewServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewServiceActionPerformed
         viewService();
-    }
-
-    private void btnStartServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnViewServiceActionPerformed
+    
+    private void btnStartServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartServiceActionPerformed
         startService();
-    }
-
-    private void btnCancelServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnStartServiceActionPerformed
+    
+    private void btnCancelServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelServiceActionPerformed
         cancelService();
-    }
-
-    private void btnCompleteServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnCancelServiceActionPerformed
+    
+    private void btnCompleteServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompleteServiceActionPerformed
         completeService();
-    }
-
-    private void menuAddServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnCompleteServiceActionPerformed
+    
+    private void menuAddServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAddServiceActionPerformed
         addService();
-    }
-
-    private void menuRemoveServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuAddServiceActionPerformed
+    
+    private void menuRemoveServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRemoveServiceActionPerformed
         removeService();
-    }
-
-    private void menuMoveServiceUpActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuRemoveServiceActionPerformed
+    
+    private void menuMoveServiceUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMoveServiceUpActionPerformed
         moveServiceUp();
-    }
-
-    private void menuMoveServiceDownActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuMoveServiceUpActionPerformed
+    
+    private void menuMoveServiceDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMoveServiceDownActionPerformed
         moveServiceDown();
-    }
-
-    private void menuViewServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuMoveServiceDownActionPerformed
+    
+    private void menuViewServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuViewServiceActionPerformed
         viewService();
-    }
-
-    private void menuStartServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuViewServiceActionPerformed
+    
+    private void menuStartServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuStartServiceActionPerformed
         startService();
-    }
-
-    private void menuCompleteServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuStartServiceActionPerformed
+    
+    private void menuCompleteServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCompleteServiceActionPerformed
         completeService();
-    }
-
-    private void menuCancelServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuCompleteServiceActionPerformed
+    
+    private void menuCancelServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCancelServiceActionPerformed
         cancelService();
-    }
-
-    private void btnRevertServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuCancelServiceActionPerformed
+    
+    private void btnRevertServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevertServiceActionPerformed
         revertService();
-    }
-
-    private void menuRevertServiceActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnRevertServiceActionPerformed
+    
+    private void menuRevertServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRevertServiceActionPerformed
         revertService();
-    }
-
-    private void btnRemovePropertyActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_menuRevertServiceActionPerformed
+    
+    private void btnRemovePropertyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemovePropertyActionPerformed
         removeSelectedProperty();
-    }
-
-    private void btnVerifyPropertyActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnRemovePropertyActionPerformed
+    
+    private void btnVerifyPropertyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerifyPropertyActionPerformed
         verifySelectedProperty();
-    }
-
-    private void btnDeleteDocActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnVerifyPropertyActionPerformed
+    
+    private void btnDeleteDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteDocActionPerformed
         removeSelectedSource();
-    }
-
-    private void btnOpenAttachmentActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnDeleteDocActionPerformed
+    
+    private void btnOpenAttachmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenAttachmentActionPerformed
         openAttachment();
-    }
-
-    private void btnAddExistingDocumentActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_btnOpenAttachmentActionPerformed
+    
+    private void btnAddExistingDocumentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddExistingDocumentActionPerformed
         openSeachDocuments();
-    }
+    }//GEN-LAST:event_btnAddExistingDocumentActionPerformed
 
     /**
      * Opens attached digital copy of the selected document
@@ -3375,7 +3388,7 @@ public class ApplicationPanel extends ContentPanel {
         }
         return true;
     }
-    // Variables declaration - do not modify                     
+    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane actionLogPanel;
     private org.sola.clients.swing.ui.source.DocumentPanel addDocumentPanel;
     public org.sola.clients.beans.application.ApplicationBean appBean;
@@ -3534,5 +3547,5 @@ public class ApplicationPanel extends ContentPanel {
     private org.sola.clients.beans.validation.ValidationResultListBean validationResultListBean;
     private javax.swing.JScrollPane validationsPanel;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
-    // End of variables declaration                   
+    // End of variables declaration//GEN-END:variables
 }

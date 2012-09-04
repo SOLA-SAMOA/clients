@@ -125,12 +125,11 @@ public class ApplicationBean extends ApplicationSummaryBean {
     }
 
     public boolean canDespatch() {
-        return canArchive();
+        return canArchive() || isRequisitioned();
     }
 
     public boolean canResubmit() {
-        String appStatus = getStatusCode();
-        return isAssigned() && (StatusConstants.REQUISITIONED.equalsIgnoreCase(appStatus));
+       return isRequisitioned();
     }
 
     /**
@@ -162,7 +161,7 @@ public class ApplicationBean extends ApplicationSummaryBean {
     }
 
     public boolean canWithdraw() {
-        return isAssigned() && isLodged();
+        return (isAssigned() && isLodged()) || isRequisitioned(); 
     }
 
     public boolean canRequisition() {
@@ -170,7 +169,7 @@ public class ApplicationBean extends ApplicationSummaryBean {
     }
 
     public boolean canLapse() {
-        return isAssigned() && isLodged();
+        return isRequisitioned();
     }
 
     public boolean canValidate() {
@@ -182,6 +181,10 @@ public class ApplicationBean extends ApplicationSummaryBean {
     public boolean isLodged() {
         String appStatus = getStatusCode();
         return StatusConstants.LODGED.equalsIgnoreCase(appStatus);
+    }
+    
+    public boolean isRequisitioned() {
+        return StatusConstants.REQUISITIONED.equalsIgnoreCase(getStatusCode());
     }
 
     public boolean isAssigned() {
@@ -357,6 +360,10 @@ public class ApplicationBean extends ApplicationSummaryBean {
     }
 
     public ApplicationPropertyBean getSelectedProperty() {
+        if (getPropertyList().size() == 1) {
+            ApplicationPropertyBean onlyOneProperty=getPropertyList().get(0) ;
+            selectedProperty = onlyOneProperty;
+        }
         return selectedProperty;
     }
 
@@ -637,6 +644,7 @@ public class ApplicationBean extends ApplicationSummaryBean {
             newProperty.setNameLastpart(lastPart);
             newProperty.setTotalValue(value);
             propertyList.addAsNew(newProperty);
+            selectedProperty = newProperty;
         }
     }
 

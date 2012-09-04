@@ -1,26 +1,30 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
- * reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
- * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
- * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this software without
- * specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
- * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.desktop.administrative;
@@ -55,6 +59,7 @@ import org.sola.clients.swing.gis.ui.controlsbundle.ControlsBundleForBaUnit;
 import org.sola.clients.swing.ui.ContentPanel;
 import org.sola.clients.swing.ui.MainContentPanel;
 import org.sola.clients.swing.ui.application.ApplicationDocumentsForm;
+import org.sola.clients.swing.ui.renderers.DateTimeRenderer;
 import org.sola.clients.swing.ui.renderers.LockCellRenderer;
 import org.sola.clients.swing.ui.renderers.SimpleComboBoxRenderer;
 import org.sola.clients.swing.ui.renderers.TableCellListRenderer;
@@ -74,8 +79,8 @@ import org.sola.webservices.transferobjects.administrative.BaUnitTO;
 public class PropertyPanel extends ContentPanel {
 
     /**
-     * Listens for events of different right forms, to add created right into the list of rights or
-     * update existing one.
+     * Listens for events of different right forms, to add created right into
+     * the list of rights or update existing one.
      */
     private class RightFormListener implements PropertyChangeListener {
 
@@ -128,8 +133,8 @@ public class PropertyPanel extends ContentPanel {
         }
         return baUnitBean1;
     }
-
-    /**
+     
+     /**
      * Creates {@link BaUnitAreaBean} used to bind form components.
      */
     private BaUnitAreaBean createBaUnitAreaBean() {
@@ -144,6 +149,10 @@ public class PropertyPanel extends ContentPanel {
         return baUnitAreaBean1;
     }
 
+   
+    
+    
+    
     /**
      * Creates documents table to show paper title documents.
      */
@@ -170,10 +179,10 @@ public class PropertyPanel extends ContentPanel {
     /**
      * Form constructor.
      *
-     * @param applicationBean {@link ApplicationBean} instance, used to get data on BaUnit and
-     * provide list of documents.
-     * @param applicationService {@link ApplicationServiceBean} instance, used to determine what
-     * actions should be taken on this form.
+     * @param applicationBean {@link ApplicationBean} instance, used to get data
+     * on BaUnit and provide list of documents.
+     * @param applicationService {@link ApplicationServiceBean} instance, used
+     * to determine what actions should be taken on this form.
      * @param nameFirstPart First part of the property code.
      * @param nameLastPart Last part of the property code.
      * @param readOnly If true, opens form in read only mode.
@@ -194,10 +203,12 @@ public class PropertyPanel extends ContentPanel {
     /**
      * Form constructor.
      *
-     * @param applicationBean {@link ApplicationBean} instance, used to get list of documents.
-     * @param applicationService {@link ApplicationServiceBean} instance, used to determine what
-     * actions should be taken on this form.
-     * @param BaUnitBean Instance of {@link BaUnitBean}, used to bind data on the form.
+     * @param applicationBean {@link ApplicationBean} instance, used to get list
+     * of documents.
+     * @param applicationService {@link ApplicationServiceBean} instance, used
+     * to determine what actions should be taken on this form.
+     * @param BaUnitBean Instance of {@link BaUnitBean}, used to bind data on
+     * the form.
      * @param readOnly If true, opens form in read only mode.
      */
     public PropertyPanel(ApplicationBean applicationBean,
@@ -211,6 +222,7 @@ public class PropertyPanel extends ContentPanel {
             this.nameFirstPart = baUnitBean.getNameFirstpart();
             this.nameLastPart = baUnitBean.getNameLastpart();
         }
+        
         resourceBundle = java.util.ResourceBundle.getBundle("org/sola/clients/swing/desktop/administrative/Bundle");
         initComponents();
         portInit();
@@ -238,6 +250,8 @@ public class PropertyPanel extends ContentPanel {
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals(BaUnitBean.SELECTED_RIGHT_PROPERTY)) {
                     customizeRightsButtons((RrrBean) evt.getNewValue());
+                } else if (evt.getPropertyName().equals(BaUnitBean.SELECTED_HISTORIC_RIGHT_PROPERTY)) {
+                    customizeHistoricRightsViewButton();
                 } else if (evt.getPropertyName().equals(BaUnitBean.SELECTED_BA_UNIT_NOTATION_PROPERTY)) {
                     customizeNotationButtons((BaUnitNotationBean) evt.getNewValue());
                 } else if (evt.getPropertyName().equals(BaUnitBean.SELECTED_PARCEL_PROPERTY)) {
@@ -267,8 +281,8 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Runs form customization, to restrict certain actions, bind listeners on the {@link BaUnitBean}
-     * and other components.
+     * Runs form customization, to restrict certain actions, bind listeners on
+     * the {@link BaUnitBean} and other components.
      */
     private void customizeForm() {
 
@@ -276,7 +290,7 @@ public class PropertyPanel extends ContentPanel {
             headerPanel.setTitleText(String.format(
                     resourceBundle.getString("PropertyPanel.existingProperty.Text"),
                     nameFirstPart, nameLastPart));
-            txtArea.setEditable(false);
+            txtArea.setEditable(false);              
 //            areaPanel.setEnabled(false);
 //            areaPanel.setEnabled(false);
 //            txtArea.setEnabled(false);
@@ -285,11 +299,11 @@ public class PropertyPanel extends ContentPanel {
 //            labArea.setVisible(false);
         } else {
             headerPanel.setTitleText(resourceBundle.getString("PropertyPanel.newProperty.Text"));
-
+            
             areaPanel.setEnabled(true);
             areaPanel.setEnabled(true);
             txtArea.setEnabled(true);
-            txtArea.setEditable(true);
+            txtArea.setEditable(true);              
             txtArea.setVisible(true);
             labArea.setEnabled(true);
             labArea.setVisible(true);
@@ -313,11 +327,12 @@ public class PropertyPanel extends ContentPanel {
         customizeParentPropertyButtons();
         customizeChildPropertyButtons();
         customizeTerminationButton();
-
-
+        customizeHistoricRightsViewButton();
+        
+        
         btnNext.setVisible(false);
         btnNext.setEnabled(false);
-
+        
     }
 
     /**
@@ -338,12 +353,12 @@ public class PropertyPanel extends ContentPanel {
                         @Override
                         public void propertyChange(PropertyChangeEvent evt) {
                             if (evt.getPropertyName().equals(NewPropertyWizardPanel.SELECTED_RESULT_PROPERTY)) {
-                                if (addParentProperty((Object[]) evt.getNewValue())) {
-                                    btnNext.setVisible(true);
-                                    btnNext.setEnabled(true);
-                                    tabsMain.setEnabled(false);
-                                    btnAddParent.setEnabled(false);
-                                }
+                             if (addParentProperty((Object[]) evt.getNewValue())) {
+                               btnNext.setVisible(true);
+                               btnNext.setEnabled(true);
+                               tabsMain.setEnabled(false);
+                               btnAddParent.setEnabled(false);
+                             }
                             }
                         }
                     };
@@ -367,6 +382,7 @@ public class PropertyPanel extends ContentPanel {
                 TaskManager.getInstance().runTask(t);
             }
         }
+              
     }
 
     public void showPriorTitileMessage() {
@@ -377,10 +393,12 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Populates rights, parcels and parent Properties lists from provided result object.
+     * Populates rights, parcels and parent Properties lists from provided
+     * result object.
      *
-     * @param selectedResult Array of selected result from the wizard form. First item of array
-     * contains selected {@link BaUnitBean}, second item contains {@link BaUnitRelTypeBean}.
+     * @param selectedResult Array of selected result from the wizard form.
+     * First item of array contains selected {@link BaUnitBean}, second item
+     * contains {@link BaUnitRelTypeBean}.
      */
     private boolean addParentProperty(Object[] selectedResult) {
         if (selectedResult == null) {
@@ -389,7 +407,7 @@ public class PropertyPanel extends ContentPanel {
 
         BaUnitBean selectedBaUnit = (BaUnitBean) selectedResult[0];
         BaUnitRelTypeBean baUnitRelType = (BaUnitRelTypeBean) selectedResult[1];
-
+        this.whichBaUnitSelected = selectedBaUnit;
         // Check relation type to be same as on the list.
         for (RelatedBaUnitInfoBean parent : baUnitBean1.getFilteredParentBaUnits()) {
             if (parent.getRelationCode() != null
@@ -448,7 +466,8 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Enables or disables "open", "add" and "remove" buttons for the parent Properties list.
+     * Enables or disables "open", "add" and "remove" buttons for the parent
+     * Properties list.
      */
     private void customizeParentPropertyButtons() {
         boolean enabled = !readOnly;
@@ -475,10 +494,15 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Enables or disables print button if row version of {@link BaUnitBean} > 0 .
+     * Enables or disables print button if row version of {@link BaUnitBean} > 0
+     * .
      */
     private void customizePrintButton() {
         btnPrintBaUnit.setEnabled(baUnitBean1.getRowVersion() > 0);
+    }
+    
+    private void customizeHistoricRightsViewButton() {
+        btnViewHistoricRight.setEnabled(baUnitBean1.getSelectedHistoricRight() != null);
     }
 
     /**
@@ -523,12 +547,14 @@ public class PropertyPanel extends ContentPanel {
         // Check RequestType to have cancel action.
         if (applicationService == null || applicationService.getRequestType() == null
                 || applicationService.getRequestType().getTypeActionCode() == null
-                || !applicationService.getRequestType().getTypeActionCode().equals(TypeActionBean.CODE_CANCEL)) {
+//                || !applicationService.getRequestType().getTypeActionCode().equals(TypeActionBean.CODE_CANCEL)) {
+                || !applicationService.getRequestTypeCode().equalsIgnoreCase(RequestTypeBean.CODE_CANCEL_PROPERTY)) {
             enabled = false;
         }
 
         // Determine what should be shown on the button, terminate or cancelling of termination.
-        if (baUnitBean1.getPendingActionCode() != null && baUnitBean1.getPendingActionCode().equals(TypeActionBean.CODE_CANCEL)) {
+//        if (baUnitBean1.getPendingActionCode() != null && baUnitBean1.getPendingActionCode().equals(TypeActionBean.CODE_CANCEL)) {
+        if (baUnitBean1.getPendingActionCode() != null && applicationService.getRequestTypeCode().equalsIgnoreCase(RequestTypeBean.CODE_CANCEL_PROPERTY)) {    
             // Show cancel
             btnTerminate.setIcon(new ImageIcon(getClass().getResource("/images/common/undo.png")));
             btnTerminate.setText(resourceBundle.getString("PropertyPanel.btnTerminate.text2"));
@@ -541,8 +567,8 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Enables or disables parcel buttons, depending on the form state and selection in the list of
-     * parcel.
+     * Enables or disables parcel buttons, depending on the form state and
+     * selection in the list of parcel.
      */
     private void customizeParcelButtons(CadastreObjectBean cadastreBean) {
         if (cadastreBean == null || cadastreBean.isLocked() || readOnly) {
@@ -556,7 +582,8 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Enables or disables combobox list of right types, depending on the form state.
+     * Enables or disables combobox list of right types, depending on the form
+     * state.
      */
     private void customizeRightTypesList() {
         cbxRightType.setSelectedIndex(-1);
@@ -580,7 +607,8 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Enables or disables button for creating new right, depending on the form state.
+     * Enables or disables button for creating new right, depending on the form
+     * state.
      */
     private void customizeCreateRightButton(RrrTypeBean rrrTypeBean) {
         if (rrrTypeBean != null && rrrTypeBean.getCode() != null
@@ -592,8 +620,8 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Enables or disables buttons for managing list of rights, depending on the form state,
-     * selected right and it's state.
+     * Enables or disables buttons for managing list of rights, depending on the
+     * form state, selected right and it's state.
      */
     private void customizeRightsButtons(RrrBean rrrBean) {
         btnEditRight.setEnabled(false);
@@ -606,7 +634,7 @@ public class PropertyPanel extends ContentPanel {
             boolean isPending = rrrBean.getStatusCode().equals(StatusConstants.PENDING);
 
             // Control pending state and allowed types of RRR for edit/remove buttons
-            if (isPending && isRightTypeAllowed(rrrBean.getTypeCode(), rrrBean.getRrrType().isPrimary())) {
+             if (isPending && isRightTypeAllowed(rrrBean.getTypeCode(), rrrBean.getRrrType().isPrimary())) {
                 btnEditRight.setEnabled(true);
                 btnRemoveRight.setEnabled(true);
             }
@@ -615,7 +643,7 @@ public class PropertyPanel extends ContentPanel {
             // allowed action and allowed type of RRR.
             if (rrrBean.getStatusCode().equals(StatusConstants.CURRENT)
                     && !baUnitBean1.isPendingRrrExists(rrrBean)
-                    && isRightTypeAllowed(rrrBean.getTypeCode(), rrrBean.getRrrType().isPrimary())) {
+                   && isRightTypeAllowed(rrrBean.getTypeCode(), rrrBean.getRrrType().isPrimary())) {
                 if (isActionAllowed(RrrTypeActionConstants.VARY)) {
                     btnChangeRight.setEnabled(true);
                 }
@@ -645,10 +673,9 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Checks what type of rights are allowed to create/manage on the form. Customized for SOLA
-     * Samoa to include checks for primary Rrr types as well as easement types.
+     * Checks what type of rights are allowed to create/manage on the form.
      */
-    private boolean isRightTypeAllowed(String rrrTypeCode, boolean isPrimary) {
+  private boolean isRightTypeAllowed(String rrrTypeCode, boolean isPrimary) {
         boolean result = true;
         if (rrrTypeCode != null && applicationService != null
                 && applicationService.getRequestType() != null
@@ -677,16 +704,15 @@ public class PropertyPanel extends ContentPanel {
         BaUnitTO baUnitTO = WSManager.getInstance().getAdministrative().getBaUnitByCode(nameFirstPart, nameLastPart);
         return TypeConverters.TransferObjectToBean(baUnitTO, BaUnitBean.class, null);
     }
-
-    /**
+    
+     /**
      * Returns {@link BaUnitBean} by first and last name part.
      */
     private BaUnitBean getBaUnit(String id) {
         BaUnitTO baUnitTO = WSManager.getInstance().getAdministrative().getBaUnitById(id);
         return TypeConverters.TransferObjectToBean(baUnitTO, BaUnitBean.class, null);
     }
-
-    /**
+     /**
      * Returns {@link BaUnitBean} by first and last name part.
      */
     private BaUnitAreaBean getBaUnitArea(String baUnitId) {
@@ -694,6 +720,8 @@ public class PropertyPanel extends ContentPanel {
         return TypeConverters.TransferObjectToBean(baUnitAreaTO, BaUnitAreaBean.class, null);
     }
 
+    
+    
     /**
      * Opens {@link ReportViewerForm} to display report.
      */
@@ -845,10 +873,10 @@ public class PropertyPanel extends ContentPanel {
     /**
      * Opens right form, depending on given {@link RrrBean} and action.
      *
-     * @param rrrBean {@link RrrBean} instance to figure out what form to open and pass this bean as
-     * a parameter.
-     * @param action {@link RrrBean#RRR_ACTION} is passed to the right form for further form
-     * customization.
+     * @param rrrBean {@link RrrBean} instance to figure out what form to open
+     * and pass this bean as a parameter.
+     * @param action {@link RrrBean#RRR_ACTION} is passed to the right form for
+     * further form customization.
      */
     private void openRightForm(RrrBean rrrBean, RrrBean.RRR_ACTION action) {
         if (action == RrrBean.RRR_ACTION.NEW
@@ -885,7 +913,7 @@ public class PropertyPanel extends ContentPanel {
                 || rrrCode.equalsIgnoreCase(RrrBean.CODE_ADMIN_PUBLIC_SERVITUDE)
                 || rrrCode.equalsIgnoreCase(RrrBean.CODE_MONUMENT)
                 || rrrCode.equalsIgnoreCase(RrrBean.CODE_LIFE_ESTATE)
-                || rrrCode.equalsIgnoreCase(RrrBean.CODE_CAVEAT)) {
+                || rrrCode.equalsIgnoreCase(RrrBean.CODE_CAVEAT)){
             panel = new SimpleRightholderPanel(rrrBean, applicationBean, applicationService, action);
             cardName = MainContentPanel.CARD_SIMPLE_OWNERSHIP;
         } else if (rrrCode.equalsIgnoreCase(RrrBean.CODE_OWNERSHIP)
@@ -900,49 +928,54 @@ public class PropertyPanel extends ContentPanel {
         panel.addPropertyChangeListener(SimpleRightPanel.UPDATED_RRR, rightFormListener);
         getMainContentPanel().addPanel(panel, cardName, true);
     }
-
-    private boolean returnBigInteger(String size) {
+    
+    
+    private boolean returnBigInteger (String size) {
         boolean isValid = false;
         //Initialize reg ex for size. 
-        String expression = "[0-9\\s]*+$";
+        String expression =  "[0-9\\s]*+$";  
         CharSequence inputStr = size;
         Pattern pattern = Pattern.compile(expression);
         Matcher matcher = pattern.matcher(inputStr);
-        if (matcher.matches()) {
-            isValid = true;
+        if(matcher.matches()){
+        isValid = true;
         }
         return isValid;
-    }
-
+    } 
+    
     private void saveBaUnit(final boolean showMessage, final boolean closeOnSave) {
+
+
         if (baUnitBean1.validate(true).size() > 0) {
             return;
         }
-
+        
         if (!baUnitBean1.isValid()) {
-            return;
+         return;   
         }
-
-        if (txtArea.isEditable()) {
+        
+        if (txtArea.isEditable()) { 
             if (baUnitAreaBean1 == null) {
                 return;
             } else {
                 java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/sola/clients/swing/desktop/administrative/Bundle");
-                if (baUnitAreaBean1.getSize() == null) {
+                if (baUnitAreaBean1.getSize()== null)
+                {
                     MessageUtility.displayMessage(ClientMessage.CHECK_NOTNULL_FIELDS,
                             new Object[]{bundle.getString("PropertyPanel.labArea.text")});
                     return;
                 }
-                if (!returnBigInteger(txtArea.getText())) {
+                if (! returnBigInteger (txtArea.getText()))
+                {
                     MessageUtility.displayMessage(ClientMessage.CHECK_BAUNITAREA_INTEGER,
                             new Object[]{bundle.getString("PropertyPanel.labArea.text")});
                     return;
                 }
-
+                
                 baUnitAreaBean1.setTypeCode("officialArea");
                 baUnitAreaBean1.setBaUnitId(baUnitBean1.getId());
             }
-        }
+        }   
 
         SolaTask<Void, Void> t = new SolaTask<Void, Void>() {
 
@@ -957,10 +990,10 @@ public class PropertyPanel extends ContentPanel {
                 if (closeOnSave) {
                     close();
                 }
-
-                if (txtArea.isEditable()) {
-                    baUnitAreaBean1.createBaUnitArea(baUnitBean1.getId());
-                }
+               
+               if (txtArea.isEditable()) { 
+                baUnitAreaBean1.createBaUnitArea(baUnitBean1.getId());
+               } 
                 return null;
             }
 
@@ -970,6 +1003,7 @@ public class PropertyPanel extends ContentPanel {
                     MessageUtility.displayMessage(ClientMessage.BAUNIT_SAVED);
                 }
                 saveBaUnitState();
+            
             }
         };
         TaskManager.getInstance().runTask(t);
@@ -988,7 +1022,20 @@ public class PropertyPanel extends ContentPanel {
         saveBaUnitState();
     }
 
-    private void terminateBaUnit() {
+    
+    private String getTerminateMessage () {
+        String whichMessage = ClientMessage.BAUNIT_CONFIRM_TERMINATION;  
+         for(int i=0; i<baUnitBean1.getRrrFilteredList().size(); i++){
+           if ( baUnitBean1.getRrrFilteredList().get(i).getStatus().getCode().equals(StatusConstants.CURRENT)) { 
+                whichMessage = ClientMessage.BAUNIT_CURRENT_RRR_EXIST_CONFIRM_TERMINATION;
+            return whichMessage;
+           }
+         }   
+           
+        return whichMessage;   
+    }
+    
+    private void terminateBaUnit(){
         if (baUnitBean1.getPendingActionCode() != null && baUnitBean1.getPendingActionCode().equals(TypeActionBean.CODE_CANCEL)) {
             saveBaUnit();
             baUnitBean1.cancelBaUnitTermination();
@@ -996,7 +1043,8 @@ public class PropertyPanel extends ContentPanel {
             customizeForm();
             saveBaUnitState();
         } else {
-            if (MessageUtility.displayMessage(ClientMessage.BAUNIT_CONFIRM_TERMINATION) == MessageUtility.BUTTON_ONE) {
+           String whichMessage = getTerminateMessage();
+            if (MessageUtility.displayMessage(whichMessage) == MessageUtility.BUTTON_ONE) {
                 saveBaUnit();
                 baUnitBean1.terminateBaUnit(applicationService.getId());
                 MessageUtility.displayMessage(ClientMessage.BAUNIT_TERMINATED);
@@ -1005,9 +1053,10 @@ public class PropertyPanel extends ContentPanel {
             }
         }
     }
-
+    
     /**
-     * Opens form to select or create document to be used as a paper title document.
+     * Opens form to select or create document to be used as a paper title
+     * document.
      */
     private void openDocumentsForm() {
         if (applicationDocumentsForm != null) {
@@ -1138,6 +1187,8 @@ public class PropertyPanel extends ContentPanel {
         btnAddParcel = new javax.swing.JButton();
         btnRemoveParcel = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jPanel16 = new javax.swing.JPanel();
+        jPanel15 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableRights = new org.sola.clients.swing.common.controls.JTableWithDefaultStyles();
         jToolBar2 = new javax.swing.JToolBar();
@@ -1152,6 +1203,13 @@ public class PropertyPanel extends ContentPanel {
         btnViewRight = new javax.swing.JButton();
         btnEditRight = new javax.swing.JButton();
         btnRemoveRight = new javax.swing.JButton();
+        jPanel17 = new javax.swing.JPanel();
+        jToolBar8 = new javax.swing.JToolBar();
+        jLabel8 = new javax.swing.JLabel();
+        jSeparator6 = new javax.swing.JToolBar.Separator();
+        btnViewHistoricRight = new javax.swing.JButton();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tableRightsHistory = new org.sola.clients.swing.common.controls.JTableWithDefaultStyles();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tableOwnership = new org.sola.clients.swing.common.controls.JTableWithDefaultStyles();
@@ -1727,6 +1785,11 @@ public class PropertyPanel extends ContentPanel {
 
         jPanel2.setName("jPanel2"); // NOI18N
 
+        jPanel16.setName(bundle.getString("PropertyPanel.jPanel16.name")); // NOI18N
+        jPanel16.setLayout(new java.awt.GridLayout(2, 0));
+
+        jPanel15.setName(bundle.getString("PropertyPanel.jPanel15.name_3")); // NOI18N
+
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
         tableRights.setComponentPopupMenu(popupRights);
@@ -1738,17 +1801,21 @@ public class PropertyPanel extends ContentPanel {
         columnBinding.setColumnName("Rrr Type.display Value");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nr}"));
+        columnBinding.setColumnName("Nr");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${registrationDate}"));
         columnBinding.setColumnName("Registration Date");
         columnBinding.setColumnClass(java.util.Date.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${concatenatedName}"));
+        columnBinding.setColumnName("Concatenated Name");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${status.displayValue}"));
         columnBinding.setColumnName("Status.display Value");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${locked}"));
-        columnBinding.setColumnName("Locked");
-        columnBinding.setColumnClass(Boolean.class);
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, baUnitBean1, org.jdesktop.beansbinding.ELProperty.create("${selectedRight}"), tableRights, org.jdesktop.beansbinding.BeanProperty.create("selectedElement"));
@@ -1760,13 +1827,20 @@ public class PropertyPanel extends ContentPanel {
             }
         });
         jScrollPane2.setViewportView(tableRights);
+        tableRights.getColumnModel().getColumn(0).setPreferredWidth(100);
+        tableRights.getColumnModel().getColumn(0).setMaxWidth(100);
         tableRights.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("PropertyPanel.tableRights.columnModel.title0")); // NOI18N
-        tableRights.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("PropertyPanel.tableRights.columnModel.title1")); // NOI18N
-        tableRights.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("PropertyPanel.tableRights.columnModel.title2")); // NOI18N
-        tableRights.getColumnModel().getColumn(3).setPreferredWidth(40);
-        tableRights.getColumnModel().getColumn(3).setMaxWidth(40);
-        tableRights.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("PropertyPanel.tableRights.columnModel.title3")); // NOI18N
-        tableRights.getColumnModel().getColumn(3).setCellRenderer(new LockCellRenderer());
+        tableRights.getColumnModel().getColumn(1).setPreferredWidth(100);
+        tableRights.getColumnModel().getColumn(1).setMaxWidth(100);
+        tableRights.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("PropertyPanel.tableRights.columnModel.title3")); // NOI18N
+        tableRights.getColumnModel().getColumn(2).setPreferredWidth(120);
+        tableRights.getColumnModel().getColumn(2).setMaxWidth(120);
+        tableRights.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("PropertyPanel.tableRights.columnModel.title1")); // NOI18N
+        tableRights.getColumnModel().getColumn(2).setCellRenderer(new DateTimeRenderer());
+        tableRights.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("PropertyPanel.tableRights.columnModel.title4_1")); // NOI18N
+        tableRights.getColumnModel().getColumn(4).setPreferredWidth(100);
+        tableRights.getColumnModel().getColumn(4).setMaxWidth(100);
+        tableRights.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("PropertyPanel.tableRights.columnModel.title2")); // NOI18N
 
         jToolBar2.setFloatable(false);
         jToolBar2.setRollover(true);
@@ -1859,24 +1933,134 @@ public class PropertyPanel extends ContentPanel {
         });
         jToolBar2.add(btnRemoveRight);
 
+        org.jdesktop.layout.GroupLayout jPanel15Layout = new org.jdesktop.layout.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+            jPanel15Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jToolBar2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+                .addContainerGap())
+            .add(jScrollPane2)
+        );
+        jPanel15Layout.setVerticalGroup(
+            jPanel15Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jToolBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+        );
+
+        jPanel16.add(jPanel15);
+
+        jPanel17.setName(bundle.getString("PropertyPanel.jPanel17.name")); // NOI18N
+
+        jToolBar8.setFloatable(false);
+        jToolBar8.setRollover(true);
+        jToolBar8.setName(bundle.getString("PropertyPanel.jToolBar8.name")); // NOI18N
+
+        jLabel8.setText(bundle.getString("PropertyPanel.jLabel8.text")); // NOI18N
+        jLabel8.setName(bundle.getString("PropertyPanel.jLabel8.name")); // NOI18N
+        jToolBar8.add(jLabel8);
+
+        jSeparator6.setName(bundle.getString("PropertyPanel.jSeparator6.name")); // NOI18N
+        jToolBar8.add(jSeparator6);
+
+        btnViewHistoricRight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/view.png"))); // NOI18N
+        btnViewHistoricRight.setText(bundle.getString("PropertyPanel.btnViewHistoricRight.text")); // NOI18N
+        btnViewHistoricRight.setFocusable(false);
+        btnViewHistoricRight.setName(bundle.getString("PropertyPanel.btnViewHistoricRight.name")); // NOI18N
+        btnViewHistoricRight.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnViewHistoricRight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewHistoricRightActionPerformed(evt);
+            }
+        });
+        jToolBar8.add(btnViewHistoricRight);
+
+        jScrollPane8.setName(bundle.getString("PropertyPanel.jScrollPane8.name")); // NOI18N
+
+        tableRightsHistory.setName(bundle.getString("PropertyPanel.tableRightsHistory.name")); // NOI18N
+
+        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${rrrHistoricList}");
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, baUnitBean1, eLProperty, tableRightsHistory);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${rrrType.displayValue}"));
+        columnBinding.setColumnName("Rrr Type.display Value");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nr}"));
+        columnBinding.setColumnName("Nr");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${registrationDate}"));
+        columnBinding.setColumnName("Registration Date");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${concatenatedName}"));
+        columnBinding.setColumnName("Concatenated Name");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${status.displayValue}"));
+        columnBinding.setColumnName("Status.display Value");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, baUnitBean1, org.jdesktop.beansbinding.ELProperty.create("${selectedHistoricRight}"), tableRightsHistory, org.jdesktop.beansbinding.BeanProperty.create("selectedElement"));
+        bindingGroup.addBinding(binding);
+
+        tableRightsHistory.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableRightsHistoryMouseClicked(evt);
+            }
+        });
+        jScrollPane8.setViewportView(tableRightsHistory);
+        tableRightsHistory.getColumnModel().getColumn(0).setPreferredWidth(100);
+        tableRightsHistory.getColumnModel().getColumn(0).setMaxWidth(100);
+        tableRightsHistory.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("PropertyPanel.tableRightsHistory.columnModel.title0")); // NOI18N
+        tableRightsHistory.getColumnModel().getColumn(1).setPreferredWidth(100);
+        tableRightsHistory.getColumnModel().getColumn(1).setMaxWidth(100);
+        tableRightsHistory.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("PropertyPanel.tableRightsHistory.columnModel.title3")); // NOI18N
+        tableRightsHistory.getColumnModel().getColumn(2).setPreferredWidth(120);
+        tableRightsHistory.getColumnModel().getColumn(2).setMaxWidth(120);
+        tableRightsHistory.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("PropertyPanel.tableRightsHistory.columnModel.title1")); // NOI18N
+        tableRightsHistory.getColumnModel().getColumn(2).setCellRenderer(new DateTimeRenderer());
+        tableRightsHistory.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("PropertyPanel.tableRightsHistory.columnModel.title4")); // NOI18N
+        tableRightsHistory.getColumnModel().getColumn(4).setPreferredWidth(100);
+        tableRightsHistory.getColumnModel().getColumn(4).setMaxWidth(100);
+        tableRightsHistory.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("PropertyPanel.tableRightsHistory.columnModel.title2")); // NOI18N
+
+        org.jdesktop.layout.GroupLayout jPanel17Layout = new org.jdesktop.layout.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jToolBar8, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .add(jScrollPane8, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel17Layout.createSequentialGroup()
+                .add(jToolBar8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jScrollPane8, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
+        );
+
+        jPanel16.add(jPanel17);
+
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
+            .add(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jToolBar2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE))
+                .add(jPanel16, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jToolBar2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                .add(jPanel16, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1942,39 +2126,38 @@ public class PropertyPanel extends ContentPanel {
 
         eLProperty = org.jdesktop.beansbinding.ELProperty.create("${allBaUnitNotationList}");
         jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, baUnitBean1, eLProperty, tableNotations);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${referenceNr}"));
-        columnBinding.setColumnName("Reference Nr");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${notationText}"));
         columnBinding.setColumnName("Notation Text");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${referenceNr}"));
+        columnBinding.setColumnName("Reference Nr");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${changeTime}"));
+        columnBinding.setColumnName("Change Time");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${status.displayValue}"));
         columnBinding.setColumnName("Status.display Value");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${locked}"));
-        columnBinding.setColumnName("Locked");
-        columnBinding.setColumnClass(Boolean.class);
         columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, baUnitBean1, org.jdesktop.beansbinding.ELProperty.create("${selectedBaUnitNotation}"), tableNotations, org.jdesktop.beansbinding.BeanProperty.create("selectedElement"));
         bindingGroup.addBinding(binding);
 
         jScrollPane4.setViewportView(tableNotations);
-        tableNotations.getColumnModel().getColumn(0).setMinWidth(80);
-        tableNotations.getColumnModel().getColumn(0).setPreferredWidth(80);
-        tableNotations.getColumnModel().getColumn(0).setMaxWidth(80);
-        tableNotations.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("PropertyPanel.tableNotations.columnModel.title0")); // NOI18N
-        tableNotations.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("PropertyPanel.tableNotations.columnModel.title1")); // NOI18N
-        tableNotations.getColumnModel().getColumn(2).setPreferredWidth(180);
-        tableNotations.getColumnModel().getColumn(2).setMaxWidth(180);
-        tableNotations.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("PropertyPanel.tableNotations.columnModel.title2")); // NOI18N
-        tableNotations.getColumnModel().getColumn(3).setPreferredWidth(40);
-        tableNotations.getColumnModel().getColumn(3).setMaxWidth(40);
-        tableNotations.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("PropertyPanel.tableNotations.columnModel.title3")); // NOI18N
-        tableNotations.getColumnModel().getColumn(3).setCellRenderer(new LockCellRenderer());
+        tableNotations.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("PropertyPanel.tableNotations.columnModel.title1")); // NOI18N
+        tableNotations.getColumnModel().getColumn(1).setPreferredWidth(100);
+        tableNotations.getColumnModel().getColumn(1).setMaxWidth(100);
+        tableNotations.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("PropertyPanel.tableNotations.columnModel.title0")); // NOI18N
+        tableNotations.getColumnModel().getColumn(2).setPreferredWidth(120);
+        tableNotations.getColumnModel().getColumn(2).setMaxWidth(120);
+        tableNotations.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("PropertyPanel.tableNotations.columnModel.title3")); // NOI18N
+        tableNotations.getColumnModel().getColumn(2).setCellRenderer(new DateTimeRenderer());
+        tableNotations.getColumnModel().getColumn(3).setPreferredWidth(100);
+        tableNotations.getColumnModel().getColumn(3).setMaxWidth(100);
+        tableNotations.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("PropertyPanel.tableNotations.columnModel.title2")); // NOI18N
 
         jToolBar3.setFloatable(false);
         jToolBar3.setRollover(true);
@@ -2483,23 +2666,36 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     }//GEN-LAST:event_mapPanelComponentShown
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-        if (txtArea.isEditable()) {
-            BaUnitBean baUnitBean2 = getBaUnit(this.whichBaUnitSelected.getId());
-            if (baUnitBean2.getCalculatedAreaSize() != null) {
-                if (!baUnitBean2.getCalculatedAreaSize().equals(new BigDecimal(0))) {
-                    if (MessageUtility.displayMessage(ClientMessage.BAUNIT_CONFIRM_AREA,
+        if (txtArea.isEditable()) { 
+                BaUnitBean baUnitBean2 = getBaUnit(this.whichBaUnitSelected.getId());
+                if (baUnitBean2.getCalculatedAreaSize()!= null) {   
+                   if (!baUnitBean2.getCalculatedAreaSize().equals(new BigDecimal(0)) ) {
+                     if (MessageUtility.displayMessage(ClientMessage.BAUNIT_CONFIRM_AREA,
                             new Object[]{baUnitBean2.getCalculatedAreaSize()}) == MessageUtility.BUTTON_ONE) {
                         baUnitAreaBean1.setSize(baUnitBean2.getCalculatedAreaSize());
-
-                    }
-
+                        
+                     }
+                       
+                   }
                 }
-            }
-            tabsMain.setEnabled(true);
+            tabsMain.setEnabled(true);    
             tabsMain.setSelectedIndex(tabsMain.indexOfComponent(jPanel7));
             txtArea.requestFocus(true);
-        }
+        }       
     }//GEN-LAST:event_btnNextActionPerformed
+
+    private void btnViewHistoricRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewHistoricRightActionPerformed
+        if (baUnitBean1.getSelectedHistoricRight() != null) {
+            openRightForm(baUnitBean1.getSelectedHistoricRight(), RrrBean.RRR_ACTION.VIEW);
+        }
+    }//GEN-LAST:event_btnViewHistoricRightActionPerformed
+
+    private void tableRightsHistoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableRightsHistoryMouseClicked
+        if (evt.getClickCount() > 1 && baUnitBean1.getSelectedHistoricRight() != null) {
+            openRightForm(baUnitBean1.getSelectedHistoricRight(), RrrBean.RRR_ACTION.VIEW);
+        }
+    }//GEN-LAST:event_tableRightsHistoryMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel areaPanel;
     private org.sola.clients.beans.administrative.BaUnitAreaBean baUnitAreaBean1;
@@ -2523,6 +2719,7 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     private javax.swing.JButton btnRemoveRight;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnTerminate;
+    private javax.swing.JButton btnViewHistoricRight;
     private javax.swing.JButton btnViewPaperTitle;
     private javax.swing.JButton btnViewRight;
     private javax.swing.JComboBox cbxRightType;
@@ -2541,12 +2738,16 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -2562,11 +2763,13 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JToolBar.Separator jSeparator6;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JToolBar jToolBar3;
@@ -2574,6 +2777,7 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     private javax.swing.JToolBar jToolBar5;
     private javax.swing.JToolBar jToolBar6;
     private javax.swing.JToolBar jToolBar7;
+    private javax.swing.JToolBar jToolBar8;
     private javax.swing.JLabel labArea;
     private javax.swing.JPanel mapPanel;
     private javax.swing.JMenuItem menuAddParcel;
@@ -2602,6 +2806,7 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     private org.sola.clients.swing.common.controls.JTableWithDefaultStyles tableParcels;
     private javax.swing.JTable tableParentBaUnits;
     private org.sola.clients.swing.common.controls.JTableWithDefaultStyles tableRights;
+    private org.sola.clients.swing.common.controls.JTableWithDefaultStyles tableRightsHistory;
     private javax.swing.JTabbedPane tabsMain;
     private javax.swing.JTextField txtArea;
     private javax.swing.JTextField txtBaUnitStatus;
