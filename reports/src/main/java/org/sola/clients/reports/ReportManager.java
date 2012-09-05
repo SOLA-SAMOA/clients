@@ -129,6 +129,31 @@ public class ReportManager {
             return null;
         }
     }
+    
+    /**
+     * Generates and displays <b>Staff Search</b> report.
+     *
+     * @param appBean Application bean containing data for the report.
+     */
+    public static JasperPrint getStaffSearchReport(BaUnitBean baUnitBean) {
+        HashMap inputParameters = new HashMap();
+        inputParameters.put("REPORT_LOCALE", Locale.getDefault());
+        inputParameters.put("USER", SecurityBean.getCurrentUser().getFullUserName());
+        BaUnitBean[] beans = new BaUnitBean[1];
+        beans[0] = baUnitBean;
+        JRDataSource jds = new JRBeanArrayDataSource(beans);
+        inputParameters.put("SAMOA_EMBLEM", ReportManager.class.getResourceAsStream("/images/sola/samEmblem.png"));
+        //inputParameters.put("MAP_IMAGE", featureImageFileName);
+        try {
+            return JasperFillManager.fillReport(
+                    ReportManager.class.getResourceAsStream("/reports/StaffSearch.jasper"),
+                    inputParameters, jds);
+        } catch (JRException ex) {
+            MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
+                    new Object[]{ex.getLocalizedMessage()});
+            return null;
+        }
+    }
 
     /**
      * Generates and displays <b>Application payment receipt</b>.

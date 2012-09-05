@@ -498,7 +498,7 @@ public class PropertyPanel extends ContentPanel {
      * .
      */
     private void customizePrintButton() {
-        btnPrintBaUnit.setEnabled(baUnitBean1.getRowVersion() > 0);
+        dBtnPrint.setEnabled(baUnitBean1.getRowVersion() > 0);
     }
     
     private void customizeHistoricRightsViewButton() {
@@ -862,6 +862,28 @@ public class PropertyPanel extends ContentPanel {
                 baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart()), featureImageFileName));
         // }
     }
+    
+    /**
+     * Prints Staff Search Report.
+     */
+    private void printRptStaffSearch() {
+        /*String featureImageFileName = null;
+        if (baUnitBean1.getCadastreObjectList() != null && baUnitBean1.getCadastreObjectList().size() > 0) {
+            try {
+                MapFeatureImageGenerator generator = new MapFeatureImageGenerator(
+                        PojoDataAccess.getInstance().getMapDefinition().getSrid());
+                featureImageFileName = generator.getFeatureImage(
+                        baUnitBean1.getCadastreObjectList().get(0).getGeomPolygon(),
+                        baUnitBean1.getCadastreObjectList().get(0).getLabel(),
+                        MapFeatureImageGenerator.IMAGE_FORMAT_PNG);
+            } catch (InitializeMapException mapEx) {
+                LogUtility.log("Unable to initialize MapFeaureImageGenerator", mapEx);
+            }
+        }*/
+
+        showReport(ReportManager.getStaffSearchReport(getBaUnit(
+                baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart())));
+    }
 
     /**
      * Links document as a paper title on the BaUnit object.
@@ -1148,11 +1170,14 @@ public class PropertyPanel extends ContentPanel {
         popupChildBaUnits = new javax.swing.JPopupMenu();
         menuOpenChildBaUnit = new javax.swing.JMenuItem();
         baUnitAreaBean1 = createBaUnitAreaBean();
+        popupPrintActions = new javax.swing.JPopupMenu();
+        menuPrintComputerFolio = new javax.swing.JMenuItem();
+        menuPrintStaffSearch = new javax.swing.JMenuItem();
         jToolBar5 = new javax.swing.JToolBar();
         btnSave = new javax.swing.JButton();
         btnTerminate = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JToolBar.Separator();
-        btnPrintBaUnit = new javax.swing.JButton();
+        dBtnPrint = new org.sola.clients.swing.common.controls.DropDownButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         tabsMain = new javax.swing.JTabbedPane();
         jPanel7 = new javax.swing.JPanel();
@@ -1376,6 +1401,29 @@ public class PropertyPanel extends ContentPanel {
         });
         popupChildBaUnits.add(menuOpenChildBaUnit);
 
+        popupPrintActions.setName(bundle.getString("PropertyPanel.popupPrintActions.name")); // NOI18N
+
+        menuPrintComputerFolio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/print.png"))); // NOI18N
+        menuPrintComputerFolio.setText(bundle.getString("PropertyPanel.menuPrintComputerFolio.text")); // NOI18N
+        menuPrintComputerFolio.setToolTipText(bundle.getString("PropertyPanel.menuPrintComputerFolio.toolTipText")); // NOI18N
+        menuPrintComputerFolio.setName(bundle.getString("PropertyPanel.menuPrintComputerFolio.name")); // NOI18N
+        menuPrintComputerFolio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuPrintComputerFolioActionPerformed(evt);
+            }
+        });
+        popupPrintActions.add(menuPrintComputerFolio);
+
+        menuPrintStaffSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/print.png"))); // NOI18N
+        menuPrintStaffSearch.setText(bundle.getString("PropertyPanel.menuPrintStaffSearch.text")); // NOI18N
+        menuPrintStaffSearch.setName(bundle.getString("PropertyPanel.menuPrintStaffSearch.name")); // NOI18N
+        menuPrintStaffSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuPrintStaffSearchActionPerformed(evt);
+            }
+        });
+        popupPrintActions.add(menuPrintStaffSearch);
+
         setHeaderPanel(headerPanel);
         setHelpTopic(bundle.getString("PropertyPanel.helpTopic")); // NOI18N
         setName("Form"); // NOI18N
@@ -1416,18 +1464,14 @@ public class PropertyPanel extends ContentPanel {
         jSeparator4.setName("jSeparator4"); // NOI18N
         jToolBar5.add(jSeparator4);
 
-        btnPrintBaUnit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/print.png"))); // NOI18N
-        btnPrintBaUnit.setText(bundle.getString("PropertyPanel.btnPrintBaUnit.text")); // NOI18N
-        btnPrintBaUnit.setFocusable(false);
-        btnPrintBaUnit.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnPrintBaUnit.setName("btnPrintBaUnit"); // NOI18N
-        btnPrintBaUnit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnPrintBaUnit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPrintBaUnitActionPerformed(evt);
-            }
-        });
-        jToolBar5.add(btnPrintBaUnit);
+        dBtnPrint.setText(bundle.getString("PropertyPanel.dBtnPrint.text")); // NOI18N
+        dBtnPrint.setToolTipText(null);
+        dBtnPrint.setComponentPopupMenu(popupPrintActions);
+        dBtnPrint.setFocusable(false);
+        dBtnPrint.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        dBtnPrint.setName(bundle.getString("PropertyPanel.dBtnPrint.name")); // NOI18N
+        dBtnPrint.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar5.add(dBtnPrint);
 
         jScrollPane6.setBorder(null);
         jScrollPane6.setName("jScrollPane6"); // NOI18N
@@ -1488,7 +1532,7 @@ public class PropertyPanel extends ContentPanel {
             jPanel9Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel9Layout.createSequentialGroup()
                 .add(jLabel2)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
             .add(txtLastPart)
         );
         jPanel9Layout.setVerticalGroup(
@@ -2585,10 +2629,6 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         }
     }//GEN-LAST:event_btnViewRightActionPerformed
 
-    private void btnPrintBaUnitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintBaUnitActionPerformed
-        print();
-    }//GEN-LAST:event_btnPrintBaUnitActionPerformed
-
     private void btnViewPaperTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPaperTitleActionPerformed
         viewDocument();
     }//GEN-LAST:event_btnViewPaperTitleActionPerformed
@@ -2696,6 +2736,14 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         }
     }//GEN-LAST:event_tableRightsHistoryMouseClicked
 
+    private void menuPrintComputerFolioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPrintComputerFolioActionPerformed
+        print();
+    }//GEN-LAST:event_menuPrintComputerFolioActionPerformed
+
+    private void menuPrintStaffSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPrintStaffSearchActionPerformed
+        printRptStaffSearch();
+    }//GEN-LAST:event_menuPrintStaffSearchActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel areaPanel;
     private org.sola.clients.beans.administrative.BaUnitAreaBean baUnitAreaBean1;
@@ -2712,7 +2760,6 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     private javax.swing.JButton btnNext;
     private javax.swing.JButton btnOpenChild;
     private javax.swing.JButton btnOpenParent;
-    private javax.swing.JButton btnPrintBaUnit;
     private javax.swing.JButton btnRemoveNotation;
     private javax.swing.JButton btnRemoveParcel;
     private javax.swing.JButton btnRemoveParent;
@@ -2723,6 +2770,7 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     private javax.swing.JButton btnViewPaperTitle;
     private javax.swing.JButton btnViewRight;
     private javax.swing.JComboBox cbxRightType;
+    private org.sola.clients.swing.common.controls.DropDownButton dBtnPrint;
     private org.sola.clients.swing.ui.source.DocumentsPanel documentsPanel1;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
@@ -2786,6 +2834,8 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem menuExtinguishRight;
     private javax.swing.JMenuItem menuOpenChildBaUnit;
     private javax.swing.JMenuItem menuOpenParentBaUnit;
+    private javax.swing.JMenuItem menuPrintComputerFolio;
+    private javax.swing.JMenuItem menuPrintStaffSearch;
     private javax.swing.JMenuItem menuRemoveNotation;
     private javax.swing.JMenuItem menuRemoveParcel;
     private javax.swing.JMenuItem menuRemoveParentBaUnit;
@@ -2798,6 +2848,7 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     private javax.swing.JPopupMenu popupNotations;
     private javax.swing.JPopupMenu popupParcels;
     private javax.swing.JPopupMenu popupParentBaUnits;
+    private javax.swing.JPopupMenu popupPrintActions;
     private javax.swing.JPopupMenu popupRights;
     private org.sola.clients.beans.referencedata.RrrTypeListBean rrrTypes;
     private javax.swing.JTable tableChildBaUnits;
