@@ -90,6 +90,10 @@ public class NewPropertyWizardPanel extends ContentPanel {
         int tabIndex = tabsPropertySelection.indexOfComponent(pnlApplicationProperty);
         tabsPropertySelection.setTitleAt(tabIndex, String.format("%s #%s",
                 tabsPropertySelection.getTitleAt(tabIndex), applicationBean.getNr()));
+        
+        // Samoa Customization - enable the relationship type drop down so the user can choose 
+        // associate a village and prior title to the property.  
+       cbxRelationType.setEnabled(true);
     }
 
     /** Creates {@link ApplicationBean} instance to bind on the form. */
