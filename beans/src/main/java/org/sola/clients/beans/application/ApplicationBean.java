@@ -129,7 +129,7 @@ public class ApplicationBean extends ApplicationSummaryBean {
     }
 
     public boolean canResubmit() {
-       return isRequisitioned();
+        return isRequisitioned();
     }
 
     /**
@@ -161,7 +161,7 @@ public class ApplicationBean extends ApplicationSummaryBean {
     }
 
     public boolean canWithdraw() {
-        return (isAssigned() && isLodged()) || isRequisitioned(); 
+        return (isAssigned() && isLodged()) || isRequisitioned();
     }
 
     public boolean canRequisition() {
@@ -182,7 +182,7 @@ public class ApplicationBean extends ApplicationSummaryBean {
         String appStatus = getStatusCode();
         return StatusConstants.LODGED.equalsIgnoreCase(appStatus);
     }
-    
+
     public boolean isRequisitioned() {
         return StatusConstants.REQUISITIONED.equalsIgnoreCase(getStatusCode());
     }
@@ -361,7 +361,7 @@ public class ApplicationBean extends ApplicationSummaryBean {
 
     public ApplicationPropertyBean getSelectedProperty() {
         if (getPropertyList().size() == 1) {
-            ApplicationPropertyBean onlyOneProperty=getPropertyList().get(0) ;
+            ApplicationPropertyBean onlyOneProperty = getPropertyList().get(0);
             selectedProperty = onlyOneProperty;
         }
         return selectedProperty;
@@ -628,12 +628,12 @@ public class ApplicationBean extends ApplicationSummaryBean {
             }
 
             if (firstPart.length() > 20) {
-                MessageUtility.displayMessage(ClientMessage.CHECK_FIELD_INVALID_LENGTH_PAR, 
+                MessageUtility.displayMessage(ClientMessage.CHECK_FIELD_INVALID_LENGTH_PAR,
                         new Object[]{bundle.getString("ApplicationPanel.labFirstPart.text")});
                 return;
             }
             if (lastPart.length() > 50) {
-                MessageUtility.displayMessage(ClientMessage.CHECK_FIELD_INVALID_LENGTH_PAR, 
+                MessageUtility.displayMessage(ClientMessage.CHECK_FIELD_INVALID_LENGTH_PAR,
                         new Object[]{bundle.getString("ApplicationPanel.labLastPart.text")});
                 return;
             }
@@ -897,11 +897,33 @@ public class ApplicationBean extends ApplicationSummaryBean {
         ApplicationTO app = WSManager.getInstance().getCaseManagementService().getApplication(this.getId());
         TypeConverters.TransferObjectToBean(app, ApplicationBean.class, this);
     }
-    
-    /** Returns {@link ApplicationBean} by the given transaction ID. */
-    public static ApplicationBean getApplicationByTransactionId(String transactionId){
+
+    /**
+     * Returns {@link ApplicationBean} by the given transaction ID.
+     */
+    public static ApplicationBean getApplicationByTransactionId(String transactionId) {
         return TypeConverters.TransferObjectToBean(
                 WSManager.getInstance().getCaseManagementService().getApplicationByTransactionId(transactionId),
                 ApplicationBean.class, null);
+    }
+
+    /**
+     * Checks the list of services on the application to determine if the application has a service
+     * that matches the specified request type.
+     *
+     * @param requestType
+     * @return true if the application has at least 1 service matching the request type.
+     */
+    public boolean hasService(String requestType) {
+        boolean result = false;
+        if (this.getServiceList() != null && this.getServiceList().size() > 0) {
+            for (ApplicationServiceBean service : getServiceList()) {
+                if (service.getRequestType().getCode().equals(requestType)) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result;
     }
 }
