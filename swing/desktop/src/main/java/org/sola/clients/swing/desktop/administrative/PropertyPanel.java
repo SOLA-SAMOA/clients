@@ -884,6 +884,14 @@ public class PropertyPanel extends ContentPanel {
         showReport(ReportManager.getStaffSearchReport(getBaUnit(
                 baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart())));
     }
+    
+    /**
+     * Prints Historical Search Report.
+     */
+    private void printRptHistoricalSearch() {
+        showReport(ReportManager.getHistoricalSearchReport(getBaUnit(
+                baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart())));
+    }
 
     /**
      * Links document as a paper title on the BaUnit object.
@@ -1172,6 +1180,7 @@ public class PropertyPanel extends ContentPanel {
         baUnitAreaBean1 = createBaUnitAreaBean();
         popupPrintActions = new javax.swing.JPopupMenu();
         menuPrintComputerFolio = new javax.swing.JMenuItem();
+        menuPrintHistoricalSearch = new javax.swing.JMenuItem();
         menuPrintStaffSearch = new javax.swing.JMenuItem();
         jToolBar5 = new javax.swing.JToolBar();
         btnSave = new javax.swing.JButton();
@@ -1405,7 +1414,7 @@ public class PropertyPanel extends ContentPanel {
 
         menuPrintComputerFolio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/print.png"))); // NOI18N
         menuPrintComputerFolio.setText(bundle.getString("PropertyPanel.menuPrintComputerFolio.text")); // NOI18N
-        menuPrintComputerFolio.setToolTipText(bundle.getString("PropertyPanel.menuPrintComputerFolio.toolTipText")); // NOI18N
+        menuPrintComputerFolio.setToolTipText(null);
         menuPrintComputerFolio.setName(bundle.getString("PropertyPanel.menuPrintComputerFolio.name")); // NOI18N
         menuPrintComputerFolio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1414,8 +1423,20 @@ public class PropertyPanel extends ContentPanel {
         });
         popupPrintActions.add(menuPrintComputerFolio);
 
+        menuPrintHistoricalSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/print.png"))); // NOI18N
+        menuPrintHistoricalSearch.setText(bundle.getString("PropertyPanel.menuPrintHistoricalSearch.text")); // NOI18N
+        menuPrintHistoricalSearch.setToolTipText(null);
+        menuPrintHistoricalSearch.setName(bundle.getString("PropertyPanel.menuPrintHistoricalSearch.name")); // NOI18N
+        menuPrintHistoricalSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuPrintHistoricalSearchActionPerformed(evt);
+            }
+        });
+        popupPrintActions.add(menuPrintHistoricalSearch);
+
         menuPrintStaffSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/print.png"))); // NOI18N
         menuPrintStaffSearch.setText(bundle.getString("PropertyPanel.menuPrintStaffSearch.text")); // NOI18N
+        menuPrintStaffSearch.setToolTipText(null);
         menuPrintStaffSearch.setName(bundle.getString("PropertyPanel.menuPrintStaffSearch.name")); // NOI18N
         menuPrintStaffSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2744,6 +2765,10 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         printRptStaffSearch();
     }//GEN-LAST:event_menuPrintStaffSearchActionPerformed
 
+    private void menuPrintHistoricalSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPrintHistoricalSearchActionPerformed
+        printRptHistoricalSearch();
+    }//GEN-LAST:event_menuPrintHistoricalSearchActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel areaPanel;
     private org.sola.clients.beans.administrative.BaUnitAreaBean baUnitAreaBean1;
@@ -2835,6 +2860,7 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem menuOpenChildBaUnit;
     private javax.swing.JMenuItem menuOpenParentBaUnit;
     private javax.swing.JMenuItem menuPrintComputerFolio;
+    private javax.swing.JMenuItem menuPrintHistoricalSearch;
     private javax.swing.JMenuItem menuPrintStaffSearch;
     private javax.swing.JMenuItem menuRemoveNotation;
     private javax.swing.JMenuItem menuRemoveParcel;
