@@ -29,6 +29,8 @@ import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
@@ -299,6 +301,19 @@ public class PropertyPanel extends ContentPanel {
             labArea.setVisible(true);
         }
 
+        // Samoa customization - set the area and folio reference editable if this is a 
+        // Correct Registry service. 
+        if (isCorrectRegistry());
+        {
+            areaPanel.setEnabled(true);
+            areaPanel.setEnabled(true);
+            txtArea.setEnabled(true);
+            txtArea.setEditable(true);
+            txtArea.setVisible(true);
+            labArea.setEnabled(true);
+            labArea.setVisible(true);
+        }
+
         if (applicationBean != null && applicationService != null) {
             headerPanel.setTitleText(String.format("%s, %s",
                     headerPanel.getTitleText(),
@@ -326,11 +341,29 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
+     * Determines if the service is the Correct Registry service or not.
+     *
+     *
+     * @return
+     */
+    private boolean isCorrectRegistry() {
+        boolean result = false;
+        if (applicationService != null && applicationService.getRequestType() != null
+                && applicationService.getRequestType().getCode().
+                equalsIgnoreCase(RequestTypeBean.CODE_CORRECT_REGISTRY)) {
+            result = true;
+        }
+        return result;
+    }
+
+    /**
      * Shows {@link NewPropertyWizardPanel} to select parent property.
      */
     private void showNewTitleWizard(boolean showMessage) {
-        if (baUnitBean1 == null || (baUnitBean1.getStatusCode() != null
-                && !baUnitBean1.getStatusCode().equals(StatusConstants.PENDING))) {
+
+        // Samoa Customization. Allow the Correct Registry service to add a parent property. 
+        if (!isCorrectRegistry() && (baUnitBean1 == null || (baUnitBean1.getStatusCode() != null
+                && !baUnitBean1.getStatusCode().equals(StatusConstants.PENDING)))) {
             return;
         }
 
@@ -348,7 +381,7 @@ public class PropertyPanel extends ContentPanel {
 //                                    btnNext.setEnabled(true);
 //                                    tabsMain.setEnabled(false);
 //                                    btnAddParent.setEnabled(false);
-                                    updatePropertyArea(); 
+                                    updatePropertyArea();
                                 }
                             }
                         }
@@ -457,7 +490,7 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Checks if the property area should be updated based on the linked property information. 
+     * Checks if the property area should be updated based on the linked property information.
      */
     private void updatePropertyArea() {
         if (txtArea.isEditable()) {
@@ -483,6 +516,12 @@ public class PropertyPanel extends ContentPanel {
         if (baUnitBean1 == null || (baUnitBean1.getStatusCode() != null
                 && !baUnitBean1.getStatusCode().equals(StatusConstants.PENDING))) {
             enabled = false;
+        }
+
+        //Samoa Customization - allow the prior title to be changed as part of the Correct Registry
+        // service. 
+        if (isCorrectRegistry()) {
+            enabled = true;
         }
 
         btnOpenParent.setEnabled(baUnitBean1.getSelectedParentBaUnit() != null);
@@ -602,8 +641,21 @@ public class PropertyPanel extends ContentPanel {
             // Restrict selection of right type by application service
             if (applicationService != null && applicationService.getRequestType() != null
                     && applicationService.getRequestType().getRrrTypeCode() != null) {
+
+                // Samoa Customization. Filter the list of right types based on the allowed
+                // right types for the service. 
+                List<String> codes = new ArrayList<String>();
+                for (RrrTypeBean rrrTypeBean : rrrTypes.getRrrTypeBeanList()) {
+                    if (isRightTypeAllowed(rrrTypeBean.getCode(), rrrTypeBean.isPrimary())) {
+                        codes.add(rrrTypeBean.getCode());
+                    }
+                }
+                if (codes.size() > 0) {
+                    rrrTypes.restrictCodes(codes.toArray(new String[codes.size()]));
+                }
+
                 rrrTypes.setSelectedRightByCode(applicationService.getRequestType().getRrrTypeCode());
-                if (rrrTypes.getSelectedRrrType() != null) {
+                if (rrrTypes.getSelectedRrrType() != null && rrrTypes.getRrrTypeBeanList().size() <= 1) {
                     cbxRightType.setEnabled(false);
                 }
             }
@@ -671,6 +723,11 @@ public class PropertyPanel extends ContentPanel {
      */
     private boolean isActionAllowed(String action) {
         boolean result = true;
+        if (RrrTypeActionConstants.CANCEL.equalsIgnoreCase(action)) {
+            // Default to false if the action is cancel as cannot have cancel and vary/new actions
+            // supported by the same service. 
+            result = false; 
+        }
         if (applicationService != null && applicationService.getRequestType() != null
                 && applicationService.getRequestType().getTypeActionCode() != null) {
             result = applicationService.getRequestType().getTypeActionCode().equalsIgnoreCase(action);
@@ -686,6 +743,7 @@ public class PropertyPanel extends ContentPanel {
         if (rrrTypeCode != null && applicationService != null
                 && applicationService.getRequestType() != null
                 && applicationService.getRequestType().getRrrTypeCode() != null) {
+            result = false; // Change the default. 
             if (applicationService.getRequestType().getRrrTypeCode().equalsIgnoreCase(
                     RrrTypeBean.SYSTEM_RRR_TYPE_CODE_PRIMARY) && isPrimary) {
                 result = true;
@@ -698,7 +756,6 @@ public class PropertyPanel extends ContentPanel {
             } else {
                 result = applicationService.getRequestType().getRrrTypeCode().equalsIgnoreCase(rrrTypeCode);
             }
-
         }
         return result;
     }
@@ -880,8 +937,7 @@ public class PropertyPanel extends ContentPanel {
          * generator.getFeatureImage( baUnitBean1.getCadastreObjectList().get(0).getGeomPolygon(),
          * baUnitBean1.getCadastreObjectList().get(0).getLabel(),
          * MapFeatureImageGenerator.IMAGE_FORMAT_PNG); } catch (InitializeMapException mapEx) {
-         * LogUtility.log("Unable to initialize MapFeaureImageGenerator", mapEx); }
-        }
+         * LogUtility.log("Unable to initialize MapFeaureImageGenerator", mapEx); } }
          */
 
         showReport(ReportManager.getStaffSearchReport(getBaUnit(
@@ -912,6 +968,7 @@ public class PropertyPanel extends ContentPanel {
         if (rrrBean == null) {
             rrrBean = new RrrBean();
             rrrBean.setTypeCode(rrrTypes.getSelectedRrrType().getCode());
+            rrrBean.setPrimary(rrrTypes.getSelectedRrrType().isPrimary());
         }
 
         RightFormListener rightFormListener = new RightFormListener();
@@ -924,7 +981,7 @@ public class PropertyPanel extends ContentPanel {
             cardName = MainContentPanel.CARD_MORTGAGE;
         } else if (rrrCode.equalsIgnoreCase(RrrBean.CODE_AGRI_ACTIVITY)
                 || rrrCode.equalsIgnoreCase(RrrBean.CODE_COMMON_OWNERSHIP)
-                || rrrCode.equalsIgnoreCase(RrrBean.CODE_CUSTOMARY_TYPE)
+                // || rrrCode.equalsIgnoreCase(RrrBean.CODE_CUSTOMARY_TYPE)
                 || rrrCode.equalsIgnoreCase(RrrBean.CODE_FIREWOOD)
                 || rrrCode.equalsIgnoreCase(RrrBean.CODE_FISHING)
                 || rrrCode.equalsIgnoreCase(RrrBean.CODE_GRAZING)
@@ -943,7 +1000,9 @@ public class PropertyPanel extends ContentPanel {
             cardName = MainContentPanel.CARD_SIMPLE_OWNERSHIP;
         } else if (rrrCode.equalsIgnoreCase(RrrBean.CODE_OWNERSHIP)
                 || rrrCode.equalsIgnoreCase(RrrBean.CODE_STATE_OWNERSHIP)
-                || rrrCode.equalsIgnoreCase(RrrBean.CODE_APARTMENT)) {
+                || rrrCode.equalsIgnoreCase(RrrBean.CODE_APARTMENT)
+                || rrrCode.equalsIgnoreCase(RrrBean.CODE_CUSTOMARY_TYPE)
+                || rrrCode.equalsIgnoreCase(RrrBean.CODE_LEASEHOLD)) {
             panel = new OwnershipPanel(rrrBean, applicationBean, applicationService, action);
             cardName = MainContentPanel.CARD_OWNERSHIP;
         } else {
@@ -1499,7 +1558,7 @@ public class PropertyPanel extends ContentPanel {
             jPanel10Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel10Layout.createSequentialGroup()
                 .add(jLabel1)
-                .add(57, 57, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
             .add(txtFirstPart)
         );
         jPanel10Layout.setVerticalGroup(

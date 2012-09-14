@@ -127,7 +127,8 @@ public class OwnershipPanel extends ContentPanel {
     private void customizeSharesButtons(RrrShareBean rrrShare) {
         boolean isChangesAllowed = false;
         if (rrrAction == RrrBean.RRR_ACTION.VARY || rrrAction == RrrBean.RRR_ACTION.EDIT
-                || rrrAction == RrrBean.RRR_ACTION.NEW) {
+                || rrrAction == RrrBean.RRR_ACTION.NEW || rrrAction == RrrBean.RRR_ACTION.CANCEL) {
+            // Need to be able to change on cancel as LRS migrated data may have omitted share details
             isChangesAllowed = true;
         }
 
