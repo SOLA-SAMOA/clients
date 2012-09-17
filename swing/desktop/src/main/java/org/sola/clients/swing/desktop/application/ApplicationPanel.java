@@ -299,11 +299,21 @@ public class ApplicationPanel extends ContentPanel {
             tabbedControlMain.addTab(bundle.getString("ApplicationPanel.validationPanel.TabConstraints.tabTitle"), validationPanel);
             tabbedControlMain.addTab(bundle.getString("ApplicationPanel.historyPanel.TabConstraints.tabTitle"), historyPanel);
             btnValidate.setEnabled(true);
+			
+			txtAppNumber.setEnabled(false);
         } else {
             cbxAgents.requestFocus(true);
             tabbedControlMain.removeTabAt(tabbedControlMain.indexOfComponent(historyPanel));
             tabbedControlMain.removeTabAt(tabbedControlMain.indexOfComponent(validationPanel));
             btnValidate.setEnabled(false);
+			
+			// Samoa Customization - Allow the application number to be set (Ticket #51)
+			if (SecurityBean.isInRole(RolesConstants.APPLICATION_SET_NUMBER)) {
+			    txtAppNumber.setEnabled(true); 
+				txtAppNumber.setFocusable(true);
+				txtAppNumber.setRequestFocusEnabled(true);
+				txtAppNumber.setEditable(true);
+			}
         }
         
         menuApprove.setEnabled(appBean.canApprove()
