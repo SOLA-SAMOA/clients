@@ -60,7 +60,7 @@ public class NewSpatialUnitRoadTool extends ExtendedDrawToolWithSnapping {
         super();
         this.editLayer = editLayer;
         this.targetLevelName = targetLevelName;
-        this.setGeometryType(Geometries.LINESTRING);
+        this.setGeometryType(Geometries.POLYGON);
         this.setToolName(NAME);
         this.setToolTip(toolTip);
         this.setIconImage("resources/car-plus.png");

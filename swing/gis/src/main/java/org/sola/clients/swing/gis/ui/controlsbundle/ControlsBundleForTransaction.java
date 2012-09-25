@@ -225,7 +225,7 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
         //Spatial Unit Edit Tools
         ExtendedFeatureLayer hydroLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("hydro");
         ExtendedFeatureLayer parcelsLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("parcels");
-        ExtendedFeatureLayer roadLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("road_cl");
+        ExtendedFeatureLayer roadLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("road");
         List<ExtendedFeatureLayer> selectionLayers = new ArrayList<ExtendedFeatureLayer>();
         selectionLayers.add(hydroLayer);
         selectionLayers.add(roadLayer);
