@@ -23,24 +23,19 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sola.clients.swing.gis.tool;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.map.extended.layer.ExtendedLayerGraphics;
+import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.clients.swing.gis.beans.CadastreObjectBean;
 import org.sola.clients.swing.gis.beans.CadastreObjectNodeBean;
 import org.sola.clients.swing.gis.data.PojoDataAccess;
 import org.sola.clients.swing.gis.layer.CadastreBoundaryPointLayer;
 import org.sola.clients.swing.gis.layer.CadastreRedefinitionObjectLayer;
 import org.sola.clients.swing.gis.layer.TargetBoundaryLayer;
-import org.sola.clients.swing.gis.to.CadastreObjectNodeExtraTO;
-import org.sola.common.mapping.MappingManager;
 import org.sola.webservices.transferobjects.cadastre.CadastreObjectNodeTO;
 
 /**
@@ -55,6 +50,14 @@ public class CadastreRedefinitionBoundarySelectTool
     private PojoDataAccess dataAccess;
     private String cadastreObjectType;
 
+    /**
+     * Creates the tool.
+     * 
+     * @param dataAccess The data access library that is used to communicate with the server
+     * @param pointLayer The same as in {@see CadastreBoundaryEditTool} 
+     * @param targetLayer The same as in {@see CadastreBoundaryEditTool} 
+     * @param targetNodeLayer The same as in {@see CadastreBoundaryEditTool} 
+     */
     public CadastreRedefinitionBoundarySelectTool(
             PojoDataAccess dataAccess,
             CadastreBoundaryPointLayer pointLayer,
@@ -131,8 +134,8 @@ public class CadastreRedefinitionBoundarySelectTool
         if (nodeTO == null) {
             return null;
         }
-        CadastreObjectNodeBean nodeBean = MappingManager.getMapper().map(
-                new CadastreObjectNodeExtraTO(nodeTO), CadastreObjectNodeBean.class);
+       CadastreObjectNodeBean nodeBean = TypeConverters.TransferObjectToBean(nodeTO, 
+               CadastreObjectNodeBean.class, null);
         return nodeBean;
     }
 }

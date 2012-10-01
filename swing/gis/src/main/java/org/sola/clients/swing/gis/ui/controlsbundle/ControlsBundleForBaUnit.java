@@ -23,10 +23,6 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sola.clients.swing.gis.ui.controlsbundle;
 
 import com.vividsolutions.jts.io.ParseException;
@@ -38,9 +34,9 @@ import org.geotools.map.extended.layer.ExtendedLayerGraphics;
 import org.geotools.swing.extended.exception.InitializeLayerException;
 import org.sola.clients.beans.cadastre.CadastreObjectBean;
 import org.sola.clients.beans.controls.SolaList;
+import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.clients.swing.gis.Messaging;
 import org.sola.clients.swing.gis.data.PojoDataAccess;
-import org.sola.common.mapping.MappingManager;
 import org.sola.common.messaging.GisMessage;
 import org.sola.webservices.transferobjects.cadastre.CadastreObjectTO;
 
@@ -56,11 +52,18 @@ public final class ControlsBundleForBaUnit extends SolaControlsBundle {
     private final String CADASTRE_OBJECTS_LAYERNAME = "Current property cadastre objects";
     private final String STYLE_RESOURCE = "parcel_highlighted.xml";
 
+    /**
+     * Creates a controls bundle for display in the property form
+     */
     public ControlsBundleForBaUnit() {
         super();
         this.Setup(PojoDataAccess.getInstance());
     }
 
+    /**
+     * Performs setup actions for the control bundle
+     * @param pojoDataAccess 
+     */
     @Override
     public void Setup(PojoDataAccess pojoDataAccess) {
         super.Setup(pojoDataAccess);
@@ -85,7 +88,7 @@ public final class ControlsBundleForBaUnit extends SolaControlsBundle {
     public void setCadastreObjects(SolaList<CadastreObjectBean> cadastreObjectBeanList) {
         List<CadastreObjectTO> cadastreObjects = new ArrayList<CadastreObjectTO>();
         for (CadastreObjectBean coBean : cadastreObjectBeanList) {
-            cadastreObjects.add(MappingManager.getMapper().map(coBean, CadastreObjectTO.class));
+           cadastreObjects.add(TypeConverters.BeanToTrasferObject(coBean, CadastreObjectTO.class));
         }
         layerForCadastreObjects.removeFeatures(false);
         this.addCadastreObjectsInLayer(layerForCadastreObjects, cadastreObjects);
