@@ -23,10 +23,6 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sola.clients.swing.gis.tool;
 
 import com.vividsolutions.jts.geom.*;
@@ -36,13 +32,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.geometry.Envelope2D;
 import org.opengis.feature.simple.SimpleFeature;
+import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.clients.swing.gis.beans.CadastreObjectBean;
 import org.sola.clients.swing.gis.beans.CadastreObjectNodeBean;
 import org.sola.clients.swing.gis.data.PojoDataAccess;
 import org.sola.clients.swing.gis.layer.CadastreRedefinitionNodeLayer;
 import org.sola.clients.swing.gis.layer.CadastreRedefinitionObjectLayer;
-import org.sola.clients.swing.gis.to.CadastreObjectNodeExtraTO;
-import org.sola.common.mapping.MappingManager;
 import org.sola.common.messaging.GisMessage;
 import org.sola.common.messaging.MessageUtility;
 import org.sola.webservices.transferobjects.cadastre.CadastreObjectNodeTO;
@@ -54,10 +49,22 @@ import org.sola.webservices.transferobjects.cadastre.CadastreObjectNodeTO;
  */
 public class CadastreRedefinitionAddNodeTool extends CadastreRedefinitionAbstractNodeTool {
 
+    /**
+     * The name of the tool.
+     * 
+     */
     public final static String NAME = "add-node";
     private String toolTip = MessageUtility.getLocalizedMessage(
             GisMessage.CADASTRE_TOOLTIP_ADD_NODE).getMessage();
 
+    /**
+     * Creates an instance of CadastreRedefinitionAddNodeTool
+     * @param dataAccess See constructor of {@see CadastreRedefinitionAbstractNodeTool}
+     * @param cadastreObjectNodeModifiedLayer 
+     * See constructor of {@see CadastreRedefinitionAbstractNodeTool}
+     * @param cadastreObjectModifiedLayer 
+     * See constructor of {@see CadastreRedefinitionAbstractNodeTool}
+     */
     public CadastreRedefinitionAddNodeTool(PojoDataAccess dataAccess,
             CadastreRedefinitionNodeLayer cadastreObjectNodeModifiedLayer,
             CadastreRedefinitionObjectLayer cadastreObjectModifiedLayer) {
@@ -113,8 +120,8 @@ public class CadastreRedefinitionAddNodeTool extends CadastreRedefinitionAbstrac
         if (nodeTO == null) {
             return null;
         }
-        CadastreObjectNodeBean nodeBean = MappingManager.getMapper().map(
-                new CadastreObjectNodeExtraTO(nodeTO), CadastreObjectNodeBean.class);
+        CadastreObjectNodeBean nodeBean = TypeConverters.TransferObjectToBean(nodeTO, 
+                CadastreObjectNodeBean.class, null);
         return nodeBean;
     }
 

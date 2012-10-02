@@ -25,19 +25,13 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sola.clients.swing.gis.beans;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.clients.beans.validation.ValidationResultBean;
-import org.sola.common.mapping.MappingManager;
 import org.sola.clients.swing.gis.data.PojoDataAccess;
-import org.sola.clients.swing.gis.to.TransactionCadastreChangeExtraTO;
 import org.sola.webservices.transferobjects.transaction.TransactionCadastreChangeTO;
 
 /**
@@ -103,15 +97,22 @@ public class TransactionCadastreChangeBean extends TransactionBean{
         this.spatialUnitChangeList = spatialUnitChangeList;
     }
      
+    /**
+     * Returns the Transfer Object for this Cadastre Change bean.
+     *
+     * @return
+     */
     @Override
-    public TransactionCadastreChangeTO getTO(){
-        TransactionCadastreChangeExtraTO to = new TransactionCadastreChangeExtraTO();
-        MappingManager.getMapper().map(this, to);
-        return to;
+    public TransactionCadastreChangeTO getTO() {
+        return TypeConverters.BeanToTrasferObject(this, TransactionCadastreChangeTO.class);
     }
-    
+
+     /**
+     * Saves the details of the Cadastre Change to the SOLA database
+     * @return 
+     */
     @Override
-    public List<ValidationResultBean> save(){
+    public List<ValidationResultBean> save() {
         return TypeConverters.TransferObjectListToBeanList(
                 PojoDataAccess.getInstance().getCadastreService().saveTransactionCadastreChange(
                 this.getTO()), ValidationResultBean.class, null);

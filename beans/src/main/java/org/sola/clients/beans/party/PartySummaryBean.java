@@ -165,7 +165,7 @@ public class PartySummaryBean extends AbstractIdBean {
 
     @Override
     public String toString() {
-        if (!(String.format("%s", lastName).isEmpty()) && String.format("%s", lastName) == null && String.format("%s", lastName) == "") {
+        if (lastName != null && !lastName.trim().isEmpty()) {
             return String.format("%s %s", name, lastName);
         } else {
             return String.format("%s", name);

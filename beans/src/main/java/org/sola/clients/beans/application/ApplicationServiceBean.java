@@ -66,6 +66,7 @@ public class ApplicationServiceBean extends ApplicationServiceSummaryBean {
     private Date expectedCompletionDate;
     private Date lodgingDatetime;
     private BigDecimal valueFee;
+    private String concatenatedName;
 
     /** 
      * Creates object's instance and initializes the following beans, which are 
@@ -218,6 +219,13 @@ public class ApplicationServiceBean extends ApplicationServiceSummaryBean {
                 WSManager.getInstance().getCaseManagementService().serviceActionRevert(this.getId(), this.getRowVersion()),
                 ValidationResultBean.class, null);
     }
+    
+   /** Start service and set to the pending state */
+    public List<ValidationResultBean> start() {
+        return TypeConverters.TransferObjectListToBeanList(
+                WSManager.getInstance().getCaseManagementService().serviceActionStart(this.getId(), this.getRowVersion()),
+                ValidationResultBean.class, null);
+    }
 
     /** Indicates whether service can be managed */
     public boolean isManagementAllowed() {
@@ -282,5 +290,11 @@ public class ApplicationServiceBean extends ApplicationServiceSummaryBean {
         return collection;
     }
 
-    
+    public String getConcatenatedName() {
+        return concatenatedName;
+    }
+
+    public void setConcatenatedName(String concatenatedName) {
+        this.concatenatedName = concatenatedName;
+    }
 }

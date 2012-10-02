@@ -67,6 +67,9 @@ public abstract class SolaControlsBundle extends ControlsBundle {
 //this is used for creating a jasper report map print
 //    private SolaJasperPrint solaPrint = null;
 
+    /**
+     * Constructor of the abstract class
+     */
     public SolaControlsBundle() {
         super();
         if (!gisInitialized) {
@@ -187,7 +190,7 @@ public abstract class SolaControlsBundle extends ControlsBundle {
      * @param applicationId
      */
     public void setApplicationId(String applicationId) {
-        if (this.solaPrint != null){
+        if (this.solaPrint != null) {
             this.solaPrint.setApplicationId(applicationId);
         }
     }

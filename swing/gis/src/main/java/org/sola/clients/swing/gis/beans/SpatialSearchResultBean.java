@@ -25,18 +25,23 @@
  */
 package org.sola.clients.swing.gis.beans;
 
+import org.sola.clients.beans.AbstractBindingBean;
+
 /**
  * Bean used for the result in the Spatial Object Search Result list. Provides a customized toString
  * method for display in the list control.
  *
  * @author soladev
  */
-public class SpatialSearchResultBean implements Comparable {
+public class SpatialSearchResultBean extends AbstractBindingBean implements Comparable {
 
     private String id;
     private String label;
     private byte[] theGeom;
 
+    /**
+     * Constructor for the bean. 
+     */
     public SpatialSearchResultBean() {
         super();
     }
@@ -61,8 +66,8 @@ public class SpatialSearchResultBean implements Comparable {
         return theGeom;
     }
 
-    public void setTheGeom(byte[] theGeom) {
-        this.theGeom = theGeom;
+    public void setTheGeom(byte[] theGeom) { //NOSONAR
+        this.theGeom = theGeom; //NOSONAR
     }
 
     @Override

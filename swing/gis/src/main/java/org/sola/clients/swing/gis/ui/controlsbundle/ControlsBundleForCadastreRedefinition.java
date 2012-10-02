@@ -23,10 +23,6 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sola.clients.swing.gis.ui.controlsbundle;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -182,6 +178,9 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
         this.boundarySelectTool.setCadastreObjectType(targetCadastreObjectType);
     }
 
+        /**
+     * It resets the transaction. All modifications are wiped out.
+     */
     public void reset() {
         this.cadastreObjectModifiedLayer.getBeanList().clear();
         this.cadastreObjectNodeModifiedLayer.getBeanList().clear();

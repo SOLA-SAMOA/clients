@@ -353,9 +353,9 @@ public class ApplicationBean extends ApplicationSummaryBean {
         return location;
     }
 
-    public void setLocation(byte[] value) {
+    public void setLocation(byte[] value) { //NOSONAR
         byte[] old = location;
-        location = value;
+        location = value; //NOSONAR
         propertySupport.firePropertyChange(LOCATION_PROPERTY, old, value);
     }
 
@@ -846,6 +846,18 @@ public class ApplicationBean extends ApplicationSummaryBean {
         return result;
     }
 
+    /** Returns service by id. */
+    public ApplicationServiceBean getServiceById(String serviceId){
+        if(getServiceList()!=null && serviceId !=null){
+            for(ApplicationServiceBean service: getServiceList()){
+                if(service.getId().equals(serviceId)){
+                    return service;
+                }
+            }
+        }
+        return null;
+    }
+    
     /**
      * Assigns application to the user.
      *
