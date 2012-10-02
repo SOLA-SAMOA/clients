@@ -97,6 +97,7 @@ public class ApplicationPanel extends ContentPanel {
     private String applicationID;
     private PartyBean agentContact;
     private boolean isDashboard = false;
+    ApplicationServiceBean service;
 
     /**
      * This method is used by the form designer to create {@link ApplicationBean}. It uses
@@ -500,7 +501,8 @@ public class ApplicationPanel extends ContentPanel {
         return agentsList;
     }
     
-    private void openPropertyForm(final BaUnitBean baUnitBean, final boolean readOnly) {
+    private void openPropertyForm(final ApplicationServiceBean service, 
+            final BaUnitBean baUnitBean, final boolean readOnly) {
         if (baUnitBean != null) {
             SolaTask t = new SolaTask<Void, Void>() {
                 
@@ -509,14 +511,14 @@ public class ApplicationPanel extends ContentPanel {
                     setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_PROPERTY));
                     ApplicationBean applicationBean = appBean.copy();
                     PropertyPanel propertyPnl = new PropertyPanel(applicationBean,
-                            applicationBean.getSelectedService(), baUnitBean, readOnly);
+                            service, baUnitBean, readOnly);
                     getMainContentPanel().addPanel(propertyPnl, MainContentPanel.CARD_PROPERTY_PANEL, true);
                     return null;
                 }
                 
                 @Override
                 protected void taskDone() {
-                    if (!appBean.getSelectedService().getRequestTypeCode().equalsIgnoreCase(RequestTypeBean.CODE_NEW_DIGITAL_TITLE)) {
+                    if (!service.getRequestTypeCode().equalsIgnoreCase(RequestTypeBean.CODE_NEW_DIGITAL_TITLE)) {
                         ((PropertyPanel) getMainContentPanel().getPanel(MainContentPanel.CARD_PROPERTY_PANEL)).showPriorTitileMessage();
                     }
                 }
@@ -534,7 +536,7 @@ public class ApplicationPanel extends ContentPanel {
                     setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_PROPERTY));
                     ApplicationBean applicationBean = appBean.copy();
                     PropertyPanel propertyPnl = new PropertyPanel(applicationBean,
-                            applicationBean.getSelectedService(), applicationProperty.getNameFirstpart(),
+                            service, applicationProperty.getNameFirstpart(),
                             applicationProperty.getNameLastpart(), readOnly);
                     getMainContentPanel().addPanel(propertyPnl, MainContentPanel.CARD_PROPERTY_PANEL, true);
                     return null;
@@ -597,9 +599,9 @@ public class ApplicationPanel extends ContentPanel {
         }
     }
     
-    private void launchService(final boolean readOnly) {
-        if (appBean.getSelectedService() != null) {
-            String requestType = appBean.getSelectedService().getRequestTypeCode();
+    private void launchService(final ApplicationServiceBean service, final boolean readOnly) {
+        if (service != null) {
+            String requestType = service.getRequestTypeCode();
 
             // Determine what form to start for selected service
 
@@ -614,7 +616,7 @@ public class ApplicationPanel extends ContentPanel {
                     public Void doTask() {
                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_DOCREGISTRATION));
                         TransactionedDocumentsPanel form = new TransactionedDocumentsPanel(
-                                appBean, appBean.getSelectedService());
+                                appBean, service);
                         getMainContentPanel().addPanel(form, MainContentPanel.CARD_TRANSACTIONED_DOCUMENT, true);
                         return null;
                     }
@@ -679,9 +681,7 @@ public class ApplicationPanel extends ContentPanel {
                         public Void doTask() {
                             setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_CADASTRE_CHANGE));
                             CadastreTransactionMapPanel form = new CadastreTransactionMapPanel(
-                                    appBean,
-                                    appBean.getSelectedService(),
-                                    appBean.getPropertyList().getFilteredList().get(0));
+                                    appBean, service, appBean.getPropertyList().getFilteredList().get(0));
                             getMainContentPanel().addPanel(form, MainContentPanel.CARD_CADASTRECHANGE, true);
                             return null;
                         }
@@ -708,8 +708,7 @@ public class ApplicationPanel extends ContentPanel {
                                     public Void doTask() {
                                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_DOCREGISTRATION));
                                         CadastreTransactionMapPanel form = new CadastreTransactionMapPanel(
-                                                appBean,
-                                                appBean.getSelectedService(), property);
+                                                appBean, service, property);
                                         getMainContentPanel().addPanel(
                                                 form, MainContentPanel.CARD_CADASTRECHANGE, true);
                                         return null;
@@ -723,7 +722,7 @@ public class ApplicationPanel extends ContentPanel {
                     
                 } else {
                     CadastreTransactionMapPanel form = new CadastreTransactionMapPanel(
-                            appBean, appBean.getSelectedService(), null);
+                            appBean, service, null);
                     getMainContentPanel().addPanel(
                             form, MainContentPanel.CARD_CADASTRECHANGE, true);
                 }
@@ -731,7 +730,7 @@ public class ApplicationPanel extends ContentPanel {
             } else {
 
                 // Try to get BA Units, craeted through the service
-                List<BaUnitBean> baUnitsList = BaUnitBean.getBaUnitsByServiceId(appBean.getSelectedService().getId());
+                List<BaUnitBean> baUnitsList = BaUnitBean.getBaUnitsByServiceId(service.getId());
                 
                 if (baUnitsList != null && baUnitsList.size() > 0) {
                     if (baUnitsList.size() > 1) {
@@ -744,14 +743,14 @@ public class ApplicationPanel extends ContentPanel {
                                 if (evt.getPropertyName().equals(BaUnitsListPanel.SELECTED_BAUNIT_PROPERTY)
                                         && evt.getNewValue() != null) {
                                     BaUnitBean baUnitBean = (BaUnitBean) evt.getNewValue();
-                                    openPropertyForm(baUnitBean, readOnly);
+                                    openPropertyForm(service, baUnitBean, readOnly);
                                     ((ContentPanel) evt.getSource()).close();
                                 }
                             }
                         });
                         getMainContentPanel().addPanel(baUnitListPanel, MainContentPanel.CARD_BAUNIT_SELECT_PANEL, true);
                     } else {
-                        openPropertyForm(baUnitsList.get(0), readOnly);
+                        openPropertyForm(service, baUnitsList.get(0), readOnly);
                     }
                 } else {
 
@@ -761,10 +760,10 @@ public class ApplicationPanel extends ContentPanel {
                             || requestType.equalsIgnoreCase(RequestTypeBean.CODE_NEW_STATE)) {
                         if (!readOnly) {
                             // Open empty property form
-                            openPropertyForm(new BaUnitBean(), readOnly);
+                            openPropertyForm(service, new BaUnitBean(), readOnly);
                         }
                     } else {
-
+                        this.service = service; 
                         // Open property form for existing title changes
                         if (appBean.getPropertyList().getFilteredList().size() == 1) {
                             openPropertyForm(appBean.getPropertyList().getFilteredList().get(0), readOnly);
@@ -1029,7 +1028,7 @@ public class ApplicationPanel extends ContentPanel {
             }
         };
         
-        if (getMainContentPanel() != null) {
+        if (getMainContentPanel() != null && this.isDashboard) {
             DashBoardPanel dashBoardPanel = new DashBoardPanel();
             dashBoardPanel.addPropertyChangeListener(ApplicationBean.ASSIGNEE_ID_PROPERTY, listener);
             if (whichChangeEvent == HeaderPanel.CLOSE_BUTTON_CLICKED) {
@@ -2041,6 +2040,10 @@ public class ApplicationPanel extends ContentPanel {
         columnBinding.setColumnName("Request Type.display Value");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${concatenatedName}"));
+        columnBinding.setColumnName("Concatenated Name");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${status.displayValue}"));
         columnBinding.setColumnName("Status.display Value");
         columnBinding.setColumnClass(String.class);
@@ -2055,7 +2058,8 @@ public class ApplicationPanel extends ContentPanel {
         tabServices.getColumnModel().getColumn(0).setMaxWidth(70);
         tabServices.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("ApplicationPanel.tabFeeDetails1.columnModel.title0")); // NOI18N
         tabServices.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("ApplicationPanel.tabFeeDetails1.columnModel.title1")); // NOI18N
-        tabServices.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("ApplicationPanel.tabFeeDetails1.columnModel.title2")); // NOI18N
+        tabServices.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("ApplicationPanel.tabServices.columnModel.title3_1")); // NOI18N
+        tabServices.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("ApplicationPanel.tabFeeDetails1.columnModel.title2")); // NOI18N
 
         tbServices.setFloatable(false);
         tbServices.setRollover(true);
@@ -3107,6 +3111,7 @@ public class ApplicationPanel extends ContentPanel {
         
         appBean.addProperty(txtFirstPart.getText(), txtLastPart.getText(), area, value);
         clearPropertyFields();
+        verifySelectedProperty(); 
         txtFirstPart.requestFocus();
     }//GEN-LAST:event_btnAddPropertyActionPerformed
 
@@ -3495,7 +3500,30 @@ public class ApplicationPanel extends ContentPanel {
      * Launches selected service.
      */
     private void startService() {
-        launchService(false);
+        final ApplicationServiceBean selectedService = appBean.getSelectedService();
+       
+        if (selectedService != null) {
+
+            SolaTask t = new SolaTask<Void, Void>() {
+                List<ValidationResultBean> result;
+
+                @Override
+                protected Void doTask() {
+                    setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_SERVICE_STARTING));
+                    result = selectedService.start();
+                    return null;
+                }
+
+                @Override
+                protected void taskDone() {
+                    appBean.reload();
+                    customizeApplicationForm();
+                    saveAppState();
+                    launchService(appBean.getServiceById(selectedService.getId()), false);
+                }
+            };
+            TaskManager.getInstance().runTask(t);
+        }
     }
 
     /**
@@ -3731,7 +3759,7 @@ public class ApplicationPanel extends ContentPanel {
      * Allows to overview service.
      */
     private void viewService() {
-        launchService(true);
+        launchService(appBean.getSelectedService(), true);
     }
     
     private void printStatusReport() {

@@ -25,15 +25,11 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sola.clients.swing.gis.beans;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.sola.clients.beans.AbstractBindingBean;
 
 /**
  * A node bean which represents data about a boundary node and related Cadastre Objects that share
@@ -43,14 +39,21 @@ import java.util.List;
  * 
  * @author Elton Manoku
  */
-public class CadastreObjectNodeBean implements Serializable {
+public class CadastreObjectNodeBean extends AbstractBindingBean {
     private String id;
     private byte[] geom;
     List<CadastreObjectBean> cadastreObjectList = new ArrayList<CadastreObjectBean>();
     
+    /**
+     * Creates the bean
+     */
     public CadastreObjectNodeBean(){
     }
 
+    /**
+     * Constructor that sets the id value of the bean based on the id argument.
+     * @param id 
+     */
     public CadastreObjectNodeBean(String id){
         this.id = id;
     }
@@ -92,7 +95,5 @@ public class CadastreObjectNodeBean implements Serializable {
         int hash = 3;
         hash = 79 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
-    }
-    
-     
+    }    
 }
