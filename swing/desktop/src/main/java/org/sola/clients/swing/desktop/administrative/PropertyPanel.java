@@ -333,7 +333,7 @@ public class PropertyPanel extends ContentPanel {
         customizeRightsButtons(null);
         customizeNotationButtons(null);
         customizeRightTypesList();
-        customizeParcelButtons(null);
+        customizeParcelButtons(null);   
         customizePaperTitleButtons(null);
         customizePrintButton();
         customizeParentPropertyButtons();

@@ -100,7 +100,9 @@ public class ApplicationAssignmentPanel extends ContentPanel {
         cbxUsers.setEnabled(false);
         if (pnlApplicationDetails.getApplicationBean().getAssigneeId() != null
                 && !pnlApplicationDetails.getApplicationBean().getAssigneeId().equals("")) {
-            if (usersListBean1.getSelectedUser().getId().equals(SecurityBean.getCurrentUser().getId())) {
+            // The selectedUser may not be set if the assigned user is inactive
+            if (usersListBean1.getSelectedUser() != null && 
+                    usersListBean1.getSelectedUser().getId().equals(SecurityBean.getCurrentUser().getId())) {
                 btnAssign.setEnabled(SecurityBean.isInRole(RolesConstants.APPLICATION_UNASSIGN_FROM_YOURSELF));
             } else {
                 btnAssign.setEnabled(SecurityBean.isInRole(RolesConstants.APPLICATION_UNASSIGN_FROM_OTHERS));
@@ -263,12 +265,13 @@ public class ApplicationAssignmentPanel extends ContentPanel {
      * Unassigns application from the selected user.
      */
     private void unassign() {
-        if (usersListBean1.getSelectedUser() == null) {
-            MessageUtility.displayMessage(ClientMessage.APPLICATION_NOSEL_USER);
-            return;
-        }
+//        if (usersListBean1.getSelectedUser() == null) {
+//            MessageUtility.displayMessage(ClientMessage.APPLICATION_NOSEL_USER);
+//            return;
+//        }
 
-        if (MessageUtility.displayMessage(ClientMessage.APPLICATION_UNASSIGN,
+        if (usersListBean1.getSelectedUser() == null || 
+                MessageUtility.displayMessage(ClientMessage.APPLICATION_UNASSIGN,
                 new String[]{usersListBean1.getSelectedUser().getFullUserName()})
                 == MessageUtility.BUTTON_ONE) {
 
