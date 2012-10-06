@@ -41,6 +41,7 @@ import org.sola.clients.beans.party.PartySummaryBean;
 import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.clients.swing.common.LafManager;
 import org.sola.clients.swing.common.controls.BrowseControlListener;
+import org.sola.clients.swing.common.converters.DateConverter;
 import org.sola.clients.swing.common.utils.BindingTools;
 import org.sola.clients.swing.desktop.MainForm;
 import org.sola.clients.swing.desktop.party.QuickSearchPartyForm;
@@ -111,6 +112,19 @@ public class MortgagePanel extends ContentPanel {
     }
 
     private void customizeForm(RrrBean.RRR_ACTION rrrAction) {
+        
+        // Customize form for SOLA Samoa by disabling the type field and making other
+        // fields optional. Also note changes to validation on RrrBean
+        jLabel2.setEnabled(false); // Type:
+        jLabel2.setIcon(null); // Type icon
+        cbxType.setEnabled(false); // Type dropdown
+        jLabel4.setIcon(null);  // Amount icon
+        jLabel3.setIcon(null); // Expiration date icon
+        jLabel13.setIcon(null); // Registation date icon
+        txtExpiryDate.setFormatterFactory(DateConverter.getDateFormatterFactory());
+        txtRegDatetime.setFormatterFactory(DateConverter.getDateFormatterFactory());
+        
+        
         if (rrrAction == RrrBean.RRR_ACTION.NEW) {
             btnSave.setText(MessageUtility.getLocalizedMessage(
                     ClientMessage.GENERAL_LABELS_CREATE_AND_CLOSE).getMessage());

@@ -36,6 +36,7 @@ import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.beans.application.ApplicationServiceBean;
 import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.clients.swing.common.LafManager;
+import org.sola.clients.swing.common.converters.DateConverter;
 import org.sola.clients.swing.desktop.MainForm;
 import org.sola.clients.swing.ui.ContentPanel;
 import org.sola.clients.swing.ui.MainContentPanel;
@@ -152,6 +153,10 @@ public class OwnershipPanel extends ContentPanel {
 
     private void customizeForm() {
         headerPanel.setTitleText(rrrBean.getRrrType().getDisplayValue());
+        
+        jLabel13.setIcon(null); // Registation date icon
+        txtRegDatetime.setFormatterFactory(DateConverter.getDateFormatterFactory());
+        
         if (rrrAction == RrrBean.RRR_ACTION.NEW) {
             btnSave.setText(MessageUtility.getLocalizedMessage(
                     ClientMessage.GENERAL_LABELS_CREATE_AND_CLOSE).getMessage());
