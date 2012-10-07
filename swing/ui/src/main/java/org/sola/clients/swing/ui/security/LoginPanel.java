@@ -119,7 +119,7 @@ public class LoginPanel extends javax.swing.JPanel {
                     }
                     char[] user = txtUserPassword.getPassword();
                     if (Arrays.equals(user, new char[]{'t', 'e', 's', 't'})) {
-                       // MessageUtility.displayMessage(ClientMessage.ADMIN_CHANGE_PASSWORD);
+                       MessageUtility.displayMessage(ClientMessage.ADMIN_CHANGE_PASSWORD);
                     }
                     Arrays.fill(user, '0');
                     fireLoginEvent(true);

@@ -41,7 +41,6 @@ import org.sola.clients.beans.party.PartySummaryBean;
 import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.clients.swing.common.LafManager;
 import org.sola.clients.swing.common.controls.BrowseControlListener;
-import org.sola.clients.swing.common.converters.DateConverter;
 import org.sola.clients.swing.common.utils.BindingTools;
 import org.sola.clients.swing.desktop.MainForm;
 import org.sola.clients.swing.desktop.party.QuickSearchPartyForm;
@@ -121,8 +120,8 @@ public class MortgagePanel extends ContentPanel {
         jLabel4.setIcon(null);  // Amount icon
         jLabel3.setIcon(null); // Expiration date icon
         jLabel13.setIcon(null); // Registation date icon
-        txtExpiryDate.setFormatterFactory(DateConverter.getDateFormatterFactory());
-        txtRegDatetime.setFormatterFactory(DateConverter.getDateFormatterFactory());
+        txtExpiryDate.setFormatterFactory(FormattersFactory.getInstance().getDateFormatterFactory());
+        txtRegDatetime.setFormatterFactory(FormattersFactory.getInstance().getDateFormatterFactory());
         
         
         if (rrrAction == RrrBean.RRR_ACTION.NEW) {

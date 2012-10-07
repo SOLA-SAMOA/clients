@@ -32,9 +32,9 @@ import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.beans.application.ApplicationServiceBean;
 import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.clients.swing.common.LafManager;
-import org.sola.clients.swing.common.converters.DateConverter;
 import org.sola.clients.swing.desktop.MainForm;
 import org.sola.clients.swing.ui.ContentPanel;
+import org.sola.clients.swing.ui.renderers.FormattersFactory;
 import org.sola.clients.swing.ui.source.DocumentsManagementPanel;
 
 /**
@@ -115,7 +115,7 @@ public class SimpleRightPanel extends ContentPanel {
     private void customizeForm(RrrBean.RRR_ACTION rrrAction) {
         
         jLabel13.setIcon(null); // Registation date icon
-        txtRegDatetime.setFormatterFactory(DateConverter.getDateFormatterFactory());
+        txtRegDatetime.setFormatterFactory(FormattersFactory.getInstance().getDateFormatterFactory());
         
         if (rrrAction == RrrBean.RRR_ACTION.NEW) {
             btnSave.setText("Create & Close");

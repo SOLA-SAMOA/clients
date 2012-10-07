@@ -31,21 +31,19 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.validation.groups.Default;
 import org.sola.clients.beans.administrative.RrrBean;
-import org.sola.clients.beans.administrative.RrrShareBean;
-import org.sola.clients.beans.administrative.validation.OwnershipValidationGroup;
 import org.sola.clients.beans.administrative.validation.SimpleOwnershipValidationGroup;
 import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.beans.application.ApplicationServiceBean;
 import org.sola.clients.beans.party.PartySummaryBean;
 import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.clients.swing.common.LafManager;
-import org.sola.clients.swing.common.converters.DateConverter;
 import org.sola.clients.swing.common.tasks.SolaTask;
 import org.sola.clients.swing.common.tasks.TaskManager;
 import org.sola.clients.swing.desktop.MainForm;
 import org.sola.clients.swing.desktop.party.PartyPanelForm;
 import org.sola.clients.swing.ui.ContentPanel;
 import org.sola.clients.swing.ui.MainContentPanel;
+import org.sola.clients.swing.ui.renderers.FormattersFactory;
 import org.sola.clients.swing.ui.source.DocumentsManagementPanel;
 import org.sola.common.messaging.ClientMessage;
 import org.sola.common.messaging.MessageUtility;
@@ -106,7 +104,7 @@ public class SimpleRightholderPanel extends ContentPanel {
         headerPanel.setTitleText(rrrBean.getRrrType().getDisplayValue());
         
         jLabel2.setIcon(null); // Registation date icon
-        txtRegDatetime.setFormatterFactory(DateConverter.getDateFormatterFactory());
+        txtRegDatetime.setFormatterFactory(FormattersFactory.getInstance().getDateFormatterFactory());
         
         if (rrrAction == RrrBean.RRR_ACTION.NEW) {
             btnSave.setText(MessageUtility.getLocalizedMessage(

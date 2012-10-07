@@ -58,28 +58,5 @@ public class DateConverter extends Converter<Date, String> {
         }
         return dt;
     }
-    
-    /**
-     * Returns a custom formatter factory that can be used as the formatter factory for a
-     * JFormattedTextField when displaying and/or editing dates. This factory overrides the 
-     * default stringToValue functions so that the user can enter an empty date value. 
-     * To use this factory, set the formatterFactory property of the JFormattedTextField 
-     * to {@code DateConverter.getDateFormatterFactory()}
-     */
-    public static DefaultFormatterFactory getDateFormatterFactory() {
-        DateFormatter displayFormat = new DateFormatter(DateFormat.getDateInstance(DateFormat.MEDIUM)); 
-        DateFormatter editFormat = new DateFormatter(DateFormat.getDateInstance(DateFormat.SHORT)) {
-            // Accept null or emtpy string values entered by the user as null.
-            @Override
-            public Object stringToValue(String userInput) throws ParseException {
-                Object result = null;
-                if (userInput != null && !userInput.trim().isEmpty()) {
-                    result = super.stringToValue(userInput);
-                }
-                return result; 
-            }
-        };
 
-        return new DefaultFormatterFactory(displayFormat, displayFormat, editFormat);
-    }
 }

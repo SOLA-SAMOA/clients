@@ -1,30 +1,26 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
- * (FAO). All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
+ * reserved.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this
- * list of conditions and the following disclaimer. 2. Redistributions in binary
- * form must reproduce the above copyright notice,this list of conditions and
- * the following disclaimer in the documentation and/or other materials provided
- * with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this
- * software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
+ * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
+ * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.desktop;
@@ -38,6 +34,7 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.logging.Level;
+import java.util.prefs.Preferences;
 import javax.swing.ImageIcon;
 import net.sf.jasperreports.engine.JasperPrint;
 import org.sola.clients.beans.AbstractBindingBean;
@@ -71,6 +68,12 @@ import org.sola.common.messaging.MessageUtility;
  */
 public class MainForm extends javax.swing.JFrame {
 
+    private Class<?> mainClass;
+    public static final String MAIN_FORM_HEIGHT = "mainFormHeight";
+    public static final String MAIN_FORM_WIDTH = "mainFormWitdh";
+    public static final String MAIN_FORM_TOP = "mainFormTop";
+    public static final String MAIN_FORM_LEFT = "mainFormLeft";
+
     /**
      * Private class to hold singleton instance of the MainForm.
      */
@@ -84,6 +87,14 @@ public class MainForm extends javax.swing.JFrame {
      */
     public static MainForm getInstance() {
         return MainFormHolder.INSTANCE;
+    }
+
+    /**
+     * Returns a singleton instance of {@link MainForm}.
+     */
+    public static MainForm getInstance(Class<?> mainClass) {
+        getInstance().mainClass = mainClass;
+        return getInstance();
     }
 
     /**
@@ -102,21 +113,22 @@ public class MainForm extends javax.swing.JFrame {
             public void windowOpened(WindowEvent e) {
                 postInit();
             }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                preClose();
+            }
         });
     }
 
     /**
-     * Runs post initialization tasks. Enables or disables toolbar buttons and
-     * menu items depending on user rights. Loads various data after the form
-     * has been opened. It helps to display form with no significant delays.
+     * Runs post initialization tasks. Enables or disables toolbar buttons and menu items depending
+     * on user rights. Loads various data after the form has been opened. It helps to display form
+     * with no significant delays.
      */
     private void postInit() {
         // Set center screen location 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = ((dim.width) / 2);
-        int y = ((dim.height) / 2);
-
-        this.setLocation(x - (this.getWidth() / 2), y - (this.getHeight() / 2));
+        configureForm();
 
         // Customize buttons
         btnNewApplication.setEnabled(SecurityBean.isInRole(RolesConstants.APPLICATION_CREATE_APPS));
@@ -132,6 +144,52 @@ public class MainForm extends javax.swing.JFrame {
         openDashBoard();
 
         txtUserName.setText(SecurityBean.getCurrentUser().getUserName());
+    }
+
+    /**
+     * Sets the screen size and location based on the settings stored in the users preferences.
+     */
+    private void configureForm() {
+
+        int height = this.getHeight();
+        int width = this.getWidth();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = ((dim.width) / 2) - (width / 2);
+        int y = ((dim.height) / 2) - (height / 2);
+
+        if (mainClass != null) {
+            // Set the size of the screen
+            Preferences prefs = Preferences.userNodeForPackage(mainClass);
+            height = Integer.parseInt(prefs.get(MAIN_FORM_HEIGHT, Integer.toString(height)));
+            width = Integer.parseInt(prefs.get(MAIN_FORM_WIDTH, Integer.toString(width)));
+            y = Integer.parseInt(prefs.get(MAIN_FORM_TOP, Integer.toString(y)));
+            x = Integer.parseInt(prefs.get(MAIN_FORM_LEFT, Integer.toString(x)));
+            
+            if (height > dim.height) {
+                height = dim.height - 50;
+                y = 5;
+            }
+            if (width > dim.width) {
+                width = dim.width - 20;
+                x = 10;
+            }
+            this.setSize(width, height);
+        }
+        this.setLocation(x, y);
+    }
+
+    /**
+     * Captures the screen size and location and saves them as the users preference just before the
+     * screen is is closed.
+     */
+    private void preClose() {
+        if (mainClass != null) {
+            Preferences prefs = Preferences.userNodeForPackage(mainClass);
+            prefs.put(MAIN_FORM_HEIGHT, Integer.toString(this.getHeight()));
+            prefs.put(MAIN_FORM_WIDTH, Integer.toString(this.getWidth()));
+            prefs.put(MAIN_FORM_TOP, Integer.toString(this.getY()));
+            prefs.put(MAIN_FORM_LEFT, Integer.toString(this.getX()));
+        }
     }
 
     private void setAllLogLevel() {
@@ -256,8 +314,7 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     /**
-     * Calls {@link AbstractBindingBean#saveStateHash()} method to make a hash
-     * of object's state
+     * Calls {@link AbstractBindingBean#saveStateHash()} method to make a hash of object's state
      */
     public static void saveBeanState(AbstractBindingBean bean) {
         try {
@@ -270,9 +327,8 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     /**
-     * Calls {@link AbstractBindingBean#hasChanges()} method to detect if there
-     * are any changes on the provided bean. <br /> Note, to check for the
-     * changes, you should call {@link AbstractBindingBean#saveStateHash()}
+     * Calls {@link AbstractBindingBean#hasChanges()} method to detect if there are any changes on
+     * the provided bean. <br /> Note, to check for the changes, you should call {@link AbstractBindingBean#saveStateHash()}
      * before calling this method.
      */
     public static boolean checkBeanState(AbstractBindingBean bean) {
@@ -288,11 +344,10 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     /**
-     * Calls {@link MainForm#checkBeanState(org.sola.clients.beans.AbstractBindingBean)}
-     * method to detect if there are any changes on the provided bean. If it
-     * returns true, warning message is shown and the result of user selection
-     * is returned. If user clicks <b>Yes</b> button to confirm saving changes,
-     * true is returned.
+     * Calls {@link MainForm#checkBeanState(org.sola.clients.beans.AbstractBindingBean)} method to
+     * detect if there are any changes on the provided bean. If it returns true, warning message is
+     * shown and the result of user selection is returned. If user clicks <b>Yes</b> button to
+     * confirm saving changes, true is returned.
      */
     public static boolean checkSaveBeforeClose(AbstractBindingBean bean) {
         boolean hasChanges = false;
@@ -305,9 +360,10 @@ public class MainForm extends javax.swing.JFrame {
         }
         return hasChanges;
     }
-    
-    /** 
-     * Opens Application form and shows provided application. 
+
+    /**
+     * Opens Application form and shows provided application.
+     *
      * @param app Application to show on the form.
      */
     public void openApplicationForm(final ApplicationBean app) {
@@ -323,9 +379,10 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-    
-    /** 
-     * Opens Application form and shows provided application. 
+
+    /**
+     * Opens Application form and shows provided application.
+     *
      * @param ID Application ID to load application by and show on the form.
      */
     public void openApplicationForm(final String id) {
@@ -342,7 +399,9 @@ public class MainForm extends javax.swing.JFrame {
         TaskManager.getInstance().runTask(t);
     }
 
-    /** Opens Application form to create new application. */
+    /**
+     * Opens Application form to create new application.
+     */
     public void openApplicationForm() {
         SolaTask t = new SolaTask<Void, Void>() {
 
@@ -356,9 +415,10 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-    
-    /** 
-     * Opens {@link DocumentViewForm} form and shows provided document. 
+
+    /**
+     * Opens {@link DocumentViewForm} form and shows provided document.
+     *
      * @param source Source to show on the form.
      */
     public void openDocumentViewForm(final SourceBean source) {
@@ -374,9 +434,10 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-    
-    /** 
-     * Opens {@link PowerOfAttorneyViewForm} form and shows provided document. 
+
+    /**
+     * Opens {@link PowerOfAttorneyViewForm} form and shows provided document.
+     *
      * @param powerOfAttorney Power of attorney to show on the form.
      */
     public void openDocumentViewForm(final PowerOfAttorneyBean powerOfAttorney) {
@@ -392,7 +453,7 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -872,12 +933,14 @@ public class MainForm extends javax.swing.JFrame {
     private void btnSetPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetPasswordActionPerformed
         editPassword();
     }//GEN-LAST:event_btnSetPasswordActionPerformed
-    
+
     private void editPassword() {
-            showPasswordPanel();
-    }  
-    
-      /** Shows password panel. */
+        showPasswordPanel();
+    }
+
+    /**
+     * Shows password panel.
+     */
     private void showPasswordPanel() {
         SolaTask t = new SolaTask<Void, Void>() {
 
@@ -894,7 +957,6 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar applicationsMain;
     private javax.swing.JButton btnDocumentSearch;
