@@ -913,10 +913,12 @@ public class PropertyPanel extends ContentPanel {
                 LogUtility.log("Unable to initialize MapFeaureImageGenerator", mapEx);
             }
         }
+        // Refresh the details of the baUnit to make sure the latest details are used
+        BaUnitBean reportBean = getBaUnit(baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart());
+        reportBean.setCalculatedAreaSize(baUnitAreaBean1.getSize());
 
         // if (ApplicationServiceBean.saveInformationService(RequestTypeBean.CODE_TITLE_SERACH)) {
-        showReport(ReportManager.getBaUnitReport(getBaUnit(
-                baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart()), featureImageFileName));
+        showReport(ReportManager.getBaUnitReport(reportBean, featureImageFileName));
         // }
     }
 
@@ -935,16 +937,20 @@ public class PropertyPanel extends ContentPanel {
          * LogUtility.log("Unable to initialize MapFeaureImageGenerator", mapEx); } }
          */
 
-        showReport(ReportManager.getStaffSearchReport(getBaUnit(
-                baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart())));
+        // Refresh the details of the baUnit to make sure the latest details are used
+        BaUnitBean reportBean = getBaUnit(baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart());
+        reportBean.setCalculatedAreaSize(baUnitAreaBean1.getSize());
+        showReport(ReportManager.getStaffSearchReport(reportBean));
     }
 
     /**
      * Prints Historical Search Report.
      */
     private void printRptHistoricalSearch() {
-        showReport(ReportManager.getHistoricalSearchReport(getBaUnit(
-                baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart())));
+         // Refresh the details of the baUnit to make sure the latest details are used
+        BaUnitBean reportBean = getBaUnit(baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart());
+        reportBean.setCalculatedAreaSize(baUnitAreaBean1.getSize());
+        showReport(ReportManager.getHistoricalSearchReport(reportBean));
     }
 
     /**
