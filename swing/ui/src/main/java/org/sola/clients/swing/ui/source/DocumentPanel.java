@@ -38,6 +38,7 @@ import javax.swing.JTextField;
 import org.sola.clients.beans.digitalarchive.DocumentBean;
 import org.sola.clients.beans.source.SourceBean;
 import org.sola.clients.swing.common.controls.BrowseControlListener;
+import org.sola.clients.swing.ui.renderers.FormattersFactory;
 import org.sola.clients.swing.ui.renderers.SimpleComboBoxRenderer;
 
 /**
@@ -91,6 +92,7 @@ public class DocumentPanel extends javax.swing.JPanel {
     private void customizeForm() {
         cbxDocType.setEnabled(allowEditing);
         txtDocRecordDate.setEnabled(allowEditing);
+        txtDocRecordDate.setFormatterFactory(FormattersFactory.getInstance().getDateFormatterFactory());
         txtDocRefNumber.setEnabled(allowEditing);
         browseAttachment.setDisplayBrowseButton(allowEditing);
         browseAttachment.setDisplayDeleteButton(allowEditing);

@@ -33,6 +33,7 @@ import java.awt.event.MouseEvent;
 import org.sola.clients.beans.digitalarchive.DocumentBean;
 import org.sola.clients.beans.source.SourceBean;
 import org.sola.clients.swing.common.controls.BrowseControlListener;
+import org.sola.clients.swing.ui.renderers.FormattersFactory;
 
 /**
  * Used for viewing document in read only mode.
@@ -62,6 +63,9 @@ public class DocumentViewerPanel extends javax.swing.JPanel {
     }
     
     private void postInit(){
+        jFormattedTextField1.setFormatterFactory(FormattersFactory.getInstance().getDateFormatterFactory());
+        jFormattedTextField2.setFormatterFactory(FormattersFactory.getInstance().getDateFormatterFactory());
+        jFormattedTextField3.setFormatterFactory(FormattersFactory.getInstance().getDateFormatterFactory());
         fileAttachment.addBrowseControlEventListener(new BrowseControlListener() {
 
             @Override

@@ -130,8 +130,15 @@ public class RrrBean extends AbstractTransactionedBean {
     private transient PartySummaryBean selectedRightholder;
     private String concatenatedName;
 
+    /**
+     * Samoa customization - return the notation text as the description for the RRR. 
+     */
     public String getConcatenatedName() {
-        return concatenatedName;
+        String result = null; 
+        if (getNotation() != null) {
+            result = getNotation().getNotationText(); 
+        }
+        return result;
     }
 
     public void setConcatenatedName(String concatenatedName) {

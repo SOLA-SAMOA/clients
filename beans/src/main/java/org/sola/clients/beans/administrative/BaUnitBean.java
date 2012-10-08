@@ -268,14 +268,14 @@ public class BaUnitBean extends BaUnitSummaryBean {
         AllBaUnitNotationsListUpdater allBaUnitNotationsListener = new AllBaUnitNotationsListUpdater();
 //        rrrList.getFilteredList().addObservableListListener(allBaUnitNotationsListener);
 //        baUnitNotationList.getFilteredList().addObservableListListener(allBaUnitNotationsListener);
-        
-          rrrList.addObservableListListener(allBaUnitNotationsListener);
-          baUnitNotationList.addObservableListListener(allBaUnitNotationsListener);
-          
-          rrrList.addObservableListListener(new ObservableListListener() {
-            
+
+        rrrList.addObservableListListener(allBaUnitNotationsListener);
+        baUnitNotationList.addObservableListListener(allBaUnitNotationsListener);
+
+        rrrList.addObservableListListener(new ObservableListListener() {
+
             RrrComparatorByRegistrationDate sorter = new RrrComparatorByRegistrationDate();
-            
+
             @Override
             public void listElementsAdded(ObservableList list, int index, int length) {
                 for (int i = index; i < length + index; i++) {
@@ -292,7 +292,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
 
             @Override
             public void listElementReplaced(ObservableList list, int index, Object oldElement) {
-                rrrHistoricList.set(rrrHistoricList.indexOf(oldElement), (RrrBean)oldElement);
+                rrrHistoricList.set(rrrHistoricList.indexOf(oldElement), (RrrBean) oldElement);
                 Collections.sort(rrrHistoricList.getFilteredList(), sorter);
             }
 
@@ -300,7 +300,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
             public void listElementPropertyChanged(ObservableList list, int index) {
             }
         });
-        
+
     }
 
     public void createPaperTitle(SourceBean source) {
@@ -399,7 +399,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     public ObservableList<BaUnitNotationBean> getAllBaUnitNotationList() {
-        return allBaUnitNotationList;
+        return sortNotations(allBaUnitNotationList);
     }
 
     public BaUnitNotationBean getSelectedBaUnitNotation() {
@@ -451,8 +451,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
         propertySupport.firePropertyChange(SELECTED_RIGHT_PROPERTY,
                 null, selectedRight);
     }
-    
-     public RrrBean getSelectedHistoricRight() {
+
+    public RrrBean getSelectedHistoricRight() {
         return selectedHistoricRight;
     }
 
@@ -467,7 +467,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     public ObservableList<BaUnitNotationBean> getBaUnitFilteredNotationList() {
-        return baUnitNotationList.getFilteredList();
+        return sortNotations(baUnitNotationList.getFilteredList());
     }
 
     public SolaList<CadastreObjectBean> getNewCadastreObjectList() {
@@ -580,11 +580,11 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     public ObservableList<RrrBean> getRrrFilteredList() {
-        return rrrList.getFilteredList();
+        return sortRrrs(rrrList.getFilteredList());
     }
-    
+
     public ObservableList<RrrBean> getRrrHistoricList() {
-        return rrrHistoricList.getFilteredList();
+        return sortRrrs(rrrHistoricList.getFilteredList());
     }
 
     public void addRrr(RrrBean rrrBean) {
@@ -789,7 +789,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
                 // Format the Notation text for display by including the 
                 bean.setNotationText(formatNotationText(bean.getNotationText(), bean.getReferenceNr()));
             }
-            result = sortNotations(result); 
+            result = sortNotations(result);
         } else {
             BaUnitNotationBean dummy = new BaUnitNotationBean();
             dummy.setNotationText(NIL_UNREGISTERED_DEALINGS_TEXT);
@@ -814,22 +814,27 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Sorts the list of notations by the notation reference number. Removes any non digit
-     * characters before performing the sort.
+     * Sorts the list of notations by notation date if provided or otherwise by the notation
+     * reference number. Removes any non digit characters before performing the sort.
      *
      * @param notationsList
      * @return
      */
-    private ObservableList<BaUnitNotationBean> sortNotations(ObservableList<BaUnitNotationBean> notationsList) {
+    public ObservableList<BaUnitNotationBean> sortNotations(ObservableList<BaUnitNotationBean> notationsList) {
         // Sort the list of notations by the reference Nr
         Collections.sort(notationsList, new Comparator<BaUnitNotationBean>() {
 
             @Override
             public int compare(BaUnitNotationBean note1, BaUnitNotationBean note2) {
-                // Remove any non digit characters from the string using reg expression. 
-                BigDecimal ref1 = note1 == null ? BigDecimal.ZERO : new BigDecimal(note1.getReferenceNr().replaceAll("[^0-9\\.]", ""));
-                BigDecimal ref2 = note2 == null ? BigDecimal.ZERO : new BigDecimal(note2.getReferenceNr().replaceAll("[^0-9\\.]", ""));
-                return ref1.compareTo(ref2);
+                // Remove any non digit characters from the string using reg expression.
+                if (note1 != null && note2 != null && note1.getChangeTime() != null && note2.getChangeTime() != null
+                        && !note1.getChangeTime().equals(note2.getChangeTime())) {
+                    return note1.getChangeTime().compareTo(note2.getChangeTime());
+                } else {
+                    BigDecimal ref1 = note1 == null ? BigDecimal.ZERO : new BigDecimal(note1.getReferenceNr().replaceAll("[^0-9\\.]", ""));
+                    BigDecimal ref2 = note2 == null ? BigDecimal.ZERO : new BigDecimal(note2.getReferenceNr().replaceAll("[^0-9\\.]", ""));
+                    return ref1.compareTo(ref2);
+                }
             }
         });
         return notationsList;
@@ -850,5 +855,35 @@ public class BaUnitBean extends BaUnitSummaryBean {
             }
         }
         return result;
+    }
+
+    /**
+     * Sorts the list of Rrrs by registration date if provided or otherwise by the Rrr
+     * reference number. Removes any non digit characters before performing the sort.
+     *
+     * @param rrrList
+     * @return
+     */
+    public ObservableList<RrrBean> sortRrrs(ObservableList<RrrBean> rrrList) {
+        // Sort the list of RRR's by registered date if available otherwise by the reference nr
+        Collections.sort(rrrList, new Comparator<RrrBean>() {
+
+            @Override
+            public int compare(RrrBean rrr1, RrrBean rrr2) {
+                // Remove any non digit characters from the string using reg expression.
+                if (rrr1 != null && rrr2 != null && rrr1.getRegistrationDate() != null
+                        && rrr2.getRegistrationDate() != null
+                        && !rrr1.getRegistrationDate().equals(rrr2.getRegistrationDate())) {
+                    return rrr1.getRegistrationDate().compareTo(rrr2.getRegistrationDate());
+                } else {
+                    String ref1Str =  rrr1 == null ? "0" : rrr1.getNr().replaceFirst("V|/", "."); 
+                    String ref2Str =  rrr2 == null ? "0" : rrr2.getNr().replaceFirst("V|/", "."); 
+                    BigDecimal ref1 = new BigDecimal(ref1Str.replaceAll("[^0-9\\.]", ""));
+                    BigDecimal ref2 = new BigDecimal(ref2Str.replaceAll("[^0-9\\.]", ""));
+                    return ref1.compareTo(ref2);
+                }
+            }
+        });
+        return rrrList;
     }
 }
