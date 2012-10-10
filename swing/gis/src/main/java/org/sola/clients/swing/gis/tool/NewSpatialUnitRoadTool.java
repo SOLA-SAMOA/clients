@@ -28,6 +28,7 @@ package org.sola.clients.swing.gis.tool;
 import com.vividsolutions.jts.geom.Geometry;
 import java.util.UUID;
 import org.geotools.geometry.jts.Geometries;
+import org.geotools.swing.extended.util.GeometryUtility;
 import org.geotools.swing.tool.extended.ExtendedDrawToolWithSnapping;
 import org.sola.clients.swing.gis.layer.SpatialUnitEditLayer;
 import org.sola.common.messaging.GisMessage;

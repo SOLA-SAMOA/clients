@@ -352,8 +352,9 @@ public class GeometryUtility {
 
     /**
      * Gets a geometry from a well known binary presentation
+     *
      * @param geometry
-     * @return 
+     * @return
      * @throws ReadGeometryException
      */
     public static Geometry getGeometryFromWkb(byte[] geometry) {
@@ -366,8 +367,9 @@ public class GeometryUtility {
 
     /**
      * Gets a well known binary presentation from the geometry
+     *
      * @param geometry
-     * @return 
+     * @return
      */
     public static byte[] getWkbFromGeometry(Geometry geometry) {
         return wkbWriter.write(geometry);
