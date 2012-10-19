@@ -61,7 +61,8 @@ public class RequestTypeBean extends AbstractCodeBean {
     public static final String CODE_DOCUMENT_COPY = "documentCopy";
     public static final String CODE_SERVICE_ENQUIRY = "serviceEnquiry";
     public static final String CODE_CANCEL_PROPERTY = "cancelProperty";
-    public static final String CODE_CORRECT_REGISTRY = "registrarCorrection"; 
+    public static final String CODE_CORRECT_REGISTRY = "registrarCorrection";
+    public static final String CODE_RECORD_UNIT_PLAN = "unitPlan";
     
     public static final String NR_DAYS_TO_COMPLETE_PROPERTY = "nrDaysToComplete";
     public static final String NR_PROPERTIES_REQUIRED_PROPERTY = "nrPropertiesRequired";

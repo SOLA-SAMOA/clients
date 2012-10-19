@@ -351,7 +351,6 @@ public class DashBoardPanel extends ContentPanel {
         unassignedScrollPanel.setName("unassignedScrollPanel"); // NOI18N
         unassignedScrollPanel.setComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 
-        tbUnassigned.setColumnSelectionAllowed(true);
         tbUnassigned.setComponentPopupMenu(popUpUnassignedApplications);
         tbUnassigned.setGridColor(new java.awt.Color(135, 127, 115));
         tbUnassigned.setName("tbUnassigned"); // NOI18N
@@ -362,7 +361,7 @@ public class DashBoardPanel extends ContentPanel {
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, unassignedAppListBean, eLProperty, tbUnassigned);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nr}"));
         columnBinding.setColumnName("Nr");
-        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lodgingDatetime}"));
         columnBinding.setColumnName("Lodging Datetime");
@@ -399,8 +398,8 @@ public class DashBoardPanel extends ContentPanel {
             }
         });
         unassignedScrollPanel.setViewportView(tbUnassigned);
-        tbUnassigned.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         tbUnassigned.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("DashBoardPanel.tbUnassigned.columnModel.title0")); // NOI18N
+        tbUnassigned.getColumnModel().getColumn(0).setCellRenderer(new org.sola.clients.swing.ui.renderers.DefaultCellRenderer(org.sola.clients.swing.ui.renderers.DefaultCellRenderer.RIGHT));
         tbUnassigned.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("DashBoardPanel.tbUnassigned.columnModel.title1")); // NOI18N
         tbUnassigned.getColumnModel().getColumn(1).setCellRenderer(new DateTimeRenderer());
         tbUnassigned.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("DashBoard.tbUnassigned.columnModel.title3")); // NOI18N
@@ -539,7 +538,6 @@ public class DashBoardPanel extends ContentPanel {
         inprogressScrollPanel.setName("inprogressScrollPanel"); // NOI18N
         inprogressScrollPanel.setComponentOrientation(ComponentOrientation.getOrientation(Locale.getDefault()));
 
-        tbAssigned.setColumnSelectionAllowed(true);
         tbAssigned.setComponentPopupMenu(popUpAssignedApplications);
         tbAssigned.setGridColor(new java.awt.Color(135, 127, 115));
         tbAssigned.setName("tbAssigned"); // NOI18N
@@ -550,7 +548,7 @@ public class DashBoardPanel extends ContentPanel {
         jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, assignedAppListBean, eLProperty, tbAssigned);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nr}"));
         columnBinding.setColumnName("Nr");
-        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lodgingDatetime}"));
         columnBinding.setColumnName("Lodging Datetime");
@@ -586,8 +584,8 @@ public class DashBoardPanel extends ContentPanel {
             }
         });
         inprogressScrollPanel.setViewportView(tbAssigned);
-        tbAssigned.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         tbAssigned.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("DashBoardPanel.tbAssigned.columnModel.title0")); // NOI18N
+        tbAssigned.getColumnModel().getColumn(0).setCellRenderer(new org.sola.clients.swing.ui.renderers.DefaultCellRenderer(org.sola.clients.swing.ui.renderers.DefaultCellRenderer.RIGHT));
         tbAssigned.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("DashBoardPanel.tbAssigned.columnModel.title1")); // NOI18N
         tbAssigned.getColumnModel().getColumn(1).setCellRenderer(new DateTimeRenderer());
         tbAssigned.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("DashBoardPanel.tbAssigned.columnModel.title2")); // NOI18N

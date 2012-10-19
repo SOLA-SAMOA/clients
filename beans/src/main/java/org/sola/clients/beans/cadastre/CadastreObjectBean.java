@@ -29,14 +29,13 @@ package org.sola.clients.beans.cadastre;
 
 import java.util.Date;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.sola.clients.beans.AbstractTransactionedBean;
 import org.sola.clients.beans.cache.CacheManager;
 import org.sola.clients.beans.referencedata.CadastreObjectTypeBean;
 import org.sola.clients.beans.validation.Localized;
 import org.sola.common.messaging.ClientMessage;
-import org.sola.webservices.transferobjects.cadastre.CadastreObjectTO;
 
 /** 
  * Contains properties and methods to manage <b>Cadastre</b> object of the 
@@ -68,6 +67,7 @@ public class CadastreObjectBean extends AbstractTransactionedBean {
     @NotNull(message =  ClientMessage.CHECK_NOTNULL_CADOBJTYPE, payload=Localized.class)
     private CadastreObjectTypeBean cadastreObjectType;
     private byte[] geomPolygon;
+    private String transactionId; 
     private transient boolean selected;
     
     public CadastreObjectBean() {
@@ -168,6 +168,14 @@ public class CadastreObjectBean extends AbstractTransactionedBean {
         propertySupport.firePropertyChange(GEOM_POLYGON_PROPERTY, old, this.geomPolygon);
     }
 
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+    
     public boolean isSelected() {
         return selected;
     }

@@ -23,37 +23,44 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
-package org.sola.clients.swing.ui.renderers;
+package org.sola.clients.beans.transaction;
 
-import java.awt.Component;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
+import org.sola.clients.beans.AbstractVersionedBean;
 
 /**
- * Sets default formating for the table cell.
+ *
+ * Data bean representing a source used in a transaction. This duplicates the TransactionSourceBean
+ * used by the GIS project
  */
-public class DefaultCellRenderer extends DefaultTableCellRenderer {
+public class TransactionSourceBean extends AbstractVersionedBean {
 
-    int textAlignment = LEFT;
-    
-    public DefaultCellRenderer() {
+    private String sourceId;
+
+    public TransactionSourceBean() {
         super();
     }
 
-    // Can be used to set the alignment of the text in the table cell
-    public DefaultCellRenderer(int textAlignment) {
-        super();
-        this.textAlignment = textAlignment;
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
     }
 
     @Override
-    public Component getTableCellRendererComponent(JTable table,
-            Object value, boolean isSelected, boolean hasFocus,
-            int row, int column) {
+    public boolean equals(Object target) {
+        if (target.getClass() != this.getClass()) {
+            return false;
+        }
+        TransactionSourceBean targetBean = (TransactionSourceBean) target;
+        return targetBean.getSourceId().equals(this.getSourceId());
+    }
 
-        setHorizontalAlignment(textAlignment);
-
-        return super.getTableCellRendererComponent(table, value, isSelected,
-                hasFocus, row, column);
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 77 * hash + (this.sourceId != null ? this.sourceId.hashCode() : 0);
+        return hash;
     }
 }

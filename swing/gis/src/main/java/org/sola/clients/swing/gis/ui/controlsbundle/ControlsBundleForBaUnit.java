@@ -48,7 +48,7 @@ import org.sola.webservices.transferobjects.cadastre.CadastreObjectTO;
  */
 public final class ControlsBundleForBaUnit extends SolaControlsBundle {
 
-    ExtendedLayerGraphics layerForCadastreObjects;
+    protected ExtendedLayerGraphics layerForCadastreObjects;
     private final String CADASTRE_OBJECTS_LAYERNAME = "Current property cadastre objects";
     private final String STYLE_RESOURCE = "parcel_highlighted.xml";
 
@@ -59,7 +59,7 @@ public final class ControlsBundleForBaUnit extends SolaControlsBundle {
         super();
         this.Setup(PojoDataAccess.getInstance());
     }
-
+   
     /**
      * Performs setup actions for the control bundle
      * @param pojoDataAccess 

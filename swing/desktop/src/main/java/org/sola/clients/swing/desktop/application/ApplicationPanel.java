@@ -68,6 +68,7 @@ import org.sola.clients.swing.desktop.cadastre.MapPanelForm;
 import org.sola.clients.swing.desktop.source.DocumentSearchDialog;
 import org.sola.clients.swing.desktop.source.DocumentSearchForm;
 import org.sola.clients.swing.desktop.source.TransactionedDocumentsPanel;
+import org.sola.clients.swing.desktop.unittitle.UnitParcelsPanel;
 import org.sola.clients.swing.gis.ui.controlsbundle.ControlsBundleForApplicationLocation;
 import org.sola.clients.swing.ui.ContentPanel;
 import org.sola.clients.swing.ui.HeaderPanel;
@@ -767,6 +768,36 @@ public class ApplicationPanel extends ContentPanel {
                             form, MainContentPanel.CARD_CADASTRECHANGE, true);
                 }
 
+            } else if (requestType.equalsIgnoreCase(RequestTypeBean.CODE_RECORD_UNIT_PLAN)) {
+                // Samoa Customization - Process Record Unit Plan Service 
+                SolaTask t = new SolaTask<Void, Void>() {
+
+                    @Override
+                    public Void doTask() {
+                        setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_UNIT_PARCELS));
+                        ApplicationBean appBeanTmp = appBean.copy();
+                        BaUnitBean baUnitBean = null;
+                        
+                        // Get the BaUnit for one of the properties on this application (if available)
+                        if (appBean.getPropertyList().getFilteredList().size() > 0) {
+                            String baUnitId = null;
+                            for (ApplicationPropertyBean propBean : appBean.getPropertyList().getFilteredList()) {
+                                if (propBean.getBaUnitId() != null) {
+                                    baUnitId = propBean.getBaUnitId();
+                                    break;
+                                }
+                            }
+                            if (baUnitId != null) {
+                                baUnitBean = BaUnitBean.getBaUnitsById(baUnitId);
+                            }
+                        }
+                        UnitParcelsPanel form = new UnitParcelsPanel(appBeanTmp, service, baUnitBean, false);
+                        addServicePanelListener(form.getHeaderPanel());
+                        getMainContentPanel().addPanel(form, MainContentPanel.CARD_UNIT_PLAN, true);
+                        return null;
+                    }
+                };
+                TaskManager.getInstance().runTask(t);
             } else {
 
                 // Try to get BA Units, craeted through the service

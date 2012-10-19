@@ -23,37 +23,35 @@
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
-package org.sola.clients.swing.ui.renderers;
+package org.sola.clients.beans.cadastre;
 
-import java.awt.Component;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
+import java.math.BigDecimal;
+import org.sola.clients.beans.AbstractVersionedBean;
 
 /**
- * Sets default formating for the table cell.
+ * A data bean which represents a Spatial Value for a cadastre object. THis bean is a duplicate of
+ * the GIS SpaitalValueAreaBean used by the Unit Titles functionality.
  */
-public class DefaultCellRenderer extends DefaultTableCellRenderer {
+public class SpatialValueAreaBean extends AbstractVersionedBean {
 
-    int textAlignment = LEFT;
-    
-    public DefaultCellRenderer() {
-        super();
+    public static final String TYPE_OFFICIAL = "officialArea";
+    public static final String TYPE_CALCULATED = "calculatedArea";
+    private String typeCode = TYPE_OFFICIAL;
+    private BigDecimal size;
+
+    public String getTypeCode() {
+        return typeCode;
     }
 
-    // Can be used to set the alignment of the text in the table cell
-    public DefaultCellRenderer(int textAlignment) {
-        super();
-        this.textAlignment = textAlignment;
+    public void setTypeCode(String typeCode) {
+        this.typeCode = typeCode;
     }
 
-    @Override
-    public Component getTableCellRendererComponent(JTable table,
-            Object value, boolean isSelected, boolean hasFocus,
-            int row, int column) {
+    public BigDecimal getSize() {
+        return size;
+    }
 
-        setHorizontalAlignment(textAlignment);
-
-        return super.getTableCellRendererComponent(table, value, isSelected,
-                hasFocus, row, column);
+    public void setSize(BigDecimal size) {
+        this.size = size;
     }
 }
