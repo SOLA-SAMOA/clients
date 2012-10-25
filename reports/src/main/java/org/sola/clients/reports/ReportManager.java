@@ -303,7 +303,7 @@ public class ReportManager {
         JRDataSource jds = new JRBeanArrayDataSource(beans);
         try {
             return JasperFillManager.fillReport(
-                    ReportManager.class.getResourceAsStream("/reports/LodgementReport.jasper"),
+                    ReportManager.class.getResourceAsStream("/reports/LodgementReportSamoa.jasper"),
                     inputParameters, jds);
         } catch (JRException ex) {
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
