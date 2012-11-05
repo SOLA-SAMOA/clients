@@ -122,6 +122,20 @@ public class UnitParcelGroupBean extends AbstractIdBean {
                 UnitParcelGroupBean.class, null);
         return result;
     }
+    
+        /**
+     * Retrieves a Unit Parcel Group (if one exists) based on the name of the group.
+     *
+     * @return The unit parcel group or null if the name does not match any unit parcel group.
+     */
+    public static UnitParcelGroupBean getUnitParcelGroupByName(String groupName) {
+        UnitParcelGroupBean result;
+        result = TypeConverters.TransferObjectToBean(
+                WSManager.getInstance().getCadastreService().getUnitParcelGroupByName(groupName),
+                UnitParcelGroupBean.class, null);
+        return result;
+    }
+
 
     /**
      * Sorts the unit parcel list by the parcel type and lot number.

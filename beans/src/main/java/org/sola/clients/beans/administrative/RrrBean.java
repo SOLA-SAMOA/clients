@@ -40,6 +40,7 @@ import org.sola.clients.beans.administrative.validation.OwnershipValidationGroup
 import org.sola.clients.beans.administrative.validation.SimpleOwnershipValidationGroup;
 import org.sola.clients.beans.administrative.validation.TotalShareSize;
 import org.sola.clients.beans.cache.CacheManager;
+import org.sola.clients.beans.cadastre.SpatialValueAreaBean;
 import org.sola.clients.beans.controls.SolaList;
 import org.sola.clients.beans.party.PartySummaryBean;
 import org.sola.clients.beans.referencedata.MortgageTypeBean;
@@ -100,6 +101,7 @@ public class RrrBean extends AbstractTransactionedBean {
     public static final String SELECTED_SHARE_PROPERTY = "selectedShare";
     public static final String SELECTED_PROPERTY = "selected";
     public static final String SELECTED_RIGHTHOLDER_PROPERTY = "selectedRightHolder";
+    public static final String UNIT_ENTITLEMENT_PROPERTY = "unitEntitlement";
     private String baUnitId;
     private String nr;
     @Past(message = ClientMessage.CHECK_REGISTRATION_DATE, payload = Localized.class)
@@ -129,14 +131,15 @@ public class RrrBean extends AbstractTransactionedBean {
     private transient boolean selected;
     private transient PartySummaryBean selectedRightholder;
     private String concatenatedName;
+    private transient Integer unitEntitlement;
 
     /**
-     * Samoa customization - return the notation text as the description for the RRR. 
+     * Samoa customization - return the notation text as the description for the RRR.
      */
     public String getConcatenatedName() {
-        String result = null; 
+        String result = null;
         if (getNotation() != null) {
-            result = getNotation().getNotationText(); 
+            result = getNotation().getNotationText();
         }
         return result;
     }
@@ -318,6 +321,24 @@ public class RrrBean extends AbstractTransactionedBean {
 
     public void setShare(Double share) {
         this.share = share;
+    }
+
+    public Integer getUnitEntitlement() {
+        if (unitEntitlement == null && share != null) {
+            unitEntitlement = new Integer(share.intValue());
+        }
+        return unitEntitlement;
+    }
+
+    public void setUnitEntitlement(Integer value) {
+        Integer oldValue = unitEntitlement;
+        unitEntitlement = value;
+        if (value == null) {
+            this.share = null;
+        } else {
+            this.share = new Double(value);
+        }
+        propertySupport.firePropertyChange(UNIT_ENTITLEMENT_PROPERTY, oldValue, unitEntitlement);
     }
 
     public String getTransactionId() {

@@ -33,11 +33,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.JTableBinding.ColumnBinding;
-import org.sola.clients.beans.administrative.BaUnitBean;
 import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.beans.application.ApplicationServiceBean;
 import org.sola.clients.beans.referencedata.CadastreObjectTypeBean;
 import org.sola.clients.beans.referencedata.CadastreObjectTypeListBean;
+import org.sola.clients.beans.referencedata.RequestTypeBean;
 import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.clients.beans.transaction.TransactionUnitParcelsBean;
 import org.sola.clients.beans.unittitle.UnitParcelBean;
@@ -72,7 +72,27 @@ public class UnitParcelsPanel extends ContentPanel {
     private ApplicationServiceBean applicationService;
     private ApplicationBean applicationBean;
     private String unitDevelopmentNr;
-    private String parcelId;
+    private boolean isRecordUnitPlan = false;
+
+    /**
+     * Constructor - Used for Record Unit Plan services where the application number is used as the
+     * basis of the unit development number.
+     *
+     * @param applicationBean The application used to create or update the Unit Plan Development.
+     * Can be null if the panel is opened independently from an application/transaction. If null,
+     * the panel will default to readOnly.
+     * @param appService The application service being processed or null if the panel is opened
+     * independently from an application/transaction.
+     * @param readOnly Indicates if the form is read only or not.
+     */
+    public UnitParcelsPanel(ApplicationBean applicationBean, ApplicationServiceBean appService,
+            boolean readOnly) {
+        // The Unit Development number should exclude any suffix assigned to make the application
+        // number unique. 
+        this(applicationBean, appService, (applicationBean == null || applicationBean.getNr() == null ? null
+                : applicationBean.getNr().split("/", 2)[0]), readOnly);
+
+    }
 
     /**
      * Constructor
@@ -82,23 +102,18 @@ public class UnitParcelsPanel extends ContentPanel {
      * the panel will default to readOnly.
      * @param appService The application service being processed or null if the panel is opened
      * independently from an application/transaction.
-     * @param baUnit A Property that is part of the Unit Title Development. Should be provided where
-     * possible. (e.g. the First Application Property or the property found as a result of a
-     * Property Search.
+     * @param unitDevelopmentNr The unit development number for the unit parcel group
      * @param readOnly Indicates if the form is read only or not.
      */
     public UnitParcelsPanel(ApplicationBean applicationBean, ApplicationServiceBean appService,
-            BaUnitBean baUnit, boolean readOnly) {
+            String unitDevelopmentNr, boolean readOnly) {
 
         this.applicationBean = applicationBean;
         this.readOnly = readOnly || applicationBean == null;
         this.applicationService = appService;
-        // The Unit Development number should exclude any suffix assigned to make the application
-        // number unique. 
-        this.unitDevelopmentNr = applicationBean == null || applicationBean.getNr() == null ? ""
-                : applicationBean.getNr().split("/", 2)[0];
-        this.parcelId = baUnit != null && baUnit.getCadastreObjectList().size() > 0
-                ? baUnit.getCadastreObjectList().get(0).getId() : null;
+        this.unitDevelopmentNr = unitDevelopmentNr;
+        isRecordUnitPlan = appService == null ? false
+                : RequestTypeBean.CODE_RECORD_UNIT_PLAN.equals(appService.getRequestType());
 
         createTransactionBean();
         initComponents();
@@ -123,7 +138,7 @@ public class UnitParcelsPanel extends ContentPanel {
     private void postInit() {
 
         initializeMap();
-        loadTransaction();
+        loadForm();
 
         // Set the title for the form
         ResourceBundle bundle = ResourceBundle.getBundle(this.getClass().getPackage().getName() + ".Bundle");
@@ -132,7 +147,7 @@ public class UnitParcelsPanel extends ContentPanel {
                     applicationBean.getNr(), applicationService.getRequestType().getDisplayValue()));
         } else {
             headerPanel1.setTitleText(String.format(bundle.getString("UnitParcelsPanel.headerPanel1.titleText.Property"),
-                    transactionBean.getUnitParcelGroup().getName()));
+                    unitDevelopmentNr));
         }
 
         // Only show Principal and Accessory unit parcel types in the dropdown list. Every Unit Plan
@@ -168,21 +183,21 @@ public class UnitParcelsPanel extends ContentPanel {
 
 
         // Set the default state for the on screen buttons. 
-        btnSave.setEnabled(!readOnly);
-        btnAddUnit.setEnabled(!readOnly);
+        btnSave.setEnabled(!readOnly && isRecordUnitPlan);
+        btnAddUnit.setEnabled(!readOnly && isRecordUnitPlan);
         btnRemoveUnit.setEnabled(false);
         btnReinstateUnit.setEnabled(false);
 
-        txtUnitFirstPart.setEditable(!readOnly);
-        txtUnitFirstPart.setEnabled(!readOnly);
-        txtUnitArea.setEditable(!readOnly);
-        txtUnitArea.setEnabled(!readOnly);
-        cbxParcelType.setEditable(!readOnly);
-        cbxParcelType.setEnabled(!readOnly);
+        txtUnitFirstPart.setEditable(!readOnly && isRecordUnitPlan);
+        txtUnitFirstPart.setEnabled(!readOnly && isRecordUnitPlan);
+        txtUnitArea.setEditable(!readOnly && isRecordUnitPlan);
+        txtUnitArea.setEnabled(!readOnly && isRecordUnitPlan);
+        cbxParcelType.setEditable(!readOnly && isRecordUnitPlan);
+        cbxParcelType.setEnabled(!readOnly && isRecordUnitPlan);
         txtUnitLastPart.setEditable(false);
         txtUnitLastPart.setEnabled(false);
-        if (!readOnly) {
-            txtUnitLastPart.setText(transactionBean.getUnitParcelGroup().getName());
+        if (!readOnly && isRecordUnitPlan) {
+            txtUnitLastPart.setText(unitDevelopmentNr);
             txtUnitFirstPart.setText(calculateLotNumber(CadastreObjectTypeBean.CODE_PRINCIPAL_UNIT));
         }
 
@@ -204,35 +219,36 @@ public class UnitParcelsPanel extends ContentPanel {
      * Loads the transaction for the Unit Title Development from the database. If there isn't a
      * transaction, a default transaction object is configured.
      */
-    public void loadTransaction() {
-        if (applicationService != null) {
+    public void loadForm() {
+        if (isRecordUnitPlan) {
             // Get the transaction object using the service id
             transactionBean.setFromServiceId(applicationService.getId());
             transactionBean.reload();
         }
-        // Create a Unit Parcel Group if there isn't one on the transcation
-        if (transactionBean.getUnitParcelGroup().isNew() && parcelId != null) {
+        // Create a Unit Parcel Group if there isn't one on the transaction
+        if (transactionBean.getUnitParcelGroup().isNew() && unitDevelopmentNr != null) {
             // Retrieve the Unit Parcel Group for the given parcel from the database
-            UnitParcelGroupBean group = UnitParcelGroupBean.getUnitParcelGroupByParcelId(parcelId);
+            UnitParcelGroupBean group = UnitParcelGroupBean.getUnitParcelGroupByName(unitDevelopmentNr);
             if (group != null) {
                 transactionBean.setUnitParcelGroup(group);
-            }
+            } 
         }
-        if (!readOnly) {
-            if (transactionBean.getUnitParcelGroup().getName() == null) {
-                // Set the name of the Unit Parcel Group of the application Bean has been provided. 
-                transactionBean.getUnitParcelGroup().setName(unitDevelopmentNr);
-            } else if (unitDevelopmentNr == null) {
-                unitDevelopmentNr = transactionBean.getUnitParcelGroup().getName();
-            }
 
+        if (transactionBean.getUnitParcelGroup().getName() == null) {
+            // Set the name of the Unit Parcel Group of the application Bean has been provided. 
+            transactionBean.getUnitParcelGroup().setName(unitDevelopmentNr);
+        } else if (unitDevelopmentNr == null) {
+            unitDevelopmentNr = transactionBean.getUnitParcelGroup().getName();
+        }
+
+        if (!readOnly && isRecordUnitPlan) {
             // Check if there is a common property parcel and if not, add one. 
             if (!hasCommonProperty()) {
                 UnitParcelBean commonPropBean = new UnitParcelBean();
                 commonPropBean.setTypeCode(CadastreObjectTypeBean.CODE_COMMON_PROPERTY);
                 commonPropBean.setUnitParcelStatusCode(StatusConstants.PENDING);
                 commonPropBean.setNameFirstpart(COMMON_PROPERTY_LOT_NR);
-                commonPropBean.setNameLastpart(transactionBean.getUnitParcelGroup().getName());
+                commonPropBean.setNameLastpart(unitDevelopmentNr);
                 transactionBean.getUnitParcelGroup().getUnitParcelList().addAsNew(commonPropBean);
             }
         }
@@ -434,7 +450,7 @@ public class UnitParcelsPanel extends ContentPanel {
                 && cadastreObjectTypeListBean1.getSelectedCadastreObjectType() != null) {
             UnitParcelBean bean = new UnitParcelBean();
             bean.setNameFirstpart(txtUnitFirstPart.getText());
-            bean.setNameLastpart(transactionBean.getUnitParcelGroup().getName());
+            bean.setNameLastpart(unitDevelopmentNr);
             bean.setUnitParcelStatusCode(StatusConstants.PENDING);
             bean.setCadastreObjectType(cadastreObjectTypeListBean1.getSelectedCadastreObjectType());
             if (txtUnitArea.getText() != null && !txtUnitArea.getText().trim().isEmpty()) {

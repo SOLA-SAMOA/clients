@@ -776,22 +776,7 @@ public class ApplicationPanel extends ContentPanel {
                     public Void doTask() {
                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_UNIT_PARCELS));
                         ApplicationBean appBeanTmp = appBean.copy();
-                        BaUnitBean baUnitBean = null;
-                        
-                        // Get the BaUnit for one of the properties on this application (if available)
-                        if (appBean.getPropertyList().getFilteredList().size() > 0) {
-                            String baUnitId = null;
-                            for (ApplicationPropertyBean propBean : appBean.getPropertyList().getFilteredList()) {
-                                if (propBean.getBaUnitId() != null) {
-                                    baUnitId = propBean.getBaUnitId();
-                                    break;
-                                }
-                            }
-                            if (baUnitId != null) {
-                                baUnitBean = BaUnitBean.getBaUnitsById(baUnitId);
-                            }
-                        }
-                        UnitParcelsPanel form = new UnitParcelsPanel(appBeanTmp, service, baUnitBean, false);
+                        UnitParcelsPanel form = new UnitParcelsPanel(appBeanTmp, service, readOnly);
                         addServicePanelListener(form.getHeaderPanel());
                         getMainContentPanel().addPanel(form, MainContentPanel.CARD_UNIT_PLAN, true);
                         return null;
