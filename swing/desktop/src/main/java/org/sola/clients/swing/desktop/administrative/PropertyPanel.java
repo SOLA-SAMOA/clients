@@ -333,13 +333,17 @@ public class PropertyPanel extends ContentPanel {
         customizeRightsButtons(null);
         customizeNotationButtons(null);
         customizeRightTypesList();
-        customizeParcelButtons(null);   
+        customizeParcelButtons(null);
         customizePaperTitleButtons(null);
         customizePrintButton();
         customizeParentPropertyButtons();
         customizeChildPropertyButtons();
         customizeTerminationButton();
         customizeHistoricRightsViewButton();
+
+        if (!SecurityBean.isInRole(RolesConstants.GIS_VIEW_MAP)) {
+            tabsMain.removeTabAt(tabsMain.indexOfComponent(mapPanel));
+        }
 
         isBtnNext = false;
         btnNext.setVisible(false);
@@ -534,7 +538,9 @@ public class PropertyPanel extends ContentPanel {
      * Enables or disables print button if row version of {@link BaUnitBean} > 0 .
      */
     private void customizePrintButton() {
-        dBtnPrint.setEnabled(baUnitBean1.getRowVersion() > 0);
+        boolean hasPrintRole = SecurityBean.isInRole(RolesConstants.ADMINISTRATIVE_BA_UNIT_PRINT_CERT);
+        dBtnPrint.setEnabled(baUnitBean1.getRowVersion() > 0 && hasPrintRole);
+        dBtnPrint.setVisible(baUnitBean1.getRowVersion() > 0 && hasPrintRole);
     }
 
     private void customizeHistoricRightsViewButton() {
@@ -947,7 +953,7 @@ public class PropertyPanel extends ContentPanel {
      * Prints Historical Search Report.
      */
     private void printRptHistoricalSearch() {
-         // Refresh the details of the baUnit to make sure the latest details are used
+        // Refresh the details of the baUnit to make sure the latest details are used
         BaUnitBean reportBean = getBaUnit(baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart());
         reportBean.setCalculatedAreaSize(baUnitAreaBean1.getSize());
         showReport(ReportManager.getHistoricalSearchReport(reportBean));
@@ -2649,8 +2655,10 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         if (applicationBean != null) {
             this.mapControl.setApplicationId(this.applicationBean.getId());
         }
-        this.mapPanel.setLayout(new BorderLayout());
-        this.mapPanel.add(this.mapControl, BorderLayout.CENTER);
+        if (SecurityBean.isInRole(RolesConstants.GIS_VIEW_MAP)) {
+            this.mapPanel.setLayout(new BorderLayout());
+            this.mapPanel.add(this.mapControl, BorderLayout.CENTER);
+        }
     }
 }//GEN-LAST:event_formComponentShown
 
@@ -2769,7 +2777,9 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     }//GEN-LAST:event_btnAddNotationActionPerformed
 
     private void mapPanelComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_mapPanelComponentShown
-        this.mapControl.setCadastreObjects(baUnitBean1.getCadastreObjectList());
+        if (this.mapControl != null) {
+            this.mapControl.setCadastreObjects(baUnitBean1.getCadastreObjectList());
+        }
     }//GEN-LAST:event_mapPanelComponentShown
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed

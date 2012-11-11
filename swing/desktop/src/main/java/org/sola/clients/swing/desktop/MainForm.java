@@ -134,14 +134,27 @@ public class MainForm extends javax.swing.JFrame {
         btnNewApplication.setEnabled(SecurityBean.isInRole(RolesConstants.APPLICATION_CREATE_APPS));
         btnOpenMap.setEnabled(SecurityBean.isInRole(RolesConstants.GIS_VIEW_MAP));
         btnSearchApplications.setEnabled(SecurityBean.isInRole(RolesConstants.APPLICATION_VIEW_APPS));
-        btnShowDashboard.setEnabled(SecurityBean.isInRole(RolesConstants.APPLICATION_VIEW_APPS));
-        btnManageParties.setEnabled(SecurityBean.isInRole(RolesConstants.PARTY_SAVE));
+        btnShowDashboard.setEnabled(SecurityBean.isInRole(RolesConstants.DASHBOARD_VIEW_ASSIGNED_APPS)
+                || SecurityBean.isInRole(RolesConstants.DASHBOARD_VIEW_OWN_APPS)
+                || SecurityBean.isInRole(RolesConstants.DASHBOARD_VIEW_UNASSIGNED_APPS));
+        btnManageParties.setEnabled(SecurityBean.isInRole(RolesConstants.PARTY_SEARCH));
+        btnDocumentSearch.setEnabled(SecurityBean.isInRole(RolesConstants.SOURCE_SEARCH));
+        btnOpenBaUnitSearch.setEnabled(SecurityBean.isInRole(RolesConstants.ADMINISTRATIVE_BA_UNIT_SEARCH));
+        btnSetPassword.setEnabled(SecurityBean.isInRole(RolesConstants.ADMIN_MANAGE_USER_PASSWORD));
 
         menuSearchApplication.setEnabled(btnSearchApplications.isEnabled());
         menuNewApplication.setEnabled(btnNewApplication.isEnabled());
+        menuBaUnitSearch.setEnabled(btnOpenBaUnitSearch.isEnabled());
+        menuDocumentSearch.setEnabled(btnDocumentSearch.isEnabled());
+        menuPersons.setEnabled(btnManageParties.isEnabled());
+        menuShowMap.setEnabled(btnOpenMap.isEnabled());
+        menuLodgementReport.setEnabled(SecurityBean.isInRole(RolesConstants.REPORTS_VIEW));
+
 
         // Load dashboard
-        openDashBoard();
+        if (btnShowDashboard.isEnabled()) {
+            openDashBoard();
+        }
 
         txtUserName.setText(SecurityBean.getCurrentUser().getUserName());
     }
@@ -164,12 +177,11 @@ public class MainForm extends javax.swing.JFrame {
             width = Integer.parseInt(prefs.get(MAIN_FORM_WIDTH, Integer.toString(width)));
             y = Integer.parseInt(prefs.get(MAIN_FORM_TOP, Integer.toString(y)));
             x = Integer.parseInt(prefs.get(MAIN_FORM_LEFT, Integer.toString(x)));
-            
-            if (height > dim.height) {
+            if (height > dim.height || y > dim.height) {
                 height = dim.height - 50;
                 y = 5;
             }
-            if (width > dim.width) {
+            if (width > dim.width || x > dim.width) {
                 width = dim.width - 20;
                 x = 10;
             }

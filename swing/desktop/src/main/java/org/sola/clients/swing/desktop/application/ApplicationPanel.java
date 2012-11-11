@@ -363,6 +363,8 @@ public class ApplicationPanel extends ContentPanel {
         if (appBean.getStatusCode() != null) {
             boolean editAllowed = appBean.isEditingAllowed()
                     && SecurityBean.isInRole(RolesConstants.APPLICATION_EDIT_APPS);
+            boolean feeRecordingAllowed = SecurityBean.isInRole(RolesConstants.APPLICATION_RECORD_FEE_PAYMENT);
+            boolean editCompleteDateAllowed = SecurityBean.isInRole(RolesConstants.APPLICATION_EDIT_COMPLETE_DATE);
             btnSave.setEnabled(editAllowed);
             btnAddProperty.setEnabled(editAllowed);
             btnRemoveProperty.setEnabled(editAllowed);
@@ -371,8 +373,11 @@ public class ApplicationPanel extends ContentPanel {
             btnAddExistingDocument.setEnabled(editAllowed);
             btnCalculateFee.setEnabled(editAllowed);
             btnPrintFee.setEnabled(editAllowed);
+            btnPrintStatusReport.setEnabled(editAllowed); 
             btnValidate.setEnabled(editAllowed);
-            cbxPaid.setEnabled(editAllowed);
+            cbxPaid.setEnabled(editAllowed && feeRecordingAllowed);
+            formTxtReceiptNum.setEditable(editAllowed && feeRecordingAllowed);
+            formTxtPaid.setEditable(editAllowed && feeRecordingAllowed);
             addDocumentPanel.setAllowEditing(editAllowed);
             txtFirstName.setEditable(editAllowed);
             txtLastName.setEditable(editAllowed);
@@ -386,10 +391,28 @@ public class ApplicationPanel extends ContentPanel {
             txtLastPart.setEditable(editAllowed);
             txtArea.setEditable(editAllowed);
             txtValue.setEditable(editAllowed);
+            // Samoa Customization - allow the Completion Date to be edited if the user has the
+            // appropriate user right
+            txtCompleteBy.setFormatterFactory(FormattersFactory.getInstance().getDateFormatterFactory());
+            if (editAllowed && editCompleteDateAllowed) {
+                txtCompleteBy.setEnabled(true);
+                txtCompleteBy.setFocusable(true);
+                txtCompleteBy.setRequestFocusEnabled(true);
+                txtCompleteBy.setEditable(true);
+            } else {
+                txtCompleteBy.setEnabled(false);
+                txtCompleteBy.setFocusable(false);
+                txtCompleteBy.setRequestFocusEnabled(false);
+                txtCompleteBy.setEditable(false);
+            }
         } else {
             if (!SecurityBean.isInRole(RolesConstants.APPLICATION_CREATE_APPS)) {
                 btnSave.setEnabled(false);
             }
+        }
+
+        if (!SecurityBean.isInRole(RolesConstants.GIS_VIEW_MAP)) {
+            tabbedControlMain.removeTabAt(tabbedControlMain.indexOfComponent(mapPanel));
         }
         btnPrintFee.setVisible(false);
         saveAppState();
@@ -777,7 +800,7 @@ public class ApplicationPanel extends ContentPanel {
                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_UNIT_PARCELS));
                         ApplicationBean appBeanTmp = appBean.copy();
                         BaUnitBean baUnitBean = null;
-                        
+
                         // Get the BaUnit for one of the properties on this application (if available)
                         if (appBean.getPropertyList().getFilteredList().size() > 0) {
                             String baUnitId = null;
@@ -1003,7 +1026,9 @@ public class ApplicationPanel extends ContentPanel {
 
     private boolean saveApplication() {
         boolean result;
-        appBean.setLocation(this.mapControl.getApplicationLocation());
+        if (this.mapControl != null) {
+            appBean.setLocation(this.mapControl.getApplicationLocation());
+        }
         removeDefaultContact(appBean); // Customization for Samoa. 
         if (applicationID != null && !applicationID.equals("")) {
             result = appBean.saveApplication();
@@ -3413,8 +3438,10 @@ public class ApplicationPanel extends ContentPanel {
             this.mapControl = new ControlsBundleForApplicationLocation();
             this.mapControl.setApplicationLocation(appBean.getLocation());
             this.mapControl.setApplicationId(appBean.getId());
-            this.mapPanel.setLayout(new BorderLayout());
-            this.mapPanel.add(this.mapControl, BorderLayout.CENTER);
+            if (SecurityBean.isInRole(RolesConstants.GIS_VIEW_MAP)) {
+                this.mapPanel.setLayout(new BorderLayout());
+                this.mapPanel.add(this.mapControl, BorderLayout.CENTER);
+            }
         }
     }
 

@@ -256,10 +256,10 @@
 					<datasetRun subDataset="WorkSummary">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{workSummaryList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="160">
+					<jr:column width="220">
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="160" height="30"/>
+								<reportElement x="0" y="0" width="220" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
@@ -268,7 +268,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="160" height="20"/>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="220" height="20"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12"/>
 								</textElement>
@@ -276,10 +276,10 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90">
+					<jr:column width="95">
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30"/>
+								<reportElement x="0" y="0" width="95" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
@@ -288,7 +288,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="90" height="20"/>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="95" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12"/>
 								</textElement>
@@ -296,30 +296,10 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90">
+					<jr:column width="95">
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Tahoma" size="12" isBold="true"/>
-								</textElement>
-								<text><![CDATA[Requisitioned]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
-							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="90" height="20"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="Tahoma" size="12"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{requisitioned}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="90">
-						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="90" height="30"/>
+								<reportElement x="0" y="0" width="95" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
@@ -328,7 +308,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="90" height="20"/>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="95" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12"/>
 								</textElement>
@@ -336,10 +316,10 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90">
+					<jr:column width="95">
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30"/>
+								<reportElement x="0" y="0" width="95" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
@@ -348,7 +328,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="90" height="20"/>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="95" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12"/>
 								</textElement>
@@ -356,10 +336,10 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90">
+					<jr:column width="95">
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30"/>
+								<reportElement x="0" y="0" width="95" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
@@ -368,7 +348,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="90" height="20"/>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="95" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12"/>
 								</textElement>
@@ -376,10 +356,10 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90">
+					<jr:column width="95">
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30"/>
+								<reportElement x="0" y="0" width="95" height="30"/>
 								<box>
 									<pen lineWidth="0.0" lineStyle="Double"/>
 									<topPen lineWidth="0.0" lineStyle="Double"/>
@@ -395,7 +375,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="90" height="20"/>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="95" height="20"/>
 								<box>
 									<pen lineWidth="0.0" lineStyle="Double"/>
 									<topPen lineWidth="0.0" lineStyle="Double"/>
@@ -410,10 +390,10 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90">
+					<jr:column width="95">
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30"/>
+								<reportElement x="0" y="0" width="95" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
@@ -422,7 +402,7 @@
 						</jr:columnHeader>
 						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="90" height="20"/>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="95" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12"/>
 								</textElement>
