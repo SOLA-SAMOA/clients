@@ -1,6 +1,4 @@
-/*
- * Copyright 2012 Food and Agriculture Organization of the United Nations (FAO).
- /**
+/**
  * ******************************************************************************************
  * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
  * reserved.

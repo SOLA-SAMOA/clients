@@ -34,19 +34,23 @@ import java.util.ResourceBundle;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.JTableBinding.ColumnBinding;
 import org.sola.clients.beans.application.ApplicationBean;
+import org.sola.clients.beans.application.ApplicationPropertyBean;
 import org.sola.clients.beans.application.ApplicationServiceBean;
 import org.sola.clients.beans.referencedata.CadastreObjectTypeBean;
 import org.sola.clients.beans.referencedata.CadastreObjectTypeListBean;
 import org.sola.clients.beans.referencedata.RequestTypeBean;
 import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.clients.beans.transaction.TransactionUnitParcelsBean;
+import org.sola.clients.beans.unittitle.StrataPropertyListBean;
 import org.sola.clients.beans.unittitle.UnitParcelBean;
 import org.sola.clients.beans.unittitle.UnitParcelGroupBean;
 import org.sola.clients.beans.validation.ValidationResultBean;
 import org.sola.clients.swing.common.tasks.SolaTask;
 import org.sola.clients.swing.common.tasks.TaskManager;
+import org.sola.clients.swing.desktop.administrative.PropertyPanel;
 import org.sola.clients.swing.gis.ui.controlsbundle.ControlsBundleForUnitParcels;
 import org.sola.clients.swing.ui.ContentPanel;
+import org.sola.clients.swing.ui.MainContentPanel;
 import org.sola.clients.swing.ui.validation.ValidationResultForm;
 import org.sola.common.messaging.ClientMessage;
 import org.sola.common.messaging.MessageUtility;
@@ -73,6 +77,9 @@ public class UnitParcelsPanel extends ContentPanel {
     private ApplicationBean applicationBean;
     private String unitDevelopmentNr;
     private boolean isRecordUnitPlan = false;
+    private boolean isCreateStrataTitles = false;
+    private boolean isCancelStrataTitles = false;
+    private List<String> baUnitIds = new ArrayList<String>();
 
     /**
      * Constructor - Used for Record Unit Plan services where the application number is used as the
@@ -111,11 +118,52 @@ public class UnitParcelsPanel extends ContentPanel {
         this.applicationBean = applicationBean;
         this.readOnly = readOnly || applicationBean == null;
         this.applicationService = appService;
-        this.unitDevelopmentNr = unitDevelopmentNr;
         isRecordUnitPlan = appService == null ? false
-                : RequestTypeBean.CODE_RECORD_UNIT_PLAN.equals(appService.getRequestType());
+                : RequestTypeBean.CODE_RECORD_UNIT_PLAN.equals(appService.getRequestType().getCode());
+        isCreateStrataTitles = appService == null ? false
+                : RequestTypeBean.CODE_RECORD_STRATA_TITLES.equals(appService.getRequestType().getCode());
+        isCancelStrataTitles = appService == null ? false
+                : RequestTypeBean.CODE_CANCEL_STRATA_TITLES.equals(appService.getRequestType().getCode());
+        if (applicationBean != null && applicationBean.getFilteredPropertyList().size() > 0) {
+            for (ApplicationPropertyBean appProp : applicationBean.getFilteredPropertyList()) {
+                if (appProp.getBaUnitId() != null && !baUnitIds.contains(appProp.getBaUnitId())) {
+                    baUnitIds.add(appProp.getBaUnitId());
+                }
+            }
+        }
+        // Determine the Unit Parcel Development Number
+        if (unitDevelopmentNr == null) {
+            String serviceId = appService == null ? null : appService.getId();
+            this.unitDevelopmentNr = UnitParcelGroupBean.getUnitDevelopmentNr(serviceId, baUnitIds);
+        } else {
+            this.unitDevelopmentNr = unitDevelopmentNr;
+        }
 
         createTransactionBean();
+        createPropertyListBean();
+        initComponents();
+        postInit();
+    }
+
+    /**
+     * Can be used to open the UnitParcelsPanel using the Unit Parcel development number or the
+     * Identifier for one of the BA Units that is part of the unit Development.
+     *
+     * @param unitDevelopmentNr
+     * @param baUnitId
+     * @param readOnly
+     */
+    public UnitParcelsPanel(String unitDevelopmentNr, String baUnitId, boolean readOnly) {
+        if (baUnitId != null) {
+            baUnitIds.add(baUnitId);
+        }
+        if (unitDevelopmentNr == null && baUnitId != null) {
+            this.unitDevelopmentNr = UnitParcelGroupBean.getUnitDevelopmentNr(null, baUnitIds);
+        } else {
+            this.unitDevelopmentNr = unitDevelopmentNr;
+        }
+        createTransactionBean();
+        createPropertyListBean();
         initComponents();
         postInit();
     }
@@ -132,6 +180,14 @@ public class UnitParcelsPanel extends ContentPanel {
         return transactionBean;
     }
 
+    private StrataPropertyListBean createPropertyListBean() {
+        if (strataPropertyListBean == null) {
+            strataPropertyListBean = new StrataPropertyListBean();
+        }
+        return strataPropertyListBean;
+
+    }
+
     /**
      * Post Initialization method. Load the form with data and setup the buttons and panel title.
      */
@@ -144,7 +200,7 @@ public class UnitParcelsPanel extends ContentPanel {
         ResourceBundle bundle = ResourceBundle.getBundle(this.getClass().getPackage().getName() + ".Bundle");
         if (applicationBean != null && applicationService != null) {
             headerPanel1.setTitleText(String.format(bundle.getString("UnitParcelsPanel.headerPanel1.titleText.Service"),
-                    applicationBean.getNr(), applicationService.getRequestType().getDisplayValue()));
+                    unitDevelopmentNr, applicationService.getRequestType().getDisplayValue()));
         } else {
             headerPanel1.setTitleText(String.format(bundle.getString("UnitParcelsPanel.headerPanel1.titleText.Property"),
                     unitDevelopmentNr));
@@ -201,6 +257,11 @@ public class UnitParcelsPanel extends ContentPanel {
             txtUnitFirstPart.setText(calculateLotNumber(CadastreObjectTypeBean.CODE_PRINCIPAL_UNIT));
         }
 
+        btnCreateProperties.setEnabled(!readOnly && isCreateStrataTitles);
+        btnEditProperty.setEnabled(!readOnly && isCreateStrataTitles);
+        btnCancelProperties.setEnabled(!readOnly && isCancelStrataTitles);
+        btnRefreshProperties.setEnabled(!readOnly);
+
         // Load the map data
         loadMap();
     }
@@ -220,7 +281,7 @@ public class UnitParcelsPanel extends ContentPanel {
      * transaction, a default transaction object is configured.
      */
     public void loadForm() {
-        if (isRecordUnitPlan) {
+        if (applicationService != null) {
             // Get the transaction object using the service id
             transactionBean.setFromServiceId(applicationService.getId());
             transactionBean.reload();
@@ -231,7 +292,7 @@ public class UnitParcelsPanel extends ContentPanel {
             UnitParcelGroupBean group = UnitParcelGroupBean.getUnitParcelGroupByName(unitDevelopmentNr);
             if (group != null) {
                 transactionBean.setUnitParcelGroup(group);
-            } 
+            }
         }
 
         if (transactionBean.getUnitParcelGroup().getName() == null) {
@@ -252,6 +313,11 @@ public class UnitParcelsPanel extends ContentPanel {
                 transactionBean.getUnitParcelGroup().getUnitParcelList().addAsNew(commonPropBean);
             }
         }
+        loadStrataProperties();
+    }
+
+    private void loadStrataProperties() {
+        strataPropertyListBean.getStrataProperties(unitDevelopmentNr, baUnitIds);
     }
 
     /**
@@ -278,6 +344,9 @@ public class UnitParcelsPanel extends ContentPanel {
      * @param bean
      */
     private void customizeUnitParcelButtons(UnitParcelBean bean) {
+        if (!isRecordUnitPlan) {
+            return;
+        }
         btnRemoveUnit.setEnabled(false);
         btnReinstateUnit.setEnabled(false);
         if (bean != null && !readOnly) {
@@ -369,9 +438,10 @@ public class UnitParcelsPanel extends ContentPanel {
 
     /**
      * Checks the underlying parcels displayed in the map and synchronizes the Unit Plan Parcel List
-     * with any changes.
+     * with any changes. Returns true if the list of underlying parcels is changed.
      */
-    private void updateUnderlyingParcels() {
+    private boolean updateUnderlyingParcels() {
+        boolean result = false;
         List<String> parcelIds = this.mapControl.getUnderlyingParcels();
         for (UnitParcelBean bean : transactionBean.getUnitParcelGroup().getParcelList()) {
             if (!parcelIds.contains(bean.getId())) {
@@ -383,6 +453,7 @@ public class UnitParcelsPanel extends ContentPanel {
                     bean.setDeleteOnApproval(true);
                     bean.setEntityAction(EntityAction.UPDATE);
                 }
+                result = true;
             } else {
                 // Make sure the parcel is not flagged for removal
                 bean.setEntityAction(null);
@@ -396,8 +467,10 @@ public class UnitParcelsPanel extends ContentPanel {
             newBean.setUnitParcelStatusCode(StatusConstants.PENDING);
             if (!transactionBean.getUnitParcelGroup().getParcelList().contains(newBean)) {
                 transactionBean.getUnitParcelGroup().getParcelList().addAsNew(newBean);
+                result = true;
             }
         }
+        return result;
     }
 
     /**
@@ -407,7 +480,7 @@ public class UnitParcelsPanel extends ContentPanel {
 
         // Get the list of underlying parcels from the map adn update as required to track changes
         // to the underlying parcels. 
-        updateUnderlyingParcels();
+        final boolean updateUnderlying = updateUnderlyingParcels();
 
         final List result = new ArrayList<ValidationResultBean>();
         SolaTask<Void, Void> t = new SolaTask<Void, Void>() {
@@ -419,6 +492,9 @@ public class UnitParcelsPanel extends ContentPanel {
                 result.addAll(transactionBean.saveTransaction());
                 // Reload the transactionBean with the updated details. 
                 transactionBean.reload();
+                if (updateUnderlying) {
+                    loadStrataProperties();
+                }
                 return null;
             }
 
@@ -494,6 +570,46 @@ public class UnitParcelsPanel extends ContentPanel {
     }
 
     /**
+     * Creates the strata properties for the Unit Development
+     */
+    private void createStrataProperties() {
+        SolaTask<Void, Void> t = new SolaTask<Void, Void>() {
+
+            @Override
+            public Void doTask() {
+                setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_CREATE_STRATA_PROPS));
+                strataPropertyListBean.createStrataProperties(applicationService.getId(),
+                        unitDevelopmentNr, baUnitIds);
+                return null;
+            }
+        };
+        TaskManager.getInstance().runTask(t);
+    }
+
+    /**
+     * Opens the property form for the selected property
+     *
+     * @param forEdit Indicates if the property form should be opened in edit mode or not.
+     */
+    private void openPropertyForm(final boolean forEdit) {
+        if (strataPropertyListBean.getSelectedStrataProperty() != null) {
+            SolaTask<Void, Void> t = new SolaTask<Void, Void>() {
+
+                @Override
+                public Void doTask() {
+                    setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_PROPERTY));
+                    PropertyPanel propertyPnl = new PropertyPanel(applicationBean,
+                            applicationService, strataPropertyListBean.getSelectedStrataProperty().getNameFirstpart(),
+                            strataPropertyListBean.getSelectedStrataProperty().getNameLastpart(), !forEdit);
+                    getMainContentPanel().addPanel(propertyPnl, MainContentPanel.CARD_PROPERTY_PANEL, true);
+                    return null;
+                }
+            };
+            TaskManager.getInstance().runTask(t);
+        }
+    }
+
+    /**
      * This method is called from within the constructor to initialize the form. WARNING: Do NOT
      * modify this code. The content of this method is always regenerated by the Form Editor.
      */
@@ -506,6 +622,7 @@ public class UnitParcelsPanel extends ContentPanel {
         groupPanel2 = new org.sola.clients.swing.ui.GroupPanel();
         transactionBean = createTransactionBean();
         cadastreObjectTypeListBean1 = new org.sola.clients.beans.referencedata.CadastreObjectTypeListBean();
+        strataPropertyListBean = createPropertyListBean();
         headerPanel1 = new org.sola.clients.swing.ui.HeaderPanel();
         jToolBar1 = new javax.swing.JToolBar();
         btnSave = new javax.swing.JButton();
@@ -527,6 +644,15 @@ public class UnitParcelsPanel extends ContentPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        propertyTab = new javax.swing.JPanel();
+        jToolBar3 = new javax.swing.JToolBar();
+        btnOpenProperty = new javax.swing.JButton();
+        btnCreateProperties = new javax.swing.JButton();
+        btnEditProperty = new javax.swing.JButton();
+        btnCancelProperties = new javax.swing.JButton();
+        btnRefreshProperties = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblProperties = new org.sola.clients.swing.common.controls.JTableWithDefaultStyles();
         mapTab = new javax.swing.JPanel();
         mapPanel = new javax.swing.JPanel();
 
@@ -541,7 +667,6 @@ public class UnitParcelsPanel extends ContentPanel {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        setCloseOnHide(true);
         setHeaderPanel(headerPanel1);
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/sola/clients/swing/desktop/unittitle/Bundle"); // NOI18N
@@ -705,7 +830,7 @@ public class UnitParcelsPanel extends ContentPanel {
             .addGroup(pnlUnitsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlUnitsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 871, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 937, Short.MAX_VALUE)
                     .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -733,11 +858,132 @@ public class UnitParcelsPanel extends ContentPanel {
 
         tabPane.addTab(bundle.getString("UnitParcelsPanel.unitsTab.TabConstraints.tabTitle"), unitsTab); // NOI18N
 
+        propertyTab.setVerifyInputWhenFocusTarget(false);
+
+        jToolBar3.setFloatable(false);
+        jToolBar3.setRollover(true);
+
+        btnOpenProperty.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/folder-open-document.png"))); // NOI18N
+        btnOpenProperty.setText(bundle.getString("UnitParcelsPanel.btnOpenProperty.text")); // NOI18N
+        btnOpenProperty.setFocusable(false);
+        btnOpenProperty.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnOpenProperty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenPropertyActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(btnOpenProperty);
+
+        btnCreateProperties.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/create.png"))); // NOI18N
+        btnCreateProperties.setText(bundle.getString("UnitParcelsPanel.btnCreateProperties.text")); // NOI18N
+        btnCreateProperties.setFocusable(false);
+        btnCreateProperties.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnCreateProperties.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreatePropertiesActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(btnCreateProperties);
+
+        btnEditProperty.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/pencil.png"))); // NOI18N
+        btnEditProperty.setText(bundle.getString("UnitParcelsPanel.btnEditProperty.text")); // NOI18N
+        btnEditProperty.setFocusable(false);
+        btnEditProperty.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEditProperty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditPropertyActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(btnEditProperty);
+
+        btnCancelProperties.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/cancel.png"))); // NOI18N
+        btnCancelProperties.setText(bundle.getString("UnitParcelsPanel.btnCancelProperties.text")); // NOI18N
+        btnCancelProperties.setFocusable(false);
+        btnCancelProperties.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar3.add(btnCancelProperties);
+
+        btnRefreshProperties.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/refresh.png"))); // NOI18N
+        btnRefreshProperties.setText(bundle.getString("UnitParcelsPanel.btnRefreshProperties.text")); // NOI18N
+        btnRefreshProperties.setFocusable(false);
+        btnRefreshProperties.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnRefreshProperties.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshPropertiesActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(btnRefreshProperties);
+
+        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${strataPropertyList}");
+        jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, strataPropertyListBean, eLProperty, tblProperties);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nameFirstpart}"));
+        columnBinding.setColumnName("Name Firstpart");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nameLastpart}"));
+        columnBinding.setColumnName("Name Lastpart");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${officialArea}"));
+        columnBinding.setColumnName("Official Area");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${registrationDate}"));
+        columnBinding.setColumnName("Registration Date");
+        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${status.displayValue}"));
+        columnBinding.setColumnName("Status.display Value");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${unitEntitlement}"));
+        columnBinding.setColumnName("Unit Entitlement");
+        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${unitParcelType.displayValue}"));
+        columnBinding.setColumnName("Unit Parcel Type.display Value");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
+        bindingGroup.addBinding(jTableBinding);
+        jTableBinding.bind();binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, strataPropertyListBean, org.jdesktop.beansbinding.ELProperty.create("${selectedStrataProperty}"), tblProperties, org.jdesktop.beansbinding.BeanProperty.create("selectedElement"));
+        bindingGroup.addBinding(binding);
+
+        jScrollPane3.setViewportView(tblProperties);
+        tblProperties.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title0")); // NOI18N
+        tblProperties.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title1")); // NOI18N
+        tblProperties.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title2")); // NOI18N
+        tblProperties.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title3")); // NOI18N
+        tblProperties.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title4")); // NOI18N
+        tblProperties.getColumnModel().getColumn(5).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title6")); // NOI18N
+        tblProperties.getColumnModel().getColumn(6).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title7")); // NOI18N
+
+        javax.swing.GroupLayout propertyTabLayout = new javax.swing.GroupLayout(propertyTab);
+        propertyTab.setLayout(propertyTabLayout);
+        propertyTabLayout.setHorizontalGroup(
+            propertyTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(propertyTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(propertyTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 937, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        propertyTabLayout.setVerticalGroup(
+            propertyTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(propertyTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        tabPane.addTab(bundle.getString("UnitParcelsPanel.propertyTab.TabConstraints.tabTitle"), propertyTab); // NOI18N
+
         javax.swing.GroupLayout mapPanelLayout = new javax.swing.GroupLayout(mapPanel);
         mapPanel.setLayout(mapPanelLayout);
         mapPanelLayout.setHorizontalGroup(
             mapPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 891, Short.MAX_VALUE)
+            .addGap(0, 957, Short.MAX_VALUE)
         );
         mapPanelLayout.setVerticalGroup(
             mapPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -748,7 +994,7 @@ public class UnitParcelsPanel extends ContentPanel {
         mapTab.setLayout(mapTabLayout);
         mapTabLayout.setHorizontalGroup(
             mapTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 891, Short.MAX_VALUE)
+            .addGap(0, 957, Short.MAX_VALUE)
             .addGroup(mapTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(mapPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -797,8 +1043,29 @@ public class UnitParcelsPanel extends ContentPanel {
     private void btnReinstateUnitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReinstateUnitActionPerformed
         reinstateUnitParcel();
     }//GEN-LAST:event_btnReinstateUnitActionPerformed
+
+    private void btnCreatePropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreatePropertiesActionPerformed
+        createStrataProperties();
+    }//GEN-LAST:event_btnCreatePropertiesActionPerformed
+
+    private void btnOpenPropertyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenPropertyActionPerformed
+        openPropertyForm(false);
+    }//GEN-LAST:event_btnOpenPropertyActionPerformed
+
+    private void btnEditPropertyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditPropertyActionPerformed
+        openPropertyForm(true);
+    }//GEN-LAST:event_btnEditPropertyActionPerformed
+
+    private void btnRefreshPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshPropertiesActionPerformed
+        loadStrataProperties();
+    }//GEN-LAST:event_btnRefreshPropertiesActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddUnit;
+    private javax.swing.JButton btnCancelProperties;
+    private javax.swing.JButton btnCreateProperties;
+    private javax.swing.JButton btnEditProperty;
+    private javax.swing.JButton btnOpenProperty;
+    private javax.swing.JButton btnRefreshProperties;
     private javax.swing.JButton btnReinstateUnit;
     private javax.swing.JButton btnRemoveUnit;
     private javax.swing.JButton btnSave;
@@ -813,12 +1080,17 @@ public class UnitParcelsPanel extends ContentPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JToolBar jToolBar3;
     private javax.swing.JPanel mapPanel;
     private javax.swing.JPanel mapTab;
     private javax.swing.JPanel pnlUnits;
+    private javax.swing.JPanel propertyTab;
+    private org.sola.clients.beans.unittitle.StrataPropertyListBean strataPropertyListBean;
     private javax.swing.JTabbedPane tabPane;
+    private org.sola.clients.swing.common.controls.JTableWithDefaultStyles tblProperties;
     private javax.swing.JTable tblUnits;
     public org.sola.clients.beans.transaction.TransactionUnitParcelsBean transactionBean;
     private javax.swing.JFormattedTextField txtUnitArea;
