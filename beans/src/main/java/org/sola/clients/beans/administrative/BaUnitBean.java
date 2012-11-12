@@ -42,6 +42,7 @@ import org.sola.clients.beans.controls.SolaList;
 import org.sola.clients.beans.controls.SolaObservableList;
 import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.clients.beans.party.PartySummaryBean;
+import org.sola.clients.beans.referencedata.BaUnitTypeBean;
 import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.clients.beans.referencedata.TypeActionBean;
 import org.sola.clients.beans.source.SourceBean;
@@ -858,8 +859,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Sorts the list of Rrrs by registration date if provided or otherwise by the Rrr
-     * reference number. Removes any non digit characters before performing the sort.
+     * Sorts the list of Rrrs by registration date if provided or otherwise by the Rrr reference
+     * number. Removes any non digit characters before performing the sort.
      *
      * @param rrrList
      * @return
@@ -876,8 +877,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
                         && !rrr1.getRegistrationDate().equals(rrr2.getRegistrationDate())) {
                     return rrr1.getRegistrationDate().compareTo(rrr2.getRegistrationDate());
                 } else {
-                    String ref1Str =  rrr1 == null ? "0" : rrr1.getNr().replaceFirst("V|/", "."); 
-                    String ref2Str =  rrr2 == null ? "0" : rrr2.getNr().replaceFirst("V|/", "."); 
+                    String ref1Str = rrr1 == null ? "0" : rrr1.getNr().replaceFirst("V|/", ".");
+                    String ref2Str = rrr2 == null ? "0" : rrr2.getNr().replaceFirst("V|/", ".");
                     BigDecimal ref1 = new BigDecimal(ref1Str.replaceAll("[^0-9\\.]", ""));
                     BigDecimal ref2 = new BigDecimal(ref2Str.replaceAll("[^0-9\\.]", ""));
                     return ref1.compareTo(ref2);
@@ -885,5 +886,24 @@ public class BaUnitBean extends BaUnitSummaryBean {
             }
         });
         return rrrList;
+    }
+
+    /**
+     * Returns true if this property is part of a Unit Development (i.e. it is a strata unit or
+     * linked to a common property)
+     */
+    public boolean isStrataProperty() {
+        boolean result = BaUnitTypeBean.TYPE_CODE_STRATA_UNIT.equals(getTypeCode());
+        if (!result) {
+            if (getFilteredChildBaUnits() != null && getFilteredChildBaUnits().size() > 0) {
+                for (RelatedBaUnitInfoBean bean : getFilteredChildBaUnits()) {
+                    if (BaUnitTypeBean.TYPE_CODE_STRATA_UNIT.equals(bean.getRelatedBaUnit().getTypeCode())) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
     }
 }

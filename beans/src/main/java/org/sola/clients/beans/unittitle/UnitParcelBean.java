@@ -42,7 +42,7 @@ public class UnitParcelBean extends CadastreObjectBean {
 
     public static final String DELETE_ON_APPROVAL_PROPERTY = "deleteOnApproval";
     public static final String UNIT_PARCEL_STATUS_CODE_PROPERTY = "unitParcelStatusCode";
-     public static final String UNIT_PARCEL_STATUS_PROPERTY = "unitParcelStatus";
+    public static final String UNIT_PARCEL_STATUS_PROPERTY = "unitParcelStatus";
     public static final String OFFICIAL_AREA_PROPERTY = "officialArea";
     private boolean deleteOnApproval;
     private RegistrationStatusTypeBean unitParcelStatus;

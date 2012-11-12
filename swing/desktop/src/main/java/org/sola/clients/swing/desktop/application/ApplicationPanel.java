@@ -52,6 +52,7 @@ import org.sola.clients.beans.party.PartySummaryListBean;
 import org.sola.clients.beans.referencedata.*;
 import org.sola.clients.beans.security.SecurityBean;
 import org.sola.clients.beans.source.SourceBean;
+import org.sola.clients.beans.unittitle.UnitParcelGroupBean;
 import org.sola.clients.beans.validation.ValidationResultBean;
 import org.sola.clients.reports.ReportManager;
 import org.sola.clients.swing.common.LafManager;
@@ -791,30 +792,23 @@ public class ApplicationPanel extends ContentPanel {
                             form, MainContentPanel.CARD_CADASTRECHANGE, true);
                 }
 
-            } else if (requestType.equalsIgnoreCase(RequestTypeBean.CODE_RECORD_UNIT_PLAN)) {
+            } else if (requestType.equalsIgnoreCase(RequestTypeBean.CODE_RECORD_UNIT_PLAN)
+                    || requestType.equalsIgnoreCase(RequestTypeBean.CODE_RECORD_STRATA_TITLES)
+                    || requestType.equalsIgnoreCase(RequestTypeBean.CODE_CANCEL_STRATA_TITLES)) {
                 // Samoa Customization - Process Record Unit Plan Service 
+                final boolean isRecordUnitPlan = requestType.equalsIgnoreCase(RequestTypeBean.CODE_RECORD_UNIT_PLAN);
                 SolaTask t = new SolaTask<Void, Void>() {
 
                     @Override
                     public Void doTask() {
                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_UNIT_PARCELS));
                         ApplicationBean appBeanTmp = appBean.copy();
-                        BaUnitBean baUnitBean = null;
-
-                        // Get the BaUnit for one of the properties on this application (if available)
-                        if (appBean.getPropertyList().getFilteredList().size() > 0) {
-                            String baUnitId = null;
-                            for (ApplicationPropertyBean propBean : appBean.getPropertyList().getFilteredList()) {
-                                if (propBean.getBaUnitId() != null) {
-                                    baUnitId = propBean.getBaUnitId();
-                                    break;
-                                }
-                            }
-                            if (baUnitId != null) {
-                                baUnitBean = BaUnitBean.getBaUnitsById(baUnitId);
-                            }
+                        UnitParcelsPanel form;
+                        if (isRecordUnitPlan) {
+                            form = new UnitParcelsPanel(appBeanTmp, service, readOnly);
+                        } else {
+                            form = new UnitParcelsPanel(appBeanTmp, service, null, readOnly);
                         }
-                        UnitParcelsPanel form = new UnitParcelsPanel(appBeanTmp, service, baUnitBean, false);
                         addServicePanelListener(form.getHeaderPanel());
                         getMainContentPanel().addPanel(form, MainContentPanel.CARD_UNIT_PLAN, true);
                         return null;

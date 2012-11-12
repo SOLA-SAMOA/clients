@@ -124,6 +124,31 @@ public class UnitParcelGroupBean extends AbstractIdBean {
     }
 
     /**
+     * Retrieves a Unit Parcel Group (if one exists) based on the name of the group.
+     *
+     * @return The unit parcel group or null if the name does not match any unit parcel group.
+     */
+    public static UnitParcelGroupBean getUnitParcelGroupByName(String groupName) {
+        UnitParcelGroupBean result;
+        result = TypeConverters.TransferObjectToBean(
+                WSManager.getInstance().getCadastreService().getUnitParcelGroupByName(groupName),
+                UnitParcelGroupBean.class, null);
+        return result;
+    }
+
+    /**
+     * Samoa Customization - Retrieves a number for the Unit Development linked to the specified
+     * service or to one or more of the specified BA Units.
+     *
+     * @param serviceId The service that may have a unit development linked to it
+     * @param baUnitIds The list of BA Units (usually the underlying properties) for the Unit
+     * Development
+     */
+    public static String getUnitDevelopmentNr(String serviceId, List<String> baUnitIds) {
+        return WSManager.getInstance().getSearchService().getUnitDevelopmentNr(serviceId, baUnitIds);
+    }
+
+    /**
      * Sorts the unit parcel list by the parcel type and lot number.
      *
      * @param unitParcelList the list of unit parcels to sort.
