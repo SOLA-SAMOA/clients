@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="296"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -214,6 +214,9 @@
 		</field>
 	</subDataset>
 	<subDataset name="Notations">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
 		<field name="Ref. Number" class="java.lang.String">
 			<fieldDescription><![CDATA[referenceNr]]></fieldDescription>
 		</field>
@@ -222,6 +225,9 @@
 		</field>
 		<field name="Status" class="java.lang.String">
 			<fieldDescription><![CDATA[status.displayValue]]></fieldDescription>
+		</field>
+		<field name="RegnDate" class="java.util.Date">
+			<fieldDescription><![CDATA[changeTime]]></fieldDescription>
 		</field>
 	</subDataset>
 	<parameter name="USER" class="java.lang.String"/>
@@ -410,13 +416,13 @@
 	<detail>
 		<band height="38">
 			<componentElement>
-				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="13" width="195" height="14"/>
+				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="16" width="468" height="14"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Notations">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{allBaUnitNotationList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
 					<jr:column width="50">
-						<jr:columnHeader height="12" rowSpan="1">
+						<jr:columnHeader height="19" rowSpan="1">
 							<box bottomPadding="0">
 								<pen lineWidth="1.0"/>
 								<topPen lineWidth="0.0" lineStyle="Solid"/>
@@ -425,31 +431,39 @@
 								<rightPen lineWidth="0.0"/>
 							</box>
 							<staticText>
-								<reportElement x="2" y="0" width="45" height="12"/>
+								<reportElement x="0" y="0" width="50" height="18"/>
 								<textElement>
-									<font fontName="Arial Narrow"/>
+									<font fontName="Arial Narrow" size="12"/>
 								</textElement>
 								<text><![CDATA[Regn Date]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell height="12" rowSpan="1"/>
+						<jr:detailCell height="18" rowSpan="1">
+							<textField pattern="dd MMM YYYY" isBlankWhenNull="false">
+								<reportElement x="0" y="0" width="50" height="18"/>
+								<textElement>
+									<font fontName="Arial Narrow"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{RegnDate} == null ? "At conversion" : $F{RegnDate}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
 					</jr:column>
-					<jr:column width="258">
-						<jr:columnHeader height="12" rowSpan="1">
+					<jr:column width="66">
+						<jr:columnHeader height="19" rowSpan="1">
 							<box>
 								<bottomPen lineWidth="1.0"/>
 							</box>
 							<staticText>
-								<reportElement x="0" y="0" width="123" height="12"/>
+								<reportElement x="0" y="0" width="66" height="18"/>
 								<textElement>
-									<font fontName="Arial Narrow"/>
+									<font fontName="Arial Narrow" size="12"/>
 								</textElement>
 								<text><![CDATA[Reference	Instrument Type]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell height="12" rowSpan="1">
+						<jr:detailCell height="18" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="258" height="12"/>
+								<reportElement x="0" y="0" width="66" height="18"/>
 								<box>
 									<pen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -458,8 +472,31 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 								</box>
 								<textElement>
-									<font fontName="Arial Narrow"/>
+									<font fontName="Arial Narrow" size="12"/>
 									<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{Ref. Number}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="350">
+						<jr:columnHeader height="19" rowSpan="1">
+							<box>
+								<bottomPen lineWidth="1.0"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="151" height="18"/>
+								<textElement>
+									<font fontName="Arial Narrow" size="12"/>
+								</textElement>
+								<text><![CDATA[Instrument Type / Memorial]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="18" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="350" height="18"/>
+								<textElement>
+									<font fontName="Arial Narrow" size="12"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{Notation Text}]]></textFieldExpression>
 							</textField>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="41"/>
-	<property name="ireport.y" value="720"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="617"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -224,6 +224,14 @@
 			<fieldDescription><![CDATA[status.displayValue]]></fieldDescription>
 		</field>
 	</subDataset>
+	<subDataset name="UnregisteredDealings">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="notation" class="java.lang.String">
+			<fieldDescription><![CDATA[notation]]></fieldDescription>
+		</field>
+	</subDataset>
 	<parameter name="USER" class="java.lang.String"/>
 	<parameter name="SAMOA_EMBLEM" class="java.io.InputStream"/>
 	<parameter name="MAP_IMAGE" class="java.lang.String"/>
@@ -278,6 +286,9 @@
 	<field name="baUnitPendingNotationList" class="org.jdesktop.observablecollections.ObservableList"/>
 	<field name="currentOwnersList" class="java.util.List">
 		<fieldDescription><![CDATA[currentOwnersList]]></fieldDescription>
+	</field>
+	<field name="unregisteredDealings" class="java.util.List">
+		<fieldDescription><![CDATA[unregisteredDealings]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -578,8 +589,8 @@
 			<componentElement>
 				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="13" width="447" height="16"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Notations">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{baUnitPendingNotationList}.toArray())]]></dataSourceExpression>
+					<datasetRun subDataset="UnregisteredDealings">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{unregisteredDealings}.toArray())]]></dataSourceExpression>
 					</datasetRun>
 					<jr:column width="444">
 						<jr:detailCell height="16" rowSpan="1">
@@ -596,7 +607,7 @@
 									<font fontName="Arial Narrow" size="12"/>
 									<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{Notation Text}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{notation}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

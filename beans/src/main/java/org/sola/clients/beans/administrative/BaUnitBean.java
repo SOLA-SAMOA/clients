@@ -197,6 +197,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
     private ObservableList<BaUnitNotationBean> baUnitCurrentNotationList;
     private ObservableList<BaUnitNotationBean> baUnitPendingNotationList;
     private List<PartySummaryBean> currentOwnersList;
+    private List<UnregisteredDealingBean> unregisteredDealingList;
     private transient CadastreObjectBean selectedParcel;
     private transient SolaList<RrrBean> rrrHistoricList;
     private transient RrrBean selectedRight;
@@ -787,7 +788,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
             }
         }
         // Get all current rrrs and remove the primary Rrrs as these are displayed in the First Schedule
-        for (RrrBean bean :  rrrList.getFilteredList()) {
+        for (RrrBean bean : rrrList.getFilteredList()) {
             if (!bean.isPrimary() && bean.getNotation() != null) {
                 BaUnitNotationBean notation = bean.getNotation();
                 notation.setNotationText(formatNotationText(notation.getNotationText(),
@@ -979,5 +980,26 @@ public class BaUnitBean extends BaUnitSummaryBean {
             }
         }
         return result;
+    }
+
+    /**
+     * Samoa Customization - Retrieve the list of unregistered Dealings for the property
+     */
+    public List<UnregisteredDealingBean> getUnregisteredDealings() {
+        
+        if (unregisteredDealingList == null) {
+            unregisteredDealingList = TypeConverters.TransferObjectListToBeanList(
+                    WSManager.getInstance().getSearchService().getUnregisteredDealings(getId()),
+                    UnregisteredDealingBean.class, null);
+        }
+        if (unregisteredDealingList == null){
+            unregisteredDealingList = new ArrayList<UnregisteredDealingBean>();
+        }
+        if (unregisteredDealingList.isEmpty()){
+            UnregisteredDealingBean bean = new UnregisteredDealingBean();
+            bean.setPendingServices(UnregisteredDealingBean.NIL_DEALING);
+            unregisteredDealingList.add(bean);
+        }
+        return unregisteredDealingList;
     }
 }
