@@ -118,8 +118,12 @@ public class BaUnitBean extends BaUnitSummaryBean {
 
         private List<RrrShareBean> getShares(RrrBean rrrBean) {
             List<RrrShareBean> result = new LinkedList<RrrShareBean>();
-            if (rrrBean.getTypeCode().toLowerCase().contains("ownership")
-                    || rrrBean.getTypeCode().toLowerCase().contains("apartment")) {
+//            if (rrrBean.getTypeCode().toLowerCase().contains("ownership")
+//                    || rrrBean.getTypeCode().toLowerCase().contains("apartment")) {
+//                result = rrrBean.getFilteredRrrShareList();
+//            }
+            // Samoa Customization all primary rrrs are ownership rrrs
+            if (rrrBean.isPrimary()) {
                 result = rrrBean.getFilteredRrrShareList();
             }
             return result;
@@ -178,6 +182,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
     public static final String PENDING_ACTION_CODE_PROPERTY = "pendingActionCode";
     public static final String PENDING_ACTION_PROPERTY = "pendingTypeAction";
     public static final String SELECTED_BA_UNIT_AREA_PROPERTY = "selectedBaUnitArea";
+    public static final String NIL_REGISTERED_DEALINGS_TEXT = "Registered Dealings - Nil";
     public static final String NIL_UNREGISTERED_DEALINGS_TEXT = "Unregistered Dealings - Nil";
     private SolaList<RrrBean> rrrList;
     private SolaList<BaUnitNotationBean> baUnitNotationList;
@@ -371,7 +376,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
         }
     }
 
-    public boolean addBaUnitNotation(String notationText) {
+    public boolean addBaUnitNotation(String notationRef, String notationText) {
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/sola/clients/swing/desktop/administrative/Bundle");
         if (notationText.length() > 1000) {
             MessageUtility.displayMessage(ClientMessage.CHECK_FIELD_INVALID_LENGTH_PAR, new Object[]{bundle.getString("PropertyPanel.jLabel15.text")});
@@ -383,6 +388,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
         notation.setBaUnitId(this.getId());
         notation.setNotationText(notationText);
         notation.setStatusCode(StatusConstants.PENDING);
+        notation.setReferenceNr(notationRef);
 
         if (notation.validate(true).size() < 1) {
             baUnitNotationList.addAsNew(notation);
@@ -763,18 +769,42 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Returns the list of current notations for the property. Displayed in the First Schedule
+     * Returns the list of current notations for the property. Displayed in the Second Schedule
      * section of the Computer Folio certificate.
      *
      * @return
      */
     public ObservableList<BaUnitNotationBean> getBaUnitCurrentNotationList() {
-        ObservableList<BaUnitNotationBean> result = new SolaList(getAllBaUnitNotationList(), null, new String[]{StatusConstants.CURRENT}).getFilteredList();
-        for (BaUnitNotationBean bean : result) {
-            // Format the Notation text for display by including the 
-            bean.setNotationText(formatNotationText(bean.getNotationText(), bean.getReferenceNr()));
+        // ObservableList<BaUnitNotationBean> result = new SolaList(getAllBaUnitNotationList(), null, new String[]{StatusConstants.CURRENT}).getFilteredList();
+        ObservableList<BaUnitNotationBean> result = new SolaObservableList<BaUnitNotationBean>();
+
+        // Get all of the current notations linked to the ba unit. Notations linked to an rrr
+        // will be added next depending on the rrr type and status. 
+        for (BaUnitNotationBean bean : getAllBaUnitNotationList()) {
+            if (bean.getBaUnitId() != null && StatusConstants.CURRENT.equals(bean.getStatusCode())) {
+                bean.setNotationText(formatNotationText(bean.getNotationText(), bean.getReferenceNr()));
+                result.add(bean);
+            }
         }
-        return sortNotations(result);
+        // Get all current rrrs and remove the primary Rrrs as these are displayed in the First Schedule
+        for (RrrBean bean :  rrrList.getFilteredList()) {
+            if (!bean.isPrimary() && bean.getNotation() != null) {
+                BaUnitNotationBean notation = bean.getNotation();
+                notation.setNotationText(formatNotationText(notation.getNotationText(),
+                        notation.getReferenceNr()));
+                result.add(notation);
+            }
+        }
+
+        if (result.size() == 0) {
+            BaUnitNotationBean dummy = new BaUnitNotationBean();
+            dummy.setNotationText(NIL_REGISTERED_DEALINGS_TEXT);
+            result.add(dummy);
+        } else {
+            result = sortNotations(result);
+        }
+
+        return result;
     }
 
     /**
@@ -849,11 +879,55 @@ public class BaUnitBean extends BaUnitSummaryBean {
      */
     public List<PartySummaryBean> getCurrentOwnersList() {
         List<PartySummaryBean> result = new ArrayList<PartySummaryBean>();
-        ObservableList<RrrBean> currentRrrList = new SolaList(getRrrList(), null, new String[]{StatusConstants.CURRENT}).getFilteredList();
-        for (RrrBean bean : currentRrrList) {
-            if (bean.isPrimary()) {
-                result.addAll(bean.getRightHolderList());
+        boolean jointTenant;
+        boolean commonTenant;
+
+        //Get all the current shares
+        List<RrrShareBean> shares = new ArrayList<RrrShareBean>();
+        for (RrrBean rrr : rrrList.getFilteredList()) {
+            if (rrr.isPrimary() && StatusConstants.CURRENT.equals(rrr.getStatusCode())) {
+                shares.addAll(rrr.getRrrShareList());
             }
+        }
+
+        if (shares.size() == 1 && shares.get(0).getFilteredRightHolderList().size() == 1) {
+            // Only 1 owner so use the simple name formatting
+            result.addAll(shares.get(0).getFilteredRightHolderList());
+        } else {
+            commonTenant = shares.size() > 1;
+            for (RrrShareBean share : shares) {
+                jointTenant = share.getFilteredRightHolderList().size() > 1;
+                for (PartySummaryBean bean : share.getFilteredRightHolderList()) {
+                    PartySummaryBean rightHolder = new PartySummaryBean();
+                    // Format the text to display for the owner based on their share holding
+                    rightHolder.setName(formatOwnerName(bean.getFullName(),
+                            share.getShare(), jointTenant, commonTenant));
+                    result.add(rightHolder);
+                }
+            }
+
+        }
+        return result;
+    }
+
+    /**
+     * Determines the description for the owner on the Computer Folio Certificate
+     *
+     * @param name The owner name
+     * @param share The share for the owner
+     * @param jointTenant Indicates if the owner is a joint tenant
+     * @param commonTenant Indicates if the owner is a tenant in common
+     */
+    protected String formatOwnerName(String name, String share, boolean jointTenant, boolean commonTenant) {
+        String result = name;
+        if (jointTenant && !commonTenant) {
+            result = result + " as a joint tenant";
+        }
+        if (!jointTenant && commonTenant) {
+            result = result + " as to a " + share + " share as a tenant in common";
+        }
+        if (jointTenant && commonTenant) {
+            result = result + " as a joint tenant as to a " + share + " share as a tenant in common";
         }
         return result;
     }
@@ -872,10 +946,10 @@ public class BaUnitBean extends BaUnitSummaryBean {
             @Override
             public int compare(RrrBean rrr1, RrrBean rrr2) {
                 // Remove any non digit characters from the string using reg expression.
-                if (rrr1 != null && rrr2 != null && rrr1.getRegistrationDate() != null
-                        && rrr2.getRegistrationDate() != null
-                        && !rrr1.getRegistrationDate().equals(rrr2.getRegistrationDate())) {
-                    return rrr1.getRegistrationDate().compareTo(rrr2.getRegistrationDate());
+                if (rrr1 != null && rrr2 != null && rrr1.getRegistrationExpirationDate() != null
+                        && rrr2.getRegistrationExpirationDate() != null
+                        && !rrr1.getRegistrationExpirationDate().equals(rrr2.getRegistrationExpirationDate())) {
+                    return rrr1.getRegistrationExpirationDate().compareTo(rrr2.getRegistrationExpirationDate());
                 } else {
                     String ref1Str = rrr1 == null ? "0" : rrr1.getNr().replaceFirst("V|/", ".");
                     String ref2Str = rrr2 == null ? "0" : rrr2.getNr().replaceFirst("V|/", ".");

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Surveyer Approval Report" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="548" leftMargin="27" rightMargin="20" topMargin="24" bottomMargin="20" resourceBundle="org.sola.clients.reports.locale.Survey">
 	<property name="ireport.zoom" value="1.3310000000000022"/>
 	<property name="ireport.x" value="8"/>
-	<property name="ireport.y" value="121"/>
+	<property name="ireport.y" value="130"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#006633"/>
@@ -286,11 +286,6 @@
 								<pen lineWidth="0.5"/>
 							</graphicElement>
 						</line>
-						<textField>
-							<reportElement x="103" y="6" width="185" height="14"/>
-							<textElement/>
-							<textFieldExpression><![CDATA[$F{serviceName} + " (" + $F{status} + ")" + "."]]></textFieldExpression>
-						</textField>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
@@ -299,7 +294,7 @@
 				<textElement>
 					<font size="10"/>
 				</textElement>
-				<text><![CDATA[Principal Survey Draughting Officer]]></text>
+				<text><![CDATA[Principal Survey Draughts Person]]></text>
 			</staticText>
 			<line>
 				<reportElement x="27" y="25" width="198" height="1"/>

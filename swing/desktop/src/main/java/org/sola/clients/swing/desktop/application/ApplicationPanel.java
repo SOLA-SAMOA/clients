@@ -360,11 +360,10 @@ public class ApplicationPanel extends ContentPanel {
             btnValidate.setEnabled(appBean.canValidate()
                     && SecurityBean.isInRole(RolesConstants.APPLICATION_VALIDATE));
         }
-
+        boolean feeRecordingAllowed = SecurityBean.isInRole(RolesConstants.APPLICATION_RECORD_FEE_PAYMENT);
         if (appBean.getStatusCode() != null) {
             boolean editAllowed = appBean.isEditingAllowed()
                     && SecurityBean.isInRole(RolesConstants.APPLICATION_EDIT_APPS);
-            boolean feeRecordingAllowed = SecurityBean.isInRole(RolesConstants.APPLICATION_RECORD_FEE_PAYMENT);
             boolean editCompleteDateAllowed = SecurityBean.isInRole(RolesConstants.APPLICATION_EDIT_COMPLETE_DATE);
             btnSave.setEnabled(editAllowed);
             btnAddProperty.setEnabled(editAllowed);
@@ -374,9 +373,11 @@ public class ApplicationPanel extends ContentPanel {
             btnAddExistingDocument.setEnabled(editAllowed);
             btnCalculateFee.setEnabled(editAllowed);
             btnPrintFee.setEnabled(editAllowed);
-            btnPrintStatusReport.setEnabled(editAllowed); 
+            btnPrintStatusReport.setEnabled(editAllowed);
             btnValidate.setEnabled(editAllowed);
-            cbxPaid.setEnabled(editAllowed && feeRecordingAllowed);
+            boolean zeroFee = appBean.getTotalFee() == null ? false
+                    : BigDecimal.ZERO.compareTo(appBean.getTotalFee()) == 0;
+            cbxPaid.setEnabled(editAllowed && (feeRecordingAllowed || zeroFee));
             formTxtReceiptNum.setEditable(editAllowed && feeRecordingAllowed);
             formTxtPaid.setEditable(editAllowed && feeRecordingAllowed);
             addDocumentPanel.setAllowEditing(editAllowed);
@@ -410,9 +411,13 @@ public class ApplicationPanel extends ContentPanel {
             if (!SecurityBean.isInRole(RolesConstants.APPLICATION_CREATE_APPS)) {
                 btnSave.setEnabled(false);
             }
+            cbxPaid.setEnabled(feeRecordingAllowed);
+            formTxtReceiptNum.setEditable(feeRecordingAllowed);
+            formTxtPaid.setEditable(feeRecordingAllowed);
         }
 
-        if (!SecurityBean.isInRole(RolesConstants.GIS_VIEW_MAP)) {
+        if (!SecurityBean.isInRole(RolesConstants.GIS_VIEW_MAP)
+                && tabbedControlMain.indexOfComponent(mapPanel) >= 0) {
             tabbedControlMain.removeTabAt(tabbedControlMain.indexOfComponent(mapPanel));
         }
         btnPrintFee.setVisible(false);

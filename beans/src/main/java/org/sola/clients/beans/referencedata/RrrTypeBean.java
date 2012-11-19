@@ -45,7 +45,10 @@ public class RrrTypeBean extends AbstractCodeBean {
     public static final String SYSTEM_RRR_TYPE_CODE_EASEMENT = "easement";
     public static final String RRR_TYPE_CODE_SERVITUDE = "servitude";
     public static final String RRR_TYPE_CODE_DOMINANT = "dominant";
+    public static final String SYSTEM_RRR_TYPE_CODE_COMMON_PROPERTY = "commonProperty";
     public static final String RRR_TYPE_CODE_UNIT_ENTITLEMENT = "unitEntitlement";
+    public static final String RRR_TYPE_CODE_ADDRESS_FOR_SERVICE = "addressForService";
+    public static final String RRR_TYPE_CODE_BODY_CORP_RULES = "bodyCorpRules";
     @CodeBeanNotEmpty(message = "Select group type.")
     private RrrGroupTypeBean rrrGroupType;
     private boolean primary;

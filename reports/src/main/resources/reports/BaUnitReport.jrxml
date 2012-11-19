@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="425"/>
+	<property name="ireport.x" value="41"/>
+	<property name="ireport.y" value="720"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -383,15 +383,15 @@
 				<textFieldExpression><![CDATA[$F{estateType}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement key="table 3" style="table 6" positionType="Float" x="51" y="207" width="195" height="14" backcolor="#FFFFFF"/>
+				<reportElement key="table 3" style="table 6" positionType="Float" x="51" y="207" width="449" height="16" backcolor="#FFFFFF"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Ownership">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{currentOwnersList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="366">
-						<jr:detailCell height="15" rowSpan="1">
+					<jr:column width="443">
+						<jr:detailCell height="16" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="366" height="14"/>
+								<reportElement x="0" y="0" width="443" height="16"/>
 								<box>
 									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -414,7 +414,7 @@
 				<textElement textAlignment="Justified">
 					<font fontName="Arial Narrow" size="11" isBold="false" isItalic="false"/>
 				</textElement>
-				<text><![CDATA[I certify that the person described in the First Schedule is the registered proprietor of land in fee simple (or  such other estate or interest as is set forth in that Schedule in the land within described subject to such exceptions, encumbrances, interests and entries as appear in the Second Schedule and to any additional entries in the Folio of the Register.]]></text>
+				<text><![CDATA[I certify that the person described in the First Schedule is the registered proprietor of land in fee simple (or such other estate or interest as is set forth in that Schedule in the land within described) subject to such exceptions, encumbrances, interests and entries as appear in the Second Schedule and to any additional entries in the Folio of the Register.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="55" y="52" width="445" height="35" forecolor="#000000"/>
@@ -482,15 +482,15 @@
 		</band>
 		<band height="108">
 			<componentElement>
-				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="83" width="195" height="14"/>
+				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="83" width="447" height="16"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Notations">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{baUnitCurrentNotationList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="370">
-						<jr:detailCell height="15" rowSpan="1">
+					<jr:column width="447">
+						<jr:detailCell height="16" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="370" height="14"/>
+								<reportElement x="0" y="0" width="447" height="16"/>
 								<box>
 									<pen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -576,15 +576,15 @@
 				<reportElement x="0" y="37" width="100" height="1"/>
 			</break>
 			<componentElement>
-				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="13" width="195" height="14"/>
+				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="13" width="447" height="16"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Notations">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{baUnitPendingNotationList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="370">
-						<jr:detailCell height="15" rowSpan="1">
+					<jr:column width="444">
+						<jr:detailCell height="16" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="370" height="14"/>
+								<reportElement x="0" y="0" width="444" height="16"/>
 								<box>
 									<pen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>

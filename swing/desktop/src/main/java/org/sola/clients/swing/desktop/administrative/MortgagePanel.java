@@ -61,6 +61,7 @@ public class MortgagePanel extends ContentPanel {
     private ApplicationServiceBean appService;
     private RrrBean.RRR_ACTION rrrAction;
     public static final String UPDATED_RRR = "updatedRRR";
+    
 
     private DocumentsManagementPanel createDocumentsPanel() {
         if (rrrBean == null) {
@@ -107,6 +108,11 @@ public class MortgagePanel extends ContentPanel {
             this.rrrBean.setStatusCode(StatusConstants.PENDING);
         } else {
             this.rrrBean = rrrBean.makeCopyByAction(rrrAction);
+            if (RrrBean.RRR_ACTION.VARY.equals(rrrAction)) {
+                // Samoa customization - clear the Nr so that the variation becomes a 
+                // new mortgage entry. 
+                this.rrrBean.setNr(null);
+            }
         }
     }
 
@@ -150,6 +156,8 @@ public class MortgagePanel extends ContentPanel {
             txtRanking.setEditable(false);
             cbxType.setEditable(false);
             browseLender.setEnabled(false);
+            txtNotationNr.setEnabled(false);
+            txtNotationNr.setEditable(false);
         } else {
             browseLender.addBrowseControlEventListener(new BrowseControlListener() {
 
@@ -257,6 +265,8 @@ public class MortgagePanel extends ContentPanel {
         txtNotationText = new javax.swing.JTextField();
         groupPanel1 = new org.sola.clients.swing.ui.GroupPanel();
         documentsManagementPanel1 = createDocumentsPanel();
+        txtNotationNr = new javax.swing.JTextField();
+        lblNotationNr = new javax.swing.JLabel();
 
         setCloseOnHide(true);
         setHeaderPanel(headerPanel);
@@ -556,6 +566,15 @@ public class MortgagePanel extends ContentPanel {
 
         documentsManagementPanel1.setName("documentsManagementPanel1"); // NOI18N
 
+        txtNotationNr.setName(bundle.getString("MortgagePanel.txtNotationNr.name")); // NOI18N
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rrrBean, org.jdesktop.beansbinding.ELProperty.create("${notation.referenceNr}"), txtNotationNr, org.jdesktop.beansbinding.BeanProperty.create("text"), "");
+        bindingGroup.addBinding(binding);
+
+        lblNotationNr.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/red_asterisk.gif"))); // NOI18N
+        lblNotationNr.setText(bundle.getString("MortgagePanel.lblNotationNr.text")); // NOI18N
+        lblNotationNr.setName(bundle.getString("MortgagePanel.lblNotationNr.name")); // NOI18N
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
@@ -563,13 +582,17 @@ public class MortgagePanel extends ContentPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(documentsManagementPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
+                    .addComponent(documentsManagementPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
-                    .addComponent(txtNotationText, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
+                    .addComponent(groupPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel10Layout.createSequentialGroup()
-                        .addComponent(jLabel16)
-                        .addGap(543, 543, 543))
-                    .addComponent(groupPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE))
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblNotationNr, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+                            .addComponent(txtNotationNr))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNotationText)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
@@ -577,9 +600,13 @@ public class MortgagePanel extends ContentPanel {
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel16)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(lblNotationNr))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNotationText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNotationText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNotationNr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(groupPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -643,12 +670,14 @@ public class MortgagePanel extends ContentPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JLabel lblNotationNr;
     private javax.swing.JLabel lblStatus;
     private org.sola.clients.beans.referencedata.MortgageTypeListBean mortgageTypeListBean;
     private org.sola.clients.beans.administrative.RrrBean rrrBean;
     private javax.swing.JFormattedTextField txtAmount;
     private javax.swing.JFormattedTextField txtExpiryDate;
     private javax.swing.JFormattedTextField txtInterestRate;
+    private javax.swing.JTextField txtNotationNr;
     public javax.swing.JTextField txtNotationText;
     private javax.swing.JFormattedTextField txtRanking;
     private javax.swing.JFormattedTextField txtRegDatetime;

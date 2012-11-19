@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Application printing form" pageWidth="595" pageHeight="842" columnWidth="548" leftMargin="27" rightMargin="20" topMargin="24" bottomMargin="20" resourceBundle="org.sola.clients.reports.locale.LodgementReport">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="270"/>
+	<property name="ireport.y" value="458"/>
 	<subDataset name="dataset2">
 		<field name="serviceName" class="java.lang.String">
 			<fieldDescription><![CDATA[requestType.displayValue]]></fieldDescription>
@@ -81,6 +81,9 @@
 	</field>
 	<field name="preferredCommunicationWay" class="java.lang.String">
 		<fieldDescription><![CDATA[contactPerson.preferredCommunication.displayValue]]></fieldDescription>
+	</field>
+	<field name="fullName" class="java.lang.String">
+		<fieldDescription><![CDATA[contactPerson.fullName]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -176,7 +179,7 @@
 		<band/>
 	</columnHeader>
 	<detail>
-		<band height="681" splitType="Immediate">
+		<band height="581" splitType="Immediate">
 			<textField isBlankWhenNull="true">
 				<reportElement x="116" y="19" width="439" height="20"/>
 				<textElement>
@@ -272,7 +275,7 @@
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{name} + " " + $F{lastName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fullName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="116" y="69" width="439" height="20"/>
@@ -343,7 +346,7 @@
 				<reportElement positionType="Float" x="11" y="363" width="529" height="1"/>
 			</line>
 			<textField>
-				<reportElement positionType="Float" mode="Transparent" x="11" y="494" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF">
+				<reportElement positionType="Float" mode="Transparent" x="11" y="480" width="76" height="20" forecolor="#000000" backcolor="#FFFFFF">
 					<printWhenExpression><![CDATA[$P{WHICH_CALLER}.equals( "R" )]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
@@ -352,27 +355,22 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$R{receipt}]]></textFieldExpression>
 			</textField>
-			<rectangle>
-				<reportElement positionType="Float" x="111" y="468" width="429" height="56">
-					<printWhenExpression><![CDATA[$P{WHICH_CALLER}.equals( "R" )]]></printWhenExpression>
-				</reportElement>
-			</rectangle>
 			<textField>
-				<reportElement positionType="FixRelativeToBottom" x="2" y="541" width="85" height="20"/>
+				<reportElement positionType="FixRelativeToBottom" x="11" y="516" width="85" height="20"/>
 				<textElement markup="none">
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{operator}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement positionType="FixRelativeToBottom" x="100" y="541" width="197" height="20"/>
+				<reportElement positionType="FixRelativeToBottom" x="116" y="516" width="197" height="20"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="false" isItalic="true" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{USER_NAME}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="FixRelativeToBottom" x="1" y="579" width="86" height="20">
+				<reportElement positionType="FixRelativeToBottom" x="11" y="548" width="86" height="20">
 					<printWhenExpression><![CDATA[$P{WHICH_CALLER}.equals( "R" )]]></printWhenExpression>
 				</reportElement>
 				<textElement markup="none">
@@ -380,14 +378,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$R{signature}]]></textFieldExpression>
 			</textField>
-			<componentElement>
-				<reportElement positionType="FixRelativeToBottom" x="155" y="633" width="193" height="33">
-					<printWhenExpression><![CDATA[$F{nr} != null]]></printWhenExpression>
-				</reportElement>
-				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39 (Extended)" drawText="false" checksumRequired="false">
-					<jr:codeExpression><![CDATA[$F{nr}]]></jr:codeExpression>
-				</jr:barbecue>
-			</componentElement>
 			<elementGroup>
 				<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
 					<reportElement positionType="Float" x="116" y="393" width="90" height="20"/>
@@ -466,7 +456,7 @@
 				<textFieldExpression><![CDATA[$R{propertylist}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="63" y="599" width="285" height="1">
+				<reportElement positionType="FixRelativeToBottom" x="116" y="499" width="285" height="1">
 					<printWhenExpression><![CDATA[$P{WHICH_CALLER}.equals( "R" )]]></printWhenExpression>
 				</reportElement>
 			</line>
@@ -477,6 +467,11 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{preferredCommunicationWay}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="116" y="567" width="285" height="1">
+					<printWhenExpression><![CDATA[$P{WHICH_CALLER}.equals( "R" )]]></printWhenExpression>
+				</reportElement>
+			</line>
 		</band>
 	</detail>
 	<pageFooter>
@@ -491,6 +486,14 @@
 				<textElement/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
+			<componentElement>
+				<reportElement positionType="FixRelativeToBottom" x="478" y="4" width="62" height="20">
+					<printWhenExpression><![CDATA[$F{nr} != null]]></printWhenExpression>
+				</reportElement>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39 (Extended)" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{nr}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
 		</band>
 	</pageFooter>
 	<summary>

@@ -140,7 +140,7 @@ public class OwnershipPanel extends ContentPanel {
             btnViewShare.setEnabled(false);
         } else {
             btnRemoveShare.setEnabled(isChangesAllowed);
-            btnChangeShare.setEnabled(isChangesAllowed);
+            btnChangeShare.setEnabled(isChangesAllowed && rrrAction != RrrBean.RRR_ACTION.VARY);
             btnViewShare.setEnabled(true);
         }
 
@@ -177,6 +177,8 @@ public class OwnershipPanel extends ContentPanel {
             txtRegDatetime.setEditable(false);
             txtNotationText.setEditable(false);
             cbxIsPrimary.setEnabled(false);
+            txtNotationNr.setEnabled(false);
+             txtNotationNr.setEditable(false);
         }
     }
 
@@ -245,6 +247,8 @@ public class OwnershipPanel extends ContentPanel {
         jPanel1 = new javax.swing.JPanel();
         groupPanel2 = new org.sola.clients.swing.ui.GroupPanel();
         documentsPanel = createDocumentsPanel();
+        txtNotationNr = new javax.swing.JTextField();
+        lblNotationNr = new javax.swing.JLabel();
 
         popUpShares.setName("popUpShares"); // NOI18N
 
@@ -511,6 +515,15 @@ public class OwnershipPanel extends ContentPanel {
 
         jPanel4.add(jPanel1);
 
+        txtNotationNr.setName(bundle.getString("OwnershipPanel.txtNotationNr.name")); // NOI18N
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, rrrBean, org.jdesktop.beansbinding.ELProperty.create("${notation.referenceNr}"), txtNotationNr, org.jdesktop.beansbinding.BeanProperty.create("text"));
+        bindingGroup.addBinding(binding);
+
+        lblNotationNr.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/red_asterisk.gif"))); // NOI18N
+        lblNotationNr.setText(bundle.getString("OwnershipPanel.lblNotationNr.text")); // NOI18N
+        lblNotationNr.setName(bundle.getString("OwnershipPanel.lblNotationNr.name")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -521,9 +534,15 @@ public class OwnershipPanel extends ContentPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtNotationText)
-                    .addComponent(jLabel15)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNotationNr, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblNotationNr, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNotationText)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -535,9 +554,13 @@ public class OwnershipPanel extends ContentPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNotationNr)
+                    .addComponent(jLabel15))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNotationText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNotationText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNotationNr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
                 .addContainerGap())
@@ -633,6 +656,7 @@ public class OwnershipPanel extends ContentPanel {
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JLabel lblNotationNr;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JMenuItem menuAddShare;
     private javax.swing.JMenuItem menuChangeShare;
@@ -641,6 +665,7 @@ public class OwnershipPanel extends ContentPanel {
     private javax.swing.JPopupMenu popUpShares;
     private org.sola.clients.beans.administrative.RrrBean rrrBean;
     private org.sola.clients.swing.common.controls.JTableWithDefaultStyles tableShares;
+    private javax.swing.JTextField txtNotationNr;
     private javax.swing.JTextField txtNotationText;
     private javax.swing.JFormattedTextField txtRegDatetime;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;

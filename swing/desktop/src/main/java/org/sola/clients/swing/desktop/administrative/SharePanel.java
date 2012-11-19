@@ -119,9 +119,10 @@ public class SharePanel extends ContentPanel {
      */
     private void customizeOwnersButtons(PartySummaryBean party) {
         boolean isReadOnly = rrrAction == RrrBean.RRR_ACTION.VIEW;
+        boolean isVary = rrrAction == RrrBean.RRR_ACTION.VARY;
 
         btnAddOwner.setEnabled(!isReadOnly);
-        btnEditOwner.setEnabled(party != null && !isReadOnly);
+        btnEditOwner.setEnabled(party != null && !isReadOnly && !isVary);
         btnRemoveOwner.setEnabled(party != null && !isReadOnly);
         btnViewOwner.setEnabled(party != null);
 

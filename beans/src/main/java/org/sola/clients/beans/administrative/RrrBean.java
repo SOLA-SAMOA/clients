@@ -28,9 +28,9 @@ package org.sola.clients.beans.administrative;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.ListIterator;
 import javax.validation.Valid;
 import javax.validation.constraints.Future;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import org.jdesktop.observablecollections.ObservableList;
@@ -40,7 +40,6 @@ import org.sola.clients.beans.administrative.validation.OwnershipValidationGroup
 import org.sola.clients.beans.administrative.validation.SimpleOwnershipValidationGroup;
 import org.sola.clients.beans.administrative.validation.TotalShareSize;
 import org.sola.clients.beans.cache.CacheManager;
-import org.sola.clients.beans.cadastre.SpatialValueAreaBean;
 import org.sola.clients.beans.controls.SolaList;
 import org.sola.clients.beans.party.PartySummaryBean;
 import org.sola.clients.beans.referencedata.MortgageTypeBean;
@@ -130,8 +129,9 @@ public class RrrBean extends AbstractTransactionedBean {
     private transient RrrShareBean selectedShare;
     private transient boolean selected;
     private transient PartySummaryBean selectedRightholder;
-    private String concatenatedName;
+    private transient String concatenatedName;
     private transient Integer unitEntitlement;
+    private transient Date registrationExpirationDate;
 
     /**
      * Samoa customization - return the notation text as the description for the RRR.
@@ -150,7 +150,7 @@ public class RrrBean extends AbstractTransactionedBean {
 
     public RrrBean() {
         super();
-        registrationDate = Calendar.getInstance().getTime();
+        //registrationDate = Calendar.getInstance().getTime();
         sourceList = new SolaList();
         rrrShareList = new SolaList();
         rightHolderList = new SolaList();
@@ -315,6 +315,14 @@ public class RrrBean extends AbstractTransactionedBean {
         }
     }
 
+    public Date getRegistrationExpirationDate() {
+        return getRegistrationDate() != null ? getRegistrationDate() : getExpirationDate();
+    }
+
+    public void setRegistrationExpirationDate(Date registrationExpirationDate) {
+        this.registrationExpirationDate = registrationExpirationDate;
+    }
+
     public Double getShare() {
         return share;
     }
@@ -380,6 +388,12 @@ public class RrrBean extends AbstractTransactionedBean {
 
     public void removeSelectedRrrShare() {
         if (selectedShare != null && rrrShareList != null) {
+            if (getRightHolderList().size() > 0) {
+                ListIterator<PartySummaryBean> it = getRightHolderList().listIterator(); 
+                while(it.hasNext()) {
+                    getRightHolderList().safeRemove(it.next(), EntityAction.DISASSOCIATE);
+                }
+            }
             rrrShareList.safeRemove(selectedShare, EntityAction.DELETE);
         }
     }
@@ -479,6 +493,8 @@ public class RrrBean extends AbstractTransactionedBean {
         generateId();
         resetVersion();
         setTransactionId(null);
+        setRegistrationDate(null);
+        //setNr(null);
         setStatusCode(StatusConstants.PENDING);
         if (removeBaUnitId) {
             setBaUnitId(null);
@@ -494,7 +510,10 @@ public class RrrBean extends AbstractTransactionedBean {
             }
             getNotation().generateId();
             getNotation().resetVersion();
+            // Carry the reference number from the existing  notation to the new notation. 
             getNotation().setReferenceNr(null);
+            getNotation().setChangeTime(null);
+
             if (removeBaUnitId) {
                 getNotation().setBaUnitId(null);
             }
