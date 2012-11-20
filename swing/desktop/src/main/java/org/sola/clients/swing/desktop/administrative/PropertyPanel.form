@@ -2268,13 +2268,6 @@
                                 <Connection code="new DateTimeRenderer()" type="code"/>
                               </Renderer>
                             </Column>
-                            <Column maxWidth="100" minWidth="-1" prefWidth="100" resizable="true">
-                              <Title editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                                <ResourceString bundle="org/sola/clients/swing/desktop/administrative/Bundle.properties" key="PropertyPanel.tableNotations.columnModel.title2" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-                              </Title>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
                           </TableColumnModel>
                         </Property>
                         <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
@@ -2286,22 +2279,15 @@
                         </Property>
                       </Properties>
                       <BindingProperties>
-                        <BindingProperty name="elements" source="baUnitBean1" sourcePath="${allBaUnitNotationList}" target="tableNotations" targetPath="elements" updateStrategy="0" immediately="true">
+                        <BindingProperty name="elements" source="baUnitBean1" sourcePath="${baUnitNotationList}" target="tableNotations" targetPath="elements" updateStrategy="0" immediately="true">
                           <Subbinding sourcePath="${notationText}">
                             <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-                            <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                           </Subbinding>
                           <Subbinding sourcePath="${referenceNr}">
                             <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-                            <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                           </Subbinding>
                           <Subbinding sourcePath="${changeTime}">
                             <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="java.util.Date.class"/>
-                            <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
-                          </Subbinding>
-                          <Subbinding sourcePath="${status.displayValue}">
-                            <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="String.class"/>
-                            <BindingParameter name="javax.swing.binding.ParameterKeys.EDITABLE" value="false"/>
                           </Subbinding>
                         </BindingProperty>
                         <BindingProperty name="selectedElement" source="baUnitBean1" sourcePath="${selectedBaUnitNotation}" target="tableNotations" targetPath="selectedElement" updateStrategy="0" immediately="false">

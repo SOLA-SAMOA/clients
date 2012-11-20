@@ -986,16 +986,16 @@ public class BaUnitBean extends BaUnitSummaryBean {
      * Samoa Customization - Retrieve the list of unregistered Dealings for the property
      */
     public List<UnregisteredDealingBean> getUnregisteredDealings() {
-        
+
         if (unregisteredDealingList == null) {
             unregisteredDealingList = TypeConverters.TransferObjectListToBeanList(
                     WSManager.getInstance().getSearchService().getUnregisteredDealings(getId()),
                     UnregisteredDealingBean.class, null);
         }
-        if (unregisteredDealingList == null){
+        if (unregisteredDealingList == null) {
             unregisteredDealingList = new ArrayList<UnregisteredDealingBean>();
         }
-        if (unregisteredDealingList.isEmpty()){
+        if (unregisteredDealingList.isEmpty()) {
             UnregisteredDealingBean bean = new UnregisteredDealingBean();
             bean.setPendingServices(UnregisteredDealingBean.NIL_DEALING);
             unregisteredDealingList.add(bean);

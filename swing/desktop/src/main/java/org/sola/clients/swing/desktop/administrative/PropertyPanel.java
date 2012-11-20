@@ -2583,24 +2583,17 @@ public class PropertyPanel extends ContentPanel {
         tableNotations.setComponentPopupMenu(popupNotations);
         tableNotations.setName("tableNotations"); // NOI18N
 
-        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${allBaUnitNotationList}");
+        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${baUnitNotationList}");
         jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, baUnitBean1, eLProperty, tableNotations);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${notationText}"));
         columnBinding.setColumnName("Notation Text");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${referenceNr}"));
         columnBinding.setColumnName("Reference Nr");
         columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${changeTime}"));
         columnBinding.setColumnName("Change Time");
         columnBinding.setColumnClass(java.util.Date.class);
-        columnBinding.setEditable(false);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${status.displayValue}"));
-        columnBinding.setColumnName("Status.display Value");
-        columnBinding.setColumnClass(String.class);
-        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, baUnitBean1, org.jdesktop.beansbinding.ELProperty.create("${selectedBaUnitNotation}"), tableNotations, org.jdesktop.beansbinding.BeanProperty.create("selectedElement"));
         bindingGroup.addBinding(binding);
@@ -2614,9 +2607,6 @@ public class PropertyPanel extends ContentPanel {
         tableNotations.getColumnModel().getColumn(2).setMaxWidth(120);
         tableNotations.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("PropertyPanel.tableNotations.columnModel.title3")); // NOI18N
         tableNotations.getColumnModel().getColumn(2).setCellRenderer(new DateTimeRenderer());
-        tableNotations.getColumnModel().getColumn(3).setPreferredWidth(100);
-        tableNotations.getColumnModel().getColumn(3).setMaxWidth(100);
-        tableNotations.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("PropertyPanel.tableNotations.columnModel.title2")); // NOI18N
 
         jToolBar3.setFloatable(false);
         jToolBar3.setRollover(true);
