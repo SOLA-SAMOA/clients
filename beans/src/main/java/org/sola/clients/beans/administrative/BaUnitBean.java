@@ -789,7 +789,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
         }
         // Get all current rrrs and remove the primary Rrrs as these are displayed in the First Schedule
         for (RrrBean bean : rrrList.getFilteredList()) {
-            if (!bean.isPrimary() && bean.getNotation() != null) {
+            if (!bean.isPrimary() && bean.getNotation() != null
+                    && StatusConstants.CURRENT.equals(bean.getStatusCode())) {
                 BaUnitNotationBean notation = bean.getNotation();
                 notation.setNotationText(formatNotationText(notation.getNotationText(),
                         notation.getReferenceNr()));

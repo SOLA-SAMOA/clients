@@ -1049,7 +1049,8 @@ public class PropertyPanel extends ContentPanel {
                 || rrrCode.equalsIgnoreCase(RrrBean.CODE_ADMIN_PUBLIC_SERVITUDE)
                 || rrrCode.equalsIgnoreCase(RrrBean.CODE_MONUMENT)
                 || rrrCode.equalsIgnoreCase(RrrBean.CODE_LIFE_ESTATE)
-                || rrrCode.equalsIgnoreCase(RrrBean.CODE_CAVEAT)) {
+                || rrrCode.equalsIgnoreCase(RrrBean.CODE_CAVEAT)
+                || rrrCode.equalsIgnoreCase(RrrBean.CODE_TRANSMISSION)) {
             panel = new SimpleRightholderPanel(rrrBean, applicationBean, applicationService, action);
             cardName = MainContentPanel.CARD_SIMPLE_OWNERSHIP;
         } else if (rrrCode.equalsIgnoreCase(RrrBean.CODE_OWNERSHIP)
@@ -2582,31 +2583,19 @@ public class PropertyPanel extends ContentPanel {
 
         tableNotations.setComponentPopupMenu(popupNotations);
         tableNotations.setName("tableNotations"); // NOI18N
+        tableNotations.getTableHeader().setReorderingAllowed(false);
 
-        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${baUnitNotationList}");
+        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${unregisteredDealings}");
         jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, baUnitBean1, eLProperty, tableNotations);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${notationText}"));
-        columnBinding.setColumnName("Notation Text");
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${notation}"));
+        columnBinding.setColumnName("Notation");
         columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${referenceNr}"));
-        columnBinding.setColumnName("Reference Nr");
-        columnBinding.setColumnClass(String.class);
-        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${changeTime}"));
-        columnBinding.setColumnName("Change Time");
-        columnBinding.setColumnClass(java.util.Date.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
-        jTableBinding.bind();binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, baUnitBean1, org.jdesktop.beansbinding.ELProperty.create("${selectedBaUnitNotation}"), tableNotations, org.jdesktop.beansbinding.BeanProperty.create("selectedElement"));
-        bindingGroup.addBinding(binding);
-
+        jTableBinding.bind();
         jScrollPane4.setViewportView(tableNotations);
+        tableNotations.getColumnModel().getColumn(0).setResizable(false);
         tableNotations.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("PropertyPanel.tableNotations.columnModel.title1")); // NOI18N
-        tableNotations.getColumnModel().getColumn(1).setPreferredWidth(100);
-        tableNotations.getColumnModel().getColumn(1).setMaxWidth(100);
-        tableNotations.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("PropertyPanel.tableNotations.columnModel.title0")); // NOI18N
-        tableNotations.getColumnModel().getColumn(2).setPreferredWidth(120);
-        tableNotations.getColumnModel().getColumn(2).setMaxWidth(120);
-        tableNotations.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("PropertyPanel.tableNotations.columnModel.title3")); // NOI18N
-        tableNotations.getColumnModel().getColumn(2).setCellRenderer(new DateTimeRenderer());
 
         jToolBar3.setFloatable(false);
         jToolBar3.setRollover(true);
@@ -2624,6 +2613,7 @@ public class PropertyPanel extends ContentPanel {
             }
         });
         jToolBar3.add(btnAddNotation);
+        btnAddNotation.setVisible(false);
 
         btnRemoveNotation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/remove.png"))); // NOI18N
         btnRemoveNotation.setText(bundle.getString("PropertyPanel.btnRemoveNotation.text")); // NOI18N
@@ -2634,6 +2624,7 @@ public class PropertyPanel extends ContentPanel {
             }
         });
         jToolBar3.add(btnRemoveNotation);
+        btnRemoveNotation.setVisible(false);
 
         txtNotationText.setMinimumSize(new java.awt.Dimension(150, 20));
         txtNotationText.setName("txtNotationText"); // NOI18N
@@ -2687,6 +2678,12 @@ public class PropertyPanel extends ContentPanel {
                 .add(jScrollPane4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        jToolBar3.setVisible(false);
+        txtNotationText.setVisible(false);
+        jLabel15.setVisible(false);
+        txtNotationRef.setVisible(false);
+        jLabel9.setVisible(false);
 
         tabsMain.addTab(bundle.getString("PropertyPanel.jPanel4.TabConstraints.tabTitle"), jPanel4); // NOI18N
 

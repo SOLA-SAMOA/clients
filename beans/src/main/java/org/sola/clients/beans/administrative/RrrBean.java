@@ -84,6 +84,7 @@ public class RrrBean extends AbstractTransactionedBean {
     public static final String CODE_MONUMENT = "monument";
     public static final String CODE_LIFE_ESTATE = "lifeEstate";
     public static final String CODE_CAVEAT = "caveat";
+    public static final String CODE_TRANSMISSION = "transmission";
     public static final String BA_UNIT_ID_PROPERTY = "baUnitId";
     public static final String TYPE_CODE_PROPERTY = "typeCode";
     public static final String RRR_TYPE_PROPERTY = "rrrType";
@@ -389,8 +390,8 @@ public class RrrBean extends AbstractTransactionedBean {
     public void removeSelectedRrrShare() {
         if (selectedShare != null && rrrShareList != null) {
             if (getRightHolderList().size() > 0) {
-                ListIterator<PartySummaryBean> it = getRightHolderList().listIterator(); 
-                while(it.hasNext()) {
+                ListIterator<PartySummaryBean> it = getRightHolderList().listIterator();
+                while (it.hasNext()) {
                     getRightHolderList().safeRemove(it.next(), EntityAction.DISASSOCIATE);
                 }
             }
@@ -461,17 +462,22 @@ public class RrrBean extends AbstractTransactionedBean {
         }
     }
 
-    public RrrBean makeCopyByAction(RRR_ACTION rrrAction) {
+    public RrrBean makeCopyByAction(RRR_ACTION rrrAction, String appNr) {
         RrrBean copy = this;
 
         if (rrrAction == RrrBean.RRR_ACTION.NEW) {
             copy.setStatusCode(StatusConstants.PENDING);
+            copy.getNotation().setReferenceNr(appNr);
         }
 
         if (rrrAction == RRR_ACTION.VARY || rrrAction == RRR_ACTION.CANCEL) {
             // Make a copy of current bean with new ID
             copy = this.copy();
             copy.resetIdAndVerion(true, false);
+            // Samoa Customization - set the application number as the notation reference number
+            // and remove any documents from the new rrr
+            copy.getNotation().setReferenceNr(appNr);
+            copy.getSourceList().clear();
         }
 
         if (rrrAction == RRR_ACTION.EDIT) {

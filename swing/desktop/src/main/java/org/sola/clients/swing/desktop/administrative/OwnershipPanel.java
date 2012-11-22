@@ -111,7 +111,8 @@ public class OwnershipPanel extends ContentPanel {
             this.rrrBean = new RrrBean();
             this.rrrBean.setStatusCode(StatusConstants.PENDING);
         } else {
-            this.rrrBean = rrrBean.makeCopyByAction(rrrAction);
+            String appNr = applicationBean == null ? null : applicationBean.getNr();
+            this.rrrBean = rrrBean.makeCopyByAction(rrrAction, appNr);
         }
         this.rrrBean.addPropertyChangeListener(new PropertyChangeListener() {
 
@@ -176,10 +177,10 @@ public class OwnershipPanel extends ContentPanel {
             txtNotationText.setEnabled(false);
             txtRegDatetime.setEditable(false);
             txtNotationText.setEditable(false);
-            cbxIsPrimary.setEnabled(false);
             txtNotationNr.setEnabled(false);
              txtNotationNr.setEditable(false);
         }
+        cbxIsPrimary.setEnabled(false);
     }
 
     private void openShareForm(RrrShareBean shareBean, RrrBean.RRR_ACTION rrrAction) {

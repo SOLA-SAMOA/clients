@@ -42,7 +42,7 @@ import org.sola.clients.swing.ui.source.DocumentsManagementPanel;
  * form.
  */
 public class SimpleRightPanel extends ContentPanel {
-    
+
     private ApplicationBean appBean;
     private ApplicationServiceBean appService;
     private RrrBean.RRR_ACTION rrrAction;
@@ -58,12 +58,12 @@ public class SimpleRightPanel extends ContentPanel {
         if (appBean == null) {
             appBean = new ApplicationBean();
         }
-        
+
         boolean allowEdit = true;
         if (rrrAction == RrrBean.RRR_ACTION.VIEW) {
             allowEdit = false;
         }
-        
+
         DocumentsManagementPanel panel = new DocumentsManagementPanel(
                 rrrBean.getSourceList(), appBean, allowEdit);
         return panel;
@@ -91,14 +91,14 @@ public class SimpleRightPanel extends ContentPanel {
      */
     public SimpleRightPanel(RrrBean rrrBean, ApplicationBean applicationBean,
             ApplicationServiceBean applicationService, RrrBean.RRR_ACTION rrrAction) {
-        
+
         this.appBean = applicationBean;
         this.appService = applicationService;
         this.rrrAction = rrrAction;
         prepareRrrBean(rrrBean, rrrAction);
-        
+
         initComponents();
-        
+
         headerPanel.setTitleText(rrrBean.getRrrType().getDisplayValue());
         customizeForm(rrrAction);
         saveRrrState();
@@ -112,7 +112,8 @@ public class SimpleRightPanel extends ContentPanel {
             this.rrrBean = new RrrBean();
             this.rrrBean.setStatusCode(StatusConstants.PENDING);
         } else {
-            this.rrrBean = rrrBean.makeCopyByAction(rrrAction);
+            String appNr = appBean == null ? null : appBean.getNr();
+            this.rrrBean = rrrBean.makeCopyByAction(rrrAction, appNr);
         }
     }
 
@@ -121,33 +122,33 @@ public class SimpleRightPanel extends ContentPanel {
      * and user rights.
      */
     private void customizeForm(RrrBean.RRR_ACTION rrrAction) {
-        
+
         jLabel13.setIcon(null); // Registation date icon
         txtRegDatetime.setFormatterFactory(FormattersFactory.getInstance().getDateFormatterFactory());
-        
+
         if (rrrAction == RrrBean.RRR_ACTION.NEW) {
             btnSave.setText("Create & Close");
         }
         if (rrrAction == RrrBean.RRR_ACTION.CANCEL) {
             btnSave.setText("Extinguish");
         }
-        
+
         if (rrrAction != RrrBean.RRR_ACTION.EDIT && rrrAction != RrrBean.RRR_ACTION.VIEW
                 && appService != null) {
             // Set default noation text from the selected application service
             txtNotationText.setText(appService.getRequestType().getNotationTemplate());
         }
-        
+
         if (rrrAction == RrrBean.RRR_ACTION.VIEW) {
             btnSave.setVisible(false);
             txtNotationText.setEditable(false);
             cbxIsPrimary.setEnabled(false);
-            txtRegDatetime.setEditable(false);
-            cbxIsPrimary.setEnabled(false);
+            txtRegDatetime.setEditable(false);   
             txtNotationNr.setEnabled(false);
             txtNotationNr.setEditable(false);
         }
-        
+        cbxIsPrimary.setEnabled(false);
+
         if (RrrTypeBean.RRR_TYPE_CODE_UNIT_ENTITLEMENT.equals(rrrBean.getTypeCode())) {
             txtUnitEntitlement.setEnabled(true);
             txtUnitEntitlement.setEditable(true);
@@ -156,7 +157,7 @@ public class SimpleRightPanel extends ContentPanel {
             lblUnitEntitlement.setVisible(false);
         }
     }
-    
+
     private boolean saveRrr() {
         if (rrrBean.validate(true).size() <= 0) {
             firePropertyChange(UPDATED_RRR, null, rrrBean);
@@ -165,11 +166,11 @@ public class SimpleRightPanel extends ContentPanel {
         }
         return false;
     }
-    
+
     private void saveRrrState() {
         MainForm.saveBeanState(rrrBean);
     }
-    
+
     @Override
     protected boolean panelClosing() {
         if (btnSave.isEnabled() && MainForm.checkSaveBeforeClose(rrrBean)) {
@@ -177,7 +178,7 @@ public class SimpleRightPanel extends ContentPanel {
         }
         return true;
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

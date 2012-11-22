@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sld:UserStyle xmlns="http://www.opengis.net/sld" xmlns:sld="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml">
-    <sld:Name>Samoa Roads</sld:Name>
+    <sld:Name>Samoa Flur Ploygons</sld:Name>
     <sld:Title/>
     <sld:FeatureTypeStyle>
         <sld:Name>name</sld:Name>
         <sld:FeatureTypeName>Feature</sld:FeatureTypeName>
         <sld:Rule>
-            <sld:Name>&lt; 30,000</sld:Name>
-            <sld:MaxScaleDenominator>30000.0</sld:MaxScaleDenominator>
+            <sld:Name>&lt; 500,000</sld:Name>
+            <sld:MaxScaleDenominator>500000.0</sld:MaxScaleDenominator>     
             <sld:PolygonSymbolizer>
-                <Stroke>
-                    <CssParameter name="stroke">#F88017</CssParameter>
-                    <CssParameter name="stroke-width">1</CssParameter>
-                </Stroke>
+                <sld:Stroke>
+                    <sld:CssParameter name="stroke">#000000</sld:CssParameter>
+                    <sld:CssParameter name="stroke-width">2.0</sld:CssParameter>
+                </sld:Stroke>
             </sld:PolygonSymbolizer>
-            <!--sld:TextSymbolizer>
+            <sld:TextSymbolizer>
                 <sld:Label>
                     <ogc:PropertyName>label</ogc:PropertyName>
                 </sld:Label>
                 <sld:Font>
                     <sld:CssParameter name="font-family">Arial</sld:CssParameter>
-                    <sld:CssParameter name="font-size">12.0</sld:CssParameter>
+                    <sld:CssParameter name="font-size">14.0</sld:CssParameter>
                     <sld:CssParameter name="font-style">normal</sld:CssParameter>
-                    <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+                    <sld:CssParameter name="font-weight">bold</sld:CssParameter>
                 </sld:Font>
                 <sld:LabelPlacement>
                     <sld:PointPlacement>
@@ -37,31 +37,28 @@
                     </sld:PointPlacement>
                 </sld:LabelPlacement>
                 <sld:Halo>
-                    <sld:Radius>2.0</sld:Radius>
+                    <sld:Radius>1.0</sld:Radius>
                     <sld:Fill>
                         <sld:CssParameter name="fill">#FFFFFF</sld:CssParameter>
-                        <sld:CssParameter name="fill-opacity">1</sld:CssParameter>
+                        <sld:CssParameter name="fill-opacity">0.5</sld:CssParameter>
                     </sld:Fill>
                 </sld:Halo>
                 <sld:Fill>
                     <sld:CssParameter name="fill">#000000</sld:CssParameter>
                 </sld:Fill>
-                <!- Controls how much of the label needs to overlap the ploygon ->
-                <sld:VendorOption name="goodnessOfFit">0.3</sld:VendorOption>
-                <!- Controls basic splining of the label for a better fit on the polygon->
-                <sld:VendorOption name="polygonAlign">mbr</sld:VendorOption>
-            </sld:TextSymbolizer-->
+            </sld:TextSymbolizer>
         </sld:Rule>
         <sld:Rule>
-            <sld:Name>30,000 - 100,000</sld:Name>
-            <sld:MinScaleDenominator>30000.0</sld:MinScaleDenominator>
-            <sld:MaxScaleDenominator>100000.0</sld:MaxScaleDenominator>
-            <PolygonSymbolizer>
-                <Stroke>
-                    <CssParameter name="stroke">#F88017</CssParameter>
-                    <CssParameter name="stroke-width">1</CssParameter>
-                </Stroke>
-            </PolygonSymbolizer>      
+            <sld:Name>&gt; 500,000</sld:Name>
+            <sld:MinScaleDenominator>500000.0</sld:MinScaleDenominator>
+            <sld:MaxScaleDenominator>1.0E20</sld:MaxScaleDenominator>
+            <sld:PolygonSymbolizer>
+                <sld:Stroke>
+                    <sld:CssParameter name="stroke">#000000</sld:CssParameter>
+                    <sld:CssParameter name="stroke-width">2.0</sld:CssParameter>
+                </sld:Stroke>
+            </sld:PolygonSymbolizer>
         </sld:Rule>
     </sld:FeatureTypeStyle>
 </sld:UserStyle>
+

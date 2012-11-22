@@ -125,11 +125,11 @@ public class SimpleRightholderPanel extends ContentPanel {
             btnSave.setEnabled(false);
             txtNotationText.setEnabled(false);
             txtRegDatetime.setEditable(false);
-            txtNotationText.setEditable(false);
-            cbxIsPrimary.setEnabled(false);
+            txtNotationText.setEditable(false);  
             txtNotationNr.setEditable(false);
             txtNotationNr.setEnabled(false);
         }
+         cbxIsPrimary.setEnabled(false);
     }
     
     private void prepareRrrBean(RrrBean rrrBean, RrrBean.RRR_ACTION rrrAction) {
@@ -137,7 +137,8 @@ public class SimpleRightholderPanel extends ContentPanel {
             this.rrrBean = new RrrBean();
             this.rrrBean.setStatusCode(StatusConstants.PENDING);
         } else {
-            this.rrrBean = rrrBean.makeCopyByAction(rrrAction);
+            String appNr = applicationBean == null ? null : applicationBean.getNr();
+            this.rrrBean = rrrBean.makeCopyByAction(rrrAction, appNr);
         }
         this.rrrBean.addPropertyChangeListener(new PropertyChangeListener() {
 

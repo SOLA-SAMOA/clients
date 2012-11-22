@@ -32,6 +32,7 @@ import org.sola.clients.beans.AbstractBindingBean;
 import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.common.SOLAException;
 import org.sola.common.messaging.ClientMessage;
+import org.sola.common.messaging.MessageUtility;
 import org.sola.services.boundary.wsclients.WSManager;
 import org.sola.services.boundary.wsclients.exception.WebServiceClientException;
 
@@ -127,6 +128,9 @@ public class SecurityBean extends AbstractBindingBean {
                 UserBean user = TypeConverters.TransferObjectToBean(
                         WSManager.getInstance().getAdminService().getCurrentUser(),
                         UserBean.class, null);
+                if (!user.isActive()) {
+                     throw new SOLAException(ClientMessage.ADMIN_USER_ACCOUNT_DISABLED);
+                }
                 currentUser = user;
             }
         } else {

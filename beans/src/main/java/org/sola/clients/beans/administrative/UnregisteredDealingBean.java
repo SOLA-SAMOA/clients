@@ -34,7 +34,7 @@ import org.sola.clients.beans.AbstractBindingBean;
 public class UnregisteredDealingBean extends AbstractBindingBean {
 
     public static final String NIL_DEALING = "Nil";
-    public static final String UNREGISTERED_DEALING_TEXT = "Unregistered Dealing";
+    public static final String UNREGISTERED_DEALING_TEXT = "Unregistered Service";
     private String baUnitId;
     private String appNr;
     private String appId;

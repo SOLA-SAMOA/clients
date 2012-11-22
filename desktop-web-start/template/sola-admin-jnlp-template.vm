@@ -4,7 +4,7 @@
     codebase="$$codebase"
     context="$$context"
     href="$$name"
-    version="Training Release v121111">
+    version="SOLA Samoa LIVE v2.0">
   <information>
     <title>SOLA Samoa Admin</title>
 #if($project.Organization.Name)
@@ -19,7 +19,7 @@
 <icon href="../Images/Floss.jpg" width="40" height="26"/>
     <icon kind="shortcut" href="../Images/Floss.jpg" width="40" height="26"/>
     <!--icon kind="splash" href="../Images/splash.png" width="413" height="314"/-->
-    <shortcut><desktop/><menu submenu="SOLA Samoa Training"/></shortcut>
+    <shortcut><desktop/><menu submenu="SOLA Samoa LIVE"/></shortcut>
 #if($offlineAllowed)
     <offline-allowed/>
 #end

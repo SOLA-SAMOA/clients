@@ -525,17 +525,17 @@ public class ApplicationPanel extends ContentPanel {
      */
     private void customizeDocumentsButtons() {
         SourceBean selectedDocument = appBean.getSelectedSource();
-        boolean enablePropertyButtons = appBean.isEditingAllowed();
 
         btnDeleteDoc.setEnabled(false);
         btnOpenAttachment.setEnabled(false);
 
-        if (enablePropertyButtons && selectedDocument != null) {
-            if (selectedDocument != null) {
+        if (selectedDocument != null) {
+            if (appBean.isEditingAllowed()) {
                 btnDeleteDoc.setEnabled(true);
-                if (selectedDocument.getArchiveDocumentId() != null && selectedDocument.getArchiveDocumentId().length() > 0) {
-                    btnOpenAttachment.setEnabled(true);
-                }
+            }
+            if (selectedDocument.getArchiveDocumentId() != null 
+                    && !selectedDocument.getArchiveDocumentId().trim().isEmpty()) {
+                btnOpenAttachment.setEnabled(true);
             }
         }
     }
