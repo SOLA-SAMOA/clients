@@ -49,6 +49,7 @@ public class RrrTypeBean extends AbstractCodeBean {
     public static final String RRR_TYPE_CODE_UNIT_ENTITLEMENT = "unitEntitlement";
     public static final String RRR_TYPE_CODE_ADDRESS_FOR_SERVICE = "addressForService";
     public static final String RRR_TYPE_CODE_BODY_CORP_RULES = "bodyCorpRules";
+    public static final String RRR_TYPE_CODE_LIFE_ESTATE = "lifeEstate";
     @CodeBeanNotEmpty(message = "Select group type.")
     private RrrGroupTypeBean rrrGroupType;
     private boolean primary;

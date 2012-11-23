@@ -1,30 +1,26 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
- * (FAO). All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
+ * reserved.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this
- * list of conditions and the following disclaimer. 2. Redistributions in binary
- * form must reproduce the above copyright notice,this list of conditions and
- * the following disclaimer in the documentation and/or other materials provided
- * with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this
- * software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
+ * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
+ * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.desktop.application;
@@ -36,10 +32,8 @@ import java.util.Locale;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import org.sola.clients.beans.application.ApplicationBean;
-import org.sola.clients.beans.application.ApplicationSearchParamsBean;
-import org.sola.clients.beans.application.ApplicationSearchResultBean;
-import org.sola.clients.beans.application.ApplicationSearchResultsListBean;
+import org.sola.clients.beans.application.*;
+import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.clients.beans.security.SecurityBean;
 import org.sola.clients.swing.common.LafManager;
 import org.sola.clients.swing.common.controls.CalendarForm;
@@ -53,8 +47,8 @@ import org.sola.common.messaging.ClientMessage;
 import org.sola.common.messaging.MessageUtility;
 
 /**
- * This form provides parameterized application search capabilities. <p>The
- * following list of beans is used to bind the data on the form:<br />
+ * This form provides parameterized application search capabilities. <p>The following list of beans
+ * is used to bind the data on the form:<br />
  * {@link ApplicationSearchResultsListBean},<br />{@link ApplicationSearchParamsBean}</p>
  */
 public class ApplicationSearchPanel extends ContentPanel {
@@ -71,16 +65,43 @@ public class ApplicationSearchPanel extends ContentPanel {
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals(ApplicationSearchResultsListBean.SELECTED_APPLICATION_PROPERTY)) {
                     customizeOpenButton((ApplicationSearchResultBean) evt.getNewValue());
+                    customizeAssignedAppButtons((ApplicationSearchResultBean) evt.getNewValue());
                 }
             }
         });
         customizeOpenButton(null);
+        customizeAssignedAppButtons(null);
         btnFind.setEnabled(SecurityBean.isInRole(RolesConstants.APPLICATION_VIEW_APPS));
     }
 
     private void customizeOpenButton(ApplicationSearchResultBean searchResult) {
         btnOpenApplication.setEnabled(searchResult != null);
         menuOpenApplication.setEnabled(btnOpenApplication.isEnabled());
+    }
+
+    /**
+     * Enables or disables toolbar buttons for assigned applications list, .
+     */
+    private void customizeAssignedAppButtons(ApplicationSearchResultBean app) {
+        boolean isUnassignEnabled = false;
+        boolean isAssignEnabled = false;
+
+        if (app != null && (StatusConstants.LODGED.equalsIgnoreCase(app.getStatus())
+                || StatusConstants.REQUISITIONED.equalsIgnoreCase(app.getStatus()))) {
+            if (app.getAssigneeId() != null) {
+                isUnassignEnabled = SecurityBean.isInRole(RolesConstants.APPLICATION_UNASSIGN_FROM_OTHERS);
+                if (!isUnassignEnabled && SecurityBean.getCurrentUser().getId().equals(app.getAssigneeId())) {
+                    isUnassignEnabled = SecurityBean.isInRole(RolesConstants.APPLICATION_UNASSIGN_FROM_YOURSELF);
+                }
+            } else {
+                isAssignEnabled = app.isFeePaid()
+                        && SecurityBean.isInRole(RolesConstants.APPLICATION_ASSIGN_TO_YOURSELF,
+                        RolesConstants.APPLICATION_ASSIGN_TO_OTHERS);
+            }
+        }
+        btnAssign.setEnabled(isAssignEnabled);
+        btnUnassign.setEnabled(isUnassignEnabled);
+
     }
 
     private void showCalendar(JFormattedTextField dateField) {
@@ -101,6 +122,8 @@ public class ApplicationSearchPanel extends ContentPanel {
         tbAppList = new org.sola.clients.swing.common.controls.JTableWithDefaultStyles();
         jToolBar1 = new javax.swing.JToolBar();
         btnOpenApplication = new javax.swing.JButton();
+        btnAssign = new javax.swing.JButton();
+        btnUnassign = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         lblSearchResults = new javax.swing.JLabel();
         labResults = new javax.swing.JLabel();
@@ -170,7 +193,7 @@ public class ApplicationSearchPanel extends ContentPanel {
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, appList, eLProperty, tbAppList);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${nr}"));
         columnBinding.setColumnName("Nr");
-        columnBinding.setColumnClass(Integer.class);
+        columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lodgingDatetime}"));
         columnBinding.setColumnName("Lodging Datetime");
@@ -231,6 +254,30 @@ public class ApplicationSearchPanel extends ContentPanel {
             }
         });
         jToolBar1.add(btnOpenApplication);
+
+        btnAssign.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/assign.png"))); // NOI18N
+        btnAssign.setText(bundle.getString("ApplicationSearchPanel.btnAssign.text_1")); // NOI18N
+        btnAssign.setFocusable(false);
+        btnAssign.setName(bundle.getString("ApplicationSearchPanel.btnAssign.name")); // NOI18N
+        btnAssign.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAssign.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAssignActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnAssign);
+
+        btnUnassign.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/unassign.png"))); // NOI18N
+        btnUnassign.setText(bundle.getString("ApplicationSearchPanel.btnUnassign.text")); // NOI18N
+        btnUnassign.setFocusable(false);
+        btnUnassign.setName(bundle.getString("ApplicationSearchPanel.btnUnassign.name")); // NOI18N
+        btnUnassign.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnUnassign.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUnassignActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnUnassign);
 
         jSeparator1.setName("jSeparator1"); // NOI18N
         jToolBar1.add(jSeparator1);
@@ -711,7 +758,7 @@ public class ApplicationSearchPanel extends ContentPanel {
         txtToDate.setValue(null);
         txtContactPerson.setText(null);
         txtDocumentReference.setText(null);
-        txtDocumentNumber.setText(null); 
+        txtDocumentNumber.setText(null);
         labResults.setText(null);
         tbAppList.setVisible(false);
         txtAppNumber.requestFocus();
@@ -724,6 +771,14 @@ public class ApplicationSearchPanel extends ContentPanel {
     private void menuOpenApplicationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenApplicationActionPerformed
         openApplication();
     }//GEN-LAST:event_menuOpenApplicationActionPerformed
+
+    private void btnAssignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAssignActionPerformed
+        openAssignmentForm();
+    }//GEN-LAST:event_btnAssignActionPerformed
+
+    private void btnUnassignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnassignActionPerformed
+        openAssignmentForm();
+    }//GEN-LAST:event_btnUnassignActionPerformed
 
     /**
      * Opens {@link ApplicationForm} for selected application in search results.
@@ -749,14 +804,36 @@ public class ApplicationSearchPanel extends ContentPanel {
         };
         TaskManager.getInstance().runTask(t);
     }
+
+    private void openAssignmentForm() {
+        if (appList.getSelectedApplication() == null) {
+            return;
+        }
+
+        final String appId = appList.getSelectedApplication().getId();
+        SolaTask t = new SolaTask<Void, Void>() {
+
+            @Override
+            public Void doTask() {
+                setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_APPASSIGN));
+                ApplicationAssignmentPanel panel = new ApplicationAssignmentPanel(appId);
+                //  panel.addPropertyChangeListener(ApplicationBean.ASSIGNEE_ID_PROPERTY, assignmentPanelListener);
+                getMainContentPanel().addPanel(panel, MainContentPanel.CARD_APPASSIGNMENT, true);
+                return null;
+            }
+        };
+        TaskManager.getInstance().runTask(t);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.sola.clients.beans.application.ApplicationSearchResultsListBean appList;
     private javax.swing.JScrollPane appListPanel;
+    private javax.swing.JButton btnAssign;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnFind;
     private javax.swing.JButton btnOpenApplication;
     private javax.swing.JButton btnShowCalendarFrom;
     private javax.swing.JButton btnShowCalendarTo;
+    private javax.swing.JButton btnUnassign;
     private org.sola.clients.swing.ui.HeaderPanel headerPanel1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

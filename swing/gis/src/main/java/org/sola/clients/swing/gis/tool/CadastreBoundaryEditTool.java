@@ -86,6 +86,8 @@ public class CadastreBoundaryEditTool extends ExtendedDrawToolWithSnapping {
      */
     public void setTargetLayer(ExtendedLayerGraphics targetLayer) {
         this.targetLayer = targetLayer;
+        // Allow snap to the target layer as well
+        this.getTargetSnappingLayers().add(this.targetLayer);
     }
 
     /**

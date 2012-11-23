@@ -43,6 +43,7 @@ import org.sola.clients.beans.controls.SolaObservableList;
 import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.clients.beans.party.PartySummaryBean;
 import org.sola.clients.beans.referencedata.BaUnitTypeBean;
+import org.sola.clients.beans.referencedata.RrrTypeBean;
 import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.clients.beans.referencedata.TypeActionBean;
 import org.sola.clients.beans.source.SourceBean;
@@ -781,7 +782,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
 
         // Get all of the current notations linked to the ba unit. Notations linked to an rrr
         // will be added next depending on the rrr type and status. 
-        for (BaUnitNotationBean bean : getAllBaUnitNotationList()) {
+        for (BaUnitNotationBean bean : allBaUnitNotationList) {
             if (bean.getBaUnitId() != null && StatusConstants.CURRENT.equals(bean.getStatusCode())) {
                 bean.setNotationText(formatNotationText(bean.getNotationText(), bean.getReferenceNr()));
                 result.add(bean);
@@ -864,8 +865,10 @@ public class BaUnitBean extends BaUnitSummaryBean {
                         && !note1.getChangeTime().equals(note2.getChangeTime())) {
                     return note1.getChangeTime().compareTo(note2.getChangeTime());
                 } else {
-                    BigDecimal ref1 = note1 == null ? BigDecimal.ZERO : new BigDecimal(note1.getReferenceNr().replaceAll("[^0-9\\.]", ""));
-                    BigDecimal ref2 = note2 == null ? BigDecimal.ZERO : new BigDecimal(note2.getReferenceNr().replaceAll("[^0-9\\.]", ""));
+                    BigDecimal ref1 = note1 == null || note1.getReferenceNr() == null ? BigDecimal.ZERO
+                            : new BigDecimal(note1.getReferenceNr().replaceAll("[^0-9\\.]", ""));
+                    BigDecimal ref2 = note2 == null || note2.getReferenceNr() == null ? BigDecimal.ZERO
+                            : new BigDecimal(note2.getReferenceNr().replaceAll("[^0-9\\.]", ""));
                     return ref1.compareTo(ref2);
                 }
             }
@@ -883,6 +886,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
         List<PartySummaryBean> result = new ArrayList<PartySummaryBean>();
         boolean jointTenant;
         boolean commonTenant;
+        boolean lifeEstate = false;
 
         //Get all the current shares
         List<RrrShareBean> shares = new ArrayList<RrrShareBean>();
@@ -890,11 +894,20 @@ public class BaUnitBean extends BaUnitSummaryBean {
             if (rrr.isPrimary() && StatusConstants.CURRENT.equals(rrr.getStatusCode())) {
                 shares.addAll(rrr.getRrrShareList());
             }
+            if (RrrTypeBean.RRR_TYPE_CODE_LIFE_ESTATE.equals(rrr.getTypeCode())
+                    && StatusConstants.CURRENT.equals(rrr.getStatusCode())) {
+                // This property has a life estate
+                lifeEstate = true;
+            }
         }
 
         if (shares.size() == 1 && shares.get(0).getFilteredRightHolderList().size() == 1) {
             // Only 1 owner so use the simple name formatting
-            result.addAll(shares.get(0).getFilteredRightHolderList());
+            PartySummaryBean rightHolder = new PartySummaryBean();
+            String fullName = formatOwnerName(shares.get(0).getFilteredRightHolderList().get(0).getFullName(),
+                    "1/1", false, false, lifeEstate);
+            rightHolder.setName(fullName);
+            result.add(rightHolder);
         } else {
             commonTenant = shares.size() > 1;
             for (RrrShareBean share : shares) {
@@ -903,7 +916,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
                     PartySummaryBean rightHolder = new PartySummaryBean();
                     // Format the text to display for the owner based on their share holding
                     rightHolder.setName(formatOwnerName(bean.getFullName(),
-                            share.getShare(), jointTenant, commonTenant));
+                            share.getShare(), jointTenant, commonTenant, lifeEstate));
                     result.add(rightHolder);
                 }
             }
@@ -920,7 +933,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
      * @param jointTenant Indicates if the owner is a joint tenant
      * @param commonTenant Indicates if the owner is a tenant in common
      */
-    protected String formatOwnerName(String name, String share, boolean jointTenant, boolean commonTenant) {
+    protected String formatOwnerName(String name, String share, boolean jointTenant,
+            boolean commonTenant, boolean lifeEstate) {
         String result = name;
         if (jointTenant && !commonTenant) {
             result = result + " as a joint tenant";
@@ -930,6 +944,9 @@ public class BaUnitBean extends BaUnitSummaryBean {
         }
         if (jointTenant && commonTenant) {
             result = result + " as a joint tenant as to a " + share + " share as a tenant in common";
+        }
+        if (lifeEstate) {
+            result = result + " of an estate in remainder";
         }
         return result;
     }
@@ -953,8 +970,12 @@ public class BaUnitBean extends BaUnitSummaryBean {
                         && !rrr1.getRegistrationExpirationDate().equals(rrr2.getRegistrationExpirationDate())) {
                     return rrr1.getRegistrationExpirationDate().compareTo(rrr2.getRegistrationExpirationDate());
                 } else {
-                    String ref1Str = rrr1 == null ? "0" : rrr1.getNr().replaceFirst("V|/", ".");
-                    String ref2Str = rrr2 == null ? "0" : rrr2.getNr().replaceFirst("V|/", ".");
+                    String ref1Str = rrr1 == null || rrr1.getNotation() == null
+                            || rrr1.getNotation().getReferenceNr() == null ? "0"
+                            : rrr1.getNotation().getReferenceNr();
+                    String ref2Str = rrr2 == null || rrr2.getNotation() == null
+                            || rrr2.getNotation().getReferenceNr() == null ? "0"
+                            : rrr2.getNotation().getReferenceNr();
                     BigDecimal ref1 = new BigDecimal(ref1Str.replaceAll("[^0-9\\.]", ""));
                     BigDecimal ref2 = new BigDecimal(ref2Str.replaceAll("[^0-9\\.]", ""));
                     return ref1.compareTo(ref2);

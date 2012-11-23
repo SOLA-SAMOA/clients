@@ -265,7 +265,10 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
         editSpatialUnitTool.getTargetSnappingLayers().add(hydroLayer);
         editSpatialUnitTool.getTargetSnappingLayers().add(roadLayer);
         this.getMap().addTool(editSpatialUnitTool, this.getToolbar(), true);
-
+        
+        // Add additional snapping layers to the boundary edit tool
+        cadastreBoundaryEditTool.getTargetSnappingLayers().add(parcelsLayer);
+        
         this.getMap().addMapAction(new DisplaySpatialUnitEditForm(
                 this.getMap(), this.spatialUnitEditLayer),
                 this.getToolbar(),

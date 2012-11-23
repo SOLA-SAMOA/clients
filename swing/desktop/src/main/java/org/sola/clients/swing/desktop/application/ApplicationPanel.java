@@ -982,18 +982,20 @@ public class ApplicationPanel extends ContentPanel {
      * Customization for Samoa. Contacts are optional, so mark any agent contact or blank contact
      * details for deletion prior to saving the application. This is to avoid having a large number
      * of duplicate parties in the database.
+     * Update - need to disassociate because some parties may be linked to more than one application
+     * as part of the LRS application
      */
     private void removeDefaultContact(ApplicationBean applicationBean) {
         if (applicationBean.getContactPerson() == null) {
             return;
         }
         if (isAgentContact(applicationBean)) {
-            applicationBean.getContactPerson().getAddress().setEntityAction(EntityAction.DELETE);
-            applicationBean.getContactPerson().setEntityAction(EntityAction.DELETE);
+            applicationBean.getContactPerson().getAddress().setEntityAction(EntityAction.DISASSOCIATE);
+            applicationBean.getContactPerson().setEntityAction(EntityAction.DISASSOCIATE);
         } else {
             if (applicationBean.getContactPerson().getAddress().getDescription() == null
                     || applicationBean.getContactPerson().getAddress().getDescription().trim().isEmpty()) {
-                applicationBean.getContactPerson().getAddress().setEntityAction(EntityAction.DELETE);
+                applicationBean.getContactPerson().getAddress().setEntityAction(EntityAction.DISASSOCIATE);
             }
             if ((applicationBean.getContactPerson().getName() == null
                     || applicationBean.getContactPerson().getName().trim().isEmpty())
@@ -1001,7 +1003,7 @@ public class ApplicationPanel extends ContentPanel {
                     || applicationBean.getContactPerson().getName().trim().isEmpty())
                     && (applicationBean.getContactPerson().getAddress().getDescription() == null
                     || applicationBean.getContactPerson().getAddress().getDescription().trim().isEmpty())) {
-                applicationBean.getContactPerson().setEntityAction(EntityAction.DELETE);
+                applicationBean.getContactPerson().setEntityAction(EntityAction.DISASSOCIATE);
             }
         }
     }

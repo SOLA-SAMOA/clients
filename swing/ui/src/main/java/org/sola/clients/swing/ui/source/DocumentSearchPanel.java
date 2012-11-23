@@ -475,6 +475,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
 
         tblSearchResults.setComponentPopupMenu(popUpSearchResults);
         tblSearchResults.setName("tblSearchResults"); // NOI18N
+        tblSearchResults.getTableHeader().setReorderingAllowed(false);
 
         org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${sourceSearchResultsList}");
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, searchResultsList, eLProperty, tblSearchResults);
@@ -525,20 +526,14 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tblSearchResults);
         tblSearchResults.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title5_1_1")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(1).setMaxWidth(70);
         tblSearchResults.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title1_1_1")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(2).setMaxWidth(70);
         tblSearchResults.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("DocumentSearchPanel.tblSearchResults.columnModel.title2_1")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(3).setMaxWidth(60);
         tblSearchResults.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title0_1_1")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(4).setMaxWidth(70);
         tblSearchResults.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title3_1_1")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(5).setMaxWidth(50);
         tblSearchResults.getColumnModel().getColumn(5).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title4_1")); // NOI18N
         tblSearchResults.getColumnModel().getColumn(6).setHeaderValue(bundle.getString("DocumentSearchPanel.tblSearchResults.columnModel.title7")); // NOI18N
         tblSearchResults.getColumnModel().getColumn(7).setHeaderValue(bundle.getString("DocumentSearchPanel.tblSearchResults.columnModel.title8")); // NOI18N
         tblSearchResults.getColumnModel().getColumn(8).setPreferredWidth(30);
-        tblSearchResults.getColumnModel().getColumn(8).setMaxWidth(30);
         tblSearchResults.getColumnModel().getColumn(8).setHeaderValue(bundle.getString("DocumentSearchPanel.tblSearchResults.columnModel.title6_1")); // NOI18N
         tblSearchResults.getColumnModel().getColumn(8).setCellRenderer(new AttachedDocumentCellRenderer());
 
@@ -932,6 +927,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
         jPanel10.add(jPanel6);
 
         jPanel7.setName("jPanel7"); // NOI18N
+        jPanel7.setPreferredSize(new java.awt.Dimension(80, 52));
 
         jLabel3.setText(bundle.getString("DocumentSearchPanel.jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
@@ -945,10 +941,8 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addComponent(jLabel3)
-                .addContainerGap())
             .addComponent(txtLaNr)
+            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

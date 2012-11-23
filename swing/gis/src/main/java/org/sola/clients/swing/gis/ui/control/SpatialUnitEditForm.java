@@ -95,6 +95,7 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
         spatialUnitChangeList = createSpatialUnitChangeList();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblSpatialUnitChanges = new javax.swing.JTable();
+        jToolBar1 = new javax.swing.JToolBar();
         btnClose = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
         btnRemove = new javax.swing.JButton();
@@ -136,6 +137,10 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
         tblSpatialUnitChanges.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title2")); // NOI18N
         tblSpatialUnitChanges.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title3_2")); // NOI18N
 
+        jToolBar1.setFloatable(false);
+        jToolBar1.setRollover(true);
+
+        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sola/clients/swing/gis/tool/resources/save.png"))); // NOI18N
         btnClose.setText(bundle.getString("SpatialUnitEditForm.btnClose.text")); // NOI18N
         btnClose.setBorderPainted(false);
         btnClose.addActionListener(new java.awt.event.ActionListener() {
@@ -143,20 +148,25 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
                 btnCloseActionPerformed(evt);
             }
         });
+        jToolBar1.add(btnClose);
 
+        btnClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sola/clients/swing/gis/tool/resources/selection.png"))); // NOI18N
         btnClear.setText(bundle.getString("SpatialUnitEditForm.btnClear.text")); // NOI18N
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClearActionPerformed(evt);
             }
         });
+        jToolBar1.add(btnClear);
 
+        btnRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sola/clients/swing/gis/tool/resources/remove.png"))); // NOI18N
         btnRemove.setText(bundle.getString("SpatialUnitEditForm.btnRemove.text")); // NOI18N
         btnRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRemoveActionPerformed(evt);
             }
         });
+        jToolBar1.add(btnRemove);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -165,26 +175,20 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnRemove)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnClear)
-                    .addComponent(btnClose)
-                    .addComponent(btnRemove))
-                .addGap(6, 6, 6))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         bindingGroup.bind();
@@ -213,6 +217,7 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnRemove;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JToolBar jToolBar1;
     private org.sola.clients.swing.gis.beans.SpatialUnitChangeListBean spatialUnitChangeList;
     private javax.swing.JTable tblSpatialUnitChanges;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;

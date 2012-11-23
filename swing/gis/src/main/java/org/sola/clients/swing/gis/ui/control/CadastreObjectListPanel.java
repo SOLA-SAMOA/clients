@@ -1,28 +1,26 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO).
- * All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
+ * reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
- *    1. Redistributions of source code must retain the above copyright notice,this list
- *       of conditions and the following disclaimer.
- *    2. Redistributions in binary form must reproduce the above copyright notice,this list
- *       of conditions and the following disclaimer in the documentation and/or other
- *       materials provided with the distribution.
- *    3. Neither the name of FAO nor the names of its contributors may be used to endorse or
- *       promote products derived from this software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
+ * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
+ * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 /*
@@ -33,17 +31,15 @@ package org.sola.clients.swing.gis.ui.control;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import org.sola.clients.beans.source.SourceBean;
-import org.sola.clients.beans.source.SourceListBean;
+import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 import org.sola.clients.swing.gis.beans.AbstractListSpatialBean;
 import org.sola.clients.swing.gis.beans.CadastreObjectListBean;
 import org.sola.clients.swing.gis.beans.SpatialBean;
 
 /**
  * A User Interface component that handles the management of the cadastre objects.
- * 
+ *
  * @author Elton Manoku
  */
 public class CadastreObjectListPanel extends javax.swing.JPanel {
@@ -59,6 +55,7 @@ public class CadastreObjectListPanel extends javax.swing.JPanel {
         initComponents();
         // Add a listner to the bean property of selected bean
         theBean.addPropertyChangeListener(new PropertyChangeListener() {
+
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals(AbstractListSpatialBean.SELECTED_BEAN_PROPERTY)) {
@@ -70,12 +67,13 @@ public class CadastreObjectListPanel extends javax.swing.JPanel {
 
     /**
      * It changes the availability of buttons based in the selected bean
-     * @param selectedSource 
+     *
+     * @param selectedSource
      */
     private void customizeButtons(SpatialBean selectedSource) {
         cmdRemove.setEnabled(selectedSource != null);
     }
-    
+
     /**
      * This constructor is only for the designer.
      */
@@ -85,7 +83,8 @@ public class CadastreObjectListPanel extends javax.swing.JPanel {
 
     /**
      * It creates the bean. It is called from the generated code.
-     * @return 
+     *
+     * @return
      */
     private CadastreObjectListBean createBean() {
         if (this.theBean == null) {
@@ -96,7 +95,8 @@ public class CadastreObjectListPanel extends javax.swing.JPanel {
 
     /**
      * Gets the type of the cadastre objects that will be shown in the list
-     * @return 
+     *
+     * @return
      */
     public String getCadastreObjectType() {
         return cadastreObjectType;
@@ -105,8 +105,8 @@ public class CadastreObjectListPanel extends javax.swing.JPanel {
     /**
      * Sets the type of the cadastre objects that will be shown in the list. Based in the type,
      * different attributes of the cadastre object can be hidden or made visible.
-     * 
-     * @param cadastreObjectType 
+     *
+     * @param cadastreObjectType
      */
     public void setCadastreObjectType(String cadastreObjectType) {
         this.cadastreObjectType = cadastreObjectType;
@@ -124,6 +124,8 @@ public class CadastreObjectListPanel extends javax.swing.JPanel {
         cadastreObjectListBean = createBean();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableCadastreObject = new javax.swing.JTable();
+        jToolBar1 = new javax.swing.JToolBar();
+        btnSave = new javax.swing.JButton();
         cmdRemove = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(300, 180));
@@ -150,13 +152,28 @@ public class CadastreObjectListPanel extends javax.swing.JPanel {
         tableCadastreObject.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("CadastreObjectListPanel.tableCadastreObject.columnModel.title1")); // NOI18N
         tableCadastreObject.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("CadastreObjectListPanel.tableCadastreObject.columnModel.title2")); // NOI18N
 
+        jToolBar1.setFloatable(false);
+        jToolBar1.setRollover(true);
+
+        btnSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sola/clients/swing/gis/tool/resources/save.png"))); // NOI18N
+        btnSave.setText(bundle.getString("CadastreObjectListPanel.btnSave.text")); // NOI18N
+        btnSave.setFocusable(false);
+        btnSave.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnSave);
+
+        cmdRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sola/clients/swing/gis/tool/resources/remove.png"))); // NOI18N
         cmdRemove.setText(bundle.getString("CadastreObjectListPanel.cmdRemove.text")); // NOI18N
-        cmdRemove.setEnabled(false);
         cmdRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmdRemoveActionPerformed(evt);
             }
         });
+        jToolBar1.add(cmdRemove);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -165,17 +182,15 @@ public class CadastreObjectListPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 204, Short.MAX_VALUE)
-                        .addComponent(cmdRemove)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(cmdRemove)
+                .addGap(14, 14, 14)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
                 .addContainerGap())
@@ -190,10 +205,24 @@ public class CadastreObjectListPanel extends javax.swing.JPanel {
             theBean.setSelectedBean(null);
         }
     }//GEN-LAST:event_cmdRemoveActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // If the table is being edited, stop the editing to accept the value entered by the user. 
+        if (this.tableCadastreObject.getCellEditor() != null) {
+            this.tableCadastreObject.getCellEditor().stopCellEditing();
+        }
+        // Try to find the parent dialog of this panel and close it ... 
+        JDialog parent = (JDialog) SwingUtilities.getAncestorOfClass(JDialog.class, this);
+        if (parent != null) {
+            parent.setVisible(false);
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSave;
     private org.sola.clients.swing.gis.beans.CadastreObjectListBean cadastreObjectListBean;
     private javax.swing.JButton cmdRemove;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tableCadastreObject;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
