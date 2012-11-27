@@ -1,28 +1,26 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO).
- * All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
+ * reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
- *    1. Redistributions of source code must retain the above copyright notice,this list
- *       of conditions and the following disclaimer.
- *    2. Redistributions in binary form must reproduce the above copyright notice,this list
- *       of conditions and the following disclaimer in the documentation and/or other
- *       materials provided with the distribution.
- *    3. Neither the name of FAO nor the names of its contributors may be used to endorse or
- *       promote products derived from this software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
+ * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
+ * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.desktop.administrative;
@@ -32,10 +30,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import org.sola.clients.beans.administrative.BaUnitBean;
 import org.sola.clients.beans.administrative.BaUnitSearchResultListBean;
+import org.sola.clients.beans.administrative.RelatedBaUnitInfoBean;
 import org.sola.clients.beans.administrative.RrrBean;
 import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.beans.application.ApplicationPropertyBean;
 import org.sola.clients.beans.converters.TypeConverters;
+import org.sola.clients.beans.referencedata.BaUnitRelTypeBean;
 import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.clients.swing.common.tasks.SolaTask;
 import org.sola.clients.swing.common.tasks.TaskManager;
@@ -51,7 +51,6 @@ import org.sola.webservices.transferobjects.administrative.BaUnitTO;
 public class NewPropertyWizardPanel extends ContentPanel {
 
     public static final String SELECTED_RESULT_PROPERTY = "selectedResult";
-    
     private ApplicationPropertyBean selectedApplicationProperty;
     private BaUnitBean baUnitBean;
     private java.util.ResourceBundle resourceBundle;
@@ -59,8 +58,9 @@ public class NewPropertyWizardPanel extends ContentPanel {
     private final static String CARD_BAUNIT = "cardBaUnit";
     private boolean allowSelection;
 
-    /** 
-     * Class constructor. 
+    /**
+     * Class constructor.
+     *
      * @param applicationBean Application instance used to pick up property list.
      * @param allowSelection Defines if selection of parcels and rights is allowed.
      */
@@ -90,13 +90,15 @@ public class NewPropertyWizardPanel extends ContentPanel {
         int tabIndex = tabsPropertySelection.indexOfComponent(pnlApplicationProperty);
         tabsPropertySelection.setTitleAt(tabIndex, String.format("%s #%s",
                 tabsPropertySelection.getTitleAt(tabIndex), applicationBean.getNr()));
-        
+
         // Samoa Customization - enable the relationship type drop down so the user can choose 
         // associate a village and prior title to the property.  
-       cbxRelationType.setEnabled(true);
+        cbxRelationType.setEnabled(true);
     }
 
-    /** Creates {@link ApplicationBean} instance to bind on the form. */
+    /**
+     * Creates {@link ApplicationBean} instance to bind on the form.
+     */
     private ApplicationBean createApplicationBean() {
         if (applicationBean == null) {
             applicationBean = new ApplicationBean();
@@ -130,13 +132,20 @@ public class NewPropertyWizardPanel extends ContentPanel {
         if (baUnitBean != null) {
             this.baUnitBean = baUnitBean;
             this.baUnitBean.filterCurrentRecords();
+            // Samoa customization - select all of the current rights by default
+            for (RrrBean bean : baUnitBean.getRrrFilteredList()) {
+                bean.setSelected(true);
+            }
             firePropertyChange("baUnitBean", null, this.baUnitBean);
         }
     }
 
-    /** Sets {@link BaUnitBean} by first and last name part. */
+    /**
+     * Sets {@link BaUnitBean} by first and last name part.
+     */
     private void setupBaUnit(final String nameFirstPart, final String nameLastPart) {
         SolaTask t = new SolaTask<Void, Void>() {
+
             @Override
             public Void doTask() {
                 setMessage("Getting property object.");
@@ -627,17 +636,17 @@ public class NewPropertyWizardPanel extends ContentPanel {
         if (getBaUnitBean().getSelectedCadastreObjects().size() < 1
                 && getBaUnitBean().getSelectedNewCadastreObjects().size() < 1
                 && getBaUnitBean().getSelectedRrrs(false).size() < 1) {
-            if(allowSelection && MessageUtility.displayMessage(ClientMessage.BAUNIT_NOTHING_SELECTED)
-                    != MessageUtility.BUTTON_ONE){
+            if (allowSelection && MessageUtility.displayMessage(ClientMessage.BAUNIT_NOTHING_SELECTED)
+                    != MessageUtility.BUTTON_ONE) {
                 return;
             }
         }
 
-        if(baUnitRelTypeListBean.getSelectedBaUnitRelType() == null){
+        if (baUnitRelTypeListBean.getSelectedBaUnitRelType() == null) {
             MessageUtility.displayMessage(ClientMessage.BAUNIT_SELECT_RELATION_TYPE);
             return;
         }
-        
+
         if (getBaUnitBean().getSelectedCadastreObjects().size() > 0) {
             MessageUtility.displayMessage(ClientMessage.BAUNIT_EXISTING_PARCELS_SELECTED);
         }
@@ -648,11 +657,22 @@ public class NewPropertyWizardPanel extends ContentPanel {
         selectedBaUnit.getCadastreObjectList().clear();
         selectedBaUnit.getCadastreObjectList().addAll(getBaUnitBean().getSelectedCadastreObjects());
         selectedBaUnit.getCadastreObjectList().addAll(getBaUnitBean().getSelectedNewCadastreObjects());
-        
+
         for (RrrBean rrrBean : selectedBaUnit.getRrrList()) {
             rrrBean.setStatusCode(StatusConstants.PENDING);
         }
-        
+
+        // Samoa customization. Make sure the village details are pulled through onto the new 
+        // bean by default. Note that the copy does not pull forward the parent ba units because
+        // there is no setter for the parentBaUnits property. 
+        if (!BaUnitRelTypeBean.REL_TYPE_VILLAGE.equals(baUnitRelTypeListBean.getSelectedBaUnitRelType())) {
+            for (RelatedBaUnitInfoBean bean : getBaUnitBean().getParentBaUnits()) {
+                if (BaUnitRelTypeBean.REL_TYPE_VILLAGE.equals(bean.getRelationCode())) {
+                    selectedBaUnit.getParentBaUnits().add(bean);
+                }
+            }
+        }
+
         Object[] result = new Object[]{selectedBaUnit, baUnitRelTypeListBean.getSelectedBaUnitRelType()};
         getMainContentPanel().closePanel(this);
         firePropertyChange(SELECTED_RESULT_PROPERTY, null, result);

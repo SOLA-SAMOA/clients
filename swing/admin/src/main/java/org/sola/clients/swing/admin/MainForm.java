@@ -41,6 +41,7 @@ import org.sola.clients.swing.admin.security.RolesManagementPanel;
 import org.sola.clients.swing.admin.security.UsersManagementPanel;
 import org.sola.clients.swing.admin.system.BrManagementPanel;
 import org.sola.clients.swing.common.LafManager;
+import org.sola.clients.swing.common.LocalizationManager;
 import org.sola.clients.swing.ui.MainContentPanel;
 import org.sola.common.RolesConstants;
 
@@ -61,6 +62,7 @@ public class MainForm extends javax.swing.JFrame {
 
     /** Customizes main form regarding user access rights. */
     private void customizeForm(){
+        this.setTitle("SOLA Samoa Admin - " + LocalizationManager.getVersionNumber());
         boolean hasSecurityRole = SecurityBean.isInRole(RolesConstants.ADMIN_MANAGE_SECURITY);
         boolean hasRefdataRole = SecurityBean.isInRole(RolesConstants.ADMIN_MANAGE_REFDATA);
         boolean hasSettingsRole = SecurityBean.isInRole(RolesConstants.ADMIN_MANAGE_SETTINGS);

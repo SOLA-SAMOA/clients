@@ -103,7 +103,12 @@ public class AdminApplication {
                 Thread.setDefaultUncaughtExceptionHandler(new DesktopClientExceptionHandler());
                 LocalizationManager.loadLanguage(AdminApplication.class);
                 LogUtility.initialize(AdminApplication.class);
-                LafManager.getInstance().setProperties("green");
+                
+                if (LocalizationManager.isProductionVersion()) {
+                    LafManager.getInstance().setProperties("green");
+                } else {
+                    LafManager.getInstance().setProperties("autumn");
+                }
 
                 final LoginForm loginForm = new LoginForm(AdminApplication.class);
                 loginForm.addPropertyChangeListener(new PropertyChangeListener() {

@@ -506,6 +506,12 @@ public class PropertyPanel extends ContentPanel {
         relatedBuUnit.setRelatedBaUnitId(selectedBaUnit.getId());
         baUnitBean1.getParentBaUnits().addAsNew(relatedBuUnit);
 
+        // Samoa customization - Add any extra parent ba units from the selected BA Unit
+        // e.g. The village information
+        for (RelatedBaUnitInfoBean bean : selectedBaUnit.getParentBaUnits()) {
+            baUnitBean1.getParentBaUnits().addAsNew(bean);
+        }
+
         tabsMain.setSelectedIndex(tabsMain.indexOfComponent(pnlPriorProperties));
         return true;
     }

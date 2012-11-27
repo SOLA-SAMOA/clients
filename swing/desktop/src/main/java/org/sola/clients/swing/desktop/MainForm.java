@@ -127,6 +127,7 @@ public class MainForm extends javax.swing.JFrame {
      * with no significant delays.
      */
     private void postInit() {
+        this.setTitle("SOLA Samoa Desktop - " + LocalizationManager.getVersionNumber());
         // Set center screen location 
         configureForm();
 

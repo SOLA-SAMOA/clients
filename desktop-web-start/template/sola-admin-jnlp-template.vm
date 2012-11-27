@@ -4,9 +4,9 @@
     codebase="$$codebase"
     context="$$context"
     href="$$name"
-    version="SOLA Samoa LIVE v2.0">
+    version="SOLA Samoa LIVE v2.0.4">
   <information>
-    <title>SOLA Samoa Admin</title>
+    <title>SOLA Samoa Admin LIVE</title>
 #if($project.Organization.Name)
     <vendor>$project.Organization.Name</vendor>
 #end
@@ -44,6 +44,7 @@
     <property name="SOLA_WS_SPATIAL_SERVICE_URL" value="$$context/webservices/spatial-service?wsdl"/>
     <property name="SOLA_WS_ADMINISTRATIVE_SERVICE_URL" value="$$context/webservices/administrative-service?wsdl"/>
     <property name="SOLA_WS_FILE_STREAMING_SERVICE_URL" value="$$context/webservices/filestreaming-service?wsdl"/>
+    <property name="SOLA_WEB_START_HOST" value="$$hostname"/>
      $dependencies
   </resources>
   <application-desc main-class="$mainClass"/>

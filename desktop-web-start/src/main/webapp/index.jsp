@@ -55,13 +55,25 @@
                             var SOLAPATH="webstart/sola-desktop.jnlp";   
                             var URL=window.location.href;
                             var SOLADESKTOP=URL+SOLAPATH;
-                            document.write("<li>To install the SOLA Desktop web start application, right click this link <a href="+SOLADESKTOP+" target=_blank>SOLA Desktop Web Start</a> and choose Save link as... and save the sola-desktop.jnlp file to a known location on your local file system.</li>");
+                            document.write("<li>To install the SOLA Desktop LIVE web start application, right click this link <a href="+SOLADESKTOP+" target=_blank>SOLA Desktop Web Start LIVE</a> and choose Save link as... and save the sola-desktop.jnlp file to a known location on your local file system.</li>");
+                        </script>
+                        <script type="text/javascript">
+                            var SOLAPATH="webstart/sola-desktop-train.jnlp";   
+                            var URL=window.location.href;
+                            var SOLADESKTOPTRAIN=URL+SOLAPATH;
+                            document.write("<li>To install the SOLA Desktop Training web start application, right click this link <a href="+SOLADESKTOPTRAIN+" target=_blank>SOLA Desktop Web Start Training</a> and choose Save link as... and save the sola-desktop-train.jnlp file to a known location on your local file system.</li>");
                         </script>
                         <script type="text/javascript">
                             var SOLAPATH="webstart/sola-admin.jnlp";   
                             var URL=window.location.href;
                             var SOLAADMIN=URL+SOLAPATH;
-                            document.write("<li>To install the SOLA Admin web start, right click this link <a href="+SOLAADMIN+" target=_blank>SOLA Admin Web Start</a> and choose Save link as... and save the sola-admin.jnlp file to a known location on your local file system.</li>");
+                            document.write("<li>To install the SOLA Admin LIVE web start, right click this link <a href="+SOLAADMIN+" target=_blank>SOLA Admin Web Start LIVE</a> and choose Save link as... and save the sola-admin.jnlp file to a known location on your local file system.</li>");
+                        </script>
+                        <script type="text/javascript">
+                            var SOLAPATH="webstart/sola-admin-train.jnlp";   
+                            var URL=window.location.href;
+                            var SOLAADMINTRAIN=URL+SOLAPATH;
+                            document.write("<li>To install the SOLA Admin Training web start, right click this link <a href="+SOLAADMINTRAIN+" target=_blank>SOLA Admin Web Start Training</a> and choose Save link as... and save the sola-admin-train.jnlp file to a known location on your local file system.</li>");
                         </script>
                         <li>	Once one or both of the files have been saved on your file system, locate the appropriate jnlp file using Windows Explorer or equivalent and double click the file. You should see a Java 7 splash displayed followed by the Starting application... dialog. </li>
                         <li>	When prompted with the digital signature security warning, tick Always trust content from this publisher and choose Run. </li>

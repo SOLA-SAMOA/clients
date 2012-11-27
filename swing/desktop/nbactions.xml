@@ -10,6 +10,9 @@
                 <exec.args>-classpath %classpath org.sola.clients.swing.desktop.DesktopApplication</exec.args>
                 <exec.executable>java</exec.executable>
                 <exec.classpathScope>runtime</exec.classpathScope>
+                
+                
+                
             </properties>
         </action>
         <action>
@@ -23,6 +26,7 @@
                 <exec.executable>java</exec.executable>
                 <exec.classpathScope>runtime</exec.classpathScope>
                 <jpda.listen>true</jpda.listen>
+                
             </properties>
         </action>
         <action>

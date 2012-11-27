@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 import javax.swing.JRadioButton;
+import org.sola.clients.swing.common.LocalizationManager;
 import org.sola.clients.swing.common.config.ConfigurationManager;
 import org.sola.clients.swing.common.controls.LanguageCombobox;
 import org.sola.clients.swing.common.tasks.SolaTask;
@@ -77,6 +78,8 @@ public class LoginPanel extends javax.swing.JPanel {
         initComponents();
         txtUsername.requestFocus();
 
+        lblVersion.setText("SOLA Samoa - " + LocalizationManager.getVersionNumber());
+
         // Make the username sticky
         if (mainClass != null) {
             Preferences prefs = Preferences.userNodeForPackage(mainClass);
@@ -119,7 +122,7 @@ public class LoginPanel extends javax.swing.JPanel {
                     }
                     char[] user = txtUserPassword.getPassword();
                     if (Arrays.equals(user, new char[]{'t', 'e', 's', 't'})) {
-                       MessageUtility.displayMessage(ClientMessage.ADMIN_CHANGE_PASSWORD);
+                        MessageUtility.displayMessage(ClientMessage.ADMIN_CHANGE_PASSWORD);
                     }
                     Arrays.fill(user, '0');
                     fireLoginEvent(true);
@@ -189,7 +192,7 @@ public class LoginPanel extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        lblVersion = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         labDescUp = new javax.swing.JLabel();
         labDescDown = new javax.swing.JLabel();
@@ -323,11 +326,11 @@ public class LoginPanel extends javax.swing.JPanel {
         jLabel2.setText(bundle.getString("LoginPanel.jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 102, 51));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText(bundle.getString("LoginPanel.jLabel3.text")); // NOI18N
-        jLabel3.setName(bundle.getString("LoginPanel.jLabel3.name")); // NOI18N
+        lblVersion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblVersion.setForeground(new java.awt.Color(0, 102, 51));
+        lblVersion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblVersion.setText(bundle.getString("LoginPanel.lblVersion.text")); // NOI18N
+        lblVersion.setName(bundle.getString("LoginPanel.lblVersion.name")); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -339,7 +342,7 @@ public class LoginPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblVersion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -349,7 +352,7 @@ public class LoginPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
                 .addGap(1, 1, 1)
-                .addComponent(jLabel3)
+                .addComponent(lblVersion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -455,7 +458,6 @@ public class LoginPanel extends javax.swing.JPanel {
     public javax.swing.JButton btnLogin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -469,6 +471,7 @@ public class LoginPanel extends javax.swing.JPanel {
     private javax.swing.JLabel labPassword;
     private javax.swing.JLabel labUser;
     private org.sola.clients.swing.common.controls.LanguageCombobox languageCombobox;
+    private javax.swing.JLabel lblVersion;
     private javax.swing.JPanel mainPanel;
     private org.sola.clients.beans.security.SecurityBean securityBean;
     private org.sola.clients.swing.common.tasks.TaskPanel taskPanel1;

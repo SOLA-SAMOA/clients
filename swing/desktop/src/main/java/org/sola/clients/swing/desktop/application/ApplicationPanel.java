@@ -533,7 +533,7 @@ public class ApplicationPanel extends ContentPanel {
             if (appBean.isEditingAllowed()) {
                 btnDeleteDoc.setEnabled(true);
             }
-            if (selectedDocument.getArchiveDocumentId() != null 
+            if (selectedDocument.getArchiveDocumentId() != null
                     && !selectedDocument.getArchiveDocumentId().trim().isEmpty()) {
                 btnOpenAttachment.setEnabled(true);
             }
@@ -981,9 +981,8 @@ public class ApplicationPanel extends ContentPanel {
     /**
      * Customization for Samoa. Contacts are optional, so mark any agent contact or blank contact
      * details for deletion prior to saving the application. This is to avoid having a large number
-     * of duplicate parties in the database.
-     * Update - need to disassociate because some parties may be linked to more than one application
-     * as part of the LRS application
+     * of duplicate parties in the database. Update - need to disassociate because some parties may
+     * be linked to more than one application as part of the LRS application
      */
     private void removeDefaultContact(ApplicationBean applicationBean) {
         if (applicationBean.getContactPerson() == null) {

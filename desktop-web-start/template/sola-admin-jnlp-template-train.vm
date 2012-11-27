@@ -4,9 +4,9 @@
     codebase="$$codebase"
     context="$$context"
     href="$$name"
-    version="SOLA Samoa LIVE v2.0.4">
+    version="SOLA Samoa Training v2.0.4">
   <information>
-    <title>SOLA Samoa Desktop LIVE</title>
+    <title>SOLA Samoa Admin Training</title>
 #if($project.Organization.Name)
     <vendor>$project.Organization.Name</vendor>
 #end
@@ -19,7 +19,7 @@
 <icon href="../Images/Floss.jpg" width="40" height="26"/>
     <icon kind="shortcut" href="../Images/Floss.jpg" width="40" height="26"/>
     <!--icon kind="splash" href="../Images/splash.png" width="413" height="314"/-->
-    <shortcut><desktop/><menu submenu="SOLA Samoa LIVE"/></shortcut>
+    <shortcut><desktop/><menu submenu="SOLA Samoa Training"/></shortcut>
 #if($offlineAllowed)
     <offline-allowed/>
 #end
@@ -30,7 +30,7 @@
   </security>
 #end
   <resources>
-    <j2se version="1.7+" initial-heap-size="128m" max-heap-size="384m"/>
+    <j2se version="1.7+" initial-heap-size="128m" max-heap-size="512m"/>
     ## The following properties identify the location of the SOLA Web Services and are used by the SOLA Desktop
     ## in preference to the properties file compiled into the jar. Note the $$context is replaced by the 
     ## webstart-jnlp-servlet with the context root of the SOLA Web Start web site. 
@@ -43,8 +43,8 @@
     <property name="SOLA_WS_DIGITAL_ARCHIVE_URL" value="$$context/webservices/digitalarchive-service?wsdl"/>
     <property name="SOLA_WS_SPATIAL_SERVICE_URL" value="$$context/webservices/spatial-service?wsdl"/>
     <property name="SOLA_WS_ADMINISTRATIVE_SERVICE_URL" value="$$context/webservices/administrative-service?wsdl"/>
-	<property name="SOLA_WS_FILE_STREAMING_SERVICE_URL" value="$$context/webservices/filestreaming-service?wsdl"/>
-	<property name="SOLA_WEB_START_HOST" value="$$hostname"/>
+    <property name="SOLA_WS_FILE_STREAMING_SERVICE_URL" value="$$context/webservices/filestreaming-service?wsdl"/>
+    <property name="SOLA_WEB_START_HOST" value="$$hostname"/>
      $dependencies
   </resources>
   <application-desc main-class="$mainClass"/>

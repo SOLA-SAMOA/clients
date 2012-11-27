@@ -44,6 +44,7 @@ public class DocumentForm extends ContentPanel {
 
     private SourceBean document;
     public static final String DOCUMENT_SAVED = "documentSaved";
+    private boolean isNew = false; 
 
     /**
      * Default form constructor
@@ -51,6 +52,7 @@ public class DocumentForm extends ContentPanel {
     public DocumentForm() {
         initComponents();
         postInit();
+        isNew = true; 
     }
 
     /**
@@ -69,6 +71,7 @@ public class DocumentForm extends ContentPanel {
             headerPanel.setTitleText(
                     MessageUtility.getLocalizedMessageText(ClientMessage.GENERAL_LABELS_DOCUMENT)
                     + " - " + MessageUtility.getLocalizedMessageText(ClientMessage.GENERAL_LABELS_NEW));
+            document = new SourceBean(); 
         } else {
             headerPanel.setTitleText(
                     MessageUtility.getLocalizedMessageText(ClientMessage.GENERAL_LABELS_DOCUMENT)
@@ -78,6 +81,10 @@ public class DocumentForm extends ContentPanel {
     }
 
     private void saveDocument() {
+        if (isNew) {
+            // New document, so set the reference number as the la number
+            document.setLaNr(document.getReferenceNr());
+        }
      if (document.docValid()) {
         
         SolaTask t = new SolaTask<Boolean, Boolean>() {

@@ -1,30 +1,26 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
- * (FAO). All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
+ * reserved.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this
- * list of conditions and the following disclaimer. 2. Redistributions in binary
- * form must reproduce the above copyright notice,this list of conditions and
- * the following disclaimer in the documentation and/or other materials provided
- * with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this
- * software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
+ * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
+ * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.ui.source;
@@ -54,14 +50,15 @@ import org.sola.common.messaging.ClientMessage;
 import org.sola.common.messaging.MessageUtility;
 
 /**
- * This panel provides parameterized source (documents) search capabilities.
- * <p>The following list of beans is used to bind the data on the form:<br />
+ * This panel provides parameterized source (documents) search capabilities. <p>The following list
+ * of beans is used to bind the data on the form:<br />
  * {@link SourceSearchResultsListBean},<br />{@link SourceSearchParamsBean}</p>
  */
 public class DocumentSearchPanel extends javax.swing.JPanel {
 
     public static final String SELECTED_SOURCE = "selectedSource";
     public static final String EDIT_SOURCE = "editSource";
+    public static final String ADD_SOURCE = "addSource";
     public static final String SELECT_SOURCE = "selectSource";
     public static final String ATTACH_SOURCE = "attachSource";
     public static final String OPEN_APPLICATION = "openApplication";
@@ -84,6 +81,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
                 }
             }
         });
+        btnAddDoc.setVisible(false);
     }
 
     private SourceTypeListBean createSourceTypes() {
@@ -129,6 +127,11 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
         menuEdit.setVisible(showEditButton);
     }
 
+    public void setShowAddButton(boolean showAddButton) {
+        btnAddDoc.setVisible(showAddButton);
+
+    }
+
     public boolean isShowOpenApplicationButton() {
         return btnSelect.isVisible();
     }
@@ -137,7 +140,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
         btnOpenApplication.setVisible(show);
         menuOpenApplication.setVisible(show);
     }
-    
+
     public boolean isShowViewButton() {
         return btnView.isVisible();
     }
@@ -165,6 +168,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
         menuOpenAttachment.setEnabled(enabled);
         menuPrint.setEnabled(selected);
         btnEdit.setEnabled(selected && hasRight);
+        btnAddDoc.setEnabled(hasRight);
         menuEdit.setEnabled(btnEdit.isEnabled());
         btnAttach.setEnabled(selected && hasRight);
         menuAttach.setEnabled(btnAttach.isEnabled());
@@ -234,12 +238,20 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
     private void fireEditSource() {
         fireSourceEvent(EDIT_SOURCE);
     }
-    
+
+    private void fireAddSource() {
+        fireSourceEvent(ADD_SOURCE);
+    }
+
     private void fireViewSource() {
         fireSourceEvent(VIEW_SOURCE);
     }
 
     private void fireSourceEvent(final String evtName) {
+        if (ADD_SOURCE.equals(evtName)) {
+            // Fire the Add Source Event
+            firePropertyChange(evtName, null, null);
+        }
         if (searchResultsList.getSelectedSource() == null) {
             return;
         }
@@ -359,6 +371,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
         btnOpenApplication = new javax.swing.JButton();
         btnSelect = new javax.swing.JButton();
         btnAttach = new javax.swing.JButton();
+        btnAddDoc = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnPrint = new javax.swing.JButton();
         separatorPrint = new javax.swing.JToolBar.Separator();
@@ -667,6 +680,18 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
             }
         });
         jToolBar1.add(btnAttach);
+
+        btnAddDoc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/add.png"))); // NOI18N
+        btnAddDoc.setText(bundle.getString("DocumentSearchPanel.btnAddDoc.text")); // NOI18N
+        btnAddDoc.setFocusable(false);
+        btnAddDoc.setName(bundle.getString("DocumentSearchPanel.btnAddDoc.name")); // NOI18N
+        btnAddDoc.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAddDoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddDocActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnAddDoc);
 
         btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/pencil.png"))); // NOI18N
         btnEdit.setText(bundle.getString("DocumentSearchPanel.btnEdit.text")); // NOI18N
@@ -1009,7 +1034,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
                 .addComponent(jLabel11)
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGap(0, 26, Short.MAX_VALUE))
             .addComponent(txtOwnerName)
         );
         jPanel15Layout.setVerticalGroup(
@@ -1039,7 +1064,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addComponent(jLabel12)
-                .addGap(0, 30, Short.MAX_VALUE))
+                .addGap(0, 45, Short.MAX_VALUE))
             .addComponent(txtDescription)
         );
         jPanel12Layout.setVerticalGroup(
@@ -1057,7 +1082,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1167,7 +1192,11 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
         fireViewSource();
     }//GEN-LAST:event_menuViewActionPerformed
 
+    private void btnAddDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddDocActionPerformed
+        fireAddSource();
+    }//GEN-LAST:event_btnAddDocActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddDoc;
     private javax.swing.JButton btnAttach;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDateFrom;
@@ -1221,7 +1250,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
     private javax.swing.JMenuItem menuSelect;
     private javax.swing.JMenuItem menuView;
     private javax.swing.JPopupMenu popUpSearchResults;
-    private org.sola.clients.beans.source.SourceSearchParamsBean searchParams;
+    protected org.sola.clients.beans.source.SourceSearchParamsBean searchParams;
     private org.sola.clients.beans.source.SourceSearchResultsListBean searchResultsList;
     private javax.swing.JToolBar.Separator separatorPrint;
     private org.sola.clients.beans.referencedata.SourceTypeListBean sourceTypesList;
