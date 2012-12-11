@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Surveyer Approval Report" pageWidth="595" pageHeight="421" orientation="Landscape" columnWidth="548" leftMargin="27" rightMargin="20" topMargin="24" bottomMargin="20" resourceBundle="org.sola.clients.reports.locale.Survey">
 	<property name="ireport.zoom" value="1.3310000000000022"/>
-	<property name="ireport.x" value="8"/>
-	<property name="ireport.y" value="130"/>
+	<property name="ireport.x" value="132"/>
+	<property name="ireport.y" value="638"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#006633"/>
@@ -80,6 +80,9 @@
 	<parameter name="agentContact" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="IS_PRODUCTION" class="java.lang.Boolean" isForPrompting="false">
+		<defaultValueExpression><![CDATA[false]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -140,7 +143,17 @@
 		<fieldDescription><![CDATA[status.displayValue]]></fieldDescription>
 	</field>
 	<background>
-		<band splitType="Stretch"/>
+		<band height="377" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="41" width="544" height="301">
+					<printWhenExpression><![CDATA[$P{IS_PRODUCTION}.equals( false )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="28"/>
+				</textElement>
+				<text><![CDATA[TRAINING REPORT]]></text>
+			</staticText>
+		</band>
 	</background>
 	<title>
 		<band height="102" splitType="Stretch">

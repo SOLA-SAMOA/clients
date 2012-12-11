@@ -45,6 +45,7 @@ import org.sola.clients.beans.source.SourceBean;
 import org.sola.clients.beans.source.SourceListBean;
 import org.sola.clients.reports.ReportManager;
 import org.sola.clients.swing.common.LafManager;
+import org.sola.clients.swing.common.LocalizationManager;
 import org.sola.clients.swing.common.tasks.SolaTask;
 import org.sola.clients.swing.common.tasks.TaskManager;
 import org.sola.clients.swing.desktop.MainForm;
@@ -509,7 +510,12 @@ public class PropertyPanel extends ContentPanel {
         // Samoa customization - Add any extra parent ba units from the selected BA Unit
         // e.g. The village information
         for (RelatedBaUnitInfoBean bean : selectedBaUnit.getParentBaUnits()) {
-            baUnitBean1.getParentBaUnits().addAsNew(bean);
+            RelatedBaUnitInfoBean relatedBuUnitTmp = new RelatedBaUnitInfoBean();
+            relatedBuUnitTmp.setBaUnitId(baUnitBean1.getId());
+            relatedBuUnitTmp.setBaUnitRelType(bean.getBaUnitRelType());
+            relatedBuUnitTmp.setRelatedBaUnitId(bean.getRelatedBaUnitId());
+            relatedBuUnitTmp.setRelatedBaUnit(bean.getRelatedBaUnit());
+            baUnitBean1.getParentBaUnits().addAsNew(relatedBuUnitTmp);
         }
 
         tabsMain.setSelectedIndex(tabsMain.indexOfComponent(pnlPriorProperties));
@@ -956,7 +962,8 @@ public class PropertyPanel extends ContentPanel {
                 // Refresh the details of the baUnit to make sure the latest details are used
                 BaUnitBean reportBean = getBaUnit(baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart());
                 reportBean.setCalculatedAreaSize(baUnitAreaBean1.getSize());
-                showReport(ReportManager.getBaUnitReport(reportBean, featureImageFileName));
+                showReport(ReportManager.getBaUnitReport(reportBean, featureImageFileName,
+                        LocalizationManager.isProductionVersion()));
                 return null;
             }
         };
@@ -976,7 +983,7 @@ public class PropertyPanel extends ContentPanel {
                 // Refresh the details of the baUnit to make sure the latest details are used
                 BaUnitBean reportBean = getBaUnit(baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart());
                 reportBean.setCalculatedAreaSize(baUnitAreaBean1.getSize());
-                showReport(ReportManager.getStaffSearchReport(reportBean));
+                showReport(ReportManager.getStaffSearchReport(reportBean, LocalizationManager.isProductionVersion()));
                 return null;
             }
         };
@@ -997,7 +1004,7 @@ public class PropertyPanel extends ContentPanel {
                 // Refresh the details of the baUnit to make sure the latest details are used
                 BaUnitBean reportBean = getBaUnit(baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart());
                 reportBean.setCalculatedAreaSize(baUnitAreaBean1.getSize());
-                showReport(ReportManager.getHistoricalSearchReport(reportBean));
+                showReport(ReportManager.getHistoricalSearchReport(reportBean, LocalizationManager.isProductionVersion()));
                 return null;
             }
         };

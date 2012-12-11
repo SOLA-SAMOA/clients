@@ -34,7 +34,8 @@ import org.sola.clients.beans.AbstractBindingBean;
 public class UnregisteredDealingBean extends AbstractBindingBean {
 
     public static final String NIL_DEALING = "Nil";
-    public static final String UNREGISTERED_DEALING_TEXT = "Unregistered Service";
+    public static final String UNREGISTERED_DEALING_TEXT = "Unregistered Dealings";
+     public static final String UNREGISTERED_SERVICE_TEXT = "Unregistered Service";
     private String baUnitId;
     private String appNr;
     private String appId;
@@ -83,10 +84,10 @@ public class UnregisteredDealingBean extends AbstractBindingBean {
     public String getNotation() {
         String result;
         if (NIL_DEALING.equals(pendingServices)) {
-            result = String.format("%ss - %s", UNREGISTERED_DEALING_TEXT,
+            result = String.format("%s - %s", UNREGISTERED_DEALING_TEXT,
                     NIL_DEALING);
         } else {
-            result = String.format("%s : %s %s", UNREGISTERED_DEALING_TEXT,
+            result = String.format("%s : %s %s", UNREGISTERED_SERVICE_TEXT,
                     pendingServices == null ? "" : pendingServices,
                     appNr == null ? "" : appNr).trim();
         }

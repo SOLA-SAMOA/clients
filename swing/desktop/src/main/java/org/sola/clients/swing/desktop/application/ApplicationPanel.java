@@ -56,6 +56,7 @@ import org.sola.clients.beans.unittitle.UnitParcelGroupBean;
 import org.sola.clients.beans.validation.ValidationResultBean;
 import org.sola.clients.reports.ReportManager;
 import org.sola.clients.swing.common.LafManager;
+import org.sola.clients.swing.common.LocalizationManager;
 import org.sola.clients.swing.common.controls.AutoCompletion;
 import org.sola.clients.swing.common.converters.BigDecimalMoneyConverter;
 import org.sola.clients.swing.common.tasks.SolaTask;
@@ -1100,7 +1101,8 @@ public class ApplicationPanel extends ContentPanel {
                 saveAppState();
 
                 if (applicationID == null || applicationID.equals("")) {
-                    showReport(ReportManager.getLodgementNoticeReport(appBean));
+                    showReport(ReportManager.getLodgementNoticeReport(appBean, 
+                            LocalizationManager.isProductionVersion()));
                     applicationID = appBean.getId();
                 }
                 firePropertyChange(APPLICATION_SAVED_PROPERTY, false, true);
@@ -3530,7 +3532,8 @@ public class ApplicationPanel extends ContentPanel {
                             // has a Cadastre Change (i.e. Record Plan) service. 
                             if (ApplicationActionTypeBean.APPROVE.equals(actionType)
                                     && appBean.hasService(RequestTypeBean.CODE_CADASTRE_CHANGE)) {
-                                showReport(ReportManager.getSurveyApproval(appBean));
+                                showReport(ReportManager.getSurveyApproval(appBean, 
+                                        LocalizationManager.isProductionVersion()));
 
                             }
                             saveAppState();

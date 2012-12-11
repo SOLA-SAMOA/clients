@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Application printing form" pageWidth="595" pageHeight="842" columnWidth="548" leftMargin="27" rightMargin="20" topMargin="24" bottomMargin="20" resourceBundle="org.sola.clients.reports.locale.LodgementReport">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="458"/>
+	<property name="ireport.y" value="1084"/>
 	<subDataset name="dataset2">
 		<field name="serviceName" class="java.lang.String">
 			<fieldDescription><![CDATA[requestType.displayValue]]></fieldDescription>
@@ -29,6 +29,9 @@
 	<parameter name="IMAGE_SPLASHNEW" class="java.io.InputStream" isForPrompting="false"/>
 	<parameter name="IMAGE_SCRITTA_GREEN" class="java.io.InputStream" isForPrompting="false"/>
 	<parameter name="WHICH_CALLER" class="java.lang.String"/>
+	<parameter name="IS_PRODUCTION" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[false]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -86,7 +89,17 @@
 		<fieldDescription><![CDATA[contactPerson.fullName]]></fieldDescription>
 	</field>
 	<background>
-		<band splitType="Stretch"/>
+		<band height="798" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="254" width="540" height="291">
+					<printWhenExpression><![CDATA[$P{IS_PRODUCTION}.equals( false )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="28"/>
+				</textElement>
+				<text><![CDATA[TRAINING REPORT]]></text>
+			</staticText>
+		</band>
 	</background>
 	<title>
 		<band height="135" splitType="Stretch">

@@ -26,7 +26,6 @@
 package org.sola.clients.reports;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,14 +33,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import org.sola.clients.beans.AbstractIdBean;
 
 import org.sola.clients.beans.administrative.BaUnitBean;
 import org.sola.clients.beans.application.*;
-import org.sola.clients.beans.party.PartyBean;
-import org.sola.clients.beans.party.PartySummaryBean;
 import org.sola.clients.beans.system.BrReportBean;
 import org.sola.clients.beans.security.SecurityBean;
 import org.sola.clients.beans.system.BrListBean;
@@ -58,11 +52,12 @@ public class ReportManager {
      *
      * @param appBean Application bean containing data for the report.
      */
-    public static JasperPrint getLodgementNoticeReport(ApplicationBean appBean) {
+    public static JasperPrint getLodgementNoticeReport(ApplicationBean appBean, boolean isProduction) {
         HashMap inputParameters = new HashMap();
         inputParameters.put("REPORT_LOCALE", Locale.getDefault());
         inputParameters.put("today", new Date());
         inputParameters.put("USER_NAME", SecurityBean.getCurrentUser().getFullUserName());
+         inputParameters.put("IS_PRODUCTION", isProduction);
         ApplicationBean[] beans = new ApplicationBean[1];
         beans[0] = appBean;
         JRDataSource jds = new JRBeanArrayDataSource(beans);
@@ -110,10 +105,12 @@ public class ReportManager {
      *
      * @param appBean Application bean containing data for the report.
      */
-    public static JasperPrint getBaUnitReport(BaUnitBean baUnitBean, String featureImageFileName) {
+    public static JasperPrint getBaUnitReport(BaUnitBean baUnitBean, String featureImageFileName,
+            boolean isProduction) {
         HashMap inputParameters = new HashMap();
         inputParameters.put("REPORT_LOCALE", Locale.getDefault());
         inputParameters.put("USER", SecurityBean.getCurrentUser().getFullUserName());
+        inputParameters.put("IS_PRODUCTION", isProduction);
         BaUnitBean[] beans = new BaUnitBean[1];
         beans[0] = baUnitBean;
         JRDataSource jds = new JRBeanArrayDataSource(beans);
@@ -129,16 +126,17 @@ public class ReportManager {
             return null;
         }
     }
-    
+
     /**
      * Generates and displays <b>Staff Search</b> report.
      *
      * @param appBean Application bean containing data for the report.
      */
-    public static JasperPrint getStaffSearchReport(BaUnitBean baUnitBean) {
+    public static JasperPrint getStaffSearchReport(BaUnitBean baUnitBean,boolean isProduction) {
         HashMap inputParameters = new HashMap();
         inputParameters.put("REPORT_LOCALE", Locale.getDefault());
         inputParameters.put("USER", SecurityBean.getCurrentUser().getFullUserName());
+         inputParameters.put("IS_PRODUCTION", isProduction);
         BaUnitBean[] beans = new BaUnitBean[1];
         beans[0] = baUnitBean;
         JRDataSource jds = new JRBeanArrayDataSource(beans);
@@ -154,16 +152,17 @@ public class ReportManager {
             return null;
         }
     }
-    
+
     /**
      * Generates and displays <b>Historical Search</b> report.
      *
      * @param appBean Application bean containing data for the report.
      */
-    public static JasperPrint getHistoricalSearchReport(BaUnitBean baUnitBean) {
+    public static JasperPrint getHistoricalSearchReport(BaUnitBean baUnitBean, boolean isProduction) {
         HashMap inputParameters = new HashMap();
         inputParameters.put("REPORT_LOCALE", Locale.getDefault());
         inputParameters.put("USER", SecurityBean.getCurrentUser().getFullUserName());
+         inputParameters.put("IS_PRODUCTION", isProduction);
         BaUnitBean[] beans = new BaUnitBean[1];
         beans[0] = baUnitBean;
         JRDataSource jds = new JRBeanArrayDataSource(beans);
@@ -316,8 +315,8 @@ public class ReportManager {
      * Generates and displays <b>SolaPrintReport</b> for the map.
      *
      * @param layoutId String This is the id of the report. It is used to identify the report file.
-     * @param dataBean Object containing data for the report. it can be replaced
-     * with appropriate bean if needed
+     * @param dataBean Object containing data for the report. it can be replaced with appropriate
+     * bean if needed
      * @param mapImageLocation String this is the location of the map to be passed as MAP_IMAGE
      * PARAMETER to the report. It is necessary for visualizing the map
      * @param scalebarImageLocation String this is the location of the scalebar to be passed as
@@ -336,7 +335,7 @@ public class ReportManager {
         inputParameters.put("NAVIGATOR_IMAGE",
                 ReportManager.class.getResourceAsStream(navigatorImage));
         inputParameters.put("LAYOUT", layoutId);
-        inputParameters.put("INPUT_DATE", 
+        inputParameters.put("INPUT_DATE",
                 DateFormat.getInstance().format(Calendar.getInstance().getTime()));
 
 
@@ -363,21 +362,23 @@ public class ReportManager {
     }
     //this is to generate the Survey Approval Report
     //
-     public static JasperPrint getSurveyApproval(ApplicationBean appBean) {
+
+    public static JasperPrint getSurveyApproval(ApplicationBean appBean, boolean isProduction) {
         HashMap inputParameters = new HashMap();
         inputParameters.put("REPORT_LOCALE", Locale.getDefault());
         inputParameters.put("today", new Date());
         inputParameters.put("USER_NAME", SecurityBean.getCurrentUser().getFullUserName());
+         inputParameters.put("IS_PRODUCTION", isProduction);
         ApplicationBean[] beans = new ApplicationBean[1];
         beans[0] = appBean;
         JRDataSource jds = new JRBeanArrayDataSource(beans);
-         inputParameters.put("IMAGE_SCRITTA_GREEN", ReportManager.class.getResourceAsStream("/images/sola/govSamoa.gif"));
-         inputParameters.put("WHICH_CALLER", "N");
+        inputParameters.put("IMAGE_SCRITTA_GREEN", ReportManager.class.getResourceAsStream("/images/sola/govSamoa.gif"));
+        inputParameters.put("WHICH_CALLER", "N");
         try {
             return JasperFillManager.fillReport(
                     ReportManager.class.getResourceAsStream("/reports/SurveyApproval.jasper"),
                     inputParameters, jds);
-            
+
         } catch (JRException ex) {
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
                     new Object[]{ex.getLocalizedMessage()});
