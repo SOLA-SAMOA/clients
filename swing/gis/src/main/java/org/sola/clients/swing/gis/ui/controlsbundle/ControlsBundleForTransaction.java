@@ -261,6 +261,7 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
                 this.getToolbar(), true);
 
         editSpatialUnitTool = new EditSpatialUnitTool(this.spatialUnitEditLayer);
+        // Set the snapping layers for the EditSpatialUnitTool
         editSpatialUnitTool.getTargetSnappingLayers().add(parcelsLayer);
         editSpatialUnitTool.getTargetSnappingLayers().add(hydroLayer);
         editSpatialUnitTool.getTargetSnappingLayers().add(roadLayer);
@@ -283,6 +284,8 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
         NewSpatialUnitRoadTool addRoadTool = new NewSpatialUnitRoadTool(this.spatialUnitEditLayer,
                 this.spatialUnitEditLayer.mapLayerToLevel(roadLayer.getLayerName()));
         addRoadTool.getTargetSnappingLayers().add(roadLayer);
+        // Ticket #70 - Allows the New Road tool to snap to the parcels layer
+        addRoadTool.getTargetSnappingLayers().add(parcelsLayer);
         this.getMap().addTool(addRoadTool, this.getToolbar(), true);
         this.setApplicationId(this.applicationBean.getId());
     }

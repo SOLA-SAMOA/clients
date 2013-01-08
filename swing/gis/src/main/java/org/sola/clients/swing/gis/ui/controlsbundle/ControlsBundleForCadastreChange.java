@@ -32,6 +32,7 @@ package org.sola.clients.swing.gis.ui.controlsbundle;
 import java.util.List;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swing.extended.exception.InitializeLayerException;
+import org.geotools.swing.tool.extended.ExtendedDrawToolWithSnapping;
 import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.swing.gis.beans.CadastreObjectTargetBean;
 import org.sola.clients.swing.gis.beans.TransactionCadastreChangeBean;
@@ -42,10 +43,7 @@ import org.sola.clients.swing.gis.layer.CadastreChangeTargetCadastreObjectLayer;
 import org.sola.clients.swing.gis.layer.SpatialUnitEditLayer;
 import org.sola.clients.swing.gis.mapaction.CadastreChangeNewCadastreObjectListFormShow;
 import org.sola.clients.swing.gis.mapaction.CadastreChangePointSurveyListFormShow;
-import org.sola.clients.swing.gis.tool.CadastreBoundarySelectTool;
-import org.sola.clients.swing.gis.tool.CadastreChangeNewCadastreObjectTool;
-import org.sola.clients.swing.gis.tool.CadastreChangeNodeTool;
-import org.sola.clients.swing.gis.tool.CadastreChangeSelectCadastreObjectTool;
+import org.sola.clients.swing.gis.tool.*;
 import org.sola.webservices.transferobjects.cadastre.CadastreObjectTO;
 
 /**
@@ -208,6 +206,17 @@ public final class ControlsBundleForCadastreChange extends ControlsBundleForTran
         // Allow the edit tool to snap to new points and new cadastre objects
         this.editSpatialUnitTool.getTargetSnappingLayers().add(1, newPointsLayer);
         this.editSpatialUnitTool.getTargetSnappingLayers().add(2, newCadastreObjectLayer);
+
+        // Ticket #70 - Allow the New Spatial Unit tools to snap to the new points and new 
+        // cadastre objects layers.  
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadTool.NAME)
+                .getAttachedTool()).getTargetSnappingLayers().add(1, newPointsLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadTool.NAME)
+                .getAttachedTool()).getTargetSnappingLayers().add(2, newCadastreObjectLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitHydroTool.NAME)
+                .getAttachedTool()).getTargetSnappingLayers().add(1, newPointsLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitHydroTool.NAME)
+                .getAttachedTool()).getTargetSnappingLayers().add(2, newCadastreObjectLayer);
     }
 
     @Override

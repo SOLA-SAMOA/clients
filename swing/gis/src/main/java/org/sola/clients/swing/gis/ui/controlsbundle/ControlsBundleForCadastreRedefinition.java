@@ -32,6 +32,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swing.extended.exception.InitializeLayerException;
 import org.geotools.swing.extended.util.GeometryUtility;
 import org.geotools.swing.mapaction.extended.ExtendedAction;
+import org.geotools.swing.tool.extended.ExtendedDrawToolWithSnapping;
 import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.swing.gis.beans.TransactionCadastreRedefinitionBean;
 import org.sola.clients.swing.gis.data.PojoDataAccess;
@@ -39,10 +40,7 @@ import org.sola.clients.swing.gis.layer.CadastreRedefinitionNodeLayer;
 import org.sola.clients.swing.gis.layer.CadastreRedefinitionObjectLayer;
 import org.sola.clients.swing.gis.layer.SpatialUnitEditLayer;
 import org.sola.clients.swing.gis.mapaction.CadastreRedefinitionReset;
-import org.sola.clients.swing.gis.tool.CadastreBoundarySelectTool;
-import org.sola.clients.swing.gis.tool.CadastreRedefinitionAddNodeTool;
-import org.sola.clients.swing.gis.tool.CadastreRedefinitionBoundarySelectTool;
-import org.sola.clients.swing.gis.tool.CadastreRedefinitionModifyNodeTool;
+import org.sola.clients.swing.gis.tool.*;
 import org.sola.webservices.transferobjects.cadastre.CadastreObjectTO;
 
 /**
@@ -140,9 +138,9 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
 
         this.spatialUnitEditLayer = new SpatialUnitEditLayer();
         this.getMap().addLayer(spatialUnitEditLayer);
-        
+
         this.getMap().moveSelectionLayer();
-        
+
     }
 
     @Override
@@ -169,6 +167,12 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
         super.addToolsAndCommands();
         this.cadastreBoundaryEditTool.setTargetLayer(cadastreObjectModifiedLayer);
         this.editSpatialUnitTool.getTargetSnappingLayers().add(1, cadastreObjectModifiedLayer);
+
+        // Ticket #70 - Allow the New Spatial Unit tools to snap to the modified cadastre object layer.  
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadTool.NAME).getAttachedTool())
+                .getTargetSnappingLayers().add(1, cadastreObjectModifiedLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitHydroTool.NAME).getAttachedTool())
+                .getTargetSnappingLayers().add(1, cadastreObjectModifiedLayer);
     }
 
     @Override
@@ -178,7 +182,7 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
         this.boundarySelectTool.setCadastreObjectType(targetCadastreObjectType);
     }
 
-        /**
+    /**
      * It resets the transaction. All modifications are wiped out.
      */
     public void reset() {
