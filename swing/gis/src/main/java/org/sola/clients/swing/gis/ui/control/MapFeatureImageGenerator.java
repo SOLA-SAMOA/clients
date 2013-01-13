@@ -40,7 +40,8 @@ import org.sola.common.logging.LogUtility;
 /**
  * Extends {@linkplain MapImageGenerator} to produce an image for one feature rather than all
  * features in the map. This generator does not need to display the map in order to generate the
- * image.
+ * image. AM Extended so that the target geometry can be drawn on an existing map so that other
+ * context details such as roads and abutting parcels can be included in the snapshot.
  *
  */
 public class MapFeatureImageGenerator extends MapImageGenerator {
@@ -55,23 +56,39 @@ public class MapFeatureImageGenerator extends MapImageGenerator {
             String.format("%s:String", LAYER_FIELD_LABEL);
     private static final String LAYER_NAME = "feature_image";
     private static final String LAYER_STYLE_RESOURCE = "samoa_feature_image.xml";
-    int imageHeightPixels = 425;
-    int imageWidthPixels = 425;
+    int imageHeightPixels = 400;
+    int imageWidthPixels = 400;
+    boolean newMap = true;
 
+    /**
+     * Used to render the target geometry only. This does not require a Map to be displayed to the
+     * user.
+     */
     public MapFeatureImageGenerator(int srid) throws InitializeMapException {
         super(new Map(srid));
         setDrawFrame(false);
     }
 
     /**
-     * Default image height is 425 pixels.
+     * Used to snapshot an existing map with the target geometry drawn on top. The getFeatureImage
+     * method will ensure the complete target geometry is displayed on the map for the snapshot.
+     */
+    public MapFeatureImageGenerator(Map map) throws InitializeMapException {
+        super(map);
+        setDrawText(false);
+        newMap = false;
+    }
+
+    /**
+     * Default image height is 400 pixels.
      */
     public int getImageHeightPixels() {
         return imageHeightPixels;
     }
 
     /**
-     * Used to control the height of the image generated.
+     * Used to control the height of the image generated. Not used if an existing map is used as
+     * the basis for the snapshot (i.e a map that is resizable by the user). 
      *
      * @param imageHeightPixels
      */
@@ -80,14 +97,15 @@ public class MapFeatureImageGenerator extends MapImageGenerator {
     }
 
     /**
-     * Default image width is 425 pixels.
+     * Default image width is 400 pixels.
      */
     public int getImageWidthPixels() {
         return imageWidthPixels;
     }
 
     /**
-     * Used to control the width of the image generated.
+     * Used to control the width of the image generated. Not used if an existing map is used as
+     * the basis for the snapshot (i.e a map that is resizable by the user). 
      *
      * @param imageWidthPixels
      */
@@ -96,7 +114,9 @@ public class MapFeatureImageGenerator extends MapImageGenerator {
     }
 
     /**
-     * Creates an image for the geometry feature with the label positioned in the middle.
+     * Creates an image for the geometry feature with the label positioned in the middle. When using 
+     * an existing map as the basis for the snapshot, this method will ensure the geom to be 
+     * drawn is displayed on the map. 
      *
      * @param geom The geometry to generate the image for
      * @param label The label to use in the image
@@ -108,33 +128,66 @@ public class MapFeatureImageGenerator extends MapImageGenerator {
         String result = null;
         try {
             if (geom != null) {
-                getMap().setSize(imageWidthPixels, imageHeightPixels);
-                // Create a layer that will be used to render the geometry
-                ExtendedLayerGraphics drawLayer = new ExtendedLayerGraphics(LAYER_NAME,
-                        Geometries.GEOMETRY, LAYER_STYLE_RESOURCE, LAYER_ATTRIBUTE_DEFINITION);
 
-                getMap().addLayer(drawLayer);
+                // Create a layer that will be used to render the geometry
+                ExtendedLayerGraphics drawLayer = (ExtendedLayerGraphics) getMap().getSolaLayers().get(LAYER_NAME);
+                if (drawLayer == null) {
+                    drawLayer = new ExtendedLayerGraphics(LAYER_NAME, Geometries.GEOMETRY,
+                            LAYER_STYLE_RESOURCE, LAYER_ATTRIBUTE_DEFINITION);
+                    drawLayer.setShowInToc(false);
+                    getMap().addLayer(drawLayer);
+                }
+
                 HashMap<String, Object> fields = new HashMap<String, Object>();
                 fields.put(LAYER_FIELD_LABEL, label);
                 SimpleFeature feature = drawLayer.addFeature("1", geom, fields, false);
 
-                // Zoom to the area of the new geometry. Buffer the shape by 1 unit to prevent
+                // Zoom to the area of the new geometry. Buffer the shape by 3 units to prevent
                 // any truncation of the image. 
                 ReferencedEnvelope boundsToZoom = JTS.toEnvelope((Geometry) feature.getDefaultGeometry());
-                boundsToZoom.expandBy(1);
-                getMap().setDisplayArea(boundsToZoom);
+                boundsToZoom.expandBy(3);
+
+                // Make sure the map is located over the target geometry and check to ensure the
+                // zoom scale is appropraite. 
+                ReferencedEnvelope tempZoom = getMap().getDisplayArea();
+                tempZoom.expandToInclude(boundsToZoom);
+                if (tempZoom.getArea() > boundsToZoom.getArea() * 30) {
+                    // The zoom scale is very large, focus the map on the target geometry and explicitly
+                    // set the map size. 
+                    tempZoom = boundsToZoom;
+                    getMap().setSize(imageHeightPixels, imageHeightPixels);
+                }
+                getMap().setDisplayArea(tempZoom);
+
+                // Allow the map up to 10 seconds to redraw before trying to take the 
+                // snapshot of map. Taking a snapshot before the map is redrawn causes 
+                // map drawing exceptions. 
+                int count = 0;
+                while (getMap().IsRendering() && count < 20) {
+                    Thread.sleep(500);
+                    count++;
+                }
 
                 // Generate the image using the bounding envelope of the parcel. 
-                result = getImageAsFileLocation(imageWidthPixels, boundsToZoom, imageFormat);
+                result = getImageAsFileLocation((int) getMap().getSize().getWidth(),
+                        tempZoom, imageFormat);
             }
         } catch (Exception ex) {
             LogUtility.log("Unable to generate feature image for " + label, ex);
             result = null;
         } finally {
-            if (getMap().getMapContent() != null) {
+
+            if (getMap().getMapContent() != null && newMap) {
                 // This is a temporary map, so dispose the map layers to avoid any memory leaks
                 getMap().getMapContent().dispose();
                 getMap().setMapContent(null);
+            } else if (!newMap) {
+                // This is a permanent map, so just remove the features from the temporary draw layer. 
+                ExtendedLayerGraphics drawLayer = (ExtendedLayerGraphics) getMap().getSolaLayers().get(LAYER_NAME);
+                if (drawLayer != null) {
+                    drawLayer.removeFeatures(true);
+                }
+                getMap().refresh();
             }
         }
         return result;

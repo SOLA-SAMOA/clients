@@ -28,12 +28,14 @@ package org.sola.clients.swing.desktop.administrative;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import net.sf.jasperreports.engine.JasperPrint;
 import org.geotools.swing.extended.exception.InitializeMapException;
+import org.geotools.swing.extended.util.MapImageGenerator;
 import org.sola.clients.beans.administrative.*;
 import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.beans.application.ApplicationServiceBean;
@@ -949,8 +951,16 @@ public class PropertyPanel extends ContentPanel {
                 String featureImageFileName = null;
                 if (baUnitBean1.getCadastreObjectList() != null && baUnitBean1.getCadastreObjectList().size() > 0) {
                     try {
-                        MapFeatureImageGenerator generator = new MapFeatureImageGenerator(
-                                PojoDataAccess.getInstance().getMapDefinition().getSrid());
+                        MapFeatureImageGenerator generator;
+                        if (mapControl != null) {
+                            // Use the map on the Property form as the basis for the snapshot.
+                            // This allows a user to setup the map before the snapshot is taken. 
+                            generator = new MapFeatureImageGenerator(mapControl.getMap());
+                        } else {
+                            // Create a new map to render the parcel geometry only. 
+                            generator = new MapFeatureImageGenerator(
+                                    PojoDataAccess.getInstance().getMapDefinition().getSrid());
+                        }
                         featureImageFileName = generator.getFeatureImage(
                                 baUnitBean1.getCadastreObjectList().get(0).getGeomPolygon(),
                                 baUnitBean1.getCadastreObjectList().get(0).getLabel(),

@@ -63,6 +63,7 @@ public class MapImageGenerator {
     private Color textColor = Color.RED;
     private Font textFont = new Font(Font.SANS_SERIF, Font.BOLD, 10);
     private boolean drawFrame = true;
+    private boolean drawText = true;
 
     /**
      * Constructor of the generator.
@@ -127,6 +128,24 @@ public class MapImageGenerator {
     }
 
     /**
+     * Indicates if the image will have the coordinate text drawn on the image. Only applicable if
+     * isDrawFrame = true;
+     */
+    public boolean isDrawText() {
+        return drawText;
+    }
+
+    /**
+     * When true, the coordinate text will be drawn on the image. If false, coordinate text will be
+     * omitted. Default true. Only applicable when isDrawFrame = true;
+     *
+     * @param drawText
+     */
+    public void setDrawText(boolean drawText) {
+        this.drawText = drawText;
+    }
+
+    /**
      * Returns the map control used as the source of image generation.
      *
      * @return
@@ -178,22 +197,23 @@ public class MapImageGenerator {
         if (isDrawFrame()) {
             graphics.setColor(Color.BLACK);
             graphics.drawRect(0, 0, imageWidth - 1, imageHeight - 1);
-            graphics.setFont(this.textFont);
-            graphics.setColor(this.textColor);
+            if (isDrawText()) {
+                graphics.setFont(this.textFont);
+                graphics.setColor(this.textColor);
 
-            this.drawText(graphics, String.format("%s N", (int) extent.getMaxY()),
-                    imageWidth / 2, 10, true);
-            this.drawText(graphics, String.format("%s N", (int) extent.getMinY()),
-                    imageWidth / 2, imageHeight - 3, true);
-            AffineTransform originalTransform = graphics.getTransform();
-            graphics.rotate(-Math.PI / 2, 10, imageHeight / 2);
-            this.drawText(graphics, String.format("%s E", (int) extent.getMinX()),
-                    10, imageHeight / 2, false);
-            graphics.setTransform(originalTransform);
-            graphics.rotate(Math.PI / 2, imageWidth - 10, imageHeight / 2);
-            this.drawText(graphics, String.format("%s E", (int) extent.getMaxX()),
-                    imageWidth - 100, imageHeight / 2, false);
-            graphics.setTransform(originalTransform);
+                this.drawText(graphics, String.format("%s N", (int) extent.getMaxY()),
+                        imageWidth / 2, 10, true);
+                this.drawText(graphics, String.format("%s N", (int) extent.getMinY()),
+                        imageWidth / 2, imageHeight - 3, true);
+                AffineTransform originalTransform = graphics.getTransform();
+                graphics.rotate(-Math.PI / 2, 10, imageHeight / 2);
+                this.drawText(graphics, String.format("%s E", (int) extent.getMinX()),
+                        10, imageHeight / 2, false);
+                graphics.setTransform(originalTransform);
+                graphics.rotate(Math.PI / 2, imageWidth - 10, imageHeight / 2);
+                this.drawText(graphics, String.format("%s E", (int) extent.getMaxX()),
+                        imageWidth - 100, imageHeight / 2, false);
+                graphics.setTransform(originalTransform);}
         } else {
             graphics.drawImage(bi, 0, 0, null);
         }
@@ -228,12 +248,13 @@ public class MapImageGenerator {
     }
 
     /**
-     * Generates an image using the specified extent and saves the image to an image file. 
+     * Generates an image using the specified extent and saves the image to an image file.
+     *
      * @param imageWidth The width of the image in pixels
      * @param extent The extent of the map window to use for the image
      * @param imageFormat The format of the image. Potential values can be jpg, png, bmp
      * @return The path and file name of the image file
-     * @throws IOException 
+     * @throws IOException
      */
     public String getImageAsFileLocation(int imageWidth, ReferencedEnvelope extent,
             String imageFormat) throws IOException {
