@@ -108,14 +108,8 @@
 		<field name="entityAction" class="org.sola.webservices.transferobjects.EntityAction">
 			<fieldDescription><![CDATA[entityAction]]></fieldDescription>
 		</field>
-		<field name="inProgress" class="java.lang.Integer">
-			<fieldDescription><![CDATA[inProgress]]></fieldDescription>
-		</field>
 		<field name="lodged" class="java.lang.Integer">
 			<fieldDescription><![CDATA[lodged]]></fieldDescription>
-		</field>
-		<field name="onRequisition" class="java.lang.Integer">
-			<fieldDescription><![CDATA[onRequisition]]></fieldDescription>
 		</field>
 		<field name="overdue" class="java.lang.Integer">
 			<fieldDescription><![CDATA[overdue]]></fieldDescription>
@@ -142,6 +136,18 @@
 			<fieldDescription><![CDATA[withdrawn]]></fieldDescription>
 		</field>
 		<field name="onRequisitionApplications" class="java.lang.String"/>
+		<field name="onRequisitionFrom" class="java.lang.Integer">
+			<fieldDescription><![CDATA[onRequisitionFrom]]></fieldDescription>
+		</field>
+		<field name="onRequisitionTo" class="java.lang.Integer">
+			<fieldDescription><![CDATA[onRequisitionTo]]></fieldDescription>
+		</field>
+		<field name="inProgressFrom" class="java.lang.Integer">
+			<fieldDescription><![CDATA[inProgressFrom]]></fieldDescription>
+		</field>
+		<field name="inProgressTo" class="java.lang.Integer">
+			<fieldDescription><![CDATA[inProgressTo]]></fieldDescription>
+		</field>
 	</subDataset>
 	<parameter name="FROMDATE" class="java.util.Date"/>
 	<parameter name="TODATE" class="java.util.Date"/>
@@ -266,13 +272,25 @@
 								<text><![CDATA[Type]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="30" rowSpan="1">
 							<textField isStretchWithOverflow="true">
 								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="220" height="20"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{serviceType}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="66">
+						<jr:columnHeader height="30" rowSpan="1"/>
+						<jr:detailCell height="30" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement x="0" y="0" width="66" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{inProgressFrom}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -286,7 +304,7 @@
 								<text><![CDATA[Lodged]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="30" rowSpan="1">
 							<textField isStretchWithOverflow="true">
 								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="95" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -306,7 +324,7 @@
 								<text><![CDATA[Registered]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="30" rowSpan="1">
 							<textField isStretchWithOverflow="true">
 								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="95" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -326,7 +344,7 @@
 								<text><![CDATA[Cancelled]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="30" rowSpan="1">
 							<textField isStretchWithOverflow="true">
 								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="95" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -346,7 +364,7 @@
 								<text><![CDATA[Withdrawn]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="30" rowSpan="1">
 							<textField isStretchWithOverflow="true">
 								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="95" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -373,7 +391,7 @@
 								<text><![CDATA[In Progress]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="30" rowSpan="1">
 							<textField isStretchWithOverflow="true">
 								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="95" height="20"/>
 								<box>
@@ -386,7 +404,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{inProgress}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{inProgressTo}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -400,13 +418,13 @@
 								<text><![CDATA[On Requisition]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="30" rowSpan="1">
 							<textField isStretchWithOverflow="true">
 								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="95" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{onRequisition}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{onRequisitionTo}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -468,7 +486,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="false"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{onRequisition}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{onRequisitionTo}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

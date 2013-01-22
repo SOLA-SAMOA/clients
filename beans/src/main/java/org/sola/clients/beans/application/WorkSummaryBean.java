@@ -35,13 +35,15 @@ public class WorkSummaryBean extends AbstractBindingBean {
 
     private String serviceType;
     private String serviceCategory;
+    private int inProgressFrom;
+    private int onRequisitionFrom;
     private int lodged;
     private int requisitioned;
     private int registered;
     private int cancelled;
     private int withdrawn;
-    private int inProgress;
-    private int onRequisition;
+    private int inProgressTo;
+    private int onRequisitionTo;
     private int overdue;
     private String overdueApplications;
     private String onRequisitionApplications;
@@ -58,28 +60,12 @@ public class WorkSummaryBean extends AbstractBindingBean {
         this.cancelled = cancelled;
     }
 
-    public int getInProgress() {
-        return inProgress;
-    }
-
-    public void setInProgress(int inProgress) {
-        this.inProgress = inProgress;
-    }
-
     public int getLodged() {
         return lodged;
     }
 
     public void setLodged(int lodged) {
         this.lodged = lodged;
-    }
-
-    public int getOnRequisition() {
-        return onRequisition;
-    }
-
-    public void setOnRequisition(int onRequisition) {
-        this.onRequisition = onRequisition;
     }
 
     public int getOverdue() {
@@ -146,6 +132,38 @@ public class WorkSummaryBean extends AbstractBindingBean {
         this.onRequisitionApplications = onRequisitionApplications;
     }
 
+    public int getInProgressFrom() {
+        return inProgressFrom;
+    }
+
+    public void setInProgressFrom(int inProgressFrom) {
+        this.inProgressFrom = inProgressFrom;
+    }
+
+    public int getInProgressTo() {
+        return inProgressTo;
+    }
+
+    public void setInProgressTo(int inProgressTo) {
+        this.inProgressTo = inProgressTo;
+    }
+
+    public int getOnRequisitionFrom() {
+        return onRequisitionFrom;
+    }
+
+    public void setOnRequisitionFrom(int onRequisitionFrom) {
+        this.onRequisitionFrom = onRequisitionFrom;
+    }
+
+    public int getOnRequisitionTo() {
+        return onRequisitionTo;
+    }
+
+    public void setOnRequisitionTo(int onRequisitionTo) {
+        this.onRequisitionTo = onRequisitionTo;
+    }
+    
     /**
      * Returns collection of {@link WorkSummaryBean} objects. This method is used by Jasper report
      * designer to extract properties of application bean to help design a report.

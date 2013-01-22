@@ -116,7 +116,7 @@ public class LodgementBean extends AbstractIdBean {
         }
 
         for (WorkSummaryBean bean : workSummaryList) {
-            if (bean.getOnRequisition() > 0) {
+            if (bean.getOnRequisitionTo() > 0) {
                 requisitionList.add(bean);
             }
         }
