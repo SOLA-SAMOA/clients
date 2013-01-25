@@ -1,28 +1,26 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO).
- * All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
+ * reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted
+ * provided that the following conditions are met:
  *
- *    1. Redistributions of source code must retain the above copyright notice,this list
- *       of conditions and the following disclaimer.
- *    2. Redistributions in binary form must reproduce the above copyright notice,this list
- *       of conditions and the following disclaimer in the documentation and/or other
- *       materials provided with the distribution.
- *    3. Neither the name of FAO nor the names of its contributors may be used to endorse or
- *       promote products derived from this software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
+ * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
+ * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+ * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.desktop.reports;
@@ -37,6 +35,8 @@ import org.sola.clients.beans.application.LodgementBean;
 import org.sola.clients.reports.ReportManager;
 import org.sola.clients.swing.common.controls.CalendarForm;
 import org.sola.clients.swing.desktop.ReportViewerForm;
+import org.sola.clients.swing.ui.renderers.FormattersFactory;
+import org.sola.common.DateUtility;
 import org.sola.common.messaging.ClientMessage;
 import org.sola.common.messaging.MessageUtility;
 
@@ -52,22 +52,29 @@ public class LodgementReportParamsForm extends javax.swing.JDialog {
     public LodgementReportParamsForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        txtFromDate.setFormatterFactory(FormattersFactory.getInstance().getDateFormatterFactory());
+        txtToDate.setFormatterFactory(FormattersFactory.getInstance().getDateFormatterFactory());
+
     }
 
-      private void showCalendar(JFormattedTextField dateField) {
+    private void showCalendar(JFormattedTextField dateField) {
         CalendarForm calendar = new CalendarForm(null, true, dateField);
+        // SOLA Samoa extension - do not allow reports to be generated before
+        // 1 DEC 2012 as the migrated data contains misleading information. 
+        calendar.setMinSelectableDate(DateUtility.createDate(2012, 12, 1));
         calendar.setVisible(true);
     }
-     private LodgementBean createLodgementBean() {
-    if (lodgementBean1 == null) {
+
+    private LodgementBean createLodgementBean() {
+        if (lodgementBean1 == null) {
             lodgementBean1 = new LodgementBean();
         }
         return lodgementBean1;
-     }
+    }
+
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT
+     * modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -250,47 +257,52 @@ public class LodgementReportParamsForm extends javax.swing.JDialog {
     private void btnShowCalendarToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowCalendarToActionPerformed
         showCalendar(txtToDate);
     }//GEN-LAST:event_btnShowCalendarToActionPerformed
-       /** Opens {@link ReportViewerForm} to display report.*/
+    /**
+     * Opens {@link ReportViewerForm} to display report.
+     */
     private void showReport(JasperPrint report) {
         ReportViewerForm form = new ReportViewerForm(report);
         form.setVisible(true);
         form.setAlwaysOnTop(true);
     }
     private void viewReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewReportActionPerformed
-         boolean dateFilled= false;
-         Date tmpFrom;
-         Date tmpTo;
-         if (txtFromDate.getValue()== null) {
-            MessageUtility.displayMessage(ClientMessage.CHECK_NOTNULL_DATEFROM );
-            dateFilled= false;
-            return;      
-          }else {        
-            tmpFrom = (Date)txtFromDate.getValue();
-            dateFilled= true;
+        boolean dateFilled = false;
+        Date tmpFrom;
+        Date tmpTo;
+        if (txtFromDate.getValue() == null) {
+            MessageUtility.displayMessage(ClientMessage.CHECK_NOTNULL_DATEFROM);
+            dateFilled = false;
+            return;
+        } else {
+            tmpFrom = (Date) txtFromDate.getValue();
+            dateFilled = true;
             searchParams.setFromDate(tmpFrom);
-          }
-          if (txtToDate.getValue() == null) {
-              MessageUtility.displayMessage(ClientMessage.CHECK_NOTNULL_DATETO);
-              dateFilled= true;
-              return;    
-          }else {   
-            tmpTo = (Date)txtToDate.getValue();
+        }
+        if (txtToDate.getValue() == null) {
+            MessageUtility.displayMessage(ClientMessage.CHECK_NOTNULL_DATETO);
+            dateFilled = true;
+            return;
+        } else {
+            tmpTo = (Date) txtToDate.getValue();
             searchParams.setToDate(tmpTo);
-          }  
-          
-          System.out.println(dateFilled);
-          System.out.println(txtFromDate.getValue());
-          System.out.println(txtToDate.getValue());
-           if (dateFilled) {  
+        }
+
+        Date minDate = DateUtility.createDate(2012, 12, 1);
+        if (minDate.after(tmpFrom) || minDate.after(tmpTo)) {
+            MessageUtility.displayMessage(ClientMessage.CHECK_LODGEMENT_STAT_REPORT_DATE);
+            return;
+        }
+
+        System.out.println(dateFilled);
+        System.out.println(txtFromDate.getValue());
+        System.out.println(txtToDate.getValue());
+        if (dateFilled) {
             //lodgementBean1.passParameter(searchParams);
             lodgementBean1.loadWorkSummary(searchParams);
-            showReport(ReportManager.getLodgementReport(lodgementBean1,tmpFrom,tmpTo));  
+            showReport(ReportManager.getLodgementReport(lodgementBean1, tmpFrom, tmpTo));
             this.dispose();
-           } 
+        }
     }//GEN-LAST:event_viewReportActionPerformed
-
-  
-   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnShowCalendarFrom;
     private javax.swing.JButton btnShowCalendarTo;
