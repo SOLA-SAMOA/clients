@@ -44,6 +44,7 @@ import org.geotools.swing.control.extended.Toc;
 import org.geotools.swing.extended.exception.InitializeMapException;
 import org.geotools.swing.extended.util.Messaging;
 import org.geotools.swing.mapaction.extended.FullExtent;
+import org.geotools.swing.mapaction.extended.KMLExportAction;
 import org.geotools.swing.tool.extended.ExtendedPan;
 import org.geotools.swing.tool.extended.ExtendedZoominTool;
 
@@ -138,6 +139,7 @@ public class ControlsBundle extends javax.swing.JPanel {
         this.getMap().addMapAction(
                 new org.geotools.swing.mapaction.extended.ZoomOutAction(this.getMap()),
                 this.mapToolbar, true);
+
         this.getMap().addTool(new ExtendedZoominTool(), this.mapToolbar, true);
         this.getMap().addTool(new ExtendedPan(), this.mapToolbar, true);
     }
@@ -160,7 +162,7 @@ public class ControlsBundle extends javax.swing.JPanel {
     }
 
     /**
-     * Returns the status bar for the control bundle. 
+     * Returns the status bar for the control bundle.
      */
     protected JMapStatusBar getStatusBar() {
         return statusBar;

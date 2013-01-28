@@ -36,6 +36,7 @@ import org.geotools.map.extended.layer.ExtendedLayer;
 import org.geotools.swing.extended.ControlsBundle;
 import org.geotools.swing.extended.exception.InitializeLayerException;
 import org.geotools.swing.extended.exception.InitializeMapException;
+import org.geotools.swing.mapaction.extended.KMLExportAction;
 import org.sola.clients.beans.security.SecurityBean;
 import org.sola.clients.swing.gis.Messaging;
 import org.sola.clients.swing.gis.data.PojoDataAccess;
@@ -105,7 +106,9 @@ public abstract class SolaControlsBundle extends ControlsBundle {
                 this.getMap().addMapAction(this.solaPrint, this.getToolbar(), true);
             }
 
-
+            if (SecurityBean.isInRole(RolesConstants.GIS_EXPORT_MAP)) {
+                this.getMap().addMapAction(new KMLExportAction(this.getMap()), this.getToolbar(), true);
+            }
             this.getMap().setFullExtent(
                     mapDefinition.getEast(),
                     mapDefinition.getWest(),

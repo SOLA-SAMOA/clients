@@ -821,6 +821,9 @@ public class ApplicationPanel extends ContentPanel {
                     }
                 };
                 TaskManager.getInstance().runTask(t);
+            } else if (requestType.equalsIgnoreCase(RequestTypeBean.CODE_NO_COORDINATE_PLAN)) {
+                // This service does not require any processing. Update the service to a status
+                // of started. 
             } else {
 
                 // Try to get BA Units, craeted through the service
@@ -1101,7 +1104,7 @@ public class ApplicationPanel extends ContentPanel {
                 saveAppState();
 
                 if (applicationID == null || applicationID.equals("")) {
-                    showReport(ReportManager.getLodgementNoticeReport(appBean, 
+                    showReport(ReportManager.getLodgementNoticeReport(appBean,
                             LocalizationManager.isProductionVersion()));
                     applicationID = appBean.getId();
                 }
@@ -3532,7 +3535,7 @@ public class ApplicationPanel extends ContentPanel {
                             // has a Cadastre Change (i.e. Record Plan) service. 
                             if (ApplicationActionTypeBean.APPROVE.equals(actionType)
                                     && appBean.hasService(RequestTypeBean.CODE_CADASTRE_CHANGE)) {
-                                showReport(ReportManager.getSurveyApproval(appBean, 
+                                showReport(ReportManager.getSurveyApproval(appBean,
                                         LocalizationManager.isProductionVersion()));
 
                             }

@@ -54,6 +54,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
@@ -805,5 +806,19 @@ public class Map extends JMapPane {
                 && selectionLayer.getFeatureCollection().size() > 0) {
             selectionLayer.removeFeatures(false);
         }
+    }
+
+    /**
+     * Retrieves the selected features from the selection layer.
+     */
+    public SimpleFeatureSource getSelectedFeatureSource() {
+        ExtendedLayerGraphics selectionLayer =
+                (ExtendedLayerGraphics) getSolaLayers().get(SELECTION_LAYER_NAME);
+        if (selectionLayer != null
+                && selectionLayer.getFeatureCollection().size() > 0) {
+            return selectionLayer.getFeatureSource();
+        }
+        return null;
+
     }
 }
