@@ -28,14 +28,16 @@ package org.sola.clients.swing.desktop.administrative;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.text.NumberFormatter;
 import net.sf.jasperreports.engine.JasperPrint;
 import org.geotools.swing.extended.exception.InitializeMapException;
-import org.geotools.swing.extended.util.MapImageGenerator;
 import org.sola.clients.beans.administrative.*;
 import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.beans.application.ApplicationServiceBean;
@@ -961,9 +963,31 @@ public class PropertyPanel extends ContentPanel {
                             generator = new MapFeatureImageGenerator(
                                     PojoDataAccess.getInstance().getMapDefinition().getSrid());
                         }
+
+                        String parcelLabel = baUnitBean1.getCadastreObjectList().get(0).getLabel();
+                        // Format the property area for display on the image. 
+                        if (baUnitAreaBean1 != null && baUnitAreaBean1.getSize() != null
+                                && BigDecimal.ZERO.compareTo(baUnitAreaBean1.getSize()) < 0) {
+                            NumberFormatter areaFormatter = new NumberFormatter(DecimalFormat.getNumberInstance());
+                            try {
+                                BigDecimal area = baUnitAreaBean1.getSize();
+                                if (area.compareTo(new BigDecimal("9999")) > 0) {
+                                    area = area.divide(new BigDecimal("10000"));
+                                    area.setScale(3, RoundingMode.DOWN);
+                                    parcelLabel = parcelLabel + System.lineSeparator()
+                                            + areaFormatter.valueToString(area) + "ha";
+                                } else {
+                                  parcelLabel = parcelLabel + System.lineSeparator()
+                                            + areaFormatter.valueToString(area)
+                                            + "m" + (char) 178; // Superscript 2
+                                }
+                            } catch (ParseException psex) {
+                            }
+                        }
+
                         featureImageFileName = generator.getFeatureImage(
                                 baUnitBean1.getCadastreObjectList().get(0).getGeomPolygon(),
-                                baUnitBean1.getCadastreObjectList().get(0).getLabel(),
+                                parcelLabel,
                                 MapFeatureImageGenerator.IMAGE_FORMAT_PNG);
                     } catch (InitializeMapException mapEx) {
                         LogUtility.log("Unable to initialize MapFeaureImageGenerator", mapEx);
