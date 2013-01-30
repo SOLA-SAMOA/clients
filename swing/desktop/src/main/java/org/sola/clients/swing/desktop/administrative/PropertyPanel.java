@@ -66,6 +66,7 @@ import org.sola.clients.swing.ui.renderers.LockCellRenderer;
 import org.sola.clients.swing.ui.renderers.SimpleComboBoxRenderer;
 import org.sola.clients.swing.ui.renderers.TableCellListRenderer;
 import org.sola.clients.swing.ui.source.DocumentsPanel;
+import org.sola.common.NumberUtility;
 import org.sola.common.RolesConstants;
 import org.sola.common.logging.LogUtility;
 import org.sola.common.messaging.ClientMessage;
@@ -965,29 +966,20 @@ public class PropertyPanel extends ContentPanel {
                         }
 
                         String parcelLabel = baUnitBean1.getCadastreObjectList().get(0).getLabel();
+                        // Area is not required in Samoa. 
+                        //String areaLabel = "";
                         // Format the property area for display on the image. 
-                        if (baUnitAreaBean1 != null && baUnitAreaBean1.getSize() != null
-                                && BigDecimal.ZERO.compareTo(baUnitAreaBean1.getSize()) < 0) {
-                            NumberFormatter areaFormatter = new NumberFormatter(DecimalFormat.getNumberInstance());
-                            try {
-                                BigDecimal area = baUnitAreaBean1.getSize();
-                                if (area.compareTo(new BigDecimal("9999")) > 0) {
-                                    area = area.divide(new BigDecimal("10000"));
-                                    area.setScale(3, RoundingMode.DOWN);
-                                    parcelLabel = parcelLabel + System.lineSeparator()
-                                            + areaFormatter.valueToString(area) + "ha";
-                                } else {
-                                  parcelLabel = parcelLabel + System.lineSeparator()
-                                            + areaFormatter.valueToString(area)
-                                            + "m" + (char) 178; // Superscript 2
-                                }
-                            } catch (ParseException psex) {
-                            }
-                        }
+//                        if (baUnitAreaBean1 != null) {
+//                            String areaMetric = NumberUtility.formatAreaMetric(baUnitAreaBean1.getSize());
+//                            String areaImperial = NumberUtility.formatAreaImperial(baUnitAreaBean1.getSize());
+//                            if (areaMetric != null) {
+//                                areaLabel = areaMetric + System.lineSeparator() + "(" + areaImperial + ")";
+//                            }
+//                        }
 
                         featureImageFileName = generator.getFeatureImage(
                                 baUnitBean1.getCadastreObjectList().get(0).getGeomPolygon(),
-                                parcelLabel,
+                                parcelLabel, null,
                                 MapFeatureImageGenerator.IMAGE_FORMAT_PNG);
                     } catch (InitializeMapException mapEx) {
                         LogUtility.log("Unable to initialize MapFeaureImageGenerator", mapEx);

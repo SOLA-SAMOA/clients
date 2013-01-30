@@ -47,13 +47,14 @@ import org.sola.common.logging.LogUtility;
 public class MapFeatureImageGenerator extends MapImageGenerator {
 
     private static final String LAYER_FIELD_LABEL = "label";
+    private static final String LAYER_FIELD_MINOR_LABEL = "minorLabel";
     /*
      * Defines the additional attributes for the layer. The format of this string is <field
      * name>:<data type>. Note that empty string (i.e. "") can be used to indicate the type as
      * string, but specifying the data type is easier to maintain.
      */
     private static final String LAYER_ATTRIBUTE_DEFINITION =
-            String.format("%s:String", LAYER_FIELD_LABEL);
+            String.format("%s:String,%s:String", LAYER_FIELD_LABEL, LAYER_FIELD_MINOR_LABEL);
     private static final String LAYER_NAME = "feature_image";
     private static final String LAYER_STYLE_RESOURCE = "samoa_feature_image.xml";
     int imageHeightPixels = 400;
@@ -87,8 +88,8 @@ public class MapFeatureImageGenerator extends MapImageGenerator {
     }
 
     /**
-     * Used to control the height of the image generated. Not used if an existing map is used as
-     * the basis for the snapshot (i.e a map that is resizable by the user). 
+     * Used to control the height of the image generated. Not used if an existing map is used as the
+     * basis for the snapshot (i.e a map that is resizable by the user).
      *
      * @param imageHeightPixels
      */
@@ -104,8 +105,8 @@ public class MapFeatureImageGenerator extends MapImageGenerator {
     }
 
     /**
-     * Used to control the width of the image generated. Not used if an existing map is used as
-     * the basis for the snapshot (i.e a map that is resizable by the user). 
+     * Used to control the width of the image generated. Not used if an existing map is used as the
+     * basis for the snapshot (i.e a map that is resizable by the user).
      *
      * @param imageWidthPixels
      */
@@ -114,9 +115,9 @@ public class MapFeatureImageGenerator extends MapImageGenerator {
     }
 
     /**
-     * Creates an image for the geometry feature with the label positioned in the middle. When using 
-     * an existing map as the basis for the snapshot, this method will ensure the geom to be 
-     * drawn is displayed on the map. 
+     * Creates an image for the geometry feature with the label positioned in the middle. When using
+     * an existing map as the basis for the snapshot, this method will ensure the geom to be drawn
+     * is displayed on the map.
      *
      * @param geom The geometry to generate the image for
      * @param label The label to use in the image
@@ -124,7 +125,7 @@ public class MapFeatureImageGenerator extends MapImageGenerator {
      * @return The path and file name location of the new image file or null if the image could not
      * be generated.
      */
-    public String getFeatureImage(byte[] geom, String label, String imageFormat) {
+    public String getFeatureImage(byte[] geom, String label, String minorLabel, String imageFormat) {
         String result = null;
         try {
             if (geom != null) {
@@ -140,12 +141,15 @@ public class MapFeatureImageGenerator extends MapImageGenerator {
 
                 HashMap<String, Object> fields = new HashMap<String, Object>();
                 fields.put(LAYER_FIELD_LABEL, label);
+                if (minorLabel != null) {
+                    fields.put(LAYER_FIELD_MINOR_LABEL, minorLabel);
+                }
                 SimpleFeature feature = drawLayer.addFeature("1", geom, fields, false);
 
-                // Zoom to the area of the new geometry. Buffer the shape by 3 units to prevent
-                // any truncation of the image. 
+                // Zoom to the area of the new geometry. Buffer the shape by 50 units to prevent
+                // any truncation of the image and show some location context
                 ReferencedEnvelope boundsToZoom = JTS.toEnvelope((Geometry) feature.getDefaultGeometry());
-                boundsToZoom.expandBy(3);
+                boundsToZoom.expandBy(50);
 
                 // Make sure the map is located over the target geometry and check to ensure the
                 // zoom scale is appropraite. 

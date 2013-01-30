@@ -8,6 +8,10 @@
         <sld:Rule>
             <sld:Name>All scales</sld:Name>
             <sld:PolygonSymbolizer>
+                <Fill>
+                    <CssParameter name="fill">#0000FF</CssParameter>
+                    <CssParameter name="opacity">0.2</CssParameter>
+                </Fill>
                 <sld:Stroke>
                     <sld:CssParameter name="stroke">#000000</sld:CssParameter>
                     <sld:CssParameter name="stroke-width">3.0</sld:CssParameter>
@@ -31,7 +35,7 @@
                         </sld:AnchorPoint>
                         <sld:Displacement>
                             <sld:DisplacementX>0.0</sld:DisplacementX>
-                            <sld:DisplacementY>0.0</sld:DisplacementY>
+                            <sld:DisplacementY>6.0</sld:DisplacementY>
                         </sld:Displacement>
                     </sld:PointPlacement>
                 </sld:LabelPlacement>
@@ -46,6 +50,33 @@
                     <sld:CssParameter name="fill">#000000</sld:CssParameter>
                 </sld:Fill-->
                  <!-- Controls how much of the label needs to overlap the ploygon -->
+                <sld:VendorOption name="goodnessOfFit">0.25</sld:VendorOption>
+                <!-- Controls basic splining of the label for a better fit on the polygon-->
+                <sld:VendorOption name="polygonAlign">mbr</sld:VendorOption>
+            </sld:TextSymbolizer>
+            <sld:TextSymbolizer>
+                <sld:Label>
+                    <ogc:PropertyName>minorLabel</ogc:PropertyName>
+                </sld:Label>
+                <sld:Font>
+                    <sld:CssParameter name="font-family">Arial</sld:CssParameter>
+                    <sld:CssParameter name="font-size">11.0</sld:CssParameter>
+                    <sld:CssParameter name="font-style">normal</sld:CssParameter>
+                    <sld:CssParameter name="font-weight">normal</sld:CssParameter>
+                </sld:Font>
+                <sld:LabelPlacement>
+                    <sld:PointPlacement>
+                        <sld:AnchorPoint>
+                            <sld:AnchorPointX>0.5</sld:AnchorPointX>
+                            <sld:AnchorPointY>0.5</sld:AnchorPointY>
+                        </sld:AnchorPoint>
+                        <sld:Displacement>
+                            <sld:DisplacementX>0.0</sld:DisplacementX>
+                            <sld:DisplacementY>-24.0</sld:DisplacementY>
+                        </sld:Displacement>
+                    </sld:PointPlacement>
+                </sld:LabelPlacement>
+                <!-- Controls how much of the label needs to overlap the ploygon -->
                 <sld:VendorOption name="goodnessOfFit">0.25</sld:VendorOption>
                 <!-- Controls basic splining of the label for a better fit on the polygon-->
                 <sld:VendorOption name="polygonAlign">mbr</sld:VendorOption>
