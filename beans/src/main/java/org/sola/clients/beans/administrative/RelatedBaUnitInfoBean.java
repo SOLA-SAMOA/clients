@@ -27,7 +27,9 @@
  */
 package org.sola.clients.beans.administrative;
 
+import javax.validation.Valid;
 import org.sola.clients.beans.AbstractVersionedBean;
+import org.sola.clients.beans.administrative.validation.RelatedBaUnitCheck;
 import org.sola.clients.beans.cache.CacheManager;
 import org.sola.clients.beans.referencedata.BaUnitRelTypeBean;
 import org.sola.webservices.transferobjects.administrative.RelatedBaUnitInfoTO;
@@ -36,6 +38,7 @@ import org.sola.webservices.transferobjects.administrative.RelatedBaUnitInfoTO;
  * Contains properties and methods to manage <b>required_relationship_baunit</b> 
  * object of the domain model. Could be populated from the {@link RelatedBaUnitInfoTO} object.
  */
+@RelatedBaUnitCheck
 public class RelatedBaUnitInfoBean extends AbstractVersionedBean {
     public static final String RELATION_CODE_PROPERTY = "relationCode";
     public static final String BA_UNIT_REL_TYPE_PROPERTY = "baUnitRelType";

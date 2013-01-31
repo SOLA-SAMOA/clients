@@ -33,6 +33,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import javax.validation.Valid;
 import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.observablecollections.ObservableList;
 import org.jdesktop.observablecollections.ObservableListListener;
@@ -192,7 +193,9 @@ public class BaUnitBean extends BaUnitSummaryBean {
     private SolaObservableList<BaUnitNotationBean> allBaUnitNotationList;
     private SolaList<SourceBean> sourceList;
     private SolaObservableList<RrrShareWithStatus> rrrSharesList;
+    @Valid
     private SolaList<RelatedBaUnitInfoBean> childBaUnits;
+    @Valid
     private SolaList<RelatedBaUnitInfoBean> parentBaUnits;
     private SolaList<BaUnitAreaBean> baUnitAreaList;
     private ObservableList<BaUnitNotationBean> baUnitCurrentNotationList;
@@ -884,7 +887,6 @@ public class BaUnitBean extends BaUnitSummaryBean {
      */
     public List<PartySummaryBean> getCurrentOwnersList() {
         List<PartySummaryBean> result = new ArrayList<PartySummaryBean>();
-        boolean jointTenant;
         boolean commonTenant;
         boolean lifeEstate = false;
 
@@ -911,14 +913,24 @@ public class BaUnitBean extends BaUnitSummaryBean {
         } else {
             commonTenant = shares.size() > 1;
             for (RrrShareBean share : shares) {
-                jointTenant = share.getFilteredRightHolderList().size() > 1;
+                int numOwners = share.getFilteredRightHolderList().size();
+                int tmpCount = 1;
+                String ownerNames = "";
                 for (PartySummaryBean bean : share.getFilteredRightHolderList()) {
-                    PartySummaryBean rightHolder = new PartySummaryBean();
-                    // Format the text to display for the owner based on their share holding
-                    rightHolder.setName(formatOwnerName(bean.getFullName(),
-                            share.getShare(), jointTenant, commonTenant, lifeEstate));
-                    result.add(rightHolder);
+                    if (tmpCount == 1) {
+                        ownerNames = bean.getFullName();
+                    } else if (tmpCount > 1 && numOwners != tmpCount) {
+                        ownerNames = ownerNames + ", " + bean.getFullName();
+                    } else {
+                        ownerNames = ownerNames + " and " + bean.getFullName();
+                    }
+                    tmpCount++;
                 }
+                PartySummaryBean rightHolder = new PartySummaryBean();
+                // Format the text to display for the owner based on their share holding
+                rightHolder.setName(formatOwnerName(ownerNames,
+                        share.getShare(), numOwners > 1, commonTenant, lifeEstate));
+                result.add(rightHolder);
             }
 
         }
@@ -937,13 +949,13 @@ public class BaUnitBean extends BaUnitSummaryBean {
             boolean commonTenant, boolean lifeEstate) {
         String result = name;
         if (jointTenant && !commonTenant) {
-            result = result + " as a joint tenant";
+            result = result + " as joint tenants";
         }
         if (!jointTenant && commonTenant) {
             result = result + " as to a " + share + " share as a tenant in common";
         }
         if (jointTenant && commonTenant) {
-            result = result + " as a joint tenant as to a " + share + " share as a tenant in common";
+            result = result + " as joint tenants as to a " + share + " share as a tenant in common";
         }
         if (lifeEstate) {
             result = result + " of an estate in remainder";
