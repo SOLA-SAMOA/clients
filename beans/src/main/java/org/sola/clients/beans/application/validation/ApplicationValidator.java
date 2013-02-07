@@ -201,7 +201,7 @@ public class ApplicationValidator implements ConstraintValidator<ApplicationChec
         boolean isValid = false;
 
         //Initialize reg ex for phone number. 
-        String expression = "[0-9\\s]*+$";
+        String expression = "[0-9\\s-()]*+$";
         CharSequence inputStr = phoneNumber;
         Pattern pattern = Pattern.compile(expression);
         Matcher matcher = pattern.matcher(inputStr);
