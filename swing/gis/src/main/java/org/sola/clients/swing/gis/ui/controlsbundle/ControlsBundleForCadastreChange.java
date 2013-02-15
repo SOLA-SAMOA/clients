@@ -209,14 +209,10 @@ public final class ControlsBundleForCadastreChange extends ControlsBundleForTran
 
         // Ticket #70 - Allow the New Spatial Unit tools to snap to the new points and new 
         // cadastre objects layers.  
-        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadTool.NAME)
-                .getAttachedTool()).getTargetSnappingLayers().add(1, newPointsLayer);
-        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadTool.NAME)
-                .getAttachedTool()).getTargetSnappingLayers().add(2, newCadastreObjectLayer);
-        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitHydroTool.NAME)
-                .getAttachedTool()).getTargetSnappingLayers().add(1, newPointsLayer);
-        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitHydroTool.NAME)
-                .getAttachedTool()).getTargetSnappingLayers().add(2, newCadastreObjectLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadTool.NAME).getAttachedTool()).getTargetSnappingLayers().add(1, newPointsLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadTool.NAME).getAttachedTool()).getTargetSnappingLayers().add(2, newCadastreObjectLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitHydroTool.NAME).getAttachedTool()).getTargetSnappingLayers().add(1, newPointsLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitHydroTool.NAME).getAttachedTool()).getTargetSnappingLayers().add(2, newCadastreObjectLayer);
     }
 
     @Override
@@ -248,10 +244,13 @@ public final class ControlsBundleForCadastreChange extends ControlsBundleForTran
         List<CadastreObjectTO> cadastreObjects =
                 this.getPojoDataAccess().getCadastreService().getCadastreObjectsByBaUnit(baUnitId);
         for (CadastreObjectTO cadastreObjectTo : cadastreObjects) {
-            CadastreObjectTargetBean bean = new CadastreObjectTargetBean();
-            bean.setCadastreObjectId(cadastreObjectTo.getId());
-            bean.setGeomPolygonCurrent(cadastreObjectTo.getGeomPolygon());
-            this.targetParcelsLayer.getBeanList().add(bean);
+            // Samoa #77 Error when opening Record Plan Service
+            if (cadastreObjectTo.getGeomPolygon() != null) {
+                CadastreObjectTargetBean bean = new CadastreObjectTargetBean();
+                bean.setCadastreObjectId(cadastreObjectTo.getId());
+                bean.setGeomPolygonCurrent(cadastreObjectTo.getGeomPolygon());
+                this.targetParcelsLayer.getBeanList().add(bean);
+            }
         }
     }
 }
