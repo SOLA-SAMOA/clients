@@ -31,6 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.logging.Level;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
 
@@ -39,6 +40,7 @@ import org.sola.clients.beans.application.*;
 import org.sola.clients.beans.system.BrReportBean;
 import org.sola.clients.beans.security.SecurityBean;
 import org.sola.clients.beans.system.BrListBean;
+import org.sola.common.logging.LogUtility;
 import org.sola.common.messaging.ClientMessage;
 import org.sola.common.messaging.MessageUtility;
 
@@ -57,7 +59,7 @@ public class ReportManager {
         inputParameters.put("REPORT_LOCALE", Locale.getDefault());
         inputParameters.put("today", new Date());
         inputParameters.put("USER_NAME", SecurityBean.getCurrentUser().getFullUserName());
-         inputParameters.put("IS_PRODUCTION", isProduction);
+        inputParameters.put("IS_PRODUCTION", isProduction);
         ApplicationBean[] beans = new ApplicationBean[1];
         beans[0] = appBean;
         JRDataSource jds = new JRBeanArrayDataSource(beans);
@@ -69,6 +71,7 @@ public class ReportManager {
                     ReportManager.class.getResourceAsStream("/reports/ApplicationPrintingForm.jasper"),
                     inputParameters, jds);
         } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
                     new Object[]{ex.getLocalizedMessage()});
             return null;
@@ -94,6 +97,7 @@ public class ReportManager {
                     ReportManager.class.getResourceAsStream("/reports/ApplicationStatusReport.jasper"),
                     inputParameters, jds);
         } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
                     new Object[]{ex.getLocalizedMessage()});
             return null;
@@ -121,6 +125,7 @@ public class ReportManager {
                     ReportManager.class.getResourceAsStream("/reports/BaUnitReport.jasper"),
                     inputParameters, jds);
         } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
                     new Object[]{ex.getLocalizedMessage()});
             return null;
@@ -132,11 +137,11 @@ public class ReportManager {
      *
      * @param appBean Application bean containing data for the report.
      */
-    public static JasperPrint getStaffSearchReport(BaUnitBean baUnitBean,boolean isProduction) {
+    public static JasperPrint getStaffSearchReport(BaUnitBean baUnitBean, boolean isProduction) {
         HashMap inputParameters = new HashMap();
         inputParameters.put("REPORT_LOCALE", Locale.getDefault());
         inputParameters.put("USER", SecurityBean.getCurrentUser().getFullUserName());
-         inputParameters.put("IS_PRODUCTION", isProduction);
+        inputParameters.put("IS_PRODUCTION", isProduction);
         BaUnitBean[] beans = new BaUnitBean[1];
         beans[0] = baUnitBean;
         JRDataSource jds = new JRBeanArrayDataSource(beans);
@@ -147,6 +152,7 @@ public class ReportManager {
                     ReportManager.class.getResourceAsStream("/reports/StaffSearch.jasper"),
                     inputParameters, jds);
         } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
                     new Object[]{ex.getLocalizedMessage()});
             return null;
@@ -162,7 +168,7 @@ public class ReportManager {
         HashMap inputParameters = new HashMap();
         inputParameters.put("REPORT_LOCALE", Locale.getDefault());
         inputParameters.put("USER", SecurityBean.getCurrentUser().getFullUserName());
-         inputParameters.put("IS_PRODUCTION", isProduction);
+        inputParameters.put("IS_PRODUCTION", isProduction);
         BaUnitBean[] beans = new BaUnitBean[1];
         beans[0] = baUnitBean;
         JRDataSource jds = new JRBeanArrayDataSource(beans);
@@ -172,6 +178,7 @@ public class ReportManager {
                     ReportManager.class.getResourceAsStream("/reports/HistoricalSearch.jasper"),
                     inputParameters, jds);
         } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
                     new Object[]{ex.getLocalizedMessage()});
             return null;
@@ -198,6 +205,7 @@ public class ReportManager {
             return JasperFillManager.fillReport(
                     ReportManager.class.getResourceAsStream("/reports/ApplicationPrintingForm.jasper"), inputParameters, jds);
         } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
                     new Object[]{ex.getLocalizedMessage()});
             return null;
@@ -249,6 +257,7 @@ public class ReportManager {
             return JasperFillManager.fillReport(
                     ReportManager.class.getResourceAsStream("/reports/BrReport.jasper"), inputParameters, jds);
         } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
                     new Object[]{ex.getLocalizedMessage()});
             return null;
@@ -276,6 +285,7 @@ public class ReportManager {
             return JasperFillManager.fillReport(
                     ReportManager.class.getResourceAsStream("/reports/BrValidaction.jasper"), inputParameters, jds);
         } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
                     new Object[]{ex.getLocalizedMessage()});
             return null;
@@ -305,6 +315,7 @@ public class ReportManager {
                     ReportManager.class.getResourceAsStream("/reports/LodgementReportSamoa.jasper"),
                     inputParameters, jds);
         } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
                     new Object[]{ex.getLocalizedMessage()});
             return null;
@@ -355,6 +366,7 @@ public class ReportManager {
                     "/reports/map/" + layoutId + ".jasper"), inputParameters, jds);
             return jasperPrint;
         } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
                     new Object[]{ex.getLocalizedMessage()});
             return null;
@@ -368,7 +380,7 @@ public class ReportManager {
         inputParameters.put("REPORT_LOCALE", Locale.getDefault());
         inputParameters.put("today", new Date());
         inputParameters.put("USER_NAME", SecurityBean.getCurrentUser().getFullUserName());
-         inputParameters.put("IS_PRODUCTION", isProduction);
+        inputParameters.put("IS_PRODUCTION", isProduction);
         ApplicationBean[] beans = new ApplicationBean[1];
         beans[0] = appBean;
         JRDataSource jds = new JRBeanArrayDataSource(beans);
@@ -380,6 +392,7 @@ public class ReportManager {
                     inputParameters, jds);
 
         } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
                     new Object[]{ex.getLocalizedMessage()});
             return null;

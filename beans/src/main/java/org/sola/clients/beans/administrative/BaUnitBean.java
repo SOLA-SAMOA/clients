@@ -152,7 +152,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
         @Override
         public void listElementReplaced(ObservableList ol, int i, Object o) {
             int index = allBaUnitNotationList.indexOf(getNotation(o));
-            if (index > -1) {
+            // Samoa #75 Error on Computer Folio Certificate
+            if (index > -1 && getNotation(ol.get(i)) != null) {
                 allBaUnitNotationList.set(index, getNotation(ol.get(i)));
             }
         }
