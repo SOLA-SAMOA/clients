@@ -204,15 +204,16 @@ public final class ControlsBundleForCadastreChange extends ControlsBundleForTran
         this.cadastreBoundaryEditTool.setTargetLayer(this.newCadastreObjectLayer);
         this.cadastreBoundaryEditTool.getTargetSnappingLayers().add(this.targetParcelsLayer);
         // Allow the edit tool to snap to new points and new cadastre objects
-        this.editSpatialUnitTool.getTargetSnappingLayers().add(1, newPointsLayer);
-        this.editSpatialUnitTool.getTargetSnappingLayers().add(2, newCadastreObjectLayer);
+        this.editSpatialUnitTool.getTargetSnappingLayers().add(0, newPointsLayer);
+        this.editSpatialUnitTool.getTargetSnappingLayers().add(1, newCadastreObjectLayer);
 
         // Ticket #70 - Allow the New Spatial Unit tools to snap to the new points and new 
         // cadastre objects layers.  
-        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadTool.NAME).getAttachedTool()).getTargetSnappingLayers().add(1, newPointsLayer);
-        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadTool.NAME).getAttachedTool()).getTargetSnappingLayers().add(2, newCadastreObjectLayer);
-        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitHydroTool.NAME).getAttachedTool()).getTargetSnappingLayers().add(1, newPointsLayer);
-        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitHydroTool.NAME).getAttachedTool()).getTargetSnappingLayers().add(2, newCadastreObjectLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadTool.NAME).getAttachedTool()).getTargetSnappingLayers().add(0, newPointsLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadTool.NAME).getAttachedTool()).getTargetSnappingLayers().add(1, newCadastreObjectLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitHydroTool.NAME).getAttachedTool()).getTargetSnappingLayers().add(0, newPointsLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitHydroTool.NAME).getAttachedTool()).getTargetSnappingLayers().add(1, newCadastreObjectLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadCLTool.NAME).getAttachedTool()).getTargetSnappingLayers().add(0, newCadastreObjectLayer);
     }
 
     @Override

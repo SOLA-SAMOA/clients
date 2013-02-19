@@ -248,7 +248,7 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
         Coordinate coordinate = null;
         ReferencedEnvelope bbox = new ReferencedEnvelope(search, null);
         for (ExtendedFeatureLayer targetLayer : this.targetSnappingLayers) {
-            if (!targetLayer.isVisible()) {
+            if (!targetLayer.isVisible() || coordinate != null) {
                 continue;
             }
             FeatureCollection featuresFound = targetLayer.getFeaturesInRange(
@@ -280,7 +280,7 @@ public abstract class ExtendedDrawToolWithSnapping extends ExtendedDrawTool {
                     double currentDistance = currentCoordinate.distance(mouseCoordinate);
                     if (currentDistance < distance) {
                         distance = currentDistance;
-                        coordinate = currentCoordinate;
+                        coordinate = currentCoordinate; 
                     }
                 }
             }

@@ -166,13 +166,15 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
         this.getMap().addTool(this.boundarySelectTool, this.getToolbar(), true);
         super.addToolsAndCommands();
         this.cadastreBoundaryEditTool.setTargetLayer(cadastreObjectModifiedLayer);
-        this.editSpatialUnitTool.getTargetSnappingLayers().add(1, cadastreObjectModifiedLayer);
+        this.editSpatialUnitTool.getTargetSnappingLayers().add(0, cadastreObjectModifiedLayer);
 
         // Ticket #70 - Allow the New Spatial Unit tools to snap to the modified cadastre object layer.  
         ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadTool.NAME).getAttachedTool())
-                .getTargetSnappingLayers().add(1, cadastreObjectModifiedLayer);
+                .getTargetSnappingLayers().add(0, cadastreObjectModifiedLayer);
         ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitHydroTool.NAME).getAttachedTool())
-                .getTargetSnappingLayers().add(1, cadastreObjectModifiedLayer);
+                .getTargetSnappingLayers().add(0, cadastreObjectModifiedLayer);
+        ((ExtendedDrawToolWithSnapping) this.getMap().getMapActionByName(NewSpatialUnitRoadCLTool.NAME).getAttachedTool())
+                .getTargetSnappingLayers().add(0, cadastreObjectModifiedLayer);
     }
 
     @Override

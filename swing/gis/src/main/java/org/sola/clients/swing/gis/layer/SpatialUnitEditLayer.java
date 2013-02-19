@@ -73,7 +73,8 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
             String.format("%s:String,%s:String,%s:Boolean,%s:Boolean",
             LAYER_FIELD_LEVEL, LAYER_FIELD_LABEL, LAYER_FIELD_NEW_FEATURE, LAYER_FIELD_DELETE);
     private static final String LAYER_NAME = "spatial_unit_edit";
-    private static final String LAYER_STYLE_RESOURCE = "parcel_target.xml";
+    private static final String LAYER_STYLE_RESOURCE = "samoa_spunit_edit.xml";
+    private static final String LAYER_VERTEX_STYLE_RESOURCE = "samoa_spunit_edit_vertices.xml";
     private static final String HYDRO_LAYER_NAME = "hydro";
     private static final String HYDRO_LEVEL_NAME = "Hydro Features";
     private static final String ROAD_CL_LAYER_NAME = "road_cl";
@@ -89,7 +90,8 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
      * @throws InitializeLayerException
      */
     public SpatialUnitEditLayer() throws InitializeLayerException {
-        super(LAYER_NAME, Geometries.GEOMETRY, LAYER_STYLE_RESOURCE, LAYER_ATTRIBUTE_DEFINITION);
+        super(LAYER_NAME, Geometries.GEOMETRY, LAYER_STYLE_RESOURCE, 
+                LAYER_VERTEX_STYLE_RESOURCE, LAYER_ATTRIBUTE_DEFINITION);
 
         // Configure the title for the layer using localized text
         setTitle(Messaging.getInstance().getMessageText(GisMessage.SPATIAL_UNIT_EDIT_LAYER_TITLE));

@@ -1,26 +1,30 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
- * reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
- * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
- * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this software without
- * specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
- * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 /*
@@ -59,9 +63,9 @@ import org.sola.clients.swing.gis.ui.control.MapDocumentsPanel;
 import org.sola.common.messaging.GisMessage;
 
 /**
- * An abstract bundle that defines common functionality that is used in the cadastre transaction
- * related changes. It defines also abstract methods that need to be overridden by each cadastre
- * transaction.
+ * An abstract bundle that defines common functionality that is used in the
+ * cadastre transaction related changes. It defines also abstract methods that
+ * need to be overridden by each cadastre transaction.
  *
  * @author Elton Manoku
  */
@@ -80,39 +84,42 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
 
     /**
      * Creates a controls bundle for transaction component.
-     * 
+     *
      * @param applicationBean The application bean of the application from where
      * the transaction starts
-     * @param transactionStarterId The id of the starter of the transaction. This will be the 
-     * service id.
+     * @param transactionStarterId The id of the starter of the transaction.
+     * This will be the service id.
      */
     public ControlsBundleForTransaction(
-            ApplicationBean applicationBean, 
-            String transactionStarterId){
+            ApplicationBean applicationBean,
+            String transactionStarterId) {
         super();
         this.applicationBean = applicationBean;
         this.transactionStarterId = transactionStarterId;
     }
-    
+
     /**
-     * Gets an instance of a transaction bundle depending in the type of the request
-     * 
-     * @param requestTypeCode The type of the request for which to create the transaction bundle
-     * @param applicationBean The application bean of the application where the transaction is
-     * starting
-     * @param transactionStarterId The transaction starter id. It will be the id of the service
-     * that will start the transaction
-     * @param baUnitId The id of the ba unit which will be used to identify the 
+     * Gets an instance of a transaction bundle depending in the type of the
+     * request
+     *
+     * @param requestTypeCode The type of the request for which to create the
+     * transaction bundle
+     * @param applicationBean The application bean of the application where the
+     * transaction is starting
+     * @param transactionStarterId The transaction starter id. It will be the id
+     * of the service that will start the transaction
+     * @param baUnitId The id of the ba unit which will be used to identify the
      * cadastre object being targeted
-     * @param targetCadastreObjectType the type of the cadastre object type being targeted
-     * @return 
+     * @param targetCadastreObjectType the type of the cadastre object type
+     * being targeted
+     * @return
      */
     public static ControlsBundleForTransaction getInstance(
             String requestTypeCode,
             ApplicationBean applicationBean,
             String transactionStarterId,
             String baUnitId,
-            String targetCadastreObjectType){
+            String targetCadastreObjectType) {
         ControlsBundleForTransaction instance = null;
         if (requestTypeCode.equals(RequestTypeBean.CODE_CADASTRE_CHANGE)) {
             instance = new ControlsBundleForCadastreChange(
@@ -123,11 +130,11 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
         }
         return instance;
     }
-    
+
     /**
-     * It sets up the bundle. It calls the adding layer method and adding tools method. It also
-     * identifies the pending layer which will be refreshed if a transaction is being saved in the
-     * database.
+     * It sets up the bundle. It calls the adding layer method and adding tools
+     * method. It also identifies the pending layer which will be refreshed if a
+     * transaction is being saved in the database.
      *
      * @param pojoDataAccess
      */
@@ -135,7 +142,7 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
     public void Setup(PojoDataAccess pojoDataAccess) {
         super.Setup(pojoDataAccess);
         try {
-            
+
             //Adding layers
             this.addLayers();
 
@@ -167,8 +174,10 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
     }
 
     /**
-     * Gets the panel where the documents attached to the transaction are managed
-     * @return 
+     * Gets the panel where the documents attached to the transaction are
+     * managed
+     *
+     * @return
      */
     protected final MapDocumentsPanel getDocumentsPanel() {
         return documentsPanel;
@@ -176,12 +185,13 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
 
     /**
      * Gets the transaction starter id
-     * @return 
+     *
+     * @return
      */
     protected String getTransactionStarterId() {
         return transactionStarterId;
     }
-    
+
     /**
      * It zooms in the map where the transaction is happening
      *
@@ -213,16 +223,17 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
      * @return
      */
     public abstract TransactionBean getTransactionBean();
-    
+
     /**
      * It sets the transaction.
      */
     public abstract void setTransaction();
-    
+
     /**
      * Gets if the transaction is already started before.
      *
-     * @return True if the transaction was already started and now is read back for modifications
+     * @return True if the transaction was already started and now is read back
+     * for modifications
      */
     protected abstract boolean transactionIsStarted();
 
@@ -232,8 +243,8 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
      * @throws InitializeLayerException
      */
     protected void addLayers() throws InitializeLayerException {
-        this.imageLayer = new ExtendedImageLayer(IMAGE_LAYER_NAME, 
-                ((Messaging)Messaging.getInstance()).getLayerTitle(IMAGE_LAYER_NAME));
+        this.imageLayer = new ExtendedImageLayer(IMAGE_LAYER_NAME,
+                ((Messaging) Messaging.getInstance()).getLayerTitle(IMAGE_LAYER_NAME));
         this.getMap().addLayer(this.imageLayer);
         this.cadastreBoundaryPointLayer = new CadastreBoundaryPointLayer();
         this.getMap().addLayer(this.cadastreBoundaryPointLayer);
@@ -254,9 +265,11 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
         ExtendedFeatureLayer hydroLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("hydro");
         ExtendedFeatureLayer parcelsLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("parcels");
         ExtendedFeatureLayer roadLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("road");
+        ExtendedFeatureLayer roadCLLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("road_cl");
         List<ExtendedFeatureLayer> selectionLayers = new ArrayList<ExtendedFeatureLayer>();
         selectionLayers.add(hydroLayer);
         selectionLayers.add(roadLayer);
+        selectionLayers.add(roadCLLayer);
         this.getMap().addTool(new SelectSpatialUnitTool(selectionLayers, this.spatialUnitEditLayer),
                 this.getToolbar(), true);
 
@@ -265,11 +278,12 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
         editSpatialUnitTool.getTargetSnappingLayers().add(parcelsLayer);
         editSpatialUnitTool.getTargetSnappingLayers().add(hydroLayer);
         editSpatialUnitTool.getTargetSnappingLayers().add(roadLayer);
+        editSpatialUnitTool.getTargetSnappingLayers().add(roadCLLayer);
         this.getMap().addTool(editSpatialUnitTool, this.getToolbar(), true);
-        
+
         // Add additional snapping layers to the boundary edit tool
         cadastreBoundaryEditTool.getTargetSnappingLayers().add(parcelsLayer);
-        
+
         this.getMap().addMapAction(new DisplaySpatialUnitEditForm(
                 this.getMap(), this.spatialUnitEditLayer),
                 this.getToolbar(),
@@ -287,11 +301,21 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
         // Ticket #70 - Allows the New Road tool to snap to the parcels layer
         addRoadTool.getTargetSnappingLayers().add(parcelsLayer);
         this.getMap().addTool(addRoadTool, this.getToolbar(), true);
+
+        // Ticket 81 
+        NewSpatialUnitRoadCLTool addRoadCLTool = new NewSpatialUnitRoadCLTool(this.spatialUnitEditLayer,
+                this.spatialUnitEditLayer.mapLayerToLevel(roadCLLayer.getLayerName()));
+        addRoadCLTool.getTargetSnappingLayers().add(roadLayer);
+        addRoadCLTool.getTargetSnappingLayers().add(parcelsLayer);
+        addRoadCLTool.getTargetSnappingLayers().add(this.spatialUnitEditLayer);
+        this.getMap().addTool(addRoadCLTool, this.getToolbar(), true);
+
         this.setApplicationId(this.applicationBean.getId());
     }
 
     /**
      * It refreshes the map control part of the bundle.
+     *
      * @param force If true it forces the refresh of the pending layer
      */
     @Override
@@ -301,8 +325,8 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
     }
 
     /**
-     * It disables/enables the changing tools and commands in order to prohibit user changing the
-     * transaction.
+     * It disables/enables the changing tools and commands in order to prohibit
+     * user changing the transaction.
      *
      * @param readOnly
      */
@@ -312,12 +336,13 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
         this.getMap().getMapActionByName(SaveTransaction.MAPACTION_NAME).setEnabled(!readOnly);
         this.getMap().getMapActionByName(CadastreBoundarySelectTool.MAP_ACTION_NAME).setEnabled(!readOnly);
     }
-    
+
     /**
-     * It configures the tools to handle the given type of cadastre objects.
-     * It must be called after the Setup method because the Setup method initiates the tools.
-     * 
-     * @param targetCadastreObjectType 
+     * It configures the tools to handle the given type of cadastre objects. It
+     * must be called after the Setup method because the Setup method initiates
+     * the tools.
+     *
+     * @param targetCadastreObjectType
      */
     protected abstract void setTargetCadastreObjectTypeConfiguration(
             String targetCadastreObjectType);
@@ -326,9 +351,8 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
      * It adds the panel where the documents are managed
      */
     private void addDocumentsPanel() {
-        this.documentsPanel = new  MapDocumentsPanel(this, this.applicationBean);
+        this.documentsPanel = new MapDocumentsPanel(this, this.applicationBean);
         this.addInLeftPanel(Messaging.getInstance().getMessageText(
                 GisMessage.LEFT_PANEL_TAB_DOCUMENTS_TITLE), this.documentsPanel);
     }
-
 }
