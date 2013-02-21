@@ -1,26 +1,30 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
- * reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
- * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
- * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this software without
- * specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
- * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.desktop.administrative;
@@ -76,14 +80,15 @@ import org.sola.webservices.transferobjects.administrative.BaUnitAreaTO;
 import org.sola.webservices.transferobjects.administrative.BaUnitTO;
 
 /**
- * This form is used to manage property object ({@codeBaUnit}).
- * {@link BaUnitBean} is used to bind data on the form.
+ * This form is used to manage property object ({
+ *
+ * @codeBaUnit}). {@link BaUnitBean} is used to bind data on the form.
  */
 public class PropertyPanel extends ContentPanel {
 
     /**
-     * Listens for events of different right forms, to add created right into the list of rights or
-     * update existing one.
+     * Listens for events of different right forms, to add created right into
+     * the list of rights or update existing one.
      */
     private class RightFormListener implements PropertyChangeListener {
 
@@ -179,10 +184,10 @@ public class PropertyPanel extends ContentPanel {
     /**
      * Form constructor.
      *
-     * @param applicationBean {@link ApplicationBean} instance, used to get data on BaUnit and
-     * provide list of documents.
-     * @param applicationService {@link ApplicationServiceBean} instance, used to determine what
-     * actions should be taken on this form.
+     * @param applicationBean {@link ApplicationBean} instance, used to get data
+     * on BaUnit and provide list of documents.
+     * @param applicationService {@link ApplicationServiceBean} instance, used
+     * to determine what actions should be taken on this form.
      * @param nameFirstPart First part of the property code.
      * @param nameLastPart Last part of the property code.
      * @param readOnly If true, opens form in read only mode.
@@ -203,10 +208,12 @@ public class PropertyPanel extends ContentPanel {
     /**
      * Form constructor.
      *
-     * @param applicationBean {@link ApplicationBean} instance, used to get list of documents.
-     * @param applicationService {@link ApplicationServiceBean} instance, used to determine what
-     * actions should be taken on this form.
-     * @param BaUnitBean Instance of {@link BaUnitBean}, used to bind data on the form.
+     * @param applicationBean {@link ApplicationBean} instance, used to get list
+     * of documents.
+     * @param applicationService {@link ApplicationServiceBean} instance, used
+     * to determine what actions should be taken on this form.
+     * @param BaUnitBean Instance of {@link BaUnitBean}, used to bind data on
+     * the form.
      * @param readOnly If true, opens form in read only mode.
      */
     public PropertyPanel(ApplicationBean applicationBean,
@@ -233,7 +240,6 @@ public class PropertyPanel extends ContentPanel {
         customizeForm();
 
         rrrTypes.addPropertyChangeListener(new PropertyChangeListener() {
-
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals(RrrTypeListBean.SELECTED_RRR_TYPE_PROPERTY)) {
@@ -243,7 +249,6 @@ public class PropertyPanel extends ContentPanel {
         });
 
         baUnitBean1.addPropertyChangeListener(new PropertyChangeListener() {
-
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals(BaUnitBean.SELECTED_RIGHT_PROPERTY)) {
@@ -266,7 +271,6 @@ public class PropertyPanel extends ContentPanel {
         });
 
         documentsPanel1.getSourceListBean().addPropertyChangeListener(new PropertyChangeListener() {
-
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals(SourceListBean.SELECTED_SOURCE_PROPERTY)) {
@@ -283,8 +287,8 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Runs form customization, to restrict certain actions, bind listeners on the {@link BaUnitBean}
-     * and other components.
+     * Runs form customization, to restrict certain actions, bind listeners on
+     * the {@link BaUnitBean} and other components.
      */
     private void customizeForm() {
 
@@ -398,7 +402,6 @@ public class PropertyPanel extends ContentPanel {
             if (getMainContentPanel() != null) {
                 if (newPropertyWizardListener == null) {
                     newPropertyWizardListener = new PropertyChangeListener() {
-
                         @Override
                         public void propertyChange(PropertyChangeEvent evt) {
                             if (evt.getPropertyName().equals(NewPropertyWizardPanel.SELECTED_RESULT_PROPERTY)) {
@@ -416,7 +419,6 @@ public class PropertyPanel extends ContentPanel {
                 }
 
                 SolaTask t = new SolaTask<Void, Void>() {
-
                     @Override
                     public Void doTask() {
                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_PROPERTYLINK));
@@ -444,10 +446,12 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Populates rights, parcels and parent Properties lists from provided result object.
+     * Populates rights, parcels and parent Properties lists from provided
+     * result object.
      *
-     * @param selectedResult Array of selected result from the wizard form. First item of array
-     * contains selected {@link BaUnitBean}, second item contains {@link BaUnitRelTypeBean}.
+     * @param selectedResult Array of selected result from the wizard form.
+     * First item of array contains selected {@link BaUnitBean}, second item
+     * contains {@link BaUnitRelTypeBean}.
      */
     private boolean addParentProperty(Object[] selectedResult) {
         if (selectedResult == null) {
@@ -528,7 +532,8 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Enables or disables "open", "add" and "remove" buttons for the parent Properties list.
+     * Enables or disables "open", "add" and "remove" buttons for the parent
+     * Properties list.
      */
     private void customizeParentPropertyButtons() {
         boolean enabled = !readOnly;
@@ -561,12 +566,18 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Enables or disables print button if row version of {@link BaUnitBean} > 0 .
+     * Enables or disables print button if row version of {@link BaUnitBean} > 0
+     * .
      */
     private void customizePrintButton() {
         boolean hasPrintRole = SecurityBean.isInRole(RolesConstants.ADMINISTRATIVE_BA_UNIT_PRINT_CERT);
-        dBtnPrint.setEnabled(baUnitBean1.getRowVersion() > 0 && hasPrintRole);
-        dBtnPrint.setVisible(baUnitBean1.getRowVersion() > 0 && hasPrintRole);
+        // #85 Prevent Computer folio being generated for Deeds. 
+        boolean isDeed = false;
+        if (baUnitBean1.getNameFirstpart() != null) {
+            isDeed = baUnitBean1.getNameFirstpart().trim().startsWith("V");
+        }
+        dBtnPrint.setEnabled(baUnitBean1.getRowVersion() > 0 && hasPrintRole && !isDeed);
+        dBtnPrint.setVisible(baUnitBean1.getRowVersion() > 0 && hasPrintRole && !isDeed);
         if (dBtnPrint.isEnabled()) {
             menuPrintComputerFolio.setEnabled(StatusConstants.CURRENT.equals(baUnitBean1.getStatusCode()));
             menuPrintHistoricalSearch.setEnabled(!StatusConstants.PENDING.equals(baUnitBean1.getStatusCode()));
@@ -639,8 +650,8 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Enables or disables parcel buttons, depending on the form state and selection in the list of
-     * parcel.
+     * Enables or disables parcel buttons, depending on the form state and
+     * selection in the list of parcel.
      */
     private void customizeParcelButtons(CadastreObjectBean cadastreBean) {
         if (cadastreBean == null || cadastreBean.isLocked() || readOnly) {
@@ -654,7 +665,8 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Enables or disables combobox list of right types, depending on the form state.
+     * Enables or disables combobox list of right types, depending on the form
+     * state.
      */
     private void customizeRightTypesList() {
         cbxRightType.setSelectedIndex(-1);
@@ -691,7 +703,8 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Enables or disables button for creating new right, depending on the form state.
+     * Enables or disables button for creating new right, depending on the form
+     * state.
      */
     private void customizeCreateRightButton(RrrTypeBean rrrTypeBean) {
         if (rrrTypeBean != null && rrrTypeBean.getCode() != null
@@ -703,8 +716,8 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Enables or disables buttons for managing list of rights, depending on the form state,
-     * selected right and it's state.
+     * Enables or disables buttons for managing list of rights, depending on the
+     * form state, selected right and it's state.
      */
     private void customizeRightsButtons(RrrBean rrrBean) {
         btnEditRight.setEnabled(false);
@@ -838,7 +851,6 @@ public class PropertyPanel extends ContentPanel {
     private void addParcel() {
 
         PropertyChangeListener listener = new PropertyChangeListener() {
-
             @Override
             public void propertyChange(PropertyChangeEvent e) {
                 if (e.getNewValue() != null) {
@@ -947,7 +959,6 @@ public class PropertyPanel extends ContentPanel {
     private void print() {
 
         SolaTask<Void, Void> t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_GENERATE_REPORT));
@@ -1002,7 +1013,6 @@ public class PropertyPanel extends ContentPanel {
      */
     private void printRptStaffSearch() {
         SolaTask<Void, Void> t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_GENERATE_REPORT));
@@ -1023,7 +1033,6 @@ public class PropertyPanel extends ContentPanel {
      */
     private void printRptHistoricalSearch() {
         SolaTask<Void, Void> t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_GENERATE_REPORT));
@@ -1047,10 +1056,10 @@ public class PropertyPanel extends ContentPanel {
     /**
      * Opens right form, depending on given {@link RrrBean} and action.
      *
-     * @param rrrBean {@link RrrBean} instance to figure out what form to open and pass this bean as
-     * a parameter.
-     * @param action {@link RrrBean#RRR_ACTION} is passed to the right form for further form
-     * customization.
+     * @param rrrBean {@link RrrBean} instance to figure out what form to open
+     * and pass this bean as a parameter.
+     * @param action {@link RrrBean#RRR_ACTION} is passed to the right form for
+     * further form customization.
      */
     private void openRightForm(RrrBean rrrBean, RrrBean.RRR_ACTION action) {
         if (action == RrrBean.RRR_ACTION.NEW
@@ -1137,7 +1146,6 @@ public class PropertyPanel extends ContentPanel {
         }
 
         SolaTask<Void, Void> t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_SAVING));
@@ -1217,7 +1225,8 @@ public class PropertyPanel extends ContentPanel {
     }
 
     /**
-     * Opens form to select or create document to be used as a paper title document.
+     * Opens form to select or create document to be used as a paper title
+     * document.
      */
     private void openDocumentsForm() {
         if (applicationDocumentsForm != null) {
@@ -1225,7 +1234,6 @@ public class PropertyPanel extends ContentPanel {
         }
 
         PropertyChangeListener listener = new PropertyChangeListener() {
-
             @Override
             public void propertyChange(PropertyChangeEvent e) {
                 SourceBean document = null;
@@ -1252,7 +1260,6 @@ public class PropertyPanel extends ContentPanel {
     private void openPropertyForm(final RelatedBaUnitInfoBean relatedBaUnit) {
         if (relatedBaUnit != null && relatedBaUnit.getRelatedBaUnit() != null) {
             SolaTask t = new SolaTask<Void, Void>() {
-
                 @Override
                 public Void doTask() {
                     setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_PROPERTY));
@@ -1271,7 +1278,6 @@ public class PropertyPanel extends ContentPanel {
 
     private void openUnitParcelPanel() {
         SolaTask t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_UNIT_PARCELS));
