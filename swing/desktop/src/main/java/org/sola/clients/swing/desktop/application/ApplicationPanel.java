@@ -1,26 +1,30 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
- * reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
- * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
- * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this software without
- * specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
- * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.desktop.application;
@@ -87,8 +91,8 @@ import org.sola.webservices.transferobjects.EntityAction;
 import org.sola.webservices.transferobjects.casemanagement.ApplicationTO;
 
 /**
- * This form is used to create new application or edit existing one. <p>The following list of beans
- * is used to bind the data on the form:<br />
+ * This form is used to create new application or edit existing one. <p>The
+ * following list of beans is used to bind the data on the form:<br />
  * {@link ApplicationBean}, <br />{@link RequestTypeListBean}, <br />
  * {@link PartySummaryListBean}, <br />{@link CommunicationTypeListBean}, <br />
  * {@link SourceTypeListBean}, <br />{@link ApplicationDocumentsHelperBean}</p>
@@ -106,8 +110,10 @@ public class ApplicationPanel extends ContentPanel {
     HeaderPanel serviceHeaderPanel = null;
 
     /**
-     * This method is used by the form designer to create {@link ApplicationBean}. It uses
-     * <code>applicationId</code> parameter passed to the form constructor.<br />
+     * This method is used by the form designer to create
+     * {@link ApplicationBean}. It uses
+     * <code>applicationId</code> parameter passed to the form constructor.<br
+     * />
      * <code>applicationId</code> should be initialized before
      * {@link ApplicationForm#initComponents} method call.
      */
@@ -123,7 +129,6 @@ public class ApplicationPanel extends ContentPanel {
             }
 
             appBean.addPropertyChangeListener(new PropertyChangeListener() {
-
                 @Override
                 public void propertyChange(PropertyChangeEvent evt) {
                     if (evt.getPropertyName().equals(ApplicationBean.APPLICATION_PROPERTY)) {
@@ -195,7 +200,6 @@ public class ApplicationPanel extends ContentPanel {
     private void postInit() {
 
         addDocumentPanel.addPropertyChangeListener(new PropertyChangeListener() {
-
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals(DocumentPanel.UPDATED_SOURCE)
@@ -208,7 +212,6 @@ public class ApplicationPanel extends ContentPanel {
         // Samoa Customization - reload the appBean when a service panel is closed so
         // that the service list can be updated with the latest information
         servicePanelListener = new PropertyChangeListener() {
-
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals(HeaderPanel.CLOSE_BUTTON_CLICKED)) {
@@ -222,7 +225,6 @@ public class ApplicationPanel extends ContentPanel {
         };
 
         appBean.getSourceFilteredList().addObservableListListener(new ObservableListListener() {
-
             @Override
             public void listElementsAdded(ObservableList ol, int i, int i1) {
                 applicationDocumentsHelper.verifyCheckList(appBean.getSourceList().getFilteredList());
@@ -243,7 +245,6 @@ public class ApplicationPanel extends ContentPanel {
         });
 
         appBean.getServiceList().addObservableListListener(new ObservableListListener() {
-
             @Override
             public void listElementsAdded(ObservableList ol, int i, int i1) {
                 applicationDocumentsHelper.updateCheckList(appBean.getServiceList(), appBean.getSourceList());
@@ -266,7 +267,6 @@ public class ApplicationPanel extends ContentPanel {
         });
 
         appBean.addPropertyChangeListener(new PropertyChangeListener() {
-
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals(ApplicationBean.SELECTED_SERVICE_PROPERTY)) {
@@ -295,7 +295,8 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Sets the amount paid value when the Paid checkbox is set if the current total paid is 0.
+     * Sets the amount paid value when the Paid checkbox is set if the current
+     * total paid is 0.
      */
     private void setDefaultFeePaidAmount() {
         if (appBean.isFeePaid()) {
@@ -552,8 +553,8 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Samoa Customization - Listen for the service panel to close and refresh the ApplicationPanel
-     * to show any changes to the services.
+     * Samoa Customization - Listen for the service panel to close and refresh
+     * the ApplicationPanel to show any changes to the services.
      *
      * @param headerPanel
      */
@@ -566,7 +567,6 @@ public class ApplicationPanel extends ContentPanel {
             final BaUnitBean baUnitBean, final boolean readOnly) {
         if (baUnitBean != null) {
             SolaTask t = new SolaTask<Void, Void>() {
-
                 @Override
                 public Void doTask() {
                     setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_PROPERTY));
@@ -592,8 +592,13 @@ public class ApplicationPanel extends ContentPanel {
 
     private void openPropertyForm(final ApplicationPropertyBean applicationProperty, final boolean readOnly) {
         if (applicationProperty != null) {
+            if (!readOnly && !applicationProperty.isVerifiedExists()) {
+                MessageUtility.displayMessage(ClientMessage.BAUNIT_DOES_NOT_EXIST,
+                        new String[]{applicationProperty.getNameFirstpart(), 
+                            applicationProperty.getNameLastpart()});
+                return;
+            }
             SolaTask t = new SolaTask<Void, Void>() {
-
                 @Override
                 public Void doTask() {
                     setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_PROPERTY));
@@ -612,7 +617,8 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Opens dialog form to display status change result for application or service.
+     * Opens dialog form to display status change result for application or
+     * service.
      */
     private void openValidationResultForm(List<ValidationResultBean> validationResultList,
             boolean isSuccess, String message) {
@@ -623,7 +629,8 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Checks if there are any changes on the form before proceeding with action.
+     * Checks if there are any changes on the form before proceeding with
+     * action.
      */
     private boolean checkSaveBeforeAction() {
         if (MainForm.checkBeanState(appBean)) {
@@ -651,7 +658,6 @@ public class ApplicationPanel extends ContentPanel {
 
         if (appBean.getId() != null) {
             SolaTask t = new SolaTask() {
-
                 @Override
                 public Boolean doTask() {
                     setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_APP_VALIDATING));
@@ -676,7 +682,6 @@ public class ApplicationPanel extends ContentPanel {
                     || requestType.equalsIgnoreCase(RequestTypeBean.CODE_CANCEL_POWER_OF_ATTORNEY)) {
                 // Run registration/cancelation Power of attorney
                 SolaTask t = new SolaTask<Void, Void>() {
-
                     @Override
                     public Void doTask() {
                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_DOCREGISTRATION));
@@ -690,7 +695,6 @@ public class ApplicationPanel extends ContentPanel {
             } // Document copy request
             else if (requestType.equalsIgnoreCase(RequestTypeBean.CODE_DOCUMENT_COPY)) {
                 SolaTask t = new SolaTask<Void, Void>() {
-
                     @Override
                     public Void doTask() {
                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_DOCUMENTSEARCH));
@@ -706,7 +710,6 @@ public class ApplicationPanel extends ContentPanel {
             } // Cadastre print
             else if (requestType.equalsIgnoreCase(RequestTypeBean.CODE_CADASTRE_PRINT)) {
                 SolaTask t = new SolaTask<Void, Void>() {
-
                     @Override
                     public Void doTask() {
                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_MAP));
@@ -722,7 +725,6 @@ public class ApplicationPanel extends ContentPanel {
             } // Service enquiry (application status report)
             else if (requestType.equalsIgnoreCase(RequestTypeBean.CODE_SERVICE_ENQUIRY)) {
                 SolaTask t = new SolaTask<Void, Void>() {
-
                     @Override
                     public Void doTask() {
                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_APPSEARCH));
@@ -741,7 +743,6 @@ public class ApplicationPanel extends ContentPanel {
 
                 if (appBean.getPropertyList().getFilteredList().size() == 1) {
                     SolaTask t = new SolaTask<Void, Void>() {
-
                         @Override
                         public Void doTask() {
                             setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_CADASTRE_CHANGE));
@@ -760,7 +761,6 @@ public class ApplicationPanel extends ContentPanel {
                     propertyListForm.setLocationRelativeTo(this);
 
                     propertyListForm.addPropertyChangeListener(new PropertyChangeListener() {
-
                         @Override
                         public void propertyChange(PropertyChangeEvent evt) {
                             if (evt.getPropertyName().equals(PropertiesList.SELECTED_PROPERTY)
@@ -770,7 +770,6 @@ public class ApplicationPanel extends ContentPanel {
                                 ((JDialog) evt.getSource()).dispose();
 
                                 SolaTask t = new SolaTask<Void, Void>() {
-
                                     @Override
                                     public Void doTask() {
                                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_DOCREGISTRATION));
@@ -804,7 +803,6 @@ public class ApplicationPanel extends ContentPanel {
                 // Samoa Customization - Process Record Unit Plan Service 
                 final boolean isRecordUnitPlan = requestType.equalsIgnoreCase(RequestTypeBean.CODE_RECORD_UNIT_PLAN);
                 SolaTask t = new SolaTask<Void, Void>() {
-
                     @Override
                     public Void doTask() {
                         setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_UNIT_PARCELS));
@@ -834,7 +832,6 @@ public class ApplicationPanel extends ContentPanel {
                         // Show BA Unit Selection Form
                         BaUnitsListPanel baUnitListPanel = new BaUnitsListPanel(baUnitsList);
                         baUnitListPanel.addPropertyChangeListener(new PropertyChangeListener() {
-
                             @Override
                             public void propertyChange(PropertyChangeEvent evt) {
                                 if (evt.getPropertyName().equals(BaUnitsListPanel.SELECTED_BAUNIT_PROPERTY)
@@ -869,7 +866,6 @@ public class ApplicationPanel extends ContentPanel {
                             propertyListForm.setLocationRelativeTo(this);
 
                             propertyListForm.addPropertyChangeListener(new PropertyChangeListener() {
-
                                 @Override
                                 public void propertyChange(PropertyChangeEvent evt) {
                                     if (evt.getPropertyName().equals(PropertiesList.SELECTED_PROPERTY)
@@ -895,8 +891,9 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Customization for Samoa. Retrieves the full party details for the agent so that the agent
-     * contact information can be displayed in the contact details section.
+     * Customization for Samoa. Retrieves the full party details for the agent
+     * so that the agent contact information can be displayed in the contact
+     * details section.
      *
      * @param applicationBean
      * @return
@@ -916,10 +913,11 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Customization for Samoa. Contacts are optional, however if the user selects an agent, the
-     * contact details on the agent record should be automatically copied across as the Contact
-     * Person details. Note that the user can continue to edit the contact person details if
-     * necessary. Any changes to the default agent contact information will get stored as a new
+     * Customization for Samoa. Contacts are optional, however if the user
+     * selects an agent, the contact details on the agent record should be
+     * automatically copied across as the Contact Person details. Note that the
+     * user can continue to edit the contact person details if necessary. Any
+     * changes to the default agent contact information will get stored as a new
      * party in the database.
      */
     private void copyAgentContact(ApplicationBean applicationBean) {
@@ -941,8 +939,8 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Customization for Samoa. Determines if the details displayed in the Contact Person section
-     * match the agent contact details.
+     * Customization for Samoa. Determines if the details displayed in the
+     * Contact Person section match the agent contact details.
      *
      * @param applicationBean
      * @return
@@ -969,8 +967,9 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Customization for Samoa. Utility function to compare the values for two strings. NULL strings
-     * are treated as empty string to allow use of the equals function.
+     * Customization for Samoa. Utility function to compare the values for two
+     * strings. NULL strings are treated as empty string to allow use of the
+     * equals function.
      *
      * @param str1
      * @param str2
@@ -983,10 +982,11 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Customization for Samoa. Contacts are optional, so mark any agent contact or blank contact
-     * details for deletion prior to saving the application. This is to avoid having a large number
-     * of duplicate parties in the database. Update - need to disassociate because some parties may
-     * be linked to more than one application as part of the LRS application
+     * Customization for Samoa. Contacts are optional, so mark any agent contact
+     * or blank contact details for deletion prior to saving the application.
+     * This is to avoid having a large number of duplicate parties in the
+     * database. Update - need to disassociate because some parties may be
+     * linked to more than one application as part of the LRS application
      */
     private void removeDefaultContact(ApplicationBean applicationBean) {
         if (applicationBean.getContactPerson() == null) {
@@ -1012,11 +1012,12 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Customization for Samoa. Contacts are optional and may not always exist on the application.
-     * The ApplicationPanel requires an instantiated PartyBean for the contactPerson property, so
-     * ensure there is always a PartyBean set as the Contact Person if one does not already exist on
-     * the appBean. Note that the Default Contact details can be obtained from the Agent if the
-     * Agent has default contact information specified.
+     * Customization for Samoa. Contacts are optional and may not always exist
+     * on the application. The ApplicationPanel requires an instantiated
+     * PartyBean for the contactPerson property, so ensure there is always a
+     * PartyBean set as the Contact Person if one does not already exist on the
+     * appBean. Note that the Default Contact details can be obtained from the
+     * Agent if the Agent has default contact information specified.
      */
     private void addDefaultContact(ApplicationBean applicationBean) {
         if (applicationBean.getContactPerson() == null) {
@@ -1086,7 +1087,6 @@ public class ApplicationPanel extends ContentPanel {
         }
 
         SolaTask<Void, Void> t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_SAVING));
@@ -1120,7 +1120,6 @@ public class ApplicationPanel extends ContentPanel {
 
     public void refreshDashboard() {
         PropertyChangeListener listener = new PropertyChangeListener() {
-
             @Override
             public void propertyChange(PropertyChangeEvent e) {
                 if (e.getPropertyName().equals(ApplicationPanel.APPLICATION_SAVED_PROPERTY)) {
@@ -1147,7 +1146,6 @@ public class ApplicationPanel extends ContentPanel {
     private void openSeachDocuments() {
         DocumentSearchDialog form = new DocumentSearchDialog(null, true);
         form.addPropertyChangeListener(new PropertyChangeListener() {
-
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals(org.sola.clients.swing.ui.source.DocumentSearchPanel.SELECT_SOURCE)) {
@@ -3184,7 +3182,8 @@ public class ApplicationPanel extends ContentPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Validates user's data input and calls save operation on the {@link ApplicationBean}.
+     * Validates user's data input and calls save operation on the
+     * {@link ApplicationBean}.
      */
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         saveApplication(false);
@@ -3217,7 +3216,8 @@ public class ApplicationPanel extends ContentPanel {
     }//GEN-LAST:event_btnAddPropertyActionPerformed
 
     /**
-     * Opens {@link FileBrowserForm} to select digital copy of the document and get it attached.
+     * Opens {@link FileBrowserForm} to select digital copy of the document and
+     * get it attached.
      */
     private void tabDocumentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabDocumentsMouseClicked
         if (evt.getClickCount() == 2) {
@@ -3422,7 +3422,6 @@ public class ApplicationPanel extends ContentPanel {
         if (appBean.getSelectedSource() != null
                 && appBean.getSelectedSource().getArchiveDocument() != null) {
             SolaTask t = new SolaTask<Void, Void>() {
-
                 @Override
                 public Void doTask() {
                     setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_DOCUMENT_OPENING));
@@ -3451,7 +3450,8 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Clears fields on the <b>Properties</b> tab, after the new property is added into the list.
+     * Clears fields on the <b>Properties</b> tab, after the new property is
+     * added into the list.
      */
     private void clearPropertyFields() {
         txtFirstPart.setText(null);
@@ -3488,7 +3488,6 @@ public class ApplicationPanel extends ContentPanel {
 
             SolaTask<List<ValidationResultBean>, List<ValidationResultBean>> t =
                     new SolaTask<List<ValidationResultBean>, List<ValidationResultBean>>() {
-
                         @Override
                         public List<ValidationResultBean> doTask() {
                             setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_APP_TAKE_ACTION));
@@ -3583,7 +3582,8 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Moves selected application service down in the services list. Calls {@link ApplicationBean#moveServiceDown()}
+     * Moves selected application service down in the services list. Calls
+     * {@link ApplicationBean#moveServiceDown()}
      */
     private void moveServiceDown() {
         ApplicationServiceBean asb = appBean.getSelectedService();
@@ -3609,7 +3609,6 @@ public class ApplicationPanel extends ContentPanel {
         if (selectedService != null) {
 
             SolaTask t = new SolaTask<Void, Void>() {
-
                 List<ValidationResultBean> result;
 
                 @Override
@@ -3649,7 +3648,6 @@ public class ApplicationPanel extends ContentPanel {
                 }
 
                 SolaTask t = new SolaTask<Void, Void>() {
-
                     List<ValidationResultBean> result;
 
                     @Override
@@ -3693,7 +3691,6 @@ public class ApplicationPanel extends ContentPanel {
                 }
 
                 SolaTask t = new SolaTask<Void, Void>() {
-
                     List<ValidationResultBean> result;
 
                     @Override
@@ -3736,7 +3733,6 @@ public class ApplicationPanel extends ContentPanel {
                 }
 
                 SolaTask t = new SolaTask<Void, Void>() {
-
                     List<ValidationResultBean> result;
 
                     @Override
@@ -3767,14 +3763,16 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Removes selected property object from the properties list. Calls {@link ApplicationBean#removeSelectedProperty()}
+     * Removes selected property object from the properties list. Calls
+     * {@link ApplicationBean#removeSelectedProperty()}
      */
     private void removeSelectedProperty() {
         appBean.removeSelectedProperty();
     }
 
     /**
-     * Verifies selected property object to check existence. Calls {@link ApplicationBean#verifyProperty()}
+     * Verifies selected property object to check existence. Calls
+     * {@link ApplicationBean#verifyProperty()}
      */
     private void verifySelectedProperty() {
         if (appBean.getSelectedProperty() == null) {
@@ -3832,11 +3830,11 @@ public class ApplicationPanel extends ContentPanel {
     }
 
     /**
-     * Calculates fee for the application. Calls {@link ApplicationBean#calculateFee()}
+     * Calculates fee for the application. Calls
+     * {@link ApplicationBean#calculateFee()}
      */
     private void calculateFee() {
         SolaTask t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_APP_CALCULATINGFEE));
