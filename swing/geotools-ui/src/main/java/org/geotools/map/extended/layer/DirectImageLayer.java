@@ -38,6 +38,7 @@ import org.geotools.map.DirectLayer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.swing.extended.exception.DirectImageNotValidFileException;
+import org.geotools.swing.extended.util.ImageUtility;
 
 /**
  * This layer is used to draw any given image in the map. Next to the message is given also 
@@ -76,7 +77,9 @@ public class DirectImageLayer extends DirectLayer {
             throws IOException, DirectImageNotValidFileException{
         this.rasterFile = rasterFile;
         if (this.rasterFile != null){
-            this.loadedBufferedImage = ImageIO.read(this.rasterFile);
+            this.loadedBufferedImage = 
+                    ImageUtility.subsampleImage(ImageIO.createImageInputStream(this.rasterFile), 
+                    2000, 2000, null);
             if (this.loadedBufferedImage == null){
                 throw new DirectImageNotValidFileException();
             }
