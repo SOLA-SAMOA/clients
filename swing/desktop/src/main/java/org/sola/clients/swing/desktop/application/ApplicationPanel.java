@@ -592,7 +592,9 @@ public class ApplicationPanel extends ContentPanel {
 
     private void openPropertyForm(final ApplicationPropertyBean applicationProperty, final boolean readOnly) {
         if (applicationProperty != null) {
-            if (!readOnly && !applicationProperty.isVerifiedExists()) {
+            if (!readOnly && !applicationProperty.isVerifiedExists() 
+                    // Allow the property form to be opened if the service is Convert to Title
+                    && !RequestTypeBean.CODE_NEW_DIGITAL_TITLE.equalsIgnoreCase(service.getRequestType().getCode())) {
                 MessageUtility.displayMessage(ClientMessage.BAUNIT_DOES_NOT_EXIST,
                         new String[]{applicationProperty.getNameFirstpart(), 
                             applicationProperty.getNameLastpart()});

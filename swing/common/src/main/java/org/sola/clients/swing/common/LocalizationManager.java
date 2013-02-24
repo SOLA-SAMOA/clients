@@ -130,9 +130,9 @@ public class LocalizationManager {
     }
 
     public static String getVersionNumber() {
-        String result = "Training v2.1.2";
+        String result = "Training v2.1.3";
         if (isProductionVersion()) {
-            result = "LIVE v2.1.2";
+            result = "LIVE v2.1.3";
         }
         return result;
     }

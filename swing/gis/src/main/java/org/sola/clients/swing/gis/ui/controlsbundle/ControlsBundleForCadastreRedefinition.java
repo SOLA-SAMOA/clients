@@ -1,26 +1,30 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
- * reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
- * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
- * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this software without
- * specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
- * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.gis.ui.controlsbundle;
@@ -44,8 +48,8 @@ import org.sola.clients.swing.gis.tool.*;
 import org.sola.webservices.transferobjects.cadastre.CadastreObjectTO;
 
 /**
- * A control bundle that is used for cadastre redefinition process. The necessary tools and layers
- * are added in the bundle.
+ * A control bundle that is used for cadastre redefinition process. The
+ * necessary tools and layers are added in the bundle.
  *
  * @author Elton Manoku
  */
@@ -59,16 +63,18 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
     private CadastreRedefinitionBoundarySelectTool boundarySelectTool;
 
     /**
-     * Constructor. It sets up the bundle by adding layers and tools that are relevant. Finally, it
-     * zooms in the interested zone. The interested zone is defined in the following order: <br/> If
-     * bean has modified cadastre objects it is zoomed there, otherwise if baUnitId is present it is
-     * zoomed there else it is zoomed in the application location.
+     * Constructor. It sets up the bundle by adding layers and tools that are
+     * relevant. Finally, it zooms in the interested zone. The interested zone
+     * is defined in the following order: <br/> If bean has modified cadastre
+     * objects it is zoomed there, otherwise if baUnitId is present it is zoomed
+     * there else it is zoomed in the application location.
      *
-     * @param applicationBean The application where the transaction is started identifiers
-     * @param transactionStarterId The id of the starter of the application. This will be the
-     * service id.
-     * @param baUnitId Id of the property that is defined in the application as a target for this
-     * cadastre redefinition.
+     * @param applicationBean The application where the transaction is started
+     * identifiers
+     * @param transactionStarterId The id of the starter of the application.
+     * This will be the service id.
+     * @param baUnitId Id of the property that is defined in the application as
+     * a target for this cadastre redefinition.
      */
     public ControlsBundleForCadastreRedefinition(
             ApplicationBean applicationBean,
@@ -209,7 +215,8 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
     }
 
     /**
-     * Gets the extent of the cadastre objects that are related with the baUnitId
+     * Gets the extent of the cadastre objects that are related with the
+     * baUnitId
      *
      * @param baUnitId
      */
@@ -218,12 +225,14 @@ public final class ControlsBundleForCadastreRedefinition extends ControlsBundleF
                 this.getPojoDataAccess().getCadastreService().getCadastreObjectsByBaUnit(baUnitId);
         ReferencedEnvelope envelope = null;
         for (CadastreObjectTO cadastreObject : cadastreObjects) {
-            Geometry geom = GeometryUtility.getGeometryFromWkb(cadastreObject.getGeomPolygon());
-            ReferencedEnvelope tmpEnvelope = JTS.toEnvelope(geom);
-            if (envelope == null) {
-                envelope = tmpEnvelope;
-            } else {
-                envelope.expandToInclude(tmpEnvelope);
+            if (cadastreObject.getGeomPolygon() != null) {
+                Geometry geom = GeometryUtility.getGeometryFromWkb(cadastreObject.getGeomPolygon());
+                ReferencedEnvelope tmpEnvelope = JTS.toEnvelope(geom);
+                if (envelope == null) {
+                    envelope = tmpEnvelope;
+                } else {
+                    envelope.expandToInclude(tmpEnvelope);
+                }
             }
         }
         return envelope;
