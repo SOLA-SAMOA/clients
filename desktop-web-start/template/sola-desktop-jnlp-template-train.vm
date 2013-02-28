@@ -4,7 +4,7 @@
     codebase="$$codebase"
     context="$$context"
     href="$$name"
-    version="SOLA Samoa Training v2.0.4">
+    version="SOLA Samoa Training $solaVersion">
   <information>
     <title>SOLA Samoa Desktop Training</title>
 #if($project.Organization.Name)
