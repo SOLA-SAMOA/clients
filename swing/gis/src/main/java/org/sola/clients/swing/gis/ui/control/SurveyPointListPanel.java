@@ -323,6 +323,8 @@ public class SurveyPointListPanel extends javax.swing.JPanel {
             SurveyPointBean bean = new SurveyPointBean();
             bean.setX(x);
             bean.setY(y);
+            // Ticket 98  - Set the id for the manually entered coordinate
+            bean.setId(Integer.toString(theBean.getBeanList().size() + 1));
             this.theBean.getBeanList().add(bean);
         } catch (NumberFormatException ex) {
             Messaging.getInstance().show(GisMessage.CADASTRE_SURVEY_ADD_POINT);
