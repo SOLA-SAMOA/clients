@@ -57,6 +57,8 @@ public class UserBean extends UserSummaryBean {
     private SolaList<UserGroupBean> userGroups;
     private SolaList<RoleBean> roles;
     private String password;
+    private String lastPwordChangeUser;
+    private Integer pwordExpiryDays;
 
     public String getPassword() {
         return password;
@@ -81,6 +83,22 @@ public class UserBean extends UserSummaryBean {
         String oldValue = userName;
         userName = value;
         propertySupport.firePropertyChange(USERNAME_PROPERTY, oldValue, value);
+    }
+
+    public String getLastPwordChangeUser() {
+        return lastPwordChangeUser;
+    }
+
+    public void setLastPwordChangeUser(String lastPwordChangeUser) {
+        this.lastPwordChangeUser = lastPwordChangeUser;
+    }
+
+    public Integer getPwordExpiryDays() {
+        return pwordExpiryDays;
+    }
+
+    public void setPwordExpiryDays(Integer pwordExpiryDays) {
+        this.pwordExpiryDays = pwordExpiryDays;
     }
 
     @Override

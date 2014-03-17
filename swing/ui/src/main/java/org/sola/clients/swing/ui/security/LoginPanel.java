@@ -27,10 +27,10 @@ package org.sola.clients.swing.ui.security;
 
 import java.awt.ComponentOrientation;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.prefs.Preferences;
 import javax.swing.JRadioButton;
+import org.sola.clients.beans.security.SecurityBean;
 import org.sola.clients.swing.common.LocalizationManager;
 import org.sola.clients.swing.common.config.ConfigurationManager;
 import org.sola.clients.swing.common.controls.LanguageCombobox;
@@ -120,11 +120,7 @@ public class LoginPanel extends javax.swing.JPanel {
                         Preferences prefs = Preferences.userNodeForPackage(mainClass);
                         prefs.put(USER_NAME, txtUsername.getText());
                     }
-                    char[] user = txtUserPassword.getPassword();
-                    if (Arrays.equals(user, new char[]{'t', 'e', 's', 't'})) {
-                        MessageUtility.displayMessage(ClientMessage.ADMIN_CHANGE_PASSWORD);
-                    }
-                    Arrays.fill(user, '0');
+                    SecurityBean.isPasswordChangeReqd(true);
                     fireLoginEvent(true);
                 } else {
                     enablePanel(true);

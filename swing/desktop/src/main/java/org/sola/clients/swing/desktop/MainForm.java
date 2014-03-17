@@ -1,26 +1,30 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
- * reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
- * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
- * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this software without
- * specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
- * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.desktop;
@@ -108,7 +112,6 @@ public class MainForm extends javax.swing.JFrame {
         HelpUtility.getInstance().registerHelpMenu(jmiContextHelp, "overview");
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
-
             @Override
             public void windowOpened(WindowEvent e) {
                 postInit();
@@ -122,9 +125,9 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     /**
-     * Runs post initialization tasks. Enables or disables toolbar buttons and menu items depending
-     * on user rights. Loads various data after the form has been opened. It helps to display form
-     * with no significant delays.
+     * Runs post initialization tasks. Enables or disables toolbar buttons and
+     * menu items depending on user rights. Loads various data after the form
+     * has been opened. It helps to display form with no significant delays.
      */
     private void postInit() {
         this.setTitle("SOLA Samoa Desktop - " + LocalizationManager.getVersionNumber());
@@ -151,17 +154,21 @@ public class MainForm extends javax.swing.JFrame {
         menuShowMap.setEnabled(btnOpenMap.isEnabled());
         menuLodgementReport.setEnabled(SecurityBean.isInRole(RolesConstants.REPORTS_VIEW));
 
-
-        // Load dashboard
-        if (btnShowDashboard.isEnabled()) {
+        if (SecurityBean.isPasswordChangeReqd(false)) {
+            // Load the user profile page
+            showPasswordPanel();
+        } else if (btnShowDashboard.isEnabled()) {
+            // Load dashboard
             openDashBoard();
         }
+
 
         txtUserName.setText(SecurityBean.getCurrentUser().getUserName());
     }
 
     /**
-     * Sets the screen size and location based on the settings stored in the users preferences.
+     * Sets the screen size and location based on the settings stored in the
+     * users preferences.
      */
     private void configureForm() {
 
@@ -192,8 +199,8 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     /**
-     * Captures the screen size and location and saves them as the users preference just before the
-     * screen is is closed.
+     * Captures the screen size and location and saves them as the users
+     * preference just before the screen is is closed.
      */
     private void preClose() {
         if (mainClass != null) {
@@ -219,7 +226,6 @@ public class MainForm extends javax.swing.JFrame {
 
     private void openMap() {
         SolaTask t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_MAP));
@@ -236,7 +242,6 @@ public class MainForm extends javax.swing.JFrame {
 
     private void searchApplications() {
         SolaTask t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_APPSEARCH));
@@ -253,7 +258,6 @@ public class MainForm extends javax.swing.JFrame {
 
     private void searchBaUnit() {
         SolaTask t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_PROPERTYSEARCH));
@@ -270,7 +274,6 @@ public class MainForm extends javax.swing.JFrame {
 
     private void searchDocuments() {
         SolaTask t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_DOCUMENTSEARCH));
@@ -287,7 +290,6 @@ public class MainForm extends javax.swing.JFrame {
 
     private void openSearchParties() {
         SolaTask t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_PERSONSEARCH));
@@ -327,7 +329,8 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     /**
-     * Calls {@link AbstractBindingBean#saveStateHash()} method to make a hash of object's state
+     * Calls {@link AbstractBindingBean#saveStateHash()} method to make a hash
+     * of object's state
      */
     public static void saveBeanState(AbstractBindingBean bean) {
         try {
@@ -340,8 +343,9 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     /**
-     * Calls {@link AbstractBindingBean#hasChanges()} method to detect if there are any changes on
-     * the provided bean. <br /> Note, to check for the changes, you should call {@link AbstractBindingBean#saveStateHash()}
+     * Calls {@link AbstractBindingBean#hasChanges()} method to detect if there
+     * are any changes on the provided bean. <br /> Note, to check for the
+     * changes, you should call {@link AbstractBindingBean#saveStateHash()}
      * before calling this method.
      */
     public static boolean checkBeanState(AbstractBindingBean bean) {
@@ -357,10 +361,12 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     /**
-     * Calls {@link MainForm#checkBeanState(org.sola.clients.beans.AbstractBindingBean)} method to
-     * detect if there are any changes on the provided bean. If it returns true, warning message is
-     * shown and the result of user selection is returned. If user clicks <b>Yes</b> button to
-     * confirm saving changes, true is returned.
+     * Calls
+     * {@link MainForm#checkBeanState(org.sola.clients.beans.AbstractBindingBean)}
+     * method to detect if there are any changes on the provided bean. If it
+     * returns true, warning message is shown and the result of user selection
+     * is returned. If user clicks <b>Yes</b> button to confirm saving changes,
+     * true is returned.
      */
     public static boolean checkSaveBeforeClose(AbstractBindingBean bean) {
         boolean hasChanges = false;
@@ -381,7 +387,6 @@ public class MainForm extends javax.swing.JFrame {
      */
     public void openApplicationForm(final ApplicationBean app) {
         SolaTask t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_APP));
@@ -400,7 +405,6 @@ public class MainForm extends javax.swing.JFrame {
      */
     public void openApplicationForm(final String id) {
         SolaTask t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_APP));
@@ -417,7 +421,6 @@ public class MainForm extends javax.swing.JFrame {
      */
     public void openApplicationForm() {
         SolaTask t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_APPNEW));
@@ -436,7 +439,6 @@ public class MainForm extends javax.swing.JFrame {
      */
     public void openDocumentViewForm(final SourceBean source) {
         SolaTask t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_DOCUMENT_FORM_OPENING));
@@ -455,7 +457,6 @@ public class MainForm extends javax.swing.JFrame {
      */
     public void openDocumentViewForm(final PowerOfAttorneyBean powerOfAttorney) {
         SolaTask t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
                 setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_DOCUMENT_FORM_OPENING));
@@ -956,7 +957,6 @@ public class MainForm extends javax.swing.JFrame {
      */
     private void showPasswordPanel() {
         SolaTask t = new SolaTask<Void, Void>() {
-
             @Override
             public Void doTask() {
 //                setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_OPEN_MAP));
