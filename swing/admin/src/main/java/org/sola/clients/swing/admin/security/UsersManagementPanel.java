@@ -121,7 +121,6 @@ public class UsersManagementPanel extends ContentPanel {
         userSearchParams = new org.sola.clients.beans.security.UserSearchParamsBean();
         userSearchResultList = new org.sola.clients.beans.security.UserSearchAdvancedResultListBean();
         pnlHeader = new org.sola.clients.swing.ui.HeaderPanel();
-        pnlLayout = new javax.swing.JPanel();
         pnlUsers = new javax.swing.JPanel();
         pnlSearchCriteria = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -185,16 +184,13 @@ public class UsersManagementPanel extends ContentPanel {
         popupUsers.add(menuRemoveUser);
 
         setHeaderPanel(pnlHeader);
-        setMinimumSize(new java.awt.Dimension(617, 406));
 
         pnlHeader.setName("pnlHeader"); // NOI18N
         pnlHeader.setTitleText(bundle.getString("UsersManagementPanel.pnlHeader.titleText")); // NOI18N
 
-        pnlLayout.setName("pnlLayout"); // NOI18N
-        pnlLayout.setLayout(new java.awt.CardLayout());
-
         pnlUsers.setName("pnlUsers"); // NOI18N
 
+        pnlSearchCriteria.setMinimumSize(new java.awt.Dimension(0, 0));
         pnlSearchCriteria.setName("pnlSearchCriteria"); // NOI18N
         pnlSearchCriteria.setLayout(new java.awt.GridLayout(2, 4, 15, 0));
 
@@ -261,19 +257,20 @@ public class UsersManagementPanel extends ContentPanel {
 
         tableUsers.setComponentPopupMenu(popupUsers);
         tableUsers.setName("tableUsers"); // NOI18N
+        tableUsers.getTableHeader().setReorderingAllowed(false);
 
         eLProperty = org.jdesktop.beansbinding.ELProperty.create("${usersList}");
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, userSearchResultList, eLProperty, tableUsers);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${userName}"));
-        columnBinding.setColumnName("Username");
+        columnBinding.setColumnName("User Name");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${firstName}"));
-        columnBinding.setColumnName("First name");
+        columnBinding.setColumnName("First Name");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${lastName}"));
-        columnBinding.setColumnName("Last name");
+        columnBinding.setColumnName("Last Name");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${description}"));
@@ -281,7 +278,7 @@ public class UsersManagementPanel extends ContentPanel {
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${groupsList}"));
-        columnBinding.setColumnName("Groups");
+        columnBinding.setColumnName("Groups List");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${active}"));
@@ -293,9 +290,15 @@ public class UsersManagementPanel extends ContentPanel {
         bindingGroup.addBinding(binding);
 
         jScrollPane1.setViewportView(tableUsers);
+        tableUsers.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("UsersManagementPanel.tableUsers.columnModel.title0")); // NOI18N
+        tableUsers.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("UsersManagementPanel.tableUsers.columnModel.title1")); // NOI18N
+        tableUsers.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("UsersManagementPanel.tableUsers.columnModel.title2")); // NOI18N
+        tableUsers.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("UsersManagementPanel.tableUsers.columnModel.title3")); // NOI18N
         tableUsers.getColumnModel().getColumn(3).setCellRenderer(new TableCellTextAreaRenderer());
+        tableUsers.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("UsersManagementPanel.tableUsers.columnModel.title4")); // NOI18N
         tableUsers.getColumnModel().getColumn(4).setCellRenderer(new TableCellTextAreaRenderer());
         tableUsers.getColumnModel().getColumn(5).setMaxWidth(50);
+        tableUsers.getColumnModel().getColumn(5).setHeaderValue(bundle.getString("UsersManagementPanel.tableUsers.columnModel.title5")); // NOI18N
 
         toolbarUsers.setFloatable(false);
         toolbarUsers.setRollover(true);
@@ -359,13 +362,13 @@ public class UsersManagementPanel extends ContentPanel {
             pnlUsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlUsersLayout.createSequentialGroup()
                 .addGroup(pnlUsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(toolbarUsers, javax.swing.GroupLayout.DEFAULT_SIZE, 595, Short.MAX_VALUE)
+                    .addComponent(toolbarUsers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnlUsersLayout.createSequentialGroup()
-                        .addComponent(pnlSearchCriteria, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE)
+                        .addComponent(pnlSearchCriteria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnSearch)))
                 .addGap(2, 2, 2))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
         );
         pnlUsersLayout.setVerticalGroup(
             pnlUsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -379,25 +382,23 @@ public class UsersManagementPanel extends ContentPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
         );
 
-        pnlLayout.add(pnlUsers, "card3");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlHeader, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
+            .addComponent(pnlHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(pnlLayout, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)
-                .addGap(10, 10, 10))
+                .addContainerGap()
+                .addComponent(pnlUsers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlLayout, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnlUsers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
 
         bindingGroup.bind();
@@ -486,7 +487,6 @@ public class UsersManagementPanel extends ContentPanel {
     private javax.swing.JMenuItem menuRemoveUser;
     private javax.swing.JMenuItem menuSetPassword;
     private org.sola.clients.swing.ui.HeaderPanel pnlHeader;
-    private javax.swing.JPanel pnlLayout;
     private javax.swing.JPanel pnlSearchCriteria;
     private javax.swing.JPanel pnlUsers;
     private javax.swing.JPopupMenu popupUsers;
