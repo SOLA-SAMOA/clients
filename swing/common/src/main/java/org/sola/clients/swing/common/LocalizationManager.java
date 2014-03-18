@@ -119,7 +119,7 @@ public class LocalizationManager {
 
     public static boolean isProductionVersion() {
         boolean result = false;
-        String host = System.getProperty("SOLA_WEB_START_HOST");
+        String host = System.getProperty("jnlp.SOLA_WEB_START_HOST");
         LogUtility.log("Host Name = " + (host == null ? "Unknown" : host));
         // If the host variable is not set then this is probably development
         if (host == null || host.equalsIgnoreCase("mnre-sola02")

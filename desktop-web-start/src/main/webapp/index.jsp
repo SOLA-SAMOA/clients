@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -21,7 +21,7 @@
                 <td> <br><br>
                     Solutions for Open Land Administration (SOLA) is an open source software system that aims to make computerized cadastre and registration systems more affordable and more sustainable in developing countries.
                     <br><br>
-                    This page will guide you through the installation of the SOLA Samoa Web Start applications which includes the SOLA Desktop Web Start and SOLA Admin Web Start. The installation package for both applications is approximately 70Mb.
+                    This page will guide you through the installation of the SOLA Samoa Web Start applications which includes the SOLA Samoa Desktop Web Start and SOLA Samoa Admin Web Start. The installation package for both applications is approximately 100Mb.
                     <br><br> 
                 </td>
             </tr>
@@ -33,7 +33,7 @@
             <tr>
                 <td width="20%"></td>   
                 <td>     
-                    The  Java SE Runtime Environment 7 is required for the SOLA Web Start applications. To check your version of Java open a Windows command prompt (cmd) and type <b>java -version</b>. If the response does not indicate Java 1.7.0 is installed you will need to install Java 7. Java 7 can be downloaded from <a href="http://www.oracle.com/technetwork/java/javase/downloads/java-se-jre-7-download-432155.html" target="_blank" >here</a>.
+                    The  Java SE Runtime Environment 7 is required for the SOLA Web Start applications. Java 7 can be downloaded from <a href="http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html#jre-7u21-oth-JPR" target="_blank" >here</a>.
                     <ol>
                         <li>    You will need to accept the Oracle Binary Code License Agreement for Java SE before downloading Java 7.</li>
                         <li>    Download the product appropriate for your operating system. Note that the Windows x86 products are for Windows 32bit operating systems and the Windows x64 product is for Windows 64bit operating systems.</li>
@@ -48,56 +48,42 @@
             </tr>
             <tr>
                 <td width="20%"></td>   
-                <td>      
+                <td>   
                     <ol>
-                        <script src="http://www.java.com/js/deployJava.js"></script>  
-                        <script type="text/javascript">
-                            var SOLAPATH="webstart/sola-desktop.jnlp";   
-                            var URL=window.location.href;
-                            var SOLADESKTOP=URL+SOLAPATH;
-                            document.write("<li>To install the SOLA Desktop LIVE web start application, right click this link <a href="+SOLADESKTOP+" target=_blank>SOLA Desktop Web Start LIVE</a> and choose Save link as... and save the sola-desktop.jnlp file to a known location on your local file system.</li>");
-                        </script>
-                        <script type="text/javascript">
-                            var SOLAPATH="webstart/sola-desktop-train.jnlp";   
-                            var URL=window.location.href;
-                            var SOLADESKTOPTRAIN=URL+SOLAPATH;
-                            document.write("<li>To install the SOLA Desktop Training web start application, right click this link <a href="+SOLADESKTOPTRAIN+" target=_blank>SOLA Desktop Web Start Training</a> and choose Save link as... and save the sola-desktop-train.jnlp file to a known location on your local file system.</li>");
-                        </script>
-                        <script type="text/javascript">
-                            var SOLAPATH="webstart/sola-admin.jnlp";   
-                            var URL=window.location.href;
-                            var SOLAADMIN=URL+SOLAPATH;
-                            document.write("<li>To install the SOLA Admin LIVE web start, right click this link <a href="+SOLAADMIN+" target=_blank>SOLA Admin Web Start LIVE</a> and choose Save link as... and save the sola-admin.jnlp file to a known location on your local file system.</li>");
-                        </script>
-                        <script type="text/javascript">
-                            var SOLAPATH="webstart/sola-admin-train.jnlp";   
-                            var URL=window.location.href;
-                            var SOLAADMINTRAIN=URL+SOLAPATH;
-                            document.write("<li>To install the SOLA Admin Training web start, right click this link <a href="+SOLAADMINTRAIN+" target=_blank>SOLA Admin Web Start Training</a> and choose Save link as... and save the sola-admin-train.jnlp file to a known location on your local file system.</li>");
-                        </script>
-                        <li>	Once one or both of the files have been saved on your file system, locate the appropriate jnlp file using Windows Explorer or equivalent and double click the file. You should see a Java 7 splash displayed followed by the Starting application... dialog. </li>
-                        <li>	When prompted with the digital signature security warning, tick Always trust content from this publisher and choose Run. </li>
-                        <li>	The web start application you have selected will start automatically. At the login screen, enter User <i><b>test</b></i> and password <i><b>test</b></i>. </li>
+                        <%
+                            // Check the server name to determine which jnlp
+                            // files should be made available to the user. If they
+                            // are on the production server, allow them to
+                            // download the (LIVE) jnlp files, otherwise use the
+                            // test jnlp files
+                            String hostName = request.getServerName();
+
+                            String desktopJnlp = "/webstart/sola-desktop-train.jnlp";
+                            String adminJnlp = "/webstart/sola-admin-train.jnlp";
+                            if (hostName.equalsIgnoreCase("mnre-sola02") ||
+                                    hostName.equalsIgnoreCase("10.20.1.176")) { // Update hostname and IP as required
+                                // This is the production host so use the production
+                                // JNLP files
+                                desktopJnlp = "/webstart/sola-desktop.jnlp";
+                                adminJnlp = "/webstart/sola-admin.jnlp";
+                            }
+                            String desktopLocation = request.getContextPath() + desktopJnlp;
+                            String adminLocation = request.getContextPath() + adminJnlp;
+                        %> 
+                        <li>To install the <b>SOLA Samoa Desktop</b> web start application, right click this link <a href=" <%=desktopLocation%> " target=_blank>SOLA Samoa Desktop</a> and choose Save link as... and save the sola-desktop.jnlp file to a known location on your local file system.</li>
+                        <li>To install the <b>SOLA Samoa Admin</b> web start, right click this link <a href=" <%=adminLocation%> " target=_blank>SOLA Samoa Admin</a> and choose Save link as... and save the sola-admin.jnlp file to a known location on your local file system.</li>
+                        <li>Once one or both of the files have been saved on your file system, locate the appropriate jnlp file using Windows Explorer or equivalent and double click the file. You should see a Java 7 splash displayed followed by the Starting application... dialog. </li>
+                        <li>When prompted with the digital signature security warning, tick Always trust content from this publisher and choose Run. </li>
+                        <li>The web start application you have selected will start automatically. At the login screen, enter your SOLA username and password. </li>
                     </ol>
                 </td>
             </tr> 
             <tr>
                 <td width="20%"></td>   
                 <td>
-                    <h2>Un-installing the web start applications</h2>
-                </td>
-            </tr>
-            <tr>
-                <td width="20%"></td>  
-                <td>
-                    If you have problems installing the SOLA web start applications, or simply want to un-install the applications you can do so by
-                    <ol>
-                        <li>	From Windows Control Panel, open the <b>Java</b> control panel</li> 
-                        <li>	On the General tab, click the View... button</li>
-                        <li>	In the Java Cache Viewer dialog, select all SOLA web start applications and click the red X tool bar button</li>
-                        <li>	In the Java Cache Viewer dialog, select the Resources option from the Show: combo box, then select all resources and remove them using the red X tool bar button</li>
-                        <li>    Close the Java control panel</li>
-                    </ol>
+                    <h2>User Guide</h2>
+                    <br>
+                    The SOLA Samoa User Guide provides detailed information on the installation and use of the SOLA Desktop. The User Guide is available from <a href="help/SOLAUserGuide.pdf" target="_blank" >here</a>.
                 </td>
             </tr> 
         </table>  

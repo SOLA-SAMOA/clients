@@ -1,28 +1,30 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO).
- * All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *    1. Redistributions of source code must retain the above copyright notice,this list
- *       of conditions and the following disclaimer.
- *    2. Redistributions in binary form must reproduce the above copyright notice,this list
- *       of conditions and the following disclaimer in the documentation and/or other
- *       materials provided with the distribution.
- *    3. Neither the name of FAO nor the names of its contributors may be used to endorse or
- *       promote products derived from this software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.common.config;
@@ -38,15 +40,17 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 
-/** Manages various configuration parameters. */
+/**
+ * Manages various configuration parameters.
+ */
 public class ConfigurationManager {
 
     private static Properties wsConfig;
     private static Properties envConfig;
 
-    /** 
-     * Returns environmental parameters such as running mode 
-     * ({@link EnvConfig#SOLA_RUNNING_MODE}). 
+    /**
+     * Returns environmental parameters such as running mode
+     * ({@link EnvConfig#SOLA_RUNNING_MODE}).
      */
     private static Properties getEnvConfig() {
         if (envConfig == null) {
@@ -64,9 +68,10 @@ public class ConfigurationManager {
         return envConfig;
     }
 
-    /** 
-     * Returns Web-services configuration parameters, such as WSDL location of 
-     * the service. Tries to load them from different sources in a certain priority order.
+    /**
+     * Returns Web-services configuration parameters, such as WSDL location of
+     * the service. Tries to load them from different sources in a certain
+     * priority order.
      */
     public static HashMap<String, String> getWSConfig() {
 
@@ -82,8 +87,8 @@ public class ConfigurationManager {
                 // Load from system properties
                 for (Enumeration it = System.getProperties().keys(); it.hasMoreElements();) {
                     Object systemProp = it.nextElement();
-                    if (systemProp != null && systemProp.toString().startsWith("SOLA_WS")) {
-                        wsConfig.setProperty(systemProp.toString(), System.getProperty(systemProp.toString()));
+                    if (systemProp != null && systemProp.toString().startsWith("jnlp.SOLA_WS")) {
+                        wsConfig.setProperty(systemProp.toString().replaceAll("jnlp.", ""), System.getProperty(systemProp.toString()));
                     }
                 }
 
@@ -150,9 +155,10 @@ public class ConfigurationManager {
         return config;
     }
 
-    /** 
-     * This method is used by {@link #getWSConfig()} to load configuration 
+    /**
+     * This method is used by {@link #getWSConfig()} to load configuration
      * values from the file on the local drive.
+     *
      * @param filePath The full path to the configuration file.
      */
     private static void loadWSConfigFromLocalConfigFile(String filePath) {
@@ -166,8 +172,9 @@ public class ConfigurationManager {
         }
     }
 
-    /** 
+    /**
      * Updates local configuration file with new values.
+     *
      * @param filePath The full path to the configuration file.
      * @param folderName The full path to the folder with configuration file.
      */
@@ -192,8 +199,9 @@ public class ConfigurationManager {
 
     }
 
-    /** 
+    /**
      * Returns environmental configuration value.
+     *
      * @param key The key of the value to return.
      */
     public static String getEnvConfigValue(EnvConfig key) {
