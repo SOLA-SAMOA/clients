@@ -1,28 +1,30 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO).
- * All rights reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *    1. Redistributions of source code must retain the above copyright notice,this list
- *       of conditions and the following disclaimer.
- *    2. Redistributions in binary form must reproduce the above copyright notice,this list
- *       of conditions and the following disclaimer in the documentation and/or other
- *       materials provided with the distribution.
- *    3. Neither the name of FAO nor the names of its contributors may be used to endorse or
- *       promote products derived from this software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.common.controls;
@@ -48,7 +50,9 @@ import org.sola.common.messaging.MessageUtility;
  */
 public class LanguageCombobox extends JComboBox {
 
-    /** ComboBox renderer class. Displays flags for each language. */
+    /**
+     * ComboBox renderer class. Displays flags for each language.
+     */
     private class ComboBoxRenderer extends JLabel implements ListCellRenderer {
 
         private Font uhOhFont;
@@ -61,9 +65,8 @@ public class LanguageCombobox extends JComboBox {
         }
 
         /*
-         * This method finds the image and text corresponding
-         * to the selected value and returns the label, set up
-         * to display the text and image.
+         * This method finds the image and text corresponding to the selected
+         * value and returns the label, set up to display the text and image.
          */
         @Override
         public Component getListCellRendererComponent(
@@ -108,45 +111,33 @@ public class LanguageCombobox extends JComboBox {
         }
     }
     private boolean showMessage = true;
-   // private String[] languageStrings = {"English", "Italian", "नेपाली", "Samoan"};//John, Add Samoan
-     private String[] languageStrings = {"English", "Samoan"};//John, Add Samoan
-    //private String[] languageIconNames = {"en.jpg", "it.jpg", "np.png", "sm.jpg"};//John, Add "sm.jpg"
-    private String[] languageIconNames = {"en.jpg", "sm.jpg"};//John, Add "sm.jpg"
+    public boolean confirmedChange = false;
+    private String[] languageStrings = {"English", "Italian", "नेपाली"};
+    private String[] languageIconNames = {"en.jpg", "it.jpg", "np.png"};
     private ImageIcon[] languageIcons;
-    private Class<?> applicationMainClass;
     private static final Map<String, Integer> languagesMap = Collections.unmodifiableMap(new HashMap(2, 1.0f) {
-
         {
             put("en", 0);
-            put("sm", 1);
-            //put("it", 1);
-            //put("np", 2);
-            
+            put("it", 1);
+            put("np", 2);
         }
     });
 
-    /** Default class constructor. */
-    public LanguageCombobox() {
-        super();
-    }
-
-    /** 
+    /**
      * Class constructor.
-     * @param applicationMainClass The main class of application, where this 
-     * control is used. Application class needed to pick up and save preferred 
+     *
+     * @param applicationMainClass The main class of application, where this
+     * control is used. Application class needed to pick up and save preferred
      * setting of the language.
      */
-    public LanguageCombobox(Class<?> applicationMainClass) {
+    public LanguageCombobox() {
         super();
-        if (applicationMainClass != null) {
-            //setModel(new javax.swing.DefaultComboBoxModel(new Integer[]{0, 1, 2, 3}));
-            setModel(new javax.swing.DefaultComboBoxModel(new Integer[]{0, 1}));
-            this.applicationMainClass = applicationMainClass;
-            addLanguageIcons();
-            setRenderer(new ComboBoxRenderer());
-            setMaximumRowCount(4);
-            revalidate();
-        }
+        setModel(new javax.swing.DefaultComboBoxModel(new Integer[]{0, 1, 2}));
+        addLanguageIcons();
+        setRenderer(new ComboBoxRenderer());
+        setMaximumRowCount(4);
+        revalidate();
+
     }
 
     private void addLanguageIcons() {
@@ -162,7 +153,7 @@ public class LanguageCombobox extends JComboBox {
             }
         }
 
-        String selectedLanguage = LocalizationManager.getLanguage(applicationMainClass);
+        String selectedLanguage = LocalizationManager.getLanguage();
 
         if (selectedLanguage != null && !selectedLanguage.equals("")
                 && languagesMap != null && languagesMap.containsKey(selectedLanguage)) {
@@ -180,23 +171,25 @@ public class LanguageCombobox extends JComboBox {
             int language = (Integer) getSelectedItem();
 
             if ("italian".equalsIgnoreCase(languageStrings[language])) {
-                LocalizationManager.setLanguage(applicationMainClass, "it", "IT");
+                LocalizationManager.setLanguage("it", "IT");
             } else if ("english".equalsIgnoreCase(languageStrings[language])) {
-                LocalizationManager.setLanguage(applicationMainClass, "en", "US");
+                LocalizationManager.setLanguage("en", "US");
             } else if ("नेपाली".equalsIgnoreCase(languageStrings[language])) {
-                LocalizationManager.setLanguage(applicationMainClass, "np", "NP");
-            } else if ("samoan".equalsIgnoreCase(languageStrings[language])) {
-                LocalizationManager.setLanguage(applicationMainClass, "sm", "WS");
-            }//John, add else if statement for samoan
-
+                LocalizationManager.setLanguage("np", "NP");
+            }
             if (showMessage) {
-                MessageUtility.displayMessage(ClientMessage.GENERAL_UPDATE_LANG);
-                LocalizationManager.restartApplication(applicationMainClass);
+                LocalizationManager.loadLanguage();
+                if (!this.confirmedChange) {
+                    MessageUtility.displayMessage(ClientMessage.GENERAL_UPDATE_LANG);
+                    LocalizationManager.restartApplication();
+                }
             }
         }
     }
 
-    /** Returns an ImageIcon, or null if the path was invalid. */
+    /**
+     * Returns an ImageIcon, or null if the path was invalid.
+     */
     protected static ImageIcon createImageIcon(String name) {
         URL imgURL = LanguageCombobox.class.getResource("/images/flags/" + name);
         if (imgURL != null) {

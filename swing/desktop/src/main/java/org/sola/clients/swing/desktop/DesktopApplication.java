@@ -34,6 +34,7 @@ import org.sola.clients.swing.common.LocalizationManager;
 import org.sola.clients.swing.ui.DesktopClientExceptionHandler;
 import org.sola.clients.swing.ui.security.LoginForm;
 import org.sola.clients.swing.ui.security.LoginPanel;
+import org.sola.common.WindowUtility;
 import org.sola.common.logging.LogUtility;
 
 /**
@@ -47,6 +48,7 @@ public class DesktopApplication {
      * @param args Array of input parameters.
      */
     public static void main(String[] args) {
+        WindowUtility.setMainAppClass(DesktopApplication.class);
         // Show splash screen
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         int x = ((dim.width) / 2);
@@ -73,7 +75,7 @@ public class DesktopApplication {
                 int y = ((dim.height) / 2);
 
                 Thread.setDefaultUncaughtExceptionHandler(new DesktopClientExceptionHandler());
-                LocalizationManager.loadLanguage(DesktopApplication.class);
+                LocalizationManager.loadLanguage();
                 LogUtility.initialize(DesktopApplication.class);
 
                 if (LocalizationManager.isProductionVersion()) {
@@ -82,7 +84,7 @@ public class DesktopApplication {
                     LafManager.getInstance().setProperties("autumn");
                 }
 
-                final LoginForm loginForm = new LoginForm(DesktopApplication.class);
+                final LoginForm loginForm = new LoginForm();
                 loginForm.addPropertyChangeListener(new PropertyChangeListener() {
 
                     @Override
@@ -90,12 +92,12 @@ public class DesktopApplication {
                         if (evt.getPropertyName().equals(LoginPanel.LOGIN_RESULT)) {
                             if (((Boolean) evt.getNewValue())) {
                                 loginForm.dispose();
-                                MainForm.getInstance(DesktopApplication.class).setVisible(true);
+                                MainForm.getInstance().setVisible(true);
                             }
                         }
                     }
                 });
-                loginForm.setLocation(x - (loginForm.getWidth() / 2), y - (loginForm.getHeight() / 2));
+                WindowUtility.centerForm(loginForm);
                 loginForm.setVisible(true);
             }
         });

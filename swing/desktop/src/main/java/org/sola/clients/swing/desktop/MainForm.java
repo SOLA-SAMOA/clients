@@ -62,6 +62,7 @@ import org.sola.clients.swing.desktop.source.DocumentViewForm;
 import org.sola.clients.swing.desktop.source.PowerOfAttorneyViewForm;
 import org.sola.clients.swing.ui.MainContentPanel;
 import org.sola.common.RolesConstants;
+import org.sola.common.WindowUtility;
 import org.sola.common.help.HelpUtility;
 import org.sola.common.logging.LogUtility;
 import org.sola.common.messaging.ClientMessage;
@@ -72,7 +73,6 @@ import org.sola.common.messaging.MessageUtility;
  */
 public class MainForm extends javax.swing.JFrame {
 
-    private Class<?> mainClass;
     public static final String MAIN_FORM_HEIGHT = "mainFormHeight";
     public static final String MAIN_FORM_WIDTH = "mainFormWitdh";
     public static final String MAIN_FORM_TOP = "mainFormTop";
@@ -91,14 +91,6 @@ public class MainForm extends javax.swing.JFrame {
      */
     public static MainForm getInstance() {
         return MainFormHolder.INSTANCE;
-    }
-
-    /**
-     * Returns a singleton instance of {@link MainForm}.
-     */
-    public static MainForm getInstance(Class<?> mainClass) {
-        getInstance().mainClass = mainClass;
-        return getInstance();
     }
 
     /**
@@ -170,7 +162,7 @@ public class MainForm extends javax.swing.JFrame {
      * Sets the screen size and location based on the settings stored in the
      * users preferences.
      */
-    private void configureForm() {
+   private void configureForm() {
 
         int height = this.getHeight();
         int width = this.getWidth();
@@ -178,19 +170,26 @@ public class MainForm extends javax.swing.JFrame {
         int x = ((dim.width) / 2) - (width / 2);
         int y = ((dim.height) / 2) - (height / 2);
 
-        if (mainClass != null) {
+        if (WindowUtility.hasUserPreferences()) {
             // Set the size of the screen
-            Preferences prefs = Preferences.userNodeForPackage(mainClass);
+            Preferences prefs = WindowUtility.getUserPreferences();
             height = Integer.parseInt(prefs.get(MAIN_FORM_HEIGHT, Integer.toString(height)));
             width = Integer.parseInt(prefs.get(MAIN_FORM_WIDTH, Integer.toString(width)));
             y = Integer.parseInt(prefs.get(MAIN_FORM_TOP, Integer.toString(y)));
             x = Integer.parseInt(prefs.get(MAIN_FORM_LEFT, Integer.toString(x)));
-            if (height > dim.height || y > dim.height) {
-                height = dim.height - 50;
+
+            // Check if the screen sizes are within the bounds of the users 
+            // physical screen. e.g. may have been using dual monitor. 
+            if (height > dim.height || height < 50) {
+                height = dim.height - 50 - y;
+            }
+            if (width > dim.width || width < 200) {
+                width = dim.width - 20 - x;
+            }
+            if (y + 10 > dim.height || y + height - 100 < 0) {
                 y = 5;
             }
-            if (width > dim.width || x > dim.width) {
-                width = dim.width - 20;
+            if (x + 10 > dim.width || x + width - 100 < 0) {
                 x = 10;
             }
             this.setSize(width, height);
@@ -203,8 +202,8 @@ public class MainForm extends javax.swing.JFrame {
      * preference just before the screen is is closed.
      */
     private void preClose() {
-        if (mainClass != null) {
-            Preferences prefs = Preferences.userNodeForPackage(mainClass);
+        if (WindowUtility.hasUserPreferences()) {
+            Preferences prefs = WindowUtility.getUserPreferences();
             prefs.put(MAIN_FORM_HEIGHT, Integer.toString(this.getHeight()));
             prefs.put(MAIN_FORM_WIDTH, Integer.toString(this.getWidth()));
             prefs.put(MAIN_FORM_TOP, Integer.toString(this.getY()));
@@ -324,7 +323,7 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     private void setLanguage(String code, String country) {
-        LocalizationManager.setLanguage(DesktopApplication.class, code, country);
+        LocalizationManager.setLanguage(code, country);
         MessageUtility.displayMessage(ClientMessage.GENERAL_UPDATE_LANG);
     }
 

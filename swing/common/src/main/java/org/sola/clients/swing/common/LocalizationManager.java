@@ -29,6 +29,7 @@ import java.io.File;
 import java.util.Locale;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+import org.sola.common.WindowUtility;
 import org.sola.common.logging.LogUtility;
 
 /**
@@ -40,14 +41,19 @@ public class LocalizationManager {
     private static final String COUNTRY = "country";
 
     /**
-     * Loads default language and country codes and sets {@link Locale} settings accordingly.
+     * Loads default language and country codes and sets {@link Locale} settings
+     * accordingly.
      */
-    public static void loadLanguage(Class<?> applicationMainClass) {
-        Preferences prefs = Preferences.userNodeForPackage(applicationMainClass);
+    public static void loadLanguage() {
         Locale defaultLocale = Locale.getDefault(Locale.Category.FORMAT);
 
-        String language = prefs.get(LANGUAGE, "en");
-        String country = prefs.get(COUNTRY, "US");
+        String language = "en";
+        String country = "US";
+        if (WindowUtility.hasUserPreferences()) {
+            Preferences prefs = WindowUtility.getUserPreferences();
+            language = prefs.get(LANGUAGE, language);
+            country = prefs.get(COUNTRY, country);
+        }
 
         if (defaultLocale.getLanguage().equalsIgnoreCase(language)) {
             // Override country code from local settings
@@ -55,17 +61,21 @@ public class LocalizationManager {
         }
         Locale loc = new Locale(language, country);
         Locale.setDefault(loc);
-
     }
 
     /**
-     * Returns preference language code. If language is not set, <b>en</b> is returned by default.
+     * Returns preference language code. If language is not set, <b>en</b> is
+     * returned by default.
      *
      * @return Two letters language code.
      */
-    public static String getLanguage(Class<?> applicationMainClass) {
-        Preferences prefs = Preferences.userNodeForPackage(applicationMainClass);
-        return prefs.get(LANGUAGE, "en");
+    public static String getLanguage() {
+        String language = "en";
+        if (WindowUtility.hasUserPreferences()) {
+            Preferences prefs = WindowUtility.getUserPreferences();
+            language = prefs.get(LANGUAGE, language);
+        }
+        return language;
     }
 
     /**
@@ -74,9 +84,8 @@ public class LocalizationManager {
      * @param language Two letters language name in lowercase.
      * @param country Two letters country name in uppercase.
      */
-    public static void setLanguage(Class<?> applicationMainClass, String language, String country) {
-        Preferences prefs = Preferences.userNodeForPackage(applicationMainClass);
-
+    public static void setLanguage(String language, String country) {
+        Preferences prefs = WindowUtility.getUserPreferences();
         prefs.put(LANGUAGE, language);
         prefs.put(COUNTRY, country);
         try {
@@ -84,24 +93,22 @@ public class LocalizationManager {
         } catch (BackingStoreException ex) {
             ex.printStackTrace();
         }
-
     }
 
-    /**
+      /**
      * Restarts application.
      */
-    public static boolean restartApplication(Class<?> applicationMainClass) {
+    public static boolean restartApplication() {
         String javaBin = System.getProperty("java.home") + "/bin/java";
         File jarFile;
         try {
-            jarFile = new File(applicationMainClass.getProtectionDomain().getCodeSource().getLocation().toURI());
+            jarFile = new File(WindowUtility.getMainAppClass().getProtectionDomain()
+                    .getCodeSource().getLocation().toURI());
         } catch (Exception e) {
             return false;
         }
 
-        /*
-         * is it a jar file?
-         */
+        /* is it a jar file? */
         if (!jarFile.getName().endsWith(".jar")) {
             return false;   //no, it's a .class probably  
         }

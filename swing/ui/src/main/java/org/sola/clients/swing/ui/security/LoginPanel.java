@@ -36,6 +36,7 @@ import org.sola.clients.swing.common.config.ConfigurationManager;
 import org.sola.clients.swing.common.controls.LanguageCombobox;
 import org.sola.clients.swing.common.tasks.SolaTask;
 import org.sola.clients.swing.common.tasks.TaskManager;
+import org.sola.common.WindowUtility;
 import org.sola.common.messaging.ClientMessage;
 import org.sola.common.messaging.MessageUtility;
 
@@ -46,26 +47,13 @@ public class LoginPanel extends javax.swing.JPanel {
 
     public static final String LOGIN_RESULT = "loginResult";
     public static final String USER_NAME = "defaultUserName";
-    private Class<?> mainClass;
     protected JRadioButton previousButton;
 
     /**
      * Create combobox with languages
      */
     private LanguageCombobox createLanguageCombobox() {
-        if (mainClass != null) {
-            return new LanguageCombobox(mainClass);
-        } else {
             return new LanguageCombobox();
-        }
-    }
-
-    /**
-     * Default constructor.
-     */
-    public LoginPanel() {
-        initComponents();
-        txtUsername.requestFocus();
     }
 
     /**
@@ -73,16 +61,16 @@ public class LoginPanel extends javax.swing.JPanel {
      *
      * @param applicationMainClass
      */
-    public LoginPanel(Class<?> mainClasss) {
-        this.mainClass = mainClasss;
+    public LoginPanel() {
         initComponents();
         txtUsername.requestFocus();
 
         lblVersion.setText("SOLA Samoa - " + LocalizationManager.getVersionNumber());
 
         // Make the username sticky
-        if (mainClass != null) {
-            Preferences prefs = Preferences.userNodeForPackage(mainClass);
+       // Make the username sticky
+        if (WindowUtility.hasUserPreferences()) {
+            Preferences prefs = WindowUtility.getUserPreferences();
             String userName = prefs.get(USER_NAME, "");
             if (!userName.isEmpty()) {
                 txtUsername.setText(userName);
@@ -116,11 +104,10 @@ public class LoginPanel extends javax.swing.JPanel {
             @Override
             protected void taskDone() {
                 if (result) {
-                    if (mainClass != null) {
-                        Preferences prefs = Preferences.userNodeForPackage(mainClass);
+                    if (WindowUtility.hasUserPreferences()) {
+                        Preferences prefs = WindowUtility.getUserPreferences();
                         prefs.put(USER_NAME, txtUsername.getText());
                     }
-                    SecurityBean.isPasswordChangeReqd(true);
                     fireLoginEvent(true);
                 } else {
                     enablePanel(true);
