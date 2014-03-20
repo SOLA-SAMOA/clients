@@ -203,6 +203,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
     private ObservableList<BaUnitNotationBean> baUnitPendingNotationList;
     private List<PartySummaryBean> currentOwnersList;
     private List<UnregisteredDealingBean> unregisteredDealingList;
+    private SolaList<CertificatePrintBean> certificatePrintList;
     private transient CadastreObjectBean selectedParcel;
     private transient SolaList<RrrBean> rrrHistoricList;
     private transient RrrBean selectedRight;
@@ -266,6 +267,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
         baUnitNotationList = new SolaList();
         cadastreObjectList = new SolaList();
         baUnitAreaList = new SolaList();
+        certificatePrintList = new SolaList();
         childBaUnits = new SolaList();
         parentBaUnits = new SolaList();
         sourceList = new SolaList();
@@ -1036,5 +1038,9 @@ public class BaUnitBean extends BaUnitSummaryBean {
             unregisteredDealingList.add(bean);
         }
         return unregisteredDealingList;
+    }
+
+    public SolaList<CertificatePrintBean> getCertificatePrintList() {
+        return certificatePrintList;
     }
 }
