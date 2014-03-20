@@ -177,7 +177,7 @@
 			<staticText>
 				<reportElement x="0" y="75" width="548" height="13"/>
 				<textElement textAlignment="Center">
-					<font fontName="Calibri" size="10"/>
+					<font fontName="SansSerif" size="10"/>
 				</textElement>
 				<text><![CDATA[Ministry of Natural Resources and Environment]]></text>
 			</staticText>

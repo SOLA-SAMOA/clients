@@ -262,14 +262,16 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
         this.getMap().addMapAction(new RemoveDirectImage(this.getMap()), this.getToolbar(), true);
 
         //Spatial Unit Edit Tools
-        ExtendedFeatureLayer hydroLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("hydro");
+        ExtendedFeatureLayer hydroLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get(SpatialUnitEditLayer.HYDRO_LAYER_NAME);
         ExtendedFeatureLayer parcelsLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("parcels");
-        ExtendedFeatureLayer roadLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("road");
-        ExtendedFeatureLayer roadCLLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get("road_cl");
+        ExtendedFeatureLayer roadLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get(SpatialUnitEditLayer.ROAD_LAYER_NAME);
+        ExtendedFeatureLayer roadCLLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get(SpatialUnitEditLayer.ROAD_CL_LAYER_NAME);
+        ExtendedFeatureLayer villageLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get(SpatialUnitEditLayer.VILLAGE_LAYER_NAME);
         List<ExtendedFeatureLayer> selectionLayers = new ArrayList<ExtendedFeatureLayer>();
         selectionLayers.add(hydroLayer);
         selectionLayers.add(roadLayer);
         selectionLayers.add(roadCLLayer);
+        selectionLayers.add(villageLayer);
         this.getMap().addTool(new SelectSpatialUnitTool(selectionLayers, this.spatialUnitEditLayer),
                 this.getToolbar(), true);
 
@@ -309,6 +311,11 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
         addRoadCLTool.getTargetSnappingLayers().add(parcelsLayer);
         addRoadCLTool.getTargetSnappingLayers().add(this.spatialUnitEditLayer);
         this.getMap().addTool(addRoadCLTool, this.getToolbar(), true);
+
+        // Ticket #115 Village Edit Tool
+        NewSpatialUnitVillageTool addVillageTool = new NewSpatialUnitVillageTool(this.spatialUnitEditLayer,
+                this.spatialUnitEditLayer.mapLayerToLevel(villageLayer.getLayerName()));
+        this.getMap().addTool(addVillageTool, this.getToolbar(), true);
 
         this.setApplicationId(this.applicationBean.getId());
     }

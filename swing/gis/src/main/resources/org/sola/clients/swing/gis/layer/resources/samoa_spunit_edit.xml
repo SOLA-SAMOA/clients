@@ -38,7 +38,7 @@
                             <CssParameter name="fill">#0000cc</CssParameter>
                             <CssParameter name="opacity">0.25</CssParameter>
                         </Fill>
-                         <Stroke>
+                        <Stroke>
                             <CssParameter name="stroke">#0000cc</CssParameter>
                             <CssParameter name="stroke-width">2</CssParameter>
                         </Stroke>
@@ -109,6 +109,58 @@
                             <LinePlacement>
                                 <PerpendicularOffset>0.0</PerpendicularOffset>
                             </LinePlacement>
+                        </LabelPlacement>
+                        <Halo>
+                            <Radius>2.0</Radius>
+                            <Fill>
+                                <CssParameter name="fill">#FFFFFF</CssParameter>
+                            </Fill>
+                        </Halo>
+                        <Fill>
+                            <CssParameter name="fill">#000000</CssParameter>
+                        </Fill>
+                    </TextSymbolizer>
+                </Rule>
+                <Rule>
+                    <ogc:Filter>
+                        <ogc:PropertyIsEqualTo>
+                            <ogc:PropertyName>levelName</ogc:PropertyName>
+                            <ogc:Literal>Villages</ogc:Literal>
+                        </ogc:PropertyIsEqualTo>
+                    </ogc:Filter>
+                    <PointSymbolizer>
+                        <Graphic>
+                            <Mark>
+                                <WellKnownName>star</WellKnownName>
+                                <Fill>
+                                    <CssParameter name="fill">#FF0000</CssParameter>
+                                </Fill>
+                                <Stroke/>
+                            </Mark>
+                            <Size>10.0</Size>
+                        </Graphic>
+                    </PointSymbolizer>
+                    <TextSymbolizer>
+                        <Label>
+                            <ogc:PropertyName>label</ogc:PropertyName>
+                        </Label>
+                        <Font>
+                            <CssParameter name="font-family">Arial</CssParameter>
+                            <CssParameter name="font-size">12.0</CssParameter>
+                            <CssParameter name="font-style">normal</CssParameter>
+                            <CssParameter name="font-weight">normal</CssParameter>
+                        </Font>
+                        <LabelPlacement>
+                            <PointPlacement>
+                                <AnchorPoint>
+                                    <AnchorPointX>0.5</AnchorPointX>
+                                    <AnchorPointY>0.5</AnchorPointY>
+                                </AnchorPoint>
+                                <Displacement>
+                                    <DisplacementX>0.0</DisplacementX>
+                                    <DisplacementY>8.0</DisplacementY>
+                                </Displacement>
+                            </PointPlacement>
                         </LabelPlacement>
                         <Halo>
                             <Radius>2.0</Radius>

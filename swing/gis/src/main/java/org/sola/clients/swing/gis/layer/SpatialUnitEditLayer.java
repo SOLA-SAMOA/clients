@@ -75,12 +75,14 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
     private static final String LAYER_NAME = "spatial_unit_edit";
     private static final String LAYER_STYLE_RESOURCE = "samoa_spunit_edit.xml";
     private static final String LAYER_VERTEX_STYLE_RESOURCE = "samoa_spunit_edit_vertices.xml";
-    private static final String HYDRO_LAYER_NAME = "hydro";
-    private static final String HYDRO_LEVEL_NAME = "Hydro Features";
-    private static final String ROAD_CL_LAYER_NAME = "road_cl";
-    private static final String ROAD_CL_LEVEL_NAME = "Road Centerlines";
-    private static final String ROAD_LAYER_NAME = "road";
-    private static final String ROAD_LEVEL_NAME = "Roads";
+    public static final String HYDRO_LAYER_NAME = "hydro";
+    public static final String HYDRO_LEVEL_NAME = "Hydro Features";
+    public static final String ROAD_CL_LAYER_NAME = "road_cl";
+    public static final String ROAD_CL_LEVEL_NAME = "Road Centerlines";
+    public static final String ROAD_LAYER_NAME = "road";
+    public static final String ROAD_LEVEL_NAME = "Roads";
+    public static final String VILLAGE_LAYER_NAME = "villages";
+    public static final String VILLAGE_LEVEL_NAME = "Villages";
     private SpatialUnitChangeListBean listBean = new SpatialUnitChangeListBean();
     private Map<String, String> layerLevelMapping = new HashMap<String, String>();
 
@@ -100,6 +102,7 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
         layerLevelMapping.put(HYDRO_LAYER_NAME, HYDRO_LEVEL_NAME);
         layerLevelMapping.put(ROAD_CL_LAYER_NAME, ROAD_CL_LEVEL_NAME);
         layerLevelMapping.put(ROAD_LAYER_NAME, ROAD_LEVEL_NAME);
+        layerLevelMapping.put(VILLAGE_LAYER_NAME, VILLAGE_LEVEL_NAME);
 
         // Add a listener to process any changes made directly to the layer features in the map. 
         this.getFeatureCollection().addListener(new CollectionListener() {
