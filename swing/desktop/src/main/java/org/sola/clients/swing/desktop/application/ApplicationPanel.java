@@ -592,12 +592,12 @@ public class ApplicationPanel extends ContentPanel {
 
     private void openPropertyForm(final ApplicationPropertyBean applicationProperty, final boolean readOnly) {
         if (applicationProperty != null) {
-            if (!readOnly && !applicationProperty.isVerifiedExists() 
+            if (!readOnly && !applicationProperty.isVerifiedExists()
                     // Allow the property form to be opened if the service is Convert to Title
                     && !RequestTypeBean.CODE_NEW_DIGITAL_TITLE.equalsIgnoreCase(service.getRequestType().getCode())) {
                 MessageUtility.displayMessage(ClientMessage.BAUNIT_DOES_NOT_EXIST,
-                        new String[]{applicationProperty.getNameFirstpart(), 
-                            applicationProperty.getNameLastpart()});
+                        new String[]{applicationProperty.getNameFirstpart(),
+                    applicationProperty.getNameLastpart()});
                 return;
             }
             SolaTask t = new SolaTask<Void, Void>() {
@@ -1151,8 +1151,14 @@ public class ApplicationPanel extends ContentPanel {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals(org.sola.clients.swing.ui.source.DocumentSearchPanel.SELECT_SOURCE)) {
-                    appBean.getSourceList().addAsNew((SourceBean) evt.getNewValue());
-                    MessageUtility.displayMessage(ClientMessage.SOURCE_ADDED);
+                    // Ticket #57 - Don't add the source if it has an Historic Status
+                    SourceBean s = (SourceBean) evt.getNewValue();
+                    if (s != null && StatusConstants.HISTORIC.equals(s.getStatusCode())) {
+                         MessageUtility.displayMessage(ClientMessage.SOURCE_HISTORIC);
+                    } else {
+                        appBean.getSourceList().addAsNew(s);
+                        MessageUtility.displayMessage(ClientMessage.SOURCE_ADDED);
+                    }
                 }
             }
         });
@@ -3490,60 +3496,60 @@ public class ApplicationPanel extends ContentPanel {
 
             SolaTask<List<ValidationResultBean>, List<ValidationResultBean>> t =
                     new SolaTask<List<ValidationResultBean>, List<ValidationResultBean>>() {
-                        @Override
-                        public List<ValidationResultBean> doTask() {
-                            setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_APP_TAKE_ACTION));
-                            boolean displayValidationResultFormInSuccess = true;
-                            List<ValidationResultBean> result = null;
-                            if (ApplicationActionTypeBean.VALIDATE.equals(actionType)) {
-                                displayValidationResultFormInSuccess = false;
-                                validationResultListBean.setValidationResultList(appBean.validate());
-                            } else if (ApplicationActionTypeBean.WITHDRAW.equals(actionType)) {
-                                result = appBean.withdraw();
-                            } else if (ApplicationActionTypeBean.CANCEL.equals(actionType)) {
-                                result = appBean.reject();
-                            } else if (ApplicationActionTypeBean.ARCHIVE.equals(actionType)) {
-                                result = appBean.archive();
-                            } else if (ApplicationActionTypeBean.DISPATCH.equals(actionType)) {
-                                result = appBean.despatch();
-                            } else if (ApplicationActionTypeBean.LAPSE.equals(actionType)) {
-                                result = appBean.lapse();
-                            } else if (ApplicationActionTypeBean.REQUISITION.equals(actionType)) {
-                                result = appBean.requisition();
-                            } else if (ApplicationActionTypeBean.RESUBMIT.equals(actionType)) {
-                                result = appBean.resubmit();
-                            } else if (ApplicationActionTypeBean.APPROVE.equals(actionType)) {
-                                result = appBean.approve();
-                            }
+                @Override
+                public List<ValidationResultBean> doTask() {
+                    setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_APP_TAKE_ACTION));
+                    boolean displayValidationResultFormInSuccess = true;
+                    List<ValidationResultBean> result = null;
+                    if (ApplicationActionTypeBean.VALIDATE.equals(actionType)) {
+                        displayValidationResultFormInSuccess = false;
+                        validationResultListBean.setValidationResultList(appBean.validate());
+                    } else if (ApplicationActionTypeBean.WITHDRAW.equals(actionType)) {
+                        result = appBean.withdraw();
+                    } else if (ApplicationActionTypeBean.CANCEL.equals(actionType)) {
+                        result = appBean.reject();
+                    } else if (ApplicationActionTypeBean.ARCHIVE.equals(actionType)) {
+                        result = appBean.archive();
+                    } else if (ApplicationActionTypeBean.DISPATCH.equals(actionType)) {
+                        result = appBean.despatch();
+                    } else if (ApplicationActionTypeBean.LAPSE.equals(actionType)) {
+                        result = appBean.lapse();
+                    } else if (ApplicationActionTypeBean.REQUISITION.equals(actionType)) {
+                        result = appBean.requisition();
+                    } else if (ApplicationActionTypeBean.RESUBMIT.equals(actionType)) {
+                        result = appBean.resubmit();
+                    } else if (ApplicationActionTypeBean.APPROVE.equals(actionType)) {
+                        result = appBean.approve();
+                    }
 
-                            if (displayValidationResultFormInSuccess) {
-                                return result;
-                            }
-                            return null;
-                        }
+                    if (displayValidationResultFormInSuccess) {
+                        return result;
+                    }
+                    return null;
+                }
 
-                        @Override
-                        public void taskDone() {
-                            List<ValidationResultBean> result = get();
+                @Override
+                public void taskDone() {
+                    List<ValidationResultBean> result = get();
 
-                            if (result != null) {
-                                String message = MessageUtility.getLocalizedMessage(
-                                        ClientMessage.APPLICATION_ACTION_SUCCESS,
-                                        new String[]{appBean.getNr()}).getMessage();
-                                openValidationResultForm(result, true, message);
-                            }
-                            // Samoa Customization - display an approval notice if the application
-                            // has a Cadastre Change (i.e. Record Plan) service. 
-                            if (ApplicationActionTypeBean.APPROVE.equals(actionType)
-                                    && appBean.hasService(RequestTypeBean.CODE_CADASTRE_CHANGE)) {
-                                showReport(ReportManager.getSurveyApproval(appBean,
-                                        LocalizationManager.isProductionVersion()));
+                    if (result != null) {
+                        String message = MessageUtility.getLocalizedMessage(
+                                ClientMessage.APPLICATION_ACTION_SUCCESS,
+                                new String[]{appBean.getNr()}).getMessage();
+                        openValidationResultForm(result, true, message);
+                    }
+                    // Samoa Customization - display an approval notice if the application
+                    // has a Cadastre Change (i.e. Record Plan) service. 
+                    if (ApplicationActionTypeBean.APPROVE.equals(actionType)
+                            && appBean.hasService(RequestTypeBean.CODE_CADASTRE_CHANGE)) {
+                        showReport(ReportManager.getSurveyApproval(appBean,
+                                LocalizationManager.isProductionVersion()));
 
-                            }
-                            saveAppState();
-                            refreshDashboard();
-                        }
-                    };
+                    }
+                    saveAppState();
+                    refreshDashboard();
+                }
+            };
             TaskManager.getInstance().runTask(t);
         }
     }
