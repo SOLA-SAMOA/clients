@@ -25,8 +25,8 @@
  */
 package org.sola.clients.swing.gis.beans;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.sola.clients.beans.AbstractIdBean;
-import org.sola.webservices.transferobjects.EntityAction;
 
 /**
  * Bean used for storage of SpatialUnitChange details.
@@ -39,12 +39,15 @@ public class SpatialUnitChangeBean extends AbstractIdBean {
     public static final String DELETE_ON_APPROVAL_PROPERTY = "deleteOnApproval";
     public static final String SPATIAL_UNIT_ID_PROPERTY = "spatialUnitId";
     public static final String NEW_FEATURE_PROPERTY = "newFeature";
+    public static final String SELECTED_PROPERTY = "selected";
     private byte[] geom;
     private String label;
     private String levelName;
     private boolean deleteOnApproval;
     private String spatialUnitId;
     private boolean newFeature;
+    private boolean selected;
+    private Geometry mergedGeom;
 
     public SpatialUnitChangeBean() {
         super();
@@ -109,6 +112,24 @@ public class SpatialUnitChangeBean extends AbstractIdBean {
         boolean oldValue = this.newFeature;
         this.newFeature = newValue;
         propertySupport.firePropertyChange(NEW_FEATURE_PROPERTY, oldValue, newValue);
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean newValue) {
+        boolean oldValue = this.selected;
+        this.selected = newValue;
+        propertySupport.firePropertyChange(SELECTED_PROPERTY, oldValue, newValue);
+    }
+
+    public Geometry getMergedGeom() {
+        return mergedGeom;
+    }
+
+    public void setMergedGeom(Geometry mergedGeom) {
+        this.mergedGeom = mergedGeom;
     }
 
     @Override

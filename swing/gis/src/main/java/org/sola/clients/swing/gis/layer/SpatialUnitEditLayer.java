@@ -1,26 +1,30 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
- * reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
- * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
- * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this software without
- * specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
- * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.gis.layer;
@@ -49,14 +53,16 @@ import org.sola.common.messaging.MessageUtility;
 import org.sola.webservices.transferobjects.EntityAction;
 
 /**
- * Layer that supports the creation and editing of spatial unit features such as Hydro polygons and
- * road centerlines. These types of features differ from cadastre objects in that there are less
- * rigorous rules around their spatial positioning e.g. Hydro parcels can overlap and do not need to
- * share common coordinates with adjoining hydro parcels. Note that the
- * {@linkplain org.sola.clients.swing.gis.tool.EditSpatialUnitTool EditSpatialUnitTool} implements
- * node snapping so that it is possible for adjoining parcels to share coordinates if necessary.
- * <p>This layer is capable of handling multiple types of spatial unit features including polygon,
- * linestring and point features</p>
+ * Layer that supports the creation and editing of spatial unit features such as
+ * Hydro polygons and road centerlines. These types of features differ from
+ * cadastre objects in that there are less rigorous rules around their spatial
+ * positioning e.g. Hydro parcels can overlap and do not need to share common
+ * coordinates with adjoining hydro parcels. Note that the
+ * {@linkplain org.sola.clients.swing.gis.tool.EditSpatialUnitTool EditSpatialUnitTool}
+ * implements node snapping so that it is possible for adjoining parcels to
+ * share coordinates if necessary.
+ * <p>This layer is capable of handling multiple types of spatial unit features
+ * including polygon, linestring and point features</p>
  */
 public class SpatialUnitEditLayer extends ExtendedLayerEditor {
 
@@ -92,7 +98,7 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
      * @throws InitializeLayerException
      */
     public SpatialUnitEditLayer() throws InitializeLayerException {
-        super(LAYER_NAME, Geometries.GEOMETRY, LAYER_STYLE_RESOURCE, 
+        super(LAYER_NAME, Geometries.GEOMETRY, LAYER_STYLE_RESOURCE,
                 LAYER_VERTEX_STYLE_RESOURCE, LAYER_ATTRIBUTE_DEFINITION);
 
         // Configure the title for the layer using localized text
@@ -106,7 +112,6 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
 
         // Add a listener to process any changes made directly to the layer features in the map. 
         this.getFeatureCollection().addListener(new CollectionListener() {
-
             @Override
             public void collectionChanged(CollectionEvent ce) {
                 featureCollectionChanged(ce);
@@ -115,7 +120,6 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
 
         // Configures a property change listener for the selected property of the listBean.
         this.listBean.addPropertyChangeListener(new PropertyChangeListener() {
-
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals(
@@ -128,9 +132,15 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
         // Configures a observerable list listener to remove any features that get removed 
         //from the listBean 
         this.listBean.getFilteredSpatialUnitChanges().addObservableListListener(new ObservableListListener() {
-
             @Override
             public void listElementsAdded(ObservableList ol, int i, int i1) {
+                SpatialUnitChangeBean bean = (SpatialUnitChangeBean) ol.get(i);
+                if (bean.getMergedGeom() != null) {
+                    // New bean added by the Merge, so add it as a feature to the map. 
+                    addFeature(bean.getId(), bean.getMergedGeom(), bean.getLevelName(),
+                            bean.getLabel(), bean.isDeleteOnApproval(), bean.isNewFeature());
+                    bean.setMergedGeom(null);
+                }
             }
 
             @Override
@@ -169,8 +179,8 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
     }
 
     /**
-     * Removes a list of features from the map. The list is expected to be a list of
-     * SpatialUnitChangeBean.
+     * Removes a list of features from the map. The list is expected to be a
+     * list of SpatialUnitChangeBean.
      */
     private void removeFeatures(List list) {
         if (list != null && !list.isEmpty()) {
@@ -191,8 +201,8 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
     }
 
     /**
-     * Process any events on the feature collection to ensure the spatialUnitChanges list stays in
-     * sync.
+     * Process any events on the feature collection to ensure the
+     * spatialUnitChanges list stays in sync.
      *
      * @param ev
      */
@@ -218,7 +228,8 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
     }
 
     /**
-     * Uses the feature Id to search for a matching bean in the spatialUnitChanges collection.
+     * Uses the feature Id to search for a matching bean in the
+     * spatialUnitChanges collection.
      *
      * @param fid Id of the feature
      * @return The bean if a match is found otherwise null.
@@ -235,10 +246,11 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
     }
 
     /**
-     * Creates a new SpatialUnitChange bean using the feature details. The feature must support the
-     * SpatialUnitEditLayer extension attributes.
+     * Creates a new SpatialUnitChange bean using the feature details. The
+     * feature must support the SpatialUnitEditLayer extension attributes.
      *
-     * @param feature A feature with the SpatialUnitEditLayer extension attributes.
+     * @param feature A feature with the SpatialUnitEditLayer extension
+     * attributes.
      * @return A bean generated from the feature details.
      */
     private SpatialUnitChangeBean featureToBean(SimpleFeature feature) {
@@ -268,12 +280,13 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
     }
 
     /**
-     * Adds the list of SpatialUnitChangeBeans as features into the layer. This will replace all
-     * features currently displayed in the layer. To add a bean into the layer without replacing the
-     * current features, use
+     * Adds the list of SpatialUnitChangeBeans as features into the layer. This
+     * will replace all features currently displayed in the layer. To add a bean
+     * into the layer without replacing the current features, use
      * {@linkplain #addFeature(org.sola.clients.swing.gis.beans.SpatialUnitChangeBean) addFeature}
      *
-     * @param spatialUnitChanges The list of spatial unit change beans to display in the layer.
+     * @param spatialUnitChanges The list of spatial unit change beans to
+     * display in the layer.
      */
     public void setSpatialUnitChangeList(List<SpatialUnitChangeBean> spatialUnitChanges) {
         // Clear the features on the map and from the bean list. 
@@ -304,8 +317,8 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
     }
 
     /**
-     * Maps a layer name to the cadastre level it relates to. Used for setting the level name for
-     * spatial unit changes.
+     * Maps a layer name to the cadastre level it relates to. Used for setting
+     * the level name for spatial unit changes.
      *
      * @param layerName The layer name to map to a level name
      * @return The level name or null
@@ -319,21 +332,23 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
     }
 
     /**
-     * Adds a feature to the SpatialUnitEditLayer. This method does not force a redraw of the map
-     * after the feature has been added.
+     * Adds a feature to the SpatialUnitEditLayer. This method does not force a
+     * redraw of the map after the feature has been added.
      *
      * @param fid The feature Id
-     * @param geom The geometry for the feature in Well Known Binary (WKB) format.
-     * @param levelName The level name the feature relates to. Can be mapped from the layer name
-     * using {@linkplain #mapLayerToLevel(java.lang.String) mapLayerToLevel}.
+     * @param geom The geometry for the feature in Well Known Binary (WKB)
+     * format.
+     * @param levelName The level name the feature relates to. Can be mapped
+     * from the layer name using
+     * {@linkplain #mapLayerToLevel(java.lang.String) mapLayerToLevel}.
      * @param label The label for the new feature
-     * @param deleteOnApproval Flag to indicate if the feature should be deleted when the associated
-     * application transaction is approved.
-     * @param newFeature Flag to indicate if the feature is new or represents an existing Spatial
-     * Unit feature.
+     * @param deleteOnApproval Flag to indicate if the feature should be deleted
+     * when the associated application transaction is approved.
+     * @param newFeature Flag to indicate if the feature is new or represents an
+     * existing Spatial Unit feature.
      * @return The SimpleFeature added to the map.
-     * @see #addFeature(java.lang.String, com.vividsolutions.jts.geom.Geometry, java.lang.String,
-     * java.lang.String, boolean, boolean) addFeature
+     * @see #addFeature(java.lang.String, com.vividsolutions.jts.geom.Geometry,
+     * java.lang.String, java.lang.String, boolean, boolean) addFeature
      */
     public SimpleFeature addFeature(String fid, byte[] geom, String levelName, String label,
             boolean deleteOnApproval, boolean newFeature) {
@@ -351,21 +366,22 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
     }
 
     /**
-     * Adds a feature to the SpatialUnitEditLayer. This method does not force a redraw of the map
-     * after the feature has been added.
+     * Adds a feature to the SpatialUnitEditLayer. This method does not force a
+     * redraw of the map after the feature has been added.
      *
      * @param fid The feature Id
      * @param geom The geometry for the feature
-     * @param levelName The level name the feature relates to. Can be mapped from the layer name
-     * using {@linkplain #mapLayerToLevel(java.lang.String) mapLayerToLevel}.
+     * @param levelName The level name the feature relates to. Can be mapped
+     * from the layer name using
+     * {@linkplain #mapLayerToLevel(java.lang.String) mapLayerToLevel}.
      * @param label The label for the new feature
-     * @param deleteOnApproval Flag to indicate if the feature should be deleted when the associated
-     * application transaction is approved.
-     * @param newFeature Flag to indicate if the feature is new or represents an existing Spatial
-     * Unit feature.
+     * @param deleteOnApproval Flag to indicate if the feature should be deleted
+     * when the associated application transaction is approved.
+     * @param newFeature Flag to indicate if the feature is new or represents an
+     * existing Spatial Unit feature.
      * @return The SimpleFeature added to the map.
-     * @see #addFeature(java.lang.String, byte[], java.lang.String, java.lang.String, boolean,
-     * boolean) addFeature
+     * @see #addFeature(java.lang.String, byte[], java.lang.String,
+     * java.lang.String, boolean, boolean) addFeature
      */
     public SimpleFeature addFeature(String fid, Geometry geom, String levelName, String label,
             boolean deleteOnApproval, boolean newFeature) {
@@ -409,8 +425,8 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
 
     /**
      * Overrides {@linkplain ExtendedLayerEditor#removeFeatures()
-     * ExtendedLayerEditor.removeFeatures} to ensure the all SpatialUnitChangeBeans are removed from
-     * the spatialUnitChange collection.
+     * ExtendedLayerEditor.removeFeatures} to ensure the all
+     * SpatialUnitChangeBeans are removed from the spatialUnitChange collection.
      */
     @Override
     public void removeFeatures(boolean refreshMap) {

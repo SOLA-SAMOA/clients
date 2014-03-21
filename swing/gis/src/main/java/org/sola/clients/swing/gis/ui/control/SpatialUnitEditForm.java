@@ -1,31 +1,46 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
- * reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
- * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
- * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this software without
- * specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
- * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.gis.ui.control;
 
+import com.vividsolutions.jts.geom.Geometry;
+import java.util.ArrayList;
+import java.util.List;
+import org.geotools.geometry.jts.Geometries;
+import org.geotools.swing.extended.exception.ReadGeometryException;
+import org.geotools.swing.extended.util.GeometryUtility;
+import org.sola.clients.swing.common.controls.JTableWithDefaultStyles;
+import org.sola.clients.swing.gis.beans.SpatialUnitChangeBean;
 import org.sola.clients.swing.gis.beans.SpatialUnitChangeListBean;
+import org.sola.common.logging.LogUtility;
+import org.sola.common.messaging.GisMessage;
+import org.sola.common.messaging.MessageUtility;
 import org.sola.webservices.transferobjects.EntityAction;
 
 /**
@@ -41,7 +56,53 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
         super(parent, modal);
         this.spatialUnitChangeList = listBean;
         initComponents();
+    }
 
+    /**
+     * Determines the list of selected elements from the table.
+     *
+     * @return
+     */
+    private List<SpatialUnitChangeBean> getSelectedList() {
+        List<SpatialUnitChangeBean> result = new ArrayList<SpatialUnitChangeBean>();
+        for (SpatialUnitChangeBean bean : spatialUnitChangeList.getFilteredSpatialUnitChanges()) {
+            if (bean.isSelected()) {
+                result.add(bean);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Verifies that there is more than one spatial unit selected for the merge
+     * and that the selected spatial units are all of the same type. Note that
+     * Point units cannot be merged together.
+     *
+     * @return
+     */
+    private boolean validateForMerge() {
+        boolean result = false;
+        List<SpatialUnitChangeBean> selected = getSelectedList();
+        if (selected.size() > 1) {
+            String levelName = selected.get(0).getLevelName();
+            for (SpatialUnitChangeBean bean : selected) {
+                if (!levelName.equals(bean.getLevelName())) {
+                    // Return false. 
+                    return false;
+                }
+                try {
+                    if (!GeometryUtility.isGeomType(bean.getGeom(), Geometries.POLYGON)) {
+                        return false;
+                    }
+                } catch (ReadGeometryException ex) {
+                    // Swallow the exception from failing to read the geom.
+                    LogUtility.log("Error reading geometry!", ex);
+                    return false;
+                }
+            }
+            result = true;
+        }
+        return result;
     }
 
     /**
@@ -59,8 +120,8 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
     }
 
     /**
-     * Clears the selected item from the listBean as well as stopping any cell editing that may be
-     * occurring.
+     * Clears the selected item from the listBean as well as stopping any cell
+     * editing that may be occurring.
      */
     private void clearSelection() {
         // If the table is being edited, stop the editing to accept the value entered by the user. 
@@ -84,8 +145,47 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT
-     * modify this code. The content of this method is always regenerated by the Form Editor.
+     * Ticket #116 Merges the selected Spatial Units into a single geometry.
+     */
+    private void mergeSelected() {
+        if (spatialUnitChangeList.getSelectedSpatialUnitChange() != null) {
+            if (this.tblSpatialUnitChanges.getCellEditor() != null) {
+                this.tblSpatialUnitChanges.getCellEditor().stopCellEditing();
+            }
+        }
+        if (validateForMerge()) {
+            List<byte[]> geomList = new ArrayList<byte[]>();
+            List<SpatialUnitChangeBean> selected = getSelectedList();
+            for (SpatialUnitChangeBean bean : selected) {
+                geomList.add(bean.getGeom());
+                // Mark the geom for deletion on approval
+                bean.setDeleteOnApproval(true);
+                bean.setSelected(false);
+            }
+            Geometry geom = GeometryUtility.merge(geomList);
+            if (GeometryUtility.isGeomType(geom, Geometries.POLYGON)) {
+                SpatialUnitChangeBean newBean = new SpatialUnitChangeBean();
+                newBean.generateId();
+                newBean.setGeom(GeometryUtility.getWkbFromGeometry(geom));
+                newBean.setLevelName(selected.get(0).getLevelName());
+                newBean.setNewFeature(true);
+                newBean.setMergedGeom(geom);
+                spatialUnitChangeList.getSpatialUnitChanges().addAsNew(newBean);
+                // Clear the selected feature
+                this.tblSpatialUnitChanges.clearSelection();
+            } else {
+                MessageUtility.displayMessage(GisMessage.SPATIAL_UNIT_INVALID_MERGE_RESULT);
+            }
+        } else {
+            MessageUtility.displayMessage(GisMessage.SPATIAL_UNIT_INVALID_MERGE_SELECTION);
+        }
+
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -94,10 +194,11 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
 
         spatialUnitChangeList = createSpatialUnitChangeList();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblSpatialUnitChanges = new javax.swing.JTable();
+        tblSpatialUnitChanges = new JTableWithDefaultStyles();
         jToolBar1 = new javax.swing.JToolBar();
         btnClose = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
+        btnMerge = new javax.swing.JButton();
         btnRemove = new javax.swing.JButton();
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/sola/clients/swing/gis/ui/control/Bundle"); // NOI18N
@@ -114,7 +215,10 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
 
         org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${filteredSpatialUnitChanges}");
         org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, spatialUnitChangeList, eLProperty, tblSpatialUnitChanges, "");
-        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${label}"));
+        org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${selected}"));
+        columnBinding.setColumnName("Selected");
+        columnBinding.setColumnClass(Boolean.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${label}"));
         columnBinding.setColumnName("Label");
         columnBinding.setColumnClass(String.class);
         columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${levelName}"));
@@ -134,10 +238,12 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
 
         jScrollPane2.setViewportView(tblSpatialUnitChanges);
         tblSpatialUnitChanges.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tblSpatialUnitChanges.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title0")); // NOI18N
-        tblSpatialUnitChanges.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title1")); // NOI18N
-        tblSpatialUnitChanges.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title2")); // NOI18N
-        tblSpatialUnitChanges.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title3_2")); // NOI18N
+        tblSpatialUnitChanges.getColumnModel().getColumn(0).setMaxWidth(40);
+        tblSpatialUnitChanges.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title4_1")); // NOI18N
+        tblSpatialUnitChanges.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title0")); // NOI18N
+        tblSpatialUnitChanges.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title1")); // NOI18N
+        tblSpatialUnitChanges.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title2")); // NOI18N
+        tblSpatialUnitChanges.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title3_2")); // NOI18N
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
@@ -161,6 +267,17 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
         });
         jToolBar1.add(btnClear);
 
+        btnMerge.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sola/clients/swing/gis/tool/resources/layers-group.png"))); // NOI18N
+        btnMerge.setText(bundle.getString("SpatialUnitEditForm.btnMerge.text")); // NOI18N
+        btnMerge.setFocusable(false);
+        btnMerge.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnMerge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMergeActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnMerge);
+
         btnRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/sola/clients/swing/gis/tool/resources/remove.png"))); // NOI18N
         btnRemove.setText(bundle.getString("SpatialUnitEditForm.btnRemove.text")); // NOI18N
         btnRemove.addActionListener(new java.awt.event.ActionListener() {
@@ -177,19 +294,17 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -214,9 +329,14 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         removeSelected();
     }//GEN-LAST:event_btnRemoveActionPerformed
+
+    private void btnMergeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMergeActionPerformed
+        mergeSelected();
+    }//GEN-LAST:event_btnMergeActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnMerge;
     private javax.swing.JButton btnRemove;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
