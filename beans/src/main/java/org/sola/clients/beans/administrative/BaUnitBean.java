@@ -847,7 +847,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
      */
     private String formatNotationText(String notationText, String refNr) {
         String result = notationText == null ? "" : notationText;
-        if (refNr != null && !result.matches(".*" + refNr + ".*")) {
+        if (refNr != null && !result.startsWith(refNr.trim())) {
             result = refNr + " " + notationText;
         }
         return result;
