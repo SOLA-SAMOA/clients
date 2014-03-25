@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.swing.control;
+package org.geotools.swing.control.extended;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -31,6 +31,9 @@ import net.miginfocom.swing.MigLayout;
 
 
 import org.geotools.swing.MapPane;
+import org.geotools.swing.control.JCRSStatusBarItem;
+import org.geotools.swing.control.JExtentStatusBarItem;
+import org.geotools.swing.control.StatusBarItem;
 import org.geotools.util.logging.Logging;
 
 /**
