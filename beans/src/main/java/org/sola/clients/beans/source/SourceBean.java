@@ -92,19 +92,6 @@ public class SourceBean extends SourceSummaryBean {
         propertySupport.firePropertyChange(ARCHIVE_DOCUMENT_PROPERTY, null, archiveDocument);
     }
 
-    @Override
-    public String getArchiveDocumentId() {
-        if (archiveDocument != null) {
-            return archiveDocument.getId();
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public void setArchiveDocumentId(String value) {
-    }
-
     // Methods
     @Override
     public void clean() {

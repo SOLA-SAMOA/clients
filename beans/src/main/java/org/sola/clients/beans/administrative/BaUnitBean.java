@@ -1,26 +1,30 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
- * reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
- * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
- * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this software without
- * specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
- * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.beans.administrative;
@@ -57,8 +61,8 @@ import org.sola.webservices.transferobjects.administrative.BaUnitTO;
 import org.sola.webservices.transferobjects.search.SpatialSearchResultTO;
 
 /**
- * Contains properties and methods to manage <b>BA Unit</b> object of the domain model. Could be
- * populated from the {@link BaUnitTO} object.
+ * Contains properties and methods to manage <b>BA Unit</b> object of the domain
+ * model. Could be populated from the {@link BaUnitTO} object.
  */
 public class BaUnitBean extends BaUnitSummaryBean {
 
@@ -201,6 +205,7 @@ public class BaUnitBean extends BaUnitSummaryBean {
     private SolaList<BaUnitAreaBean> baUnitAreaList;
     private ObservableList<BaUnitNotationBean> baUnitCurrentNotationList;
     private ObservableList<BaUnitNotationBean> baUnitPendingNotationList;
+    private transient ObservableList<BaUnitNotationBean> easementList;
     private List<PartySummaryBean> currentOwnersList;
     private List<UnregisteredDealingBean> unregisteredDealingList;
     private SolaList<CertificatePrintBean> certificatePrintList;
@@ -287,7 +292,6 @@ public class BaUnitBean extends BaUnitSummaryBean {
         baUnitNotationList.addObservableListListener(allBaUnitNotationsListener);
 
         rrrList.addObservableListListener(new ObservableListListener() {
-
             RrrComparatorByRegistrationDate sorter = new RrrComparatorByRegistrationDate();
 
             @Override
@@ -562,7 +566,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     /**
      * Returns the list of selected rights.
      *
-     * @param regenerateIds If true, will generate new IDs for all parent and child objects.
+     * @param regenerateIds If true, will generate new IDs for all parent and
+     * child objects.
      */
     public ObservableList<RrrBean> getSelectedRrrs(boolean regenerateIds) {
         ObservableList<RrrBean> selectedRrrs =
@@ -676,8 +681,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Loads list of new parcels, created on the base of current BA unit parcels (e.g. result of
-     * subdivision).
+     * Loads list of new parcels, created on the base of current BA unit parcels
+     * (e.g. result of subdivision).
      */
     private void loadNewParcels() {
         if (newCadastreObjectList == null) {
@@ -766,8 +771,9 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Returns collection of {@link BaUnitBean} objects. This method is used by Jasper report
-     * designer to extract properties of BA Unit bean to help design a report.
+     * Returns collection of {@link BaUnitBean} objects. This method is used by
+     * Jasper report designer to extract properties of BA Unit bean to help
+     * design a report.
      */
     public static java.util.Collection generateCollection() {
         java.util.Vector collection = new java.util.Vector();
@@ -777,8 +783,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Returns the list of current notations for the property. Displayed in the Second Schedule
-     * section of the Computer Folio certificate.
+     * Returns the list of current notations for the property. Displayed in the
+     * Second Schedule section of the Computer Folio certificate.
      *
      * @return
      */
@@ -795,8 +801,9 @@ public class BaUnitBean extends BaUnitSummaryBean {
             }
         }
         // Get all current rrrs and remove the primary Rrrs as these are displayed in the First Schedule
+        // Also remove easements as these are displayed in the Land Description
         for (RrrBean bean : rrrList.getFilteredList()) {
-            if (!bean.isPrimary() && bean.getNotation() != null
+            if (!bean.isPrimary() && !bean.isEasement() && bean.getNotation() != null
                     && StatusConstants.CURRENT.equals(bean.getStatusCode())) {
                 BaUnitNotationBean notation = bean.getNotation();
                 notation.setNotationText(formatNotationText(notation.getNotationText(),
@@ -817,8 +824,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Returns the list of pending notations for the property. Displayed in the Notations section of
-     * the Computer Folio certificate.
+     * Returns the list of pending notations for the property. Displayed in the
+     * Notations section of the Computer Folio certificate.
      *
      * @return
      */
@@ -839,7 +846,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Used to help format the notation text for display on the Computer Folio Certificate report.
+     * Used to help format the notation text for display on the Computer Folio
+     * Certificate report.
      *
      * @param notationText
      * @param refNr
@@ -854,8 +862,9 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Sorts the list of notations by notation date if provided or otherwise by the notation
-     * reference number. Removes any non digit characters before performing the sort.
+     * Sorts the list of notations by notation date if provided or otherwise by
+     * the notation reference number. Removes any non digit characters before
+     * performing the sort.
      *
      * @param notationsList
      * @return
@@ -863,7 +872,6 @@ public class BaUnitBean extends BaUnitSummaryBean {
     public ObservableList<BaUnitNotationBean> sortNotations(ObservableList<BaUnitNotationBean> notationsList) {
         // Sort the list of notations by the reference Nr
         Collections.sort(notationsList, new Comparator<BaUnitNotationBean>() {
-
             @Override
             public int compare(BaUnitNotationBean note1, BaUnitNotationBean note2) {
                 // Remove any non digit characters from the string using reg expression.
@@ -883,8 +891,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Retrieves the list of current owners for the ba unit based on the owner details for the
-     * primary Rrrs.
+     * Retrieves the list of current owners for the ba unit based on the owner
+     * details for the primary Rrrs.
      *
      * @return
      */
@@ -941,7 +949,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Determines the description for the owner on the Computer Folio Certificate
+     * Determines the description for the owner on the Computer Folio
+     * Certificate
      *
      * @param name The owner name
      * @param share The share for the owner
@@ -967,8 +976,9 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Sorts the list of Rrrs by registration date if provided or otherwise by the Rrr reference
-     * number. Removes any non digit characters before performing the sort.
+     * Sorts the list of Rrrs by registration date if provided or otherwise by
+     * the Rrr reference number. Removes any non digit characters before
+     * performing the sort.
      *
      * @param rrrList
      * @return
@@ -976,7 +986,6 @@ public class BaUnitBean extends BaUnitSummaryBean {
     public ObservableList<RrrBean> sortRrrs(ObservableList<RrrBean> rrrList) {
         // Sort the list of RRR's by registered date if available otherwise by the reference nr
         Collections.sort(rrrList, new Comparator<RrrBean>() {
-
             @Override
             public int compare(RrrBean rrr1, RrrBean rrr2) {
                 // Remove any non digit characters from the string using reg expression.
@@ -1001,8 +1010,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Returns true if this property is part of a Unit Development (i.e. it is a strata unit or
-     * linked to a common property)
+     * Returns true if this property is part of a Unit Development (i.e. it is a
+     * strata unit or linked to a common property)
      */
     public boolean isStrataProperty() {
         boolean result = BaUnitTypeBean.TYPE_CODE_STRATA_UNIT.equals(getTypeCode());
@@ -1020,7 +1029,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     /**
-     * Samoa Customization - Retrieve the list of unregistered Dealings for the property
+     * Samoa Customization - Retrieve the list of unregistered Dealings for the
+     * property
      */
     public List<UnregisteredDealingBean> getUnregisteredDealings() {
 
@@ -1042,5 +1052,36 @@ public class BaUnitBean extends BaUnitSummaryBean {
 
     public SolaList<CertificatePrintBean> getCertificatePrintList() {
         return certificatePrintList;
+    }
+
+    /**
+     * Returns the list of current easements for the property. Displayed in the
+     * Land Description section of the Computer Folio certificate.
+     *
+     * @return
+     */
+    public ObservableList<BaUnitNotationBean> getEasementList() {
+        easementList = new SolaObservableList<BaUnitNotationBean>();
+
+        // Get all current Easements for display in the Land Description
+        for (RrrBean bean : rrrList.getFilteredList()) {
+            if (bean.isEasement() && StatusConstants.CURRENT.equals(bean.getStatusCode())) {
+                BaUnitNotationBean notation;
+                if (bean.getNotation() == null) {
+                    notation = new BaUnitNotationBean();
+                    notation.setNotationText("Subject to easement " + bean.getNr());
+                } else {
+                    notation = bean.getNotation();
+                    notation.setNotationText(formatNotationText(notation.getNotationText(), null));
+                }
+                easementList.add(notation);
+            }
+        }
+
+        if (easementList.size() > 0) {
+            easementList = sortNotations(easementList);
+        }
+
+        return easementList;
     }
 }
