@@ -31,6 +31,9 @@ package org.sola.clients.swing.desktop.administrative;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import org.sola.clients.beans.administrative.CertificatePrintBean;
+import org.sola.clients.beans.security.SecurityBean;
+import org.sola.common.DateUtility;
 
 /**
  *
@@ -39,12 +42,17 @@ import java.awt.event.ItemListener;
 public class CertificatePrintForm extends javax.swing.JDialog {
 
     public static final String CLOSE_PRINT_FORM = "closePrintForm";
+    private String baUnitId;
+    private String certificateType;
 
     /**
      * Creates new form CertificatePrintForm
      */
-    public CertificatePrintForm(java.awt.Frame parent, boolean modal) {
+    public CertificatePrintForm(java.awt.Frame parent, boolean modal,
+            String baUnitId, String certType) {
         super(parent, modal);
+        this.baUnitId = baUnitId;
+        this.certificateType = certType;
         initComponents();
         postInit();
     }
@@ -64,6 +72,26 @@ public class CertificatePrintForm extends javax.swing.JDialog {
                 }
             }
         });
+    }
+
+    /**
+     * Creates a new certificate request if the request has been initiated by a
+     * client.
+     *
+     * @return
+     */
+    private CertificatePrintBean saveCertificatePrint() {
+        CertificatePrintBean result = null;
+        if (rbClient.isSelected()) {
+            result = new CertificatePrintBean();
+            result.setBaUnitId(baUnitId);
+            result.setCertificateType(certificateType);
+            result.setComment(txtComment.getText());
+            result.setPrintTime(DateUtility.now());
+            result.setPrintUser(SecurityBean.getCurrentUser().getFullUserName());
+            result.saveCertificatePrint();
+        }
+        return result;
     }
 
     /**
@@ -182,11 +210,7 @@ public class CertificatePrintForm extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
-        String comment = "Staff request";
-        if (rbClient.isSelected()) {
-            comment = "Client request: " + txtComment.getText();
-        }
-        firePropertyChange(CLOSE_PRINT_FORM, null, comment);
+        firePropertyChange(CLOSE_PRINT_FORM, null, saveCertificatePrint());
     }//GEN-LAST:event_btnPrintActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnPrint;

@@ -108,6 +108,7 @@ public class LoginPanel extends javax.swing.JPanel {
                         Preferences prefs = WindowUtility.getUserPreferences();
                         prefs.put(USER_NAME, txtUsername.getText());
                     }
+                    SecurityBean.isPasswordChangeReqd(true);
                     fireLoginEvent(true);
                 } else {
                     enablePanel(true);

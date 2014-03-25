@@ -66,7 +66,6 @@ import org.sola.clients.swing.ui.renderers.LockCellRenderer;
 import org.sola.clients.swing.ui.renderers.SimpleComboBoxRenderer;
 import org.sola.clients.swing.ui.renderers.TableCellListRenderer;
 import org.sola.clients.swing.ui.source.DocumentsPanel;
-import org.sola.common.DateUtility;
 import org.sola.common.RolesConstants;
 import org.sola.common.WindowUtility;
 import org.sola.common.logging.LogUtility;
@@ -957,20 +956,17 @@ public class PropertyPanel extends ContentPanel {
     private boolean showCertPrintDialog(final String certificateType) {
         final boolean continuePrint[] = {false};
         final CertificatePrintForm printForm =
-                new CertificatePrintForm(WindowUtility.findOpenedFrameByClassName(MainForm.class), true);
+                new CertificatePrintForm(WindowUtility.findOpenedFrameByClassName(MainForm.class), true,
+                baUnitBean1.getId(), certificateType);
         WindowUtility.centerForm(printForm);
         printForm.addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 if (evt.getPropertyName().equals(CertificatePrintForm.CLOSE_PRINT_FORM)) {
-                    CertificatePrintBean bean = new CertificatePrintBean();
-                    bean.setBaUnitId(baUnitBean1.getId());
-                    bean.setCertificateType(certificateType);
-                    bean.setComment((String) evt.getNewValue());
-                    bean.setPrintTime(DateUtility.now());
-                    bean.setPrintUser(SecurityBean.getCurrentUser().getFullUserName());
-                    bean.saveCertificatePrint();
-                    baUnitBean1.getCertificatePrintList().add(0, bean);
+                    if (evt.getNewValue() != null);
+                    {
+                        baUnitBean1.getCertificatePrintList().add(0, (CertificatePrintBean) evt.getNewValue());
+                    }
                     continuePrint[0] = true;
                     printForm.dispose();
                 }
