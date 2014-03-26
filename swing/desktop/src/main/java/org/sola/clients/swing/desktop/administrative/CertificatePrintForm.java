@@ -82,15 +82,17 @@ public class CertificatePrintForm extends javax.swing.JDialog {
      */
     private CertificatePrintBean saveCertificatePrint() {
         CertificatePrintBean result = null;
+        String comment = "Staff request";
         if (rbClient.isSelected()) {
-            result = new CertificatePrintBean();
-            result.setBaUnitId(baUnitId);
-            result.setCertificateType(certificateType);
-            result.setComment(txtComment.getText());
-            result.setPrintTime(DateUtility.now());
-            result.setPrintUser(SecurityBean.getCurrentUser().getFullUserName());
-            result.saveCertificatePrint();
+            comment = "Client request: " + txtComment.getText();
         }
+        result = new CertificatePrintBean();
+        result.setBaUnitId(baUnitId);
+        result.setCertificateType(certificateType);
+        result.setComment(comment);
+        result.setPrintTime(DateUtility.now());
+        result.setPrintUser(SecurityBean.getCurrentUser().getFullUserName());
+        result.saveCertificatePrint();
         return result;
     }
 
