@@ -29,6 +29,7 @@
  */
 package org.sola.clients.beans.application;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,7 +56,9 @@ public class LodgementBean extends AbstractIdBean {
     private ObservableList<WorkSummaryBean> workSummaryList;
     private ObservableList<WorkSummaryBean> overdueList;
     private ObservableList<WorkSummaryBean> requisitionList;
+    private ObservableList<WorkSummaryBean> serviceFeeList;
     private Map<String, Integer> totals = new HashMap<String, Integer>();
+    private Map<String, BigDecimal> feeTotals = new HashMap<String, BigDecimal>();
     public static final String LODGED_SUBCATEGORY = ".lodged";
     public static final String REGISTERED_SUBCATEGORY = ".registered";
     public static final String CANCELLED_SUBCATEGORY = ".cancelled";
@@ -66,6 +69,7 @@ public class LodgementBean extends AbstractIdBean {
     public static final String ON_REQUISITION_FROM_SUBCATEGORY = ".onRequisitionFrom";
     public static final String IN_PROGRESS_TO_SUBCATEGORY = ".inProgressTo";
     public static final String ON_REQUISITION_TO_SUBCATEGORY = ".onRequisitionTo";
+    public static final String SERVICE_FEE_SUBCATEGORY = ".serviceFee";
 
     public LodgementBean() {
         lodgementList = ObservableCollections.observableList(new LinkedList<LodgementDealBean>());
@@ -73,6 +77,7 @@ public class LodgementBean extends AbstractIdBean {
         workSummaryList = ObservableCollections.observableList(new LinkedList<WorkSummaryBean>());
         overdueList = ObservableCollections.observableList(new LinkedList<WorkSummaryBean>());
         requisitionList = ObservableCollections.observableList(new LinkedList<WorkSummaryBean>());
+        serviceFeeList = ObservableCollections.observableList(new LinkedList<WorkSummaryBean>());
     }
 
     public ObservableList<LodgementDealBean> getLodgementList() {
@@ -100,14 +105,14 @@ public class LodgementBean extends AbstractIdBean {
         LodgementViewParamsTO paramsTO = TypeConverters.BeanToTrasferObject(params,
                 LodgementViewParamsTO.class);
 
-        List<LodgementViewTO> lodgementViewTO =
-                WSManager.getInstance().getCaseManagementService().getLodgementView(paramsTO);
+        List<LodgementViewTO> lodgementViewTO
+                = WSManager.getInstance().getCaseManagementService().getLodgementView(paramsTO);
 
         TypeConverters.TransferObjectListToBeanList(lodgementViewTO,
                 LodgementDealBean.class, (List) lodgementList);
 
-        List<LodgementTimingTO> lodgementTimingTO =
-                WSManager.getInstance().getCaseManagementService().getLodgementTiming(paramsTO);
+        List<LodgementTimingTO> lodgementTimingTO
+                = WSManager.getInstance().getCaseManagementService().getLodgementTiming(paramsTO);
 
         TypeConverters.TransferObjectListToBeanList(lodgementTimingTO,
                 LodgementTimingBean.class, (List) lodgementTimingList);
@@ -123,8 +128,8 @@ public class LodgementBean extends AbstractIdBean {
     public void loadWorkSummary(LodgementViewParamsBean params) {
         LodgementViewParamsTO paramsTO = TypeConverters.BeanToTrasferObject(params,
                 LodgementViewParamsTO.class);
-        List<WorkSummaryTO> workSummaryTOList =
-                WSManager.getInstance().getCaseManagementService().getWorkSummary(paramsTO);
+        List<WorkSummaryTO> workSummaryTOList
+                = WSManager.getInstance().getCaseManagementService().getWorkSummary(paramsTO);
 
         TypeConverters.TransferObjectListToBeanList(workSummaryTOList,
                 WorkSummaryBean.class, (List) workSummaryList);
@@ -158,6 +163,12 @@ public class LodgementBean extends AbstractIdBean {
             totals.put(category, getCategoryTotal(category) + bean.getOnRequisitionFrom());
             category = bean.getServiceCategory() + ON_REQUISITION_TO_SUBCATEGORY;
             totals.put(category, getCategoryTotal(category) + bean.getOnRequisitionTo());
+
+            if (bean.getServiceFee() != null && bean.getServiceFee().compareTo(BigDecimal.ZERO) > 0) {
+                serviceFeeList.add(bean);
+                category = bean.getServiceCategory() + SERVICE_FEE_SUBCATEGORY;
+                feeTotals.put(category, getCategoryFeeTotals(category).add(bean.getServiceFee()));
+            }
         }
     }
 
@@ -165,6 +176,14 @@ public class LodgementBean extends AbstractIdBean {
         int result = 0;
         if (totals.containsKey(category)) {
             result = totals.get(category);
+        }
+        return result;
+    }
+
+    private BigDecimal getCategoryFeeTotals(String category) {
+        BigDecimal result = BigDecimal.ZERO;
+        if (feeTotals.containsKey(category)) {
+            result = feeTotals.get(category);
         }
         return result;
     }
@@ -208,4 +227,21 @@ public class LodgementBean extends AbstractIdBean {
     public void setTotals(Map<String, Integer> totals) {
         this.totals = totals;
     }
+
+    public ObservableList<WorkSummaryBean> getServiceFeeList() {
+        return serviceFeeList;
+    }
+
+    public void setServiceFeeList(ObservableList<WorkSummaryBean> serviceFeeList) {
+        this.serviceFeeList = serviceFeeList;
+    }
+
+    public Map<String, BigDecimal> getFeeTotals() {
+        return feeTotals;
+    }
+
+    public void setFeeTotals(Map<String, BigDecimal> feeTotals) {
+        this.feeTotals = feeTotals;
+    }
+
 }

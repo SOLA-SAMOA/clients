@@ -51,49 +51,10 @@
 			<style backcolor="#F8FCFF"/>
 		</conditionalStyle>
 	</style>
-	<subDataset name="Deal" uuid="a8e49322-713e-4368-99a2-9b4646747746">
-		<field name="resultDailyAvg" class="java.lang.Number">
-			<fieldDescription><![CDATA[resultDailyAvg]]></fieldDescription>
-		</field>
-		<field name="resultGroup" class="java.lang.String">
-			<fieldDescription><![CDATA[resultGroup]]></fieldDescription>
-		</field>
-		<field name="resultReqPerc" class="java.lang.Number">
-			<fieldDescription><![CDATA[resultReqPerc]]></fieldDescription>
-		</field>
-		<field name="resultTotal" class="java.lang.Integer">
-			<fieldDescription><![CDATA[resultTotal]]></fieldDescription>
-		</field>
-		<field name="resultTotalPerc" class="java.lang.Number">
-			<fieldDescription><![CDATA[resultTotalPerc]]></fieldDescription>
-		</field>
-		<field name="resultTotalReq" class="java.lang.Integer">
-			<fieldDescription><![CDATA[resultTotalReq]]></fieldDescription>
-		</field>
-		<field name="resultType" class="java.lang.String">
-			<fieldDescription><![CDATA[resultType]]></fieldDescription>
-		</field>
-	</subDataset>
-	<subDataset name="Timing" uuid="f373a54d-c5f4-4ba1-ba42-e2ab1358822b">
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-		<field name="lodgementTimingList" class="org.jdesktop.observablecollections.ObservableList">
-			<fieldDescription><![CDATA[lodgementTimingList]]></fieldDescription>
-		</field>
-		<field name="resultCode" class="java.lang.String">
-			<fieldDescription><![CDATA[resultCode]]></fieldDescription>
-		</field>
-		<field name="resultTotal" class="java.lang.Integer">
-			<fieldDescription><![CDATA[resultTotal]]></fieldDescription>
-		</field>
-		<field name="resultDailyAvg" class="java.lang.Double">
-			<fieldDescription><![CDATA[resultDailyAvg]]></fieldDescription>
-		</field>
-	</subDataset>
 	<subDataset name="Table Dataset 1" uuid="ad5e9940-e010-43b3-8a63-2fe590bcf7f8"/>
 	<subDataset name="WorkSummary" uuid="9345c4e9-2a47-4beb-89b9-16ad47c041ee">
 		<parameter name="totals" class="java.util.Map"/>
+		<parameter name="feeTotals" class="java.util.Map"/>
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
@@ -149,6 +110,9 @@
 		<field name="inProgressTo" class="java.lang.Integer">
 			<fieldDescription><![CDATA[inProgressTo]]></fieldDescription>
 		</field>
+		<field name="serviceFee" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[serviceFee]]></fieldDescription>
+		</field>
 		<group name="serviceCategoryGroup">
 			<groupExpression><![CDATA[$F{serviceCategory}]]></groupExpression>
 		</group>
@@ -181,6 +145,12 @@
 		<fieldDescription><![CDATA[requisitionList]]></fieldDescription>
 	</field>
 	<field name="totals" class="java.util.Map"/>
+	<field name="serviceFeeList" class="org.jdesktop.observablecollections.ObservableList">
+		<fieldDescription><![CDATA[serviceFeeList]]></fieldDescription>
+	</field>
+	<field name="feeTotals" class="java.util.Map">
+		<fieldDescription><![CDATA[feeTotals]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -269,7 +239,7 @@
 				<text><![CDATA[Work Breakdown Summary]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement uuid="b0de007c-17c3-4d86-b55f-0794f63b3728" key="table 8" style="table 8" x="1" y="34" width="802" height="105"/>
+				<reportElement uuid="b0de007c-17c3-4d86-b55f-0794f63b3728" key="table 8" style="table 8" x="0" y="34" width="802" height="105"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="WorkSummary" uuid="d8b66b05-0573-4052-abf7-d693f1335b2a">
 						<datasetParameter name="totals">
@@ -277,11 +247,11 @@
 						</datasetParameter>
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{workSummaryList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column uuid="9141e5e7-a62d-41eb-a1a5-9951943bcdf5" width="160">
+					<jr:column uuid="9141e5e7-a62d-41eb-a1a5-9951943bcdf5" width="130">
 						<jr:groupHeader groupName="serviceCategoryGroup">
 							<jr:cell height="20" rowSpan="1">
 								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement uuid="3238b0ed-5e0a-424f-95cc-cd7f509ad855" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="4" y="0" width="156" height="20"/>
+									<reportElement uuid="3238b0ed-5e0a-424f-95cc-cd7f509ad855" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="4" y="0" width="126" height="20"/>
 									<textElement verticalAlignment="Middle">
 										<font fontName="Tahoma" size="12" isBold="true"/>
 									</textElement>
@@ -295,7 +265,7 @@
 									<topPen lineWidth="0.5"/>
 								</box>
 								<staticText>
-									<reportElement uuid="907683c9-262a-4e1f-b728-518e028af4e6" stretchType="RelativeToBandHeight" x="12" y="0" width="148" height="20"/>
+									<reportElement uuid="907683c9-262a-4e1f-b728-518e028af4e6" stretchType="RelativeToBandHeight" x="12" y="0" width="118" height="20"/>
 									<textElement textAlignment="Left" verticalAlignment="Middle">
 										<font fontName="Tahoma" size="12"/>
 									</textElement>
@@ -305,16 +275,16 @@
 						</jr:groupFooter>
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="6ae76190-c5d6-4433-b0ef-1bb59505d421" x="0" y="0" width="160" height="30"/>
+								<reportElement uuid="6ae76190-c5d6-4433-b0ef-1bb59505d421" x="0" y="0" width="130" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Type]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="22" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="bf70d5cc-8b43-4c05-8b92-574924fcc2f0" stretchType="RelativeToBandHeight" x="12" y="0" width="148" height="20"/>
+								<reportElement uuid="bf70d5cc-8b43-4c05-8b92-574924fcc2f0" stretchType="RelativeToBandHeight" x="12" y="0" width="118" height="20"/>
 								<textElement verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12"/>
 								</textElement>
@@ -322,14 +292,14 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="19ea35d6-4227-45e6-b6c4-221e4f45dce6" width="78">
+					<jr:column uuid="19ea35d6-4227-45e6-b6c4-221e4f45dce6" width="75">
 						<jr:groupFooter groupName="serviceCategoryGroup">
 							<jr:cell style="table 8_TD" height="21" rowSpan="1">
 								<box>
 									<topPen lineWidth="0.5"/>
 								</box>
 								<textField isBlankWhenNull="true">
-									<reportElement uuid="07a75795-cbd2-4170-9d56-1f49ce68a268" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="21"/>
+									<reportElement uuid="07a75795-cbd2-4170-9d56-1f49ce68a268" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="21"/>
 									<textElement textAlignment="Right" verticalAlignment="Middle">
 										<font fontName="Tahoma" size="12"/>
 									</textElement>
@@ -339,16 +309,16 @@
 						</jr:groupFooter>
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="8eab629d-ebbb-448a-b83c-edddb8f04a22" x="0" y="0" width="78" height="30"/>
+								<reportElement uuid="8eab629d-ebbb-448a-b83c-edddb8f04a22" x="0" y="0" width="75" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
 								<text><![CDATA[In Progress]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="22" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="25d98a1e-2761-40f2-979a-f3ab4f86e5b0" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="20"/>
+								<reportElement uuid="25d98a1e-2761-40f2-979a-f3ab4f86e5b0" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="20"/>
 								<box>
 									<rightPen lineWidth="0.0"/>
 								</box>
@@ -358,7 +328,7 @@
 								<textFieldExpression><![CDATA[$F{inProgressFrom}]]></textFieldExpression>
 							</textField>
 							<textField isBlankWhenNull="true">
-								<reportElement uuid="cd2f3f8a-9af1-4fc2-966c-a21a567c96a8" stretchType="RelativeToBandHeight" x="42" y="0" width="36" height="20"/>
+								<reportElement uuid="cd2f3f8a-9af1-4fc2-966c-a21a567c96a8" stretchType="RelativeToBandHeight" x="42" y="0" width="33" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="9"/>
 								</textElement>
@@ -366,7 +336,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="08a52a25-2e2a-4526-839b-aee18d68cac7" width="78">
+					<jr:column uuid="08a52a25-2e2a-4526-839b-aee18d68cac7" width="75">
 						<jr:groupFooter groupName="serviceCategoryGroup">
 							<jr:cell style="table 8_TD" height="21" rowSpan="1">
 								<box>
@@ -374,7 +344,7 @@
 									<rightPen lineWidth="3.0"/>
 								</box>
 								<textField isBlankWhenNull="true">
-									<reportElement uuid="f76e5246-a23d-4c14-8127-4994e758e333" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="21"/>
+									<reportElement uuid="f76e5246-a23d-4c14-8127-4994e758e333" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="21"/>
 									<textElement textAlignment="Right" verticalAlignment="Middle">
 										<font fontName="Tahoma" size="12"/>
 									</textElement>
@@ -387,19 +357,19 @@
 								<rightPen lineWidth="3.0"/>
 							</box>
 							<staticText>
-								<reportElement uuid="d50631e3-ea32-414b-804a-2d26f038a15d" x="0" y="0" width="78" height="30"/>
+								<reportElement uuid="d50631e3-ea32-414b-804a-2d26f038a15d" x="0" y="0" width="75" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
-								<text><![CDATA[On Requisition]]></text>
+								<text><![CDATA[On Reqn.]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="22" rowSpan="1">
 							<box>
 								<rightPen lineWidth="3.0"/>
 							</box>
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="263adb5a-063b-4299-9552-8972aeca8a7a" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="20"/>
+								<reportElement uuid="263adb5a-063b-4299-9552-8972aeca8a7a" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="20"/>
 								<box>
 									<rightPen lineWidth="0.0"/>
 								</box>
@@ -409,7 +379,7 @@
 								<textFieldExpression><![CDATA[$F{onRequisitionFrom}]]></textFieldExpression>
 							</textField>
 							<textField isBlankWhenNull="true">
-								<reportElement uuid="a74de40e-b4c1-4147-872c-f73d5e36b0f2" stretchType="RelativeToBandHeight" x="42" y="0" width="36" height="20"/>
+								<reportElement uuid="a74de40e-b4c1-4147-872c-f73d5e36b0f2" stretchType="RelativeToBandHeight" x="42" y="0" width="33" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="9"/>
 								</textElement>
@@ -417,7 +387,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="0ad104a4-0f91-4edc-913a-e8e0a491ea07" width="78">
+					<jr:column uuid="0ad104a4-0f91-4edc-913a-e8e0a491ea07" width="75">
 						<jr:groupFooter groupName="serviceCategoryGroup">
 							<jr:cell style="table 8_TD" height="21" rowSpan="1">
 								<box>
@@ -434,14 +404,14 @@
 						</jr:groupFooter>
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="b3ed7bab-ce95-4c31-82c0-874108b0935d" x="0" y="0" width="78" height="30"/>
+								<reportElement uuid="b3ed7bab-ce95-4c31-82c0-874108b0935d" x="0" y="0" width="75" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Lodged]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="22" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="460187d4-54d8-4384-9c3c-1a0c8070498c" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="20"/>
 								<box>
@@ -453,7 +423,7 @@
 								<textFieldExpression><![CDATA[$F{lodged}]]></textFieldExpression>
 							</textField>
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="4ee937f1-06e1-4554-973d-72bc5376b7b7" stretchType="RelativeToBandHeight" x="42" y="0" width="36" height="20"/>
+								<reportElement uuid="4ee937f1-06e1-4554-973d-72bc5376b7b7" stretchType="RelativeToBandHeight" x="42" y="0" width="33" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="9"/>
 								</textElement>
@@ -461,14 +431,14 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="e789b30f-04bf-4573-aa6f-5d7bbc01752f" width="78">
+					<jr:column uuid="e789b30f-04bf-4573-aa6f-5d7bbc01752f" width="75">
 						<jr:groupFooter groupName="serviceCategoryGroup">
 							<jr:cell style="table 8_TD" height="21" rowSpan="1">
 								<box>
 									<topPen lineWidth="0.5"/>
 								</box>
 								<textField isBlankWhenNull="true">
-									<reportElement uuid="e083eeae-5dc7-4210-84e2-52c2beed638a" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="21"/>
+									<reportElement uuid="e083eeae-5dc7-4210-84e2-52c2beed638a" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="21"/>
 									<textElement textAlignment="Right" verticalAlignment="Middle">
 										<font fontName="Tahoma" size="12"/>
 									</textElement>
@@ -478,16 +448,16 @@
 						</jr:groupFooter>
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="596b9244-6ed3-4d66-a035-1584967049c3" x="0" y="0" width="78" height="30"/>
+								<reportElement uuid="596b9244-6ed3-4d66-a035-1584967049c3" x="0" y="0" width="75" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Registered]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="22" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="56ad100d-8a39-4b4b-b057-4ec8dea801de" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="20"/>
+								<reportElement uuid="56ad100d-8a39-4b4b-b057-4ec8dea801de" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="20"/>
 								<box>
 									<rightPen lineWidth="0.0"/>
 								</box>
@@ -497,7 +467,7 @@
 								<textFieldExpression><![CDATA[$F{registered}]]></textFieldExpression>
 							</textField>
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="016ce55e-21b6-479f-90bc-6eff16c90e14" stretchType="RelativeToBandHeight" x="42" y="0" width="36" height="20"/>
+								<reportElement uuid="016ce55e-21b6-479f-90bc-6eff16c90e14" stretchType="RelativeToBandHeight" x="42" y="0" width="33" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="9" isStrikeThrough="false"/>
 								</textElement>
@@ -505,14 +475,55 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="2b8c006c-f43e-4e90-b7de-a3dda87db95c" width="78">
+					<jr:column uuid="d3da4342-eb1e-44f8-a8bf-a6a2905a7981" width="75">
+						<jr:groupFooter groupName="serviceCategoryGroup">
+							<jr:cell style="table 8_TD" height="21" rowSpan="1">
+								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+									<reportElement uuid="a79c7987-29b6-487e-bad5-4f04886888d0" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="21"/>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Tahoma" size="12"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$P{totals}.get($F{serviceCategory} + ".requisitioned")]]></textFieldExpression>
+								</textField>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="944ddc81-af47-491a-8a7c-255f268608db" x="0" y="0" width="75" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Reqnd.]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 8_TD" height="22" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="460187d4-54d8-4384-9c3c-1a0c8070498c" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="20"/>
+								<box>
+									<rightPen lineWidth="0.0"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{requisitioned}]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="4ee937f1-06e1-4554-973d-72bc5376b7b7" stretchType="RelativeToBandHeight" x="42" y="0" width="33" height="22"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{requisitioned} == 0 || ((Integer)$P{totals}.get($F{serviceCategory} + ".requisitioned")) == 0 ? "" : new DecimalFormat("0.0%").format(new Double( $F{requisitioned}.doubleValue() / ((Integer)$P{totals}.get($F{serviceCategory} + ".requisitioned")).doubleValue() ))]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="2b8c006c-f43e-4e90-b7de-a3dda87db95c" width="75">
 						<jr:groupFooter groupName="serviceCategoryGroup">
 							<jr:cell style="table 8_TD" height="21" rowSpan="1">
 								<box>
 									<topPen lineWidth="0.5"/>
 								</box>
 								<textField isBlankWhenNull="true">
-									<reportElement uuid="e3bc15b2-d7af-4676-be81-4763277c4302" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="21"/>
+									<reportElement uuid="e3bc15b2-d7af-4676-be81-4763277c4302" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="21"/>
 									<textElement textAlignment="Right" verticalAlignment="Middle">
 										<font fontName="Tahoma" size="12"/>
 									</textElement>
@@ -522,16 +533,16 @@
 						</jr:groupFooter>
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="5dd0abd0-2984-42f4-909a-07ac3f25babf" x="0" y="0" width="78" height="30"/>
+								<reportElement uuid="5dd0abd0-2984-42f4-909a-07ac3f25babf" x="0" y="0" width="75" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Cancelled]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="22" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="b3b19eff-b4f8-48c9-8c5a-2e7f6bf94f18" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="20"/>
+								<reportElement uuid="b3b19eff-b4f8-48c9-8c5a-2e7f6bf94f18" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="20"/>
 								<box>
 									<rightPen lineWidth="0.0"/>
 								</box>
@@ -541,7 +552,7 @@
 								<textFieldExpression><![CDATA[$F{cancelled}]]></textFieldExpression>
 							</textField>
 							<textField isBlankWhenNull="true">
-								<reportElement uuid="ae1dabf2-ccd8-45ba-a9fb-d916898db175" stretchType="RelativeToBandHeight" x="42" y="0" width="36" height="20"/>
+								<reportElement uuid="ae1dabf2-ccd8-45ba-a9fb-d916898db175" stretchType="RelativeToBandHeight" x="42" y="0" width="33" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="9"/>
 								</textElement>
@@ -549,7 +560,7 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="767ad968-d039-47a2-ba64-bb1dda6fe1ae" width="78">
+					<jr:column uuid="767ad968-d039-47a2-ba64-bb1dda6fe1ae" width="75">
 						<jr:groupFooter groupName="serviceCategoryGroup">
 							<jr:cell style="table 8_TD" height="21" rowSpan="1">
 								<box>
@@ -557,7 +568,7 @@
 									<rightPen lineWidth="3.0"/>
 								</box>
 								<textField isBlankWhenNull="true">
-									<reportElement uuid="908cc186-784d-40aa-8073-c5b415aa1eb5" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="21"/>
+									<reportElement uuid="908cc186-784d-40aa-8073-c5b415aa1eb5" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="21"/>
 									<textElement textAlignment="Right" verticalAlignment="Middle">
 										<font fontName="Tahoma" size="12"/>
 									</textElement>
@@ -570,19 +581,19 @@
 								<rightPen lineWidth="3.0"/>
 							</box>
 							<staticText>
-								<reportElement uuid="ab5d4930-2df5-4e9f-9b08-597a5f17aaf5" x="0" y="0" width="78" height="30"/>
+								<reportElement uuid="ab5d4930-2df5-4e9f-9b08-597a5f17aaf5" x="0" y="0" width="75" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Withdrawn]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="22" rowSpan="1">
 							<box>
 								<rightPen lineWidth="3.0"/>
 							</box>
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="0804ca51-3e15-4396-847b-c3afe837d7a3" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="20"/>
+								<reportElement uuid="0804ca51-3e15-4396-847b-c3afe837d7a3" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="20"/>
 								<box>
 									<rightPen lineWidth="0.0"/>
 								</box>
@@ -592,7 +603,7 @@
 								<textFieldExpression><![CDATA[$F{withdrawn}]]></textFieldExpression>
 							</textField>
 							<textField isBlankWhenNull="true">
-								<reportElement uuid="e58fd6f3-4d41-46a6-bb8e-7775ec2ca1f6" stretchType="RelativeToBandHeight" x="42" y="0" width="36" height="20"/>
+								<reportElement uuid="e58fd6f3-4d41-46a6-bb8e-7775ec2ca1f6" stretchType="RelativeToBandHeight" x="42" y="0" width="33" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="9"/>
 								</textElement>
@@ -600,14 +611,14 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="4497b0de-3ef7-495f-bbb8-7ea6916c52a9" width="78">
+					<jr:column uuid="4497b0de-3ef7-495f-bbb8-7ea6916c52a9" width="75">
 						<jr:groupFooter groupName="serviceCategoryGroup">
 							<jr:cell style="table 8_TD" height="21" rowSpan="1">
 								<box>
 									<topPen lineWidth="0.5"/>
 								</box>
 								<textField isBlankWhenNull="true">
-									<reportElement uuid="97b60915-9e8b-44f5-a0d0-b203717a36b4" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="21"/>
+									<reportElement uuid="97b60915-9e8b-44f5-a0d0-b203717a36b4" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="21"/>
 									<textElement textAlignment="Right" verticalAlignment="Middle">
 										<font fontName="Tahoma" size="12"/>
 									</textElement>
@@ -617,7 +628,7 @@
 						</jr:groupFooter>
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="2bd3d902-afd2-45a4-80ae-f4172249eef9" x="0" y="0" width="78" height="30"/>
+								<reportElement uuid="2bd3d902-afd2-45a4-80ae-f4172249eef9" x="0" y="0" width="75" height="30"/>
 								<box>
 									<pen lineWidth="0.0" lineStyle="Double"/>
 									<topPen lineWidth="0.0" lineStyle="Double"/>
@@ -631,9 +642,9 @@
 								<text><![CDATA[In Progress]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="22" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="9ede8d27-ac52-43da-976f-27afa1cf91a0" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="20"/>
+								<reportElement uuid="9ede8d27-ac52-43da-976f-27afa1cf91a0" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="20"/>
 								<box>
 									<rightPen lineWidth="0.0"/>
 								</box>
@@ -643,7 +654,7 @@
 								<textFieldExpression><![CDATA[$F{inProgressTo}]]></textFieldExpression>
 							</textField>
 							<textField isBlankWhenNull="true">
-								<reportElement uuid="e921e7dd-5e1a-42c6-8ef0-07f55a7beba2" stretchType="RelativeToBandHeight" x="42" y="0" width="36" height="20"/>
+								<reportElement uuid="e921e7dd-5e1a-42c6-8ef0-07f55a7beba2" stretchType="RelativeToBandHeight" x="42" y="0" width="33" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="9"/>
 								</textElement>
@@ -651,14 +662,14 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column uuid="66a22425-8178-490b-932b-fce77f569a65" width="78">
+					<jr:column uuid="66a22425-8178-490b-932b-fce77f569a65" width="75">
 						<jr:groupFooter groupName="serviceCategoryGroup">
 							<jr:cell style="table 8_TD" height="21" rowSpan="1">
 								<box>
 									<topPen lineWidth="0.5"/>
 								</box>
 								<textField isBlankWhenNull="true">
-									<reportElement uuid="a781a80e-9c45-4378-a590-f79944cc890e" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="21"/>
+									<reportElement uuid="a781a80e-9c45-4378-a590-f79944cc890e" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="21"/>
 									<textElement textAlignment="Right" verticalAlignment="Middle">
 										<font fontName="Tahoma" size="12"/>
 									</textElement>
@@ -668,16 +679,16 @@
 						</jr:groupFooter>
 						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement uuid="d7cdc117-e88e-4a41-8afc-b5677ab461bf" x="0" y="0" width="78" height="30"/>
+								<reportElement uuid="d7cdc117-e88e-4a41-8afc-b5677ab461bf" x="0" y="0" width="75" height="30"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="12" isBold="true"/>
 								</textElement>
-								<text><![CDATA[On Requisition]]></text>
+								<text><![CDATA[On Reqn.]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 8_TD" height="20" rowSpan="1">
+						<jr:detailCell style="table 8_TD" height="22" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="955b389d-a49f-4695-9828-e13ced8ebd80" stretchType="RelativeToBandHeight" x="0" y="0" width="42" height="20"/>
+								<reportElement uuid="955b389d-a49f-4695-9828-e13ced8ebd80" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="20"/>
 								<box>
 									<rightPen lineWidth="0.0"/>
 								</box>
@@ -687,7 +698,7 @@
 								<textFieldExpression><![CDATA[$F{onRequisitionTo}]]></textFieldExpression>
 							</textField>
 							<textField isBlankWhenNull="true">
-								<reportElement uuid="f946827b-698c-46c6-bd59-f0a1d99b7dd7" stretchType="RelativeToBandHeight" x="42" y="0" width="36" height="20"/>
+								<reportElement uuid="f946827b-698c-46c6-bd59-f0a1d99b7dd7" stretchType="RelativeToBandHeight" x="42" y="0" width="33" height="20"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="Tahoma" size="9"/>
 								</textElement>
@@ -953,6 +964,109 @@
 				</textElement>
 				<text><![CDATA[Overdue Applications]]></text>
 			</staticText>
+		</band>
+		<band height="143">
+			<break>
+				<reportElement uuid="62a02dbb-1150-469a-8d6b-433396425f9f" x="0" y="3" width="802" height="1"/>
+			</break>
+			<staticText>
+				<reportElement uuid="536567d0-add1-49ce-9365-e1cd3670df1f" positionType="Float" x="1" y="8" width="801" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fees Paid]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement uuid="b40e1a3a-72fd-40a9-82dd-533f7a1d832b" key="table 10" style="table 8" positionType="Float" x="0" y="36" width="802" height="100"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="WorkSummary" uuid="aaffa155-e848-4deb-ade3-0ffbe16d8dd9">
+						<datasetParameter name="feeTotals">
+							<datasetParameterExpression><![CDATA[$F{feeTotals}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{serviceFeeList}.toArray())]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column uuid="fa7d798f-6e3a-4201-894a-c37916fc3584" width="160">
+						<jr:groupHeader groupName="serviceCategoryGroup">
+							<jr:cell height="20" rowSpan="1">
+								<textField isBlankWhenNull="true">
+									<reportElement uuid="a5697978-065c-4f59-8fcc-dc9e2d2d195b" stretchType="RelativeToBandHeight" x="4" y="0" width="156" height="20"/>
+									<textElement verticalAlignment="Middle">
+										<font fontName="Tahoma" size="12" isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA[$F{serviceCategory}]]></textFieldExpression>
+								</textField>
+							</jr:cell>
+						</jr:groupHeader>
+						<jr:groupFooter groupName="serviceCategoryGroup">
+							<jr:cell style="table 8_TD" height="23" rowSpan="1">
+								<staticText>
+									<reportElement uuid="ac598c3f-7dd3-4275-ace7-85c50fb36191" x="12" y="0" width="148" height="20"/>
+									<textElement verticalAlignment="Middle">
+										<font fontName="Tahoma" size="12"/>
+									</textElement>
+									<text><![CDATA[TOTAL]]></text>
+								</staticText>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="357edd4e-361c-4730-9674-d23e4cf2811c" x="0" y="0" width="160" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Type ]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 8_TD" height="21" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement uuid="cd163bae-8d46-4ac2-9ffd-9f0610c683c6" stretchType="RelativeToBandHeight" x="12" y="0" width="148" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Tahoma" size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{serviceType}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="891d7f1f-93cf-4698-a3a0-49cb912fc701" width="90">
+						<jr:groupFooter groupName="serviceCategoryGroup">
+							<jr:cell style="table 8_TD" height="23" rowSpan="1">
+								<textField isBlankWhenNull="true">
+									<reportElement uuid="2c9043f3-0eef-4f8f-b7e3-e3ea5d3f0edb" stretchType="RelativeToBandHeight" x="0" y="0" width="73" height="20"/>
+									<textElement textAlignment="Right" verticalAlignment="Middle">
+										<font fontName="Tahoma" size="12"/>
+									</textElement>
+									<textFieldExpression><![CDATA["$" + $P{feeTotals}.get($F{serviceCategory} + ".serviceFee")]]></textFieldExpression>
+								</textField>
+							</jr:cell>
+						</jr:groupFooter>
+						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="ea6a88fe-e26f-4d9a-b03d-98c09955117c" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Service Fees]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 8_TD" height="21" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="bc9ec991-12f3-4213-a517-1e8c8115f24c" stretchType="RelativeToBandHeight" x="0" y="0" width="73" height="21"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="Tahoma" size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA["$" + $F{serviceFee}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="7035ea33-7643-4e5b-9fb0-f7172f3582d0" width="540">
+						<jr:groupFooter groupName="serviceCategoryGroup">
+							<jr:cell style="table 8_TD" height="23" rowSpan="1"/>
+						</jr:groupFooter>
+						<jr:columnHeader style="table 8_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 8_TD" height="21" rowSpan="1"/>
+					</jr:column>
+				</jr:table>
+			</componentElement>
 		</band>
 	</detail>
 	<pageFooter>

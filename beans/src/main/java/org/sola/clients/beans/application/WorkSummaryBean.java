@@ -25,6 +25,7 @@
  */
 package org.sola.clients.beans.application;
 
+import java.math.BigDecimal;
 import org.sola.clients.beans.AbstractBindingBean;
 
 /**
@@ -45,6 +46,7 @@ public class WorkSummaryBean extends AbstractBindingBean {
     private int inProgressTo;
     private int onRequisitionTo;
     private int overdue;
+    private BigDecimal serviceFee;
     private String overdueApplications;
     private String onRequisitionApplications;
 
@@ -162,6 +164,14 @@ public class WorkSummaryBean extends AbstractBindingBean {
 
     public void setOnRequisitionTo(int onRequisitionTo) {
         this.onRequisitionTo = onRequisitionTo;
+    }
+
+    public BigDecimal getServiceFee() {
+        return serviceFee;
+    }
+
+    public void setServiceFee(BigDecimal serviceFee) {
+        this.serviceFee = serviceFee;
     }
     
     /**
