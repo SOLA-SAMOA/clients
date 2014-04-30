@@ -1,26 +1,30 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
- * reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
- * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
- * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this software without
- * specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
- * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.desktop.unittitle;
@@ -31,6 +35,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.swing.ImageIcon;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.JTableBinding.ColumnBinding;
 import org.sola.clients.beans.application.ApplicationBean;
@@ -52,6 +57,7 @@ import org.sola.clients.swing.gis.ui.controlsbundle.ControlsBundleForUnitParcels
 import org.sola.clients.swing.ui.ContentPanel;
 import org.sola.clients.swing.ui.MainContentPanel;
 import org.sola.clients.swing.ui.validation.ValidationResultForm;
+import org.sola.common.StringUtility;
 import org.sola.common.messaging.ClientMessage;
 import org.sola.common.messaging.MessageUtility;
 import org.sola.webservices.transferobjects.EntityAction;
@@ -82,14 +88,14 @@ public class UnitParcelsPanel extends ContentPanel {
     private List<String> baUnitIds = new ArrayList<String>();
 
     /**
-     * Constructor - Used for Record Unit Plan services where the application number is used as the
-     * basis of the unit development number.
+     * Constructor - Used for Record Unit Plan services where the application
+     * number is used as the basis of the unit development number.
      *
-     * @param applicationBean The application used to create or update the Unit Plan Development.
-     * Can be null if the panel is opened independently from an application/transaction. If null,
-     * the panel will default to readOnly.
-     * @param appService The application service being processed or null if the panel is opened
-     * independently from an application/transaction.
+     * @param applicationBean The application used to create or update the Unit
+     * Plan Development. Can be null if the panel is opened independently from
+     * an application/transaction. If null, the panel will default to readOnly.
+     * @param appService The application service being processed or null if the
+     * panel is opened independently from an application/transaction.
      * @param readOnly Indicates if the form is read only or not.
      */
     public UnitParcelsPanel(ApplicationBean applicationBean, ApplicationServiceBean appService,
@@ -104,12 +110,13 @@ public class UnitParcelsPanel extends ContentPanel {
     /**
      * Constructor
      *
-     * @param applicationBean The application used to create or update the Unit Plan Development.
-     * Can be null if the panel is opened independently from an application/transaction. If null,
-     * the panel will default to readOnly.
-     * @param appService The application service being processed or null if the panel is opened
-     * independently from an application/transaction.
-     * @param unitDevelopmentNr The unit development number for the unit parcel group
+     * @param applicationBean The application used to create or update the Unit
+     * Plan Development. Can be null if the panel is opened independently from
+     * an application/transaction. If null, the panel will default to readOnly.
+     * @param appService The application service being processed or null if the
+     * panel is opened independently from an application/transaction.
+     * @param unitDevelopmentNr The unit development number for the unit parcel
+     * group
      * @param readOnly Indicates if the form is read only or not.
      */
     public UnitParcelsPanel(ApplicationBean applicationBean, ApplicationServiceBean appService,
@@ -139,15 +146,24 @@ public class UnitParcelsPanel extends ContentPanel {
             this.unitDevelopmentNr = unitDevelopmentNr;
         }
 
+        if (StringUtility.isEmpty(this.unitDevelopmentNr)) {
+            // No Unit Development Number. The user may not have selected the correct
+            // underlying property. 
+            MessageUtility.displayMessage(ClientMessage.CHECK_UNIT_DEVELOPMENT_NR);
+            this.readOnly = true;
+        }
+
         createTransactionBean();
         createPropertyListBean();
         initComponents();
         postInit();
+
     }
 
     /**
-     * Can be used to open the UnitParcelsPanel using the Unit Parcel development number or the
-     * Identifier for one of the BA Units that is part of the unit Development.
+     * Can be used to open the UnitParcelsPanel using the Unit Parcel
+     * development number or the Identifier for one of the BA Units that is part
+     * of the unit Development.
      *
      * @param unitDevelopmentNr
      * @param baUnitId
@@ -161,6 +177,13 @@ public class UnitParcelsPanel extends ContentPanel {
             this.unitDevelopmentNr = UnitParcelGroupBean.getUnitDevelopmentNr(null, baUnitIds);
         } else {
             this.unitDevelopmentNr = unitDevelopmentNr;
+        }
+
+        if (StringUtility.isEmpty(this.unitDevelopmentNr)) {
+            // No Unit Development Number. The user may not have selected the correct
+            // underlying property. 
+            MessageUtility.displayMessage(ClientMessage.CHECK_UNIT_DEVELOPMENT_NR);
+            this.readOnly = true;
         }
         createTransactionBean();
         createPropertyListBean();
@@ -189,7 +212,8 @@ public class UnitParcelsPanel extends ContentPanel {
     }
 
     /**
-     * Post Initialization method. Load the form with data and setup the buttons and panel title.
+     * Post Initialization method. Load the form with data and setup the buttons
+     * and panel title.
      */
     private void postInit() {
 
@@ -237,7 +261,6 @@ public class UnitParcelsPanel extends ContentPanel {
             }
         });
 
-
         // Set the default state for the on screen buttons. 
         btnSave.setEnabled(!readOnly && isRecordUnitPlan);
         btnAddUnit.setEnabled(!readOnly && isRecordUnitPlan);
@@ -259,11 +282,31 @@ public class UnitParcelsPanel extends ContentPanel {
 
         btnCreateProperties.setEnabled(!readOnly && isCreateStrataTitles);
         btnEditProperty.setEnabled(!readOnly && isCreateStrataTitles);
-        btnCancelProperties.setEnabled(!readOnly && isCancelStrataTitles);
         btnRefreshProperties.setEnabled(!readOnly);
+
+        customizeTerminateButton();
 
         // Load the map data
         loadMap();
+    }
+
+    /**
+     * Ticket #68 - Implement Unit Development cancellation. Customize terminate
+     * button depending on whether cancellation of the strata properties is
+     * pending or not.
+     */
+    private void customizeTerminateButton() {
+        ResourceBundle bundle = ResourceBundle.getBundle(this.getClass().getPackage().getName() + ".Bundle");
+        btnTerminateProperties.setEnabled(!readOnly && isCancelStrataTitles);
+        if (strataPropertyListBean.isPendingCancellation()) {
+            // Show Cancel termination
+            btnTerminateProperties.setIcon(new ImageIcon(getClass().getResource("/images/common/undo.png")));
+            btnTerminateProperties.setText(bundle.getString("UnitParcelsPanel.btnTerminateProperties.text2"));
+        } else {
+            // Show Terminate
+            btnTerminateProperties.setIcon(new ImageIcon(getClass().getResource("/images/common/stop.png")));
+            btnTerminateProperties.setText(bundle.getString("UnitParcelsPanel.btnTerminateProperties.text"));
+        }
     }
 
     /**
@@ -277,8 +320,8 @@ public class UnitParcelsPanel extends ContentPanel {
     }
 
     /**
-     * Loads the transaction for the Unit Title Development from the database. If there isn't a
-     * transaction, a default transaction object is configured.
+     * Loads the transaction for the Unit Title Development from the database.
+     * If there isn't a transaction, a default transaction object is configured.
      */
     public void loadForm() {
         if (applicationService != null) {
@@ -385,16 +428,19 @@ public class UnitParcelsPanel extends ContentPanel {
     }
 
     /**
-     * Sets the next available lot number for a unit parcel based on the type of unit
+     * Sets the next available lot number for a unit parcel based on the type of
+     * unit
      *
-     * @param typeBean Bean indicating the type of unit to set the lot number for.
+     * @param typeBean Bean indicating the type of unit to set the lot number
+     * for.
      */
     private void customizeUnitParcelNr(CadastreObjectTypeBean typeBean) {
         txtUnitFirstPart.setText(calculateLotNumber(typeBean.getCode()));
     }
 
     /**
-     * Loads the map with the underlying parcels and zooms to the area for the application.
+     * Loads the map with the underlying parcels and zooms to the area for the
+     * application.
      */
     private void loadMap() {
         mapControl.setUnderlyingParcels(transactionBean.getUnitParcelGroup().getFilteredParcelList());
@@ -403,11 +449,13 @@ public class UnitParcelsPanel extends ContentPanel {
     }
 
     /**
-     * Calculates the next available Lot Number for a unit parcel based on the unit parcel type
-     * code. Note that the lot number for unit parcels should be of the form PU# for Principal Units
-     * and AU# for Accessory Units. The user is able to change this name if it is not suitable.
+     * Calculates the next available Lot Number for a unit parcel based on the
+     * unit parcel type code. Note that the lot number for unit parcels should
+     * be of the form PU# for Principal Units and AU# for Accessory Units. The
+     * user is able to change this name if it is not suitable.
      *
-     * @param unitParcelTypeCode The type of unit to calculate the lot number for.
+     * @param unitParcelTypeCode The type of unit to calculate the lot number
+     * for.
      */
     private String calculateLotNumber(String unitParcelTypeCode) {
         String result = "";
@@ -437,8 +485,9 @@ public class UnitParcelsPanel extends ContentPanel {
     }
 
     /**
-     * Checks the underlying parcels displayed in the map and synchronizes the Unit Plan Parcel List
-     * with any changes. Returns true if the list of underlying parcels is changed.
+     * Checks the underlying parcels displayed in the map and synchronizes the
+     * Unit Plan Parcel List with any changes. Returns true if the list of
+     * underlying parcels is changed.
      */
     private boolean updateUnderlyingParcels() {
         boolean result = false;
@@ -517,8 +566,8 @@ public class UnitParcelsPanel extends ContentPanel {
     }
 
     /**
-     * Adds a new unit parcel to the list of unit parcels for the development. Triggered by
-     * btnAddUnit.
+     * Adds a new unit parcel to the list of unit parcels for the development.
+     * Triggered by btnAddUnit.
      */
     private void addUnitParcel() {
         // Onlly create a new unit if the lot number and parcel type are set
@@ -540,7 +589,8 @@ public class UnitParcelsPanel extends ContentPanel {
     }
 
     /**
-     * Removes a unit parcel from the Unit Plan Development. Triggered by btnRemoveUnit.
+     * Removes a unit parcel from the Unit Plan Development. Triggered by
+     * btnRemoveUnit.
      */
     private void removeUnitParcel() {
         UnitParcelBean bean = transactionBean.getUnitParcelGroup().getSelectedUnitParcel();
@@ -558,8 +608,8 @@ public class UnitParcelsPanel extends ContentPanel {
     }
 
     /**
-     * Reverses the delete on approval flag if set for a unit parcel. Triggered by the
-     * btnReinstateUnit button
+     * Reverses the delete on approval flag if set for a unit parcel. Triggered
+     * by the btnReinstateUnit button
      */
     private void reinstateUnitParcel() {
         UnitParcelBean bean = transactionBean.getUnitParcelGroup().getSelectedUnitParcel();
@@ -587,9 +637,38 @@ public class UnitParcelsPanel extends ContentPanel {
     }
 
     /**
+     * Sets the cancellation state for the strata properties depending on
+     * whether the properties are pending cancellation or not. If they are
+     * pending cancellation, then the cancellation will be reversed.
+     */
+    private void setPropertyCancellationState() {
+        SolaTask<Void, Void> t = new SolaTask<Void, Void>() {
+
+            @Override
+            public Void doTask() {
+                if (strataPropertyListBean.isPendingCancellation()) {
+                    setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_UNDO_CANCEL_STRATA_PROPS));
+                    strataPropertyListBean.undoTerminateStrataProperties(applicationService.getId(), unitDevelopmentNr, baUnitIds);
+                } else {
+                    setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_CANCEL_STRATA_PROPS));
+                    strataPropertyListBean.terminateStrataProperties(applicationService.getId(), unitDevelopmentNr, baUnitIds);
+                }
+                return null;
+            }
+
+            @Override
+            public void taskDone() {
+                customizeTerminateButton();
+            }
+        };
+        TaskManager.getInstance().runTask(t);
+    }
+
+    /**
      * Opens the property form for the selected property
      *
-     * @param forEdit Indicates if the property form should be opened in edit mode or not.
+     * @param forEdit Indicates if the property form should be opened in edit
+     * mode or not.
      */
     private void openPropertyForm(final boolean forEdit) {
         if (strataPropertyListBean.getSelectedStrataProperty() != null) {
@@ -610,8 +689,9 @@ public class UnitParcelsPanel extends ContentPanel {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT
-     * modify this code. The content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -649,7 +729,7 @@ public class UnitParcelsPanel extends ContentPanel {
         btnOpenProperty = new javax.swing.JButton();
         btnCreateProperties = new javax.swing.JButton();
         btnEditProperty = new javax.swing.JButton();
-        btnCancelProperties = new javax.swing.JButton();
+        btnTerminateProperties = new javax.swing.JButton();
         btnRefreshProperties = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblProperties = new org.sola.clients.swing.common.controls.JTableWithDefaultStyles();
@@ -753,12 +833,14 @@ public class UnitParcelsPanel extends ContentPanel {
         bindingGroup.addBinding(binding);
 
         jScrollPane1.setViewportView(tblUnits);
-        tblUnits.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("UnitParcelsPanel.tblUnits.columnModel.title0_1")); // NOI18N
-        tblUnits.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("UnitParcelsPanel.tblUnits.columnModel.title1_1")); // NOI18N
-        tblUnits.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("UnitParcelsPanel.tblUnits.columnModel.title5_1")); // NOI18N
-        tblUnits.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("UnitParcelsPanel.tblUnits.columnModel.title2_1")); // NOI18N
-        tblUnits.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("UnitParcelsPanel.tblUnits.columnModel.title3_1")); // NOI18N
-        tblUnits.getColumnModel().getColumn(5).setHeaderValue(bundle.getString("UnitParcelsPanel.tblUnits.columnModel.title4_1")); // NOI18N
+        if (tblUnits.getColumnModel().getColumnCount() > 0) {
+            tblUnits.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("UnitParcelsPanel.tblUnits.columnModel.title0_1")); // NOI18N
+            tblUnits.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("UnitParcelsPanel.tblUnits.columnModel.title1_1")); // NOI18N
+            tblUnits.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("UnitParcelsPanel.tblUnits.columnModel.title5_1")); // NOI18N
+            tblUnits.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("UnitParcelsPanel.tblUnits.columnModel.title2_1")); // NOI18N
+            tblUnits.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("UnitParcelsPanel.tblUnits.columnModel.title3_1")); // NOI18N
+            tblUnits.getColumnModel().getColumn(5).setHeaderValue(bundle.getString("UnitParcelsPanel.tblUnits.columnModel.title4_1")); // NOI18N
+        }
 
         txtUnitFirstPart.setText(bundle.getString("UnitParcelsPanel.txtUnitFirstPart.text")); // NOI18N
 
@@ -896,11 +978,16 @@ public class UnitParcelsPanel extends ContentPanel {
         });
         jToolBar3.add(btnEditProperty);
 
-        btnCancelProperties.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/cancel.png"))); // NOI18N
-        btnCancelProperties.setText(bundle.getString("UnitParcelsPanel.btnCancelProperties.text")); // NOI18N
-        btnCancelProperties.setFocusable(false);
-        btnCancelProperties.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar3.add(btnCancelProperties);
+        btnTerminateProperties.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/stop.png"))); // NOI18N
+        btnTerminateProperties.setText(bundle.getString("UnitParcelsPanel.btnTerminateProperties.text")); // NOI18N
+        btnTerminateProperties.setFocusable(false);
+        btnTerminateProperties.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnTerminateProperties.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTerminatePropertiesActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(btnTerminateProperties);
 
         btnRefreshProperties.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/refresh.png"))); // NOI18N
         btnRefreshProperties.setText(bundle.getString("UnitParcelsPanel.btnRefreshProperties.text")); // NOI18N
@@ -948,13 +1035,15 @@ public class UnitParcelsPanel extends ContentPanel {
         bindingGroup.addBinding(binding);
 
         jScrollPane3.setViewportView(tblProperties);
-        tblProperties.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title0")); // NOI18N
-        tblProperties.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title1")); // NOI18N
-        tblProperties.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title2")); // NOI18N
-        tblProperties.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title3")); // NOI18N
-        tblProperties.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title4")); // NOI18N
-        tblProperties.getColumnModel().getColumn(5).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title6")); // NOI18N
-        tblProperties.getColumnModel().getColumn(6).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title7")); // NOI18N
+        if (tblProperties.getColumnModel().getColumnCount() > 0) {
+            tblProperties.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title0")); // NOI18N
+            tblProperties.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title1")); // NOI18N
+            tblProperties.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title2")); // NOI18N
+            tblProperties.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title3")); // NOI18N
+            tblProperties.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title4")); // NOI18N
+            tblProperties.getColumnModel().getColumn(5).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title6")); // NOI18N
+            tblProperties.getColumnModel().getColumn(6).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title7")); // NOI18N
+        }
 
         javax.swing.GroupLayout propertyTabLayout = new javax.swing.GroupLayout(propertyTab);
         propertyTab.setLayout(propertyTabLayout);
@@ -1059,9 +1148,13 @@ public class UnitParcelsPanel extends ContentPanel {
     private void btnRefreshPropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshPropertiesActionPerformed
         loadStrataProperties();
     }//GEN-LAST:event_btnRefreshPropertiesActionPerformed
+
+    private void btnTerminatePropertiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTerminatePropertiesActionPerformed
+        setPropertyCancellationState();
+    }//GEN-LAST:event_btnTerminatePropertiesActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddUnit;
-    private javax.swing.JButton btnCancelProperties;
     private javax.swing.JButton btnCreateProperties;
     private javax.swing.JButton btnEditProperty;
     private javax.swing.JButton btnOpenProperty;
@@ -1069,6 +1162,7 @@ public class UnitParcelsPanel extends ContentPanel {
     private javax.swing.JButton btnReinstateUnit;
     private javax.swing.JButton btnRemoveUnit;
     private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnTerminateProperties;
     private org.sola.clients.beans.referencedata.CadastreObjectTypeListBean cadastreObjectTypeListBean1;
     private javax.swing.JComboBox cbxParcelType;
     private org.sola.clients.swing.ui.GroupPanel groupPanel2;
