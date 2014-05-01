@@ -36,8 +36,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.JTableBinding.ColumnBinding;
+import org.sola.clients.beans.administrative.CertificatePrintBean;
 import org.sola.clients.beans.application.ApplicationBean;
 import org.sola.clients.beans.application.ApplicationPropertyBean;
 import org.sola.clients.beans.application.ApplicationServiceBean;
@@ -45,19 +47,28 @@ import org.sola.clients.beans.referencedata.CadastreObjectTypeBean;
 import org.sola.clients.beans.referencedata.CadastreObjectTypeListBean;
 import org.sola.clients.beans.referencedata.RequestTypeBean;
 import org.sola.clients.beans.referencedata.StatusConstants;
+import org.sola.clients.beans.security.SecurityBean;
 import org.sola.clients.beans.transaction.TransactionUnitParcelsBean;
 import org.sola.clients.beans.unittitle.StrataPropertyListBean;
+import org.sola.clients.beans.unittitle.StrataPropertyReportBean;
 import org.sola.clients.beans.unittitle.UnitParcelBean;
 import org.sola.clients.beans.unittitle.UnitParcelGroupBean;
 import org.sola.clients.beans.validation.ValidationResultBean;
+import org.sola.clients.reports.ReportManager;
+import org.sola.clients.swing.common.LocalizationManager;
 import org.sola.clients.swing.common.tasks.SolaTask;
 import org.sola.clients.swing.common.tasks.TaskManager;
+import org.sola.clients.swing.desktop.MainForm;
+import org.sola.clients.swing.desktop.ReportViewerForm;
+import org.sola.clients.swing.desktop.administrative.CertificatePrintForm;
 import org.sola.clients.swing.desktop.administrative.PropertyPanel;
 import org.sola.clients.swing.gis.ui.controlsbundle.ControlsBundleForUnitParcels;
 import org.sola.clients.swing.ui.ContentPanel;
 import org.sola.clients.swing.ui.MainContentPanel;
 import org.sola.clients.swing.ui.validation.ValidationResultForm;
+import org.sola.common.RolesConstants;
 import org.sola.common.StringUtility;
+import org.sola.common.WindowUtility;
 import org.sola.common.messaging.ClientMessage;
 import org.sola.common.messaging.MessageUtility;
 import org.sola.webservices.transferobjects.EntityAction;
@@ -263,6 +274,7 @@ public class UnitParcelsPanel extends ContentPanel {
 
         // Set the default state for the on screen buttons. 
         btnSave.setEnabled(!readOnly && isRecordUnitPlan);
+        btnPrintTitlesReport.setEnabled(false);
         btnAddUnit.setEnabled(!readOnly && isRecordUnitPlan);
         btnRemoveUnit.setEnabled(false);
         btnReinstateUnit.setEnabled(false);
@@ -283,6 +295,13 @@ public class UnitParcelsPanel extends ContentPanel {
         btnCreateProperties.setEnabled(!readOnly && isCreateStrataTitles);
         btnEditProperty.setEnabled(!readOnly && isCreateStrataTitles);
         btnRefreshProperties.setEnabled(!readOnly);
+
+        // Determine if the Print button should be available. 
+        if (strataPropertyListBean.getCommonProperty() != null
+                && StatusConstants.CURRENT.equals(strataPropertyListBean.getCommonProperty().getStatusCode())
+                && !isRecordUnitPlan && SecurityBean.isInRole(RolesConstants.ADMINISTRATIVE_BA_UNIT_PRINT_CERT)) {
+            btnPrintTitlesReport.setEnabled(true);
+        }
 
         customizeTerminateButton();
 
@@ -689,6 +708,63 @@ public class UnitParcelsPanel extends ContentPanel {
     }
 
     /**
+     * Generates the Unit Titles Report and displays to the user.
+     */
+    private void printUnitTitleReport() {
+        if (!showCertPrintDialog("Unit Title Report")) {
+            return;
+        }
+        SolaTask<Void, Void> t = new SolaTask<Void, Void>() {
+            @Override
+            public Void doTask() {
+                setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_GENERATE_REPORT));
+                // Display the Unit Title Report. The Report is still draft so force the display of the
+                // Training Report Watermark. 
+                showReport(ReportManager.getStrataPropertyReport(
+                        new StrataPropertyReportBean(unitDevelopmentNr, baUnitIds), false));
+                        //LocalizationManager.isProductionVersion()));
+                return null;
+            }
+        };
+        TaskManager.getInstance().runTask(t);
+    }
+
+    /**
+     * Opens {@link ReportViewerForm} to display report.
+     */
+    private void showReport(JasperPrint report) {
+        ReportViewerForm form = new ReportViewerForm(report);
+        form.setLocationRelativeTo(this);
+        form.setVisible(true);
+    }
+
+    /**
+     * Prompts the user to enter a reason for printing the Unit Titles Report.
+     * The print is logged against the Common Property.
+     *
+     * @param certificateType
+     * @return
+     */
+    private boolean showCertPrintDialog(final String certificateType) {
+        final boolean continuePrint[] = {false};
+        final CertificatePrintForm printForm
+                = new CertificatePrintForm(WindowUtility.findOpenedFrameByClassName(MainForm.class), true,
+                        strataPropertyListBean.getCommonProperty().getId(), certificateType);
+        WindowUtility.centerForm(printForm);
+        printForm.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (evt.getPropertyName().equals(CertificatePrintForm.CLOSE_PRINT_FORM)) {
+                    continuePrint[0] = true;
+                    printForm.dispose();
+                }
+            }
+        });
+        printForm.setVisible(true);
+        return continuePrint[0];
+    }
+
+    /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
@@ -706,6 +782,7 @@ public class UnitParcelsPanel extends ContentPanel {
         headerPanel1 = new org.sola.clients.swing.ui.HeaderPanel();
         jToolBar1 = new javax.swing.JToolBar();
         btnSave = new javax.swing.JButton();
+        btnPrintTitlesReport = new javax.swing.JButton();
         tabPane = new javax.swing.JTabbedPane();
         unitsTab = new javax.swing.JPanel();
         pnlUnits = new javax.swing.JPanel();
@@ -765,6 +842,17 @@ public class UnitParcelsPanel extends ContentPanel {
             }
         });
         jToolBar1.add(btnSave);
+
+        btnPrintTitlesReport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/print.png"))); // NOI18N
+        btnPrintTitlesReport.setText(bundle.getString("UnitParcelsPanel.btnPrintTitlesReport.text")); // NOI18N
+        btnPrintTitlesReport.setFocusable(false);
+        btnPrintTitlesReport.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnPrintTitlesReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintTitlesReportActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnPrintTitlesReport);
 
         jToolBar2.setFloatable(false);
         jToolBar2.setRollover(true);
@@ -1030,6 +1118,10 @@ public class UnitParcelsPanel extends ContentPanel {
         columnBinding.setColumnName("Unit Parcel Type.display Value");
         columnBinding.setColumnClass(String.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${unitParcels}"));
+        columnBinding.setColumnName("Unit Parcels");
+        columnBinding.setColumnClass(String.class);
+        columnBinding.setEditable(false);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, strataPropertyListBean, org.jdesktop.beansbinding.ELProperty.create("${selectedStrataProperty}"), tblProperties, org.jdesktop.beansbinding.BeanProperty.create("selectedElement"));
         bindingGroup.addBinding(binding);
@@ -1043,6 +1135,8 @@ public class UnitParcelsPanel extends ContentPanel {
             tblProperties.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title4")); // NOI18N
             tblProperties.getColumnModel().getColumn(5).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title6")); // NOI18N
             tblProperties.getColumnModel().getColumn(6).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title7")); // NOI18N
+            tblProperties.getColumnModel().getColumn(7).setPreferredWidth(350);
+            tblProperties.getColumnModel().getColumn(7).setHeaderValue(bundle.getString("UnitParcelsPanel.tblProperties.columnModel.title7_1")); // NOI18N
         }
 
         javax.swing.GroupLayout propertyTabLayout = new javax.swing.GroupLayout(propertyTab);
@@ -1153,11 +1247,16 @@ public class UnitParcelsPanel extends ContentPanel {
         setPropertyCancellationState();
     }//GEN-LAST:event_btnTerminatePropertiesActionPerformed
 
+    private void btnPrintTitlesReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintTitlesReportActionPerformed
+        printUnitTitleReport();
+    }//GEN-LAST:event_btnPrintTitlesReportActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddUnit;
     private javax.swing.JButton btnCreateProperties;
     private javax.swing.JButton btnEditProperty;
     private javax.swing.JButton btnOpenProperty;
+    private javax.swing.JButton btnPrintTitlesReport;
     private javax.swing.JButton btnRefreshProperties;
     private javax.swing.JButton btnReinstateUnit;
     private javax.swing.JButton btnRemoveUnit;

@@ -1,26 +1,30 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations (FAO). All rights
- * reserved.
+ * Copyright (C) 2012 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted
- * provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,this list of conditions
- * and the following disclaimer. 2. Redistributions in binary form must reproduce the above
- * copyright notice,this list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution. 3. Neither the name of FAO nor the names of its
- * contributors may be used to endorse or promote products derived from this software without
- * specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
- * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.reports;
@@ -40,6 +44,7 @@ import org.sola.clients.beans.application.*;
 import org.sola.clients.beans.system.BrReportBean;
 import org.sola.clients.beans.security.SecurityBean;
 import org.sola.clients.beans.system.BrListBean;
+import org.sola.clients.beans.unittitle.StrataPropertyReportBean;
 import org.sola.common.logging.LogUtility;
 import org.sola.common.messaging.ClientMessage;
 import org.sola.common.messaging.MessageUtility;
@@ -50,7 +55,8 @@ import org.sola.common.messaging.MessageUtility;
 public class ReportManager {
 
     /**
-     * Generates and displays <b>Lodgement notice</b> report for the new application.
+     * Generates and displays <b>Lodgement notice</b> report for the new
+     * application.
      *
      * @param appBean Application bean containing data for the report.
      */
@@ -239,7 +245,6 @@ public class ReportManager {
                 String id = beans[i].getId();
                 String technicalTypeCode = beans[i].getTechnicalTypeCode();
 
-
                 if (id.equals(idPrev)
                         && technicalTypeCode.equals(technicalTypeCodePrev)) {
 
@@ -325,13 +330,16 @@ public class ReportManager {
     /**
      * Generates and displays <b>SolaPrintReport</b> for the map.
      *
-     * @param layoutId String This is the id of the report. It is used to identify the report file.
-     * @param dataBean Object containing data for the report. it can be replaced with appropriate
-     * bean if needed
-     * @param mapImageLocation String this is the location of the map to be passed as MAP_IMAGE
-     * PARAMETER to the report. It is necessary for visualizing the map
-     * @param scalebarImageLocation String this is the location of the scalebar to be passed as
-     * SCALE_IMAGE PARAMETER to the report. It is necessary for visualizing the scalebar
+     * @param layoutId String This is the id of the report. It is used to
+     * identify the report file.
+     * @param dataBean Object containing data for the report. it can be replaced
+     * with appropriate bean if needed
+     * @param mapImageLocation String this is the location of the map to be
+     * passed as MAP_IMAGE PARAMETER to the report. It is necessary for
+     * visualizing the map
+     * @param scalebarImageLocation String this is the location of the scalebar
+     * to be passed as SCALE_IMAGE PARAMETER to the report. It is necessary for
+     * visualizing the scalebar
      */
     public static JasperPrint getSolaPrintReport(String layoutId, Object dataBean,
             String mapImageLocation, String scalebarImageLocation) throws IOException {
@@ -349,7 +357,6 @@ public class ReportManager {
         inputParameters.put("INPUT_DATE",
                 DateFormat.getInstance().format(Calendar.getInstance().getTime()));
 
-
         //This will be the bean containing data for the report. 
         //it is the data source for the report
         //it must be replaced with appropriate bean if needed
@@ -363,7 +370,7 @@ public class ReportManager {
         try {
             JasperPrint jasperPrint = JasperFillManager.fillReport(
                     ReportManager.class.getResourceAsStream(
-                    "/reports/map/" + layoutId + ".jasper"), inputParameters, jds);
+                            "/reports/map/" + layoutId + ".jasper"), inputParameters, jds);
             return jasperPrint;
         } catch (JRException ex) {
             LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
@@ -391,6 +398,35 @@ public class ReportManager {
                     ReportManager.class.getResourceAsStream("/reports/SurveyApproval.jasper"),
                     inputParameters, jds);
 
+        } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
+            MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
+                    new Object[]{ex.getLocalizedMessage()});
+            return null;
+        }
+    }
+
+    /**
+     * Generates and displays <b>Strata Property</b> report.
+     *
+     * @param reportBean Report bean containing data for the report.
+     * @param isProduction Flag to indicate if the report is being run on the
+     * production system or not
+     */
+    public static JasperPrint getStrataPropertyReport(StrataPropertyReportBean reportBean,
+            boolean isProduction) {
+        HashMap inputParameters = new HashMap();
+        inputParameters.put("REPORT_LOCALE", Locale.getDefault());
+        inputParameters.put("USER", SecurityBean.getCurrentUser().getFullUserName());
+        inputParameters.put("IS_PRODUCTION", isProduction);
+        StrataPropertyReportBean[] beans = new StrataPropertyReportBean[1];
+        beans[0] = reportBean;
+        JRDataSource jds = new JRBeanArrayDataSource(beans);
+        inputParameters.put("SAMOA_EMBLEM", ReportManager.class.getResourceAsStream("/images/sola/samEmblem.png"));
+        try {
+            return JasperFillManager.fillReport(
+                    ReportManager.class.getResourceAsStream("/reports/UnitTitlesReport.jasper"),
+                    inputParameters, jds);
         } catch (JRException ex) {
             LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
             MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,

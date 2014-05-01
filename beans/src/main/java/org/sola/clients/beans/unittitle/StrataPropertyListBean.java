@@ -35,7 +35,9 @@ import org.jdesktop.observablecollections.ObservableList;
 import org.sola.clients.beans.AbstractBindingListBean;
 import org.sola.clients.beans.controls.SolaObservableList;
 import org.sola.clients.beans.converters.TypeConverters;
+import org.sola.clients.beans.referencedata.CadastreObjectTypeBean;
 import org.sola.clients.beans.referencedata.ServiceActionTypeBean;
+import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.services.boundary.wsclients.WSManager;
 
 /**
@@ -78,7 +80,7 @@ public class StrataPropertyListBean extends AbstractBindingListBean {
                 if (bean.isStrataProperty()) {
                     result = ServiceActionTypeBean.CANCEL_ACTION.equals(
                             bean.getPendingActionCode());
-                    break; 
+                    break;
                 }
             }
         }
@@ -163,5 +165,21 @@ public class StrataPropertyListBean extends AbstractBindingListBean {
             WSManager.getInstance().getAdministrative().undoTerminateStrataProperties(serviceId, strataBaUnitIds);
             getStrataProperties(unitParcelGroupName, underlyingBaUnitIds);
         }
+    }
+
+    /**
+     * Returns the Common Property or NULL if the common Property is not found.
+     */
+    public StrataPropertyBean getCommonProperty() {
+        StrataPropertyBean result = null;
+        if (getStrataPropertyList().size() > 0) {
+            for (StrataPropertyBean bean : getStrataPropertyList()) {
+                if (CadastreObjectTypeBean.CODE_COMMON_PROPERTY.equals(bean.getUnitParcelTypeCode())) {
+                    result = bean;
+                    break;
+                }
+            }
+        }
+        return result;
     }
 }

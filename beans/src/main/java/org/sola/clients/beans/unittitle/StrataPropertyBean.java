@@ -60,6 +60,8 @@ public class StrataPropertyBean extends AbstractBindingBean {
     public static final String UNIT_ENTITLEMENT_PROPERTY = "unitEntitlement";
     public static final String UNIT_PARCEL_TYPE_CODE_PROPERTY = "unitParcelTypeCode";
     public static final String UNIT_PARCEL_TYPE_PROPERTY = "unitParcelType";
+    public static final String UNIT_PARCELS_PROPERTY = "unitParcels";
+    public static final String PENDING_ACTION_CODE_PROPERTY = "pendingActionCode";
     private String id;
     private BaUnitTypeBean baUnitType;
     private String name;
@@ -73,6 +75,8 @@ public class StrataPropertyBean extends AbstractBindingBean {
     private CadastreObjectTypeBean unitParcelType;
     // Ticket #68 Flag to indicate when property will be canceled/terminated. 
     private String pendingActionCode;
+    // Ticket #67 List of Unit Parcels for the Unit Title
+    private String unitParcels;
 
     public StrataPropertyBean() {
         super();
@@ -250,8 +254,20 @@ public class StrataPropertyBean extends AbstractBindingBean {
         return pendingActionCode;
     }
 
-    public void setPendingActionCode(String pendingActionCode) {
-        this.pendingActionCode = pendingActionCode;
+    public void setPendingActionCode(String value) {
+        String oldValue = this.pendingActionCode;
+        this.pendingActionCode = value;
+        propertySupport.firePropertyChange(PENDING_ACTION_CODE_PROPERTY, oldValue, this.pendingActionCode);
+    }
+
+    public String getUnitParcels() {
+        return unitParcels;
+    }
+
+    public void setUnitParcels(String value) {
+        String oldValue = this.unitParcels;
+        this.unitParcels = value;
+        propertySupport.firePropertyChange(UNIT_PARCELS_PROPERTY, oldValue, this.unitParcels);
     }
 
     // Identifies if the property is a Strata Property or not. Note that underlying
