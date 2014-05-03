@@ -45,6 +45,7 @@ import org.sola.clients.beans.security.SecurityBean;
 import org.sola.clients.swing.gis.Messaging;
 import org.sola.clients.swing.gis.data.PojoDataAccess;
 import org.sola.clients.swing.gis.layer.PojoLayer;
+import org.sola.clients.swing.gis.mapaction.DisplayChangeParcelAttributeForm;
 import org.sola.clients.swing.gis.mapaction.SolaPrint;
 import org.sola.clients.swing.gis.tool.InformationTool;
 import org.sola.clients.swing.gis.tool.MeasureTool;
@@ -101,7 +102,6 @@ public abstract class SolaControlsBundle extends ControlsBundle {
             InformationTool infoTool = new InformationTool(this.pojoDataAccess);
             this.getMap().addTool(infoTool, this.getToolbar(), true);
 
-
             // CHOOSE WHICH TOOL IS PREFERRED FOR THE MAP PRINT COMMENTING AND UNCOMMENTING THE FOLLOWING LINES
             //this is used for creating a pdf map print
             this.solaPrint = new SolaPrint(this.getMap());
@@ -121,7 +121,12 @@ public abstract class SolaControlsBundle extends ControlsBundle {
                 MeasureTool measureTool = new MeasureTool();
                 this.getMap().addTool(measureTool, this.getToolbar(), true);
             }
-            
+
+            // Ticket #69 Add new tool to allow editing of parcel attributes. 
+            if (SecurityBean.isInRole(RolesConstants.GIS_CHANGE_PARCEL_ATTR_TOOL)) {
+                this.getMap().addMapAction(new DisplayChangeParcelAttributeForm(this.getMap()), this.getToolbar(), true);
+            }
+
             this.getMap().setFullExtent(
                     mapDefinition.getEast(),
                     mapDefinition.getWest(),

@@ -43,6 +43,8 @@ import org.geotools.swing.extended.util.GeometryUtility;
 public class CadastreObjectBean extends SpatialBean {
     
     public static String NAME_FIRST_PART_PROPERTY = "nameFirstpart";
+    public static String NAME_LAST_PART_PROPERTY = "nameLastpart"; 
+    public static String OFFICIAL_AREA_PROPERTY = "officialArea";
     
     private String id;
     private String nameFirstpart = "";
@@ -50,6 +52,7 @@ public class CadastreObjectBean extends SpatialBean {
     private String typeCode = "parcel";
     private byte[] geomPolygon;
     private List<SpatialValueAreaBean> spatialValueAreaList = new ArrayList<SpatialValueAreaBean>();
+    private transient BigDecimal officialArea; // Required to support binding on Official Area. 
 
     /**
      * Creates a cadastre object bean
@@ -101,7 +104,9 @@ public class CadastreObjectBean extends SpatialBean {
     }
 
     public void setNameLastpart(String nameLastpart) {
+        String oldValue = this.nameLastpart;
         this.nameLastpart = nameLastpart;
+        propertySupport.firePropertyChange(NAME_LAST_PART_PROPERTY, oldValue, nameLastpart);
     }
 
     public byte[] getGeomPolygon() {
@@ -160,7 +165,7 @@ public class CadastreObjectBean extends SpatialBean {
      * 
      * @param calculatedArea 
      */
-    public void setCalculatedArea(Double calculatedArea) {
+    public void setCalculatedArea(BigDecimal calculatedArea) {
         this.setArea(calculatedArea, SpatialValueAreaBean.TYPE_CALCULATED);
     }
 
@@ -171,10 +176,10 @@ public class CadastreObjectBean extends SpatialBean {
      * 
      * @return 
      */
-    public Double getOfficialArea() {
+    public BigDecimal getOfficialArea() {
         for(SpatialValueAreaBean valueAreaBean: this.getSpatialValueAreaList()){
             if (valueAreaBean.getTypeCode().equals(SpatialValueAreaBean.TYPE_OFFICIAL)){
-                return valueAreaBean.getSize().doubleValue();
+                return valueAreaBean.getSize();
             }
         }
         return null;
@@ -187,8 +192,9 @@ public class CadastreObjectBean extends SpatialBean {
      * 
      * @param officialArea 
      */
-    public void setOfficialArea(Double officialArea) {
+    public void setOfficialArea(BigDecimal officialArea) {
         this.setArea(officialArea, SpatialValueAreaBean.TYPE_OFFICIAL);
+        propertySupport.firePropertyChange(OFFICIAL_AREA_PROPERTY, null, officialArea);
     }
 
     /**
@@ -199,7 +205,7 @@ public class CadastreObjectBean extends SpatialBean {
      * @param areaSize The size
      * @param areaType The area type
      */
-    private void setArea(Double areaSize, String areaType) {
+    private void setArea(BigDecimal areaSize, String areaType) {
         SpatialValueAreaBean valueAreaBeanFound = null;
         for(SpatialValueAreaBean valueAreaBean: this.getSpatialValueAreaList()){
             if (valueAreaBean.getTypeCode().equals(areaType)){
@@ -212,11 +218,18 @@ public class CadastreObjectBean extends SpatialBean {
             valueAreaBeanFound.setTypeCode(areaType);
             this.getSpatialValueAreaList().add(valueAreaBeanFound);
         }
-        valueAreaBeanFound.setSize(BigDecimal.valueOf(areaSize));
+        valueAreaBeanFound.setSize(areaSize);
     }
     
     @Override
     public String toString() {
-        return String.format("%s / %s",this.nameFirstpart, this.nameLastpart);
-    }    
+        String result = "";
+        if(nameFirstpart!=null){
+            result = nameFirstpart;
+            if(nameLastpart!=null){
+                result += " PLAN " + nameLastpart;
+            }
+        }
+        return result;
+    }   
 }
