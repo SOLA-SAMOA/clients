@@ -51,6 +51,7 @@ import org.sola.services.boundary.wsclients.WSManager;
 public class ChangeParcelAttributeForm extends javax.swing.JDialog {
 
     private String parcelId = null;
+    private static final String INVALID_PARCEL_ID = "0";
 
     /**
      * Creates new form ChangeParcelAttributeForm
@@ -74,18 +75,21 @@ public class ChangeParcelAttributeForm extends javax.swing.JDialog {
         // Set the Title for the form based on the selecetec parcel
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/sola/clients/swing/gis/ui/control/Bundle"); // NOI18N
         setTitle(bundle.getString("ChangeParcelAttributeForm.title"));
-        if (cadObjBean != null) {
+        if (isValidParcel()) {
             this.setTitle(String.format("%s - %s", this.getTitle(), cadObjBean.toString()));
+        } else {
+            disableForm();
         }
     }
 
     /**
-     * Execute the web service method to update the parcel attributes. 
+     * Execute the web service method to update the parcel attributes.
+     *
      * @param parcelId
      * @param namePart1
      * @param namePart2
      * @param officialArea
-     * @param makeHistoric 
+     * @param makeHistoric
      */
     private void changeParceAttributes(final String parcelId, final String namePart1,
             final String namePart2, final BigDecimal officialArea, final boolean makeHistoric) {
@@ -112,8 +116,9 @@ public class ChangeParcelAttributeForm extends javax.swing.JDialog {
     }
 
     /**
-     * Load parcel details from the database. 
-     * @param parcelId 
+     * Load parcel details from the database.
+     *
+     * @param parcelId
      */
     private void loadParcel(String parcelId) {
         this.parcelId = parcelId;
@@ -127,8 +132,33 @@ public class ChangeParcelAttributeForm extends javax.swing.JDialog {
         if (cadastreObjectList.size() > 0) {
             cadObjBean = cadastreObjectList.get(0);
         } else {
+            // No parcel found so indicate the parcel is invalid. 
             cadObjBean = new CadastreObjectBean();
+            cadObjBean.setId(INVALID_PARCEL_ID);
         }
+    }
+
+    private void disableForm() {
+        btnChangeArea.setEnabled(false);
+        btnChangeName.setEnabled(false);
+        btnMakeHistoric.setEnabled(false);
+        txtLotNumber.setEditable(false);
+        txtLotNumber.setEnabled(false);
+        txtPlanNumber.setEditable(false);
+        txtPlanNumber.setEnabled(false);
+        txtArea.setEditable(false);
+        txtArea.setEnabled(false);
+        txtAreaImperial.setEnabled(false);
+        txtAreaImperial.setEditable(false);
+    }
+
+    /**
+     * Indicates if the parcel loaded is a valid parcel or not
+     *
+     * @return true if valid, false otherwise.
+     */
+    public boolean isValidParcel() {
+        return !INVALID_PARCEL_ID.equals(cadObjBean.getId());
     }
 
     /**

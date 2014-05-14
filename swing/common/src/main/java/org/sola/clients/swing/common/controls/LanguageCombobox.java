@@ -112,14 +112,17 @@ public class LanguageCombobox extends JComboBox {
     }
     private boolean showMessage = true;
     public boolean confirmedChange = false;
-    private String[] languageStrings = {"English", "Italian", "नेपाली"};
-    private String[] languageIconNames = {"en.jpg", "it.jpg", "np.png"};
+    //private String[] languageStrings = {"English", "Italian", "नेपाली"};
+    private String[] languageStrings = {"English", "Samoan"};
+    //private String[] languageIconNames = {"en.jpg", "it.jpg", "np.png"};
+    private String[] languageIconNames = {"en.jpg", "sm.jpg"};
     private ImageIcon[] languageIcons;
     private static final Map<String, Integer> languagesMap = Collections.unmodifiableMap(new HashMap(2, 1.0f) {
         {
             put("en", 0);
-            put("it", 1);
-            put("np", 2);
+            put("sm", 1);
+            //put("it", 1)
+            // put("np", 2);
         }
     });
 
@@ -132,7 +135,8 @@ public class LanguageCombobox extends JComboBox {
      */
     public LanguageCombobox() {
         super();
-        setModel(new javax.swing.DefaultComboBoxModel(new Integer[]{0, 1, 2}));
+        //setModel(new javax.swing.DefaultComboBoxModel(new Integer[]{0, 1, 2}));
+        setModel(new javax.swing.DefaultComboBoxModel(new Integer[]{0, 1}));
         addLanguageIcons();
         setRenderer(new ComboBoxRenderer());
         setMaximumRowCount(4);
@@ -176,6 +180,8 @@ public class LanguageCombobox extends JComboBox {
                 LocalizationManager.setLanguage("en", "US");
             } else if ("नेपाली".equalsIgnoreCase(languageStrings[language])) {
                 LocalizationManager.setLanguage("np", "NP");
+            } else if ("samoan".equalsIgnoreCase(languageStrings[language])) {
+                LocalizationManager.setLanguage("sm", "WS");
             }
             if (showMessage) {
                 LocalizationManager.loadLanguage();

@@ -214,7 +214,7 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
         tblSpatialUnitChanges.getTableHeader().setReorderingAllowed(false);
 
         org.jdesktop.beansbinding.ELProperty eLProperty = org.jdesktop.beansbinding.ELProperty.create("${filteredSpatialUnitChanges}");
-        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, spatialUnitChangeList, eLProperty, tblSpatialUnitChanges, "");
+        org.jdesktop.swingbinding.JTableBinding jTableBinding = org.jdesktop.swingbinding.SwingBindings.createJTableBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, spatialUnitChangeList, eLProperty, tblSpatialUnitChanges);
         org.jdesktop.swingbinding.JTableBinding.ColumnBinding columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${selected}"));
         columnBinding.setColumnName("Selected");
         columnBinding.setColumnClass(Boolean.class);
@@ -238,12 +238,14 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
 
         jScrollPane2.setViewportView(tblSpatialUnitChanges);
         tblSpatialUnitChanges.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tblSpatialUnitChanges.getColumnModel().getColumn(0).setMaxWidth(40);
-        tblSpatialUnitChanges.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title4_1")); // NOI18N
-        tblSpatialUnitChanges.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title0")); // NOI18N
-        tblSpatialUnitChanges.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title1")); // NOI18N
-        tblSpatialUnitChanges.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title2")); // NOI18N
-        tblSpatialUnitChanges.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title3_2")); // NOI18N
+        if (tblSpatialUnitChanges.getColumnModel().getColumnCount() > 0) {
+            tblSpatialUnitChanges.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tblSpatialUnitChanges.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title4_1")); // NOI18N
+            tblSpatialUnitChanges.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title0")); // NOI18N
+            tblSpatialUnitChanges.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title1")); // NOI18N
+            tblSpatialUnitChanges.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title2")); // NOI18N
+            tblSpatialUnitChanges.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title3_2")); // NOI18N
+        }
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);

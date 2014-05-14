@@ -41,7 +41,7 @@ import org.sola.common.messaging.MessageUtility;
 
 /**
  * Displays the Change Parcel Attribute form allowing the user to update parcel
- * details. Requires the user to use the Map Find to locate the parcel to edit. 
+ * details. Requires the user to use the Map Find to locate the parcel to edit.
  */
 public class DisplayChangeParcelAttributeForm extends ExtendedAction {
 
@@ -80,7 +80,7 @@ public class DisplayChangeParcelAttributeForm extends ExtendedAction {
                         iterator.close();
                     }
                 }
-                
+
                 // Display the edit form with the selected parcel details. 
                 if (displayForm == null) {
                     displayForm = new ChangeParcelAttributeForm(parcelId, null, false);
@@ -88,9 +88,14 @@ public class DisplayChangeParcelAttributeForm extends ExtendedAction {
                     displayForm.dispose();
                     displayForm = new ChangeParcelAttributeForm(parcelId, null, false);
                 }
-                WindowUtility.centerForm(displayForm);
-                displayForm.setVisible(true);
-                
+                // Check that the feature selected is a valid parcel
+                if (displayForm.isValidParcel()) {
+                    WindowUtility.centerForm(displayForm);
+                    displayForm.setVisible(true);
+                } else {
+                    MessageUtility.displayMessage(GisMessage.INVALID_PARCEL_FEATURE_SELECTED);
+                }
+
             } else {
                 MessageUtility.displayMessage(GisMessage.NO_PARCELS_SELECTED);
             }

@@ -70,7 +70,7 @@
           <Properties>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="1">
-                <Column maxWidth="40" minWidth="-1" prefWidth="-1" resizable="true">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
                   <Title editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                     <ResourceString bundle="org/sola/clients/swing/gis/ui/control/Bundle.properties" key="SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title4_1" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
                   </Title>
@@ -114,7 +114,6 @@
           </Properties>
           <BindingProperties>
             <BindingProperty name="elements" source="spatialUnitChangeList" sourcePath="${filteredSpatialUnitChanges}" target="tblSpatialUnitChanges" targetPath="elements" updateStrategy="0" immediately="true">
-              <Property name="name" type="java.lang.String" value=""/>
               <Subbinding sourcePath="${selected}">
                 <BindingParameter name="javax.swing.binding.ParameterKeys.COLUMN_CLASS" value="Boolean.class"/>
               </Subbinding>
