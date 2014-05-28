@@ -118,6 +118,8 @@ public class DocumentForm extends ContentPanel {
         btnSave = new javax.swing.JButton();
 
         setHeaderPanel(headerPanel);
+        setHelpTopic("update_attachment");
+        setInheritsPopupMenu(true);
 
         headerPanel.setTitleText("Document - %");
 

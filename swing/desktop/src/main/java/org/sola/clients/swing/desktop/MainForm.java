@@ -101,7 +101,7 @@ public class MainForm extends javax.swing.JFrame {
         this.setIconImage(new ImageIcon(imgURL).getImage());
 
         initComponents();
-        HelpUtility.getInstance().registerHelpMenu(jmiContextHelp, "overview");
+        HelpUtility.getInstance().registerHelpMenu(jmiContextHelp, "sola_overview");
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override

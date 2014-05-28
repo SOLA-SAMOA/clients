@@ -339,6 +339,7 @@ public class SimpleRightholderPanel extends ContentPanel {
         popUpOwners.add(menuViewOwner);
 
         setHeaderPanel(headerPanel);
+        setHelpTopic(bundle.getString("SimpleRightholderPanel.helpTopic")); // NOI18N
 
         headerPanel.setTitleText(bundle.getString("SimpleOwhershipPanel.headerPanel.titleText")); // NOI18N
 
@@ -446,7 +447,9 @@ public class SimpleRightholderPanel extends ContentPanel {
         bindingGroup.addBinding(binding);
 
         jScrollPane1.setViewportView(tableOwners);
-        tableOwners.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("SimpleOwhershipPanel.tableOwners.columnModel.title0_1")); // NOI18N
+        if (tableOwners.getColumnModel().getColumnCount() > 0) {
+            tableOwners.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("SimpleOwhershipPanel.tableOwners.columnModel.title0_1")); // NOI18N
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

@@ -825,8 +825,9 @@ public class UnitParcelsPanel extends ContentPanel {
         );
 
         setHeaderPanel(headerPanel1);
-
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/sola/clients/swing/desktop/unittitle/Bundle"); // NOI18N
+        setHelpTopic(bundle.getString("UnitParcelsPanel.helpTopic")); // NOI18N
+
         headerPanel1.setTitleText(bundle.getString("UnitParcelsPanel.headerPanel1.titleText")); // NOI18N
 
         jToolBar1.setFloatable(false);

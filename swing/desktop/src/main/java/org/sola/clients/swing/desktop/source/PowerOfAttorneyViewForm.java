@@ -51,8 +51,9 @@ public class PowerOfAttorneyViewForm extends ContentPanel {
         powerOfAttorneyViewPanel = new org.sola.clients.swing.ui.source.PowerOfAttorneyViewPanel();
 
         setHeaderPanel(headerPanel1);
-
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/sola/clients/swing/desktop/source/Bundle"); // NOI18N
+        setHelpTopic(bundle.getString("PowerOfAttorneyViewForm.helpTopic")); // NOI18N
+
         headerPanel1.setTitleText(bundle.getString("PowerOfAttorneyViewForm.headerPanel1.titleText")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

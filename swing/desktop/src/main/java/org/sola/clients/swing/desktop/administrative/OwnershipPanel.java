@@ -462,12 +462,14 @@ public class OwnershipPanel extends ContentPanel {
             }
         });
         jScrollPane1.setViewportView(tableShares);
-        tableShares.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("OwnershipPanel.tableShares.columnModel.title0")); // NOI18N
-        tableShares.getColumnModel().getColumn(0).setCellRenderer(new TableCellListRenderer("getName", "getLastName"));
-        tableShares.getColumnModel().getColumn(1).setMinWidth(150);
-        tableShares.getColumnModel().getColumn(1).setPreferredWidth(150);
-        tableShares.getColumnModel().getColumn(1).setMaxWidth(150);
-        tableShares.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("OwnershipPanel.tableShares.columnModel.title1")); // NOI18N
+        if (tableShares.getColumnModel().getColumnCount() > 0) {
+            tableShares.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("OwnershipPanel.tableShares.columnModel.title0")); // NOI18N
+            tableShares.getColumnModel().getColumn(0).setCellRenderer(new TableCellListRenderer("getName", "getLastName"));
+            tableShares.getColumnModel().getColumn(1).setMinWidth(150);
+            tableShares.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tableShares.getColumnModel().getColumn(1).setMaxWidth(150);
+            tableShares.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("OwnershipPanel.tableShares.columnModel.title1")); // NOI18N
+        }
 
         groupPanel1.setName("groupPanel1"); // NOI18N
         groupPanel1.setTitleText(bundle.getString("OwnershipPanel.groupPanel1.titleText")); // NOI18N
