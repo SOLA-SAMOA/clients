@@ -622,8 +622,9 @@ public class PropertyPanel extends ContentPanel {
     private void customizeTerminationButton() {
         boolean enabled = !readOnly;
 
-        // Check BaUnit status to be current
-        if (baUnitBean1.getStatusCode() == null || !baUnitBean1.getStatusCode().equals(StatusConstants.CURRENT)) {
+        // Check BaUnit status to be current or Dormant in the case of Unit Titles
+        if (baUnitBean1.getStatusCode() == null || (!baUnitBean1.getStatusCode().equals(StatusConstants.CURRENT)
+                && !baUnitBean1.getStatusCode().equals(StatusConstants.DORMANT))){
             enabled = false;
         }
 

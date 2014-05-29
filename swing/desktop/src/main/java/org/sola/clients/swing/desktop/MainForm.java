@@ -1,28 +1,30 @@
 /**
  * ******************************************************************************************
- * Copyright (C) 2014 - Food and Agriculture Organization of the United Nations (FAO).
- * All rights reserved.
+ * Copyright (C) 2014 - Food and Agriculture Organization of the United Nations
+ * (FAO). All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *    1. Redistributions of source code must retain the above copyright notice,this list
- *       of conditions and the following disclaimer.
- *    2. Redistributions in binary form must reproduce the above copyright notice,this list
- *       of conditions and the following disclaimer in the documentation and/or other
- *       materials provided with the distribution.
- *    3. Neither the name of FAO nor the names of its contributors may be used to endorse or
- *       promote products derived from this software without specific prior written permission.
+ * 1. Redistributions of source code must retain the above copyright notice,this
+ * list of conditions and the following disclaimer. 2. Redistributions in binary
+ * form must reproduce the above copyright notice,this list of conditions and
+ * the following disclaimer in the documentation and/or other materials provided
+ * with the distribution. 3. Neither the name of FAO nor the names of its
+ * contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
- * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
- * SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,STRICT LIABILITY,OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT,STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  * *********************************************************************************************
  */
 package org.sola.clients.swing.desktop;
@@ -70,7 +72,7 @@ import org.sola.common.messaging.MessageUtility;
  * Main form of the application.
  */
 public class MainForm extends javax.swing.JFrame {
-
+    
     public static final String MAIN_FORM_HEIGHT = "mainFormHeight";
     public static final String MAIN_FORM_WIDTH = "mainFormWitdh";
     public static final String MAIN_FORM_TOP = "mainFormTop";
@@ -80,7 +82,7 @@ public class MainForm extends javax.swing.JFrame {
      * Private class to hold singleton instance of the MainForm.
      */
     private static class MainFormHolder {
-
+        
         private static final MainForm INSTANCE = new MainForm();
     }
 
@@ -97,16 +99,16 @@ public class MainForm extends javax.swing.JFrame {
     private MainForm() {
         URL imgURL = this.getClass().getResource("/images/sola/logo_icon.jpg");
         this.setIconImage(new ImageIcon(imgURL).getImage());
-
+        
         initComponents();
         HelpUtility.getInstance().registerHelpMenu(jmiContextHelp, "sola_overview");
-
+        
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
                 postInit();
             }
-
+            
             @Override
             public void windowClosing(WindowEvent e) {
                 preClose();
@@ -135,7 +137,7 @@ public class MainForm extends javax.swing.JFrame {
         btnDocumentSearch.setEnabled(SecurityBean.isInRole(RolesConstants.SOURCE_SEARCH));
         btnOpenBaUnitSearch.setEnabled(SecurityBean.isInRole(RolesConstants.ADMINISTRATIVE_BA_UNIT_SEARCH));
         btnSetPassword.setEnabled(SecurityBean.isInRole(RolesConstants.ADMIN_MANAGE_USER_PASSWORD));
-
+        
         menuSearchApplication.setEnabled(btnSearchApplications.isEnabled());
         menuNewApplication.setEnabled(btnNewApplication.isEnabled());
         menuBaUnitSearch.setEnabled(btnOpenBaUnitSearch.isEnabled());
@@ -143,7 +145,7 @@ public class MainForm extends javax.swing.JFrame {
         menuPersons.setEnabled(btnManageParties.isEnabled());
         menuShowMap.setEnabled(btnOpenMap.isEnabled());
         menuLodgementReport.setEnabled(SecurityBean.isInRole(RolesConstants.REPORTS_VIEW));
-
+        
         if (SecurityBean.isPasswordChangeReqd(false)) {
             // Load the user profile page
             showPasswordPanel();
@@ -151,8 +153,7 @@ public class MainForm extends javax.swing.JFrame {
             // Load dashboard
             openDashBoard();
         }
-
-
+        
         txtUserName.setText(SecurityBean.getCurrentUser().getUserName());
     }
 
@@ -160,14 +161,14 @@ public class MainForm extends javax.swing.JFrame {
      * Sets the screen size and location based on the settings stored in the
      * users preferences.
      */
-   private void configureForm() {
-
+    private void configureForm() {
+        
         int height = this.getHeight();
         int width = this.getWidth();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         int x = ((dim.width) / 2) - (width / 2);
         int y = ((dim.height) / 2) - (height / 2);
-
+        
         if (WindowUtility.hasUserPreferences()) {
             // Set the size of the screen
             Preferences prefs = WindowUtility.getUserPreferences();
@@ -208,19 +209,19 @@ public class MainForm extends javax.swing.JFrame {
             prefs.put(MAIN_FORM_LEFT, Integer.toString(this.getX()));
         }
     }
-
+    
     private void setAllLogLevel() {
         LogUtility.setLogLevel(Level.ALL);
     }
-
+    
     private void setDefaultLogLevel() {
         LogUtility.setLogLevel(Level.INFO);
     }
-
+    
     private void setOffLogLevel() {
         LogUtility.setLogLevel(Level.OFF);
     }
-
+    
     private void openMap() {
         SolaTask t = new SolaTask<Void, Void>() {
             @Override
@@ -236,7 +237,7 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-
+    
     private void searchApplications() {
         SolaTask t = new SolaTask<Void, Void>() {
             @Override
@@ -252,7 +253,7 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-
+    
     private void searchBaUnit() {
         SolaTask t = new SolaTask<Void, Void>() {
             @Override
@@ -268,7 +269,7 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-
+    
     private void searchDocuments() {
         SolaTask t = new SolaTask<Void, Void>() {
             @Override
@@ -284,7 +285,7 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-
+    
     private void openSearchParties() {
         SolaTask t = new SolaTask<Void, Void>() {
             @Override
@@ -301,7 +302,7 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-
+    
     private void openDashBoard() {
         if (!pnlContent.isPanelOpened(MainContentPanel.CARD_DASHBOARD)) {
             DashBoardPanel dashBoard = new DashBoardPanel();
@@ -309,17 +310,17 @@ public class MainForm extends javax.swing.JFrame {
         }
         pnlContent.showPanel(MainContentPanel.CARD_DASHBOARD);
     }
-
+    
     public MainContentPanel getMainContentPanel() {
         return pnlContent;
     }
-
+    
     private void showAboutBox() {
         AboutForm aboutBox = new AboutForm(this);
         aboutBox.setLocationRelativeTo(this);
         aboutBox.setVisible(true);
     }
-
+    
     private void setLanguage(String code, String country) {
         LocalizationManager.setLanguage(code, country);
         MessageUtility.displayMessage(ClientMessage.GENERAL_UPDATE_LANG);
@@ -464,7 +465,7 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -918,7 +919,7 @@ public class MainForm extends javax.swing.JFrame {
     private void btnOpenBaUnitSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenBaUnitSearchActionPerformed
         searchBaUnit();
     }//GEN-LAST:event_btnOpenBaUnitSearchActionPerformed
-
+    
     private void openLodgementReportParamsForm() {
         LodgementReportParamsForm reportDateChooser = new LodgementReportParamsForm(this, true);
         reportDateChooser.setVisible(true);
@@ -944,7 +945,7 @@ public class MainForm extends javax.swing.JFrame {
     private void btnSetPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetPasswordActionPerformed
         editPassword();
     }//GEN-LAST:event_btnSetPasswordActionPerformed
-
+    
     private void editPassword() {
         showPasswordPanel();
     }

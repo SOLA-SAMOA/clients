@@ -294,7 +294,7 @@ public class ChangeParcelAttributeForm extends javax.swing.JDialog {
         txtArea.setFormatterFactory(FormattersFactory.getInstance().getMetricAreaFormatterFactory());
         txtArea.setText(bundle.getString("ChangeParcelAttributeForm.txtArea.text")); // NOI18N
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, cadObjBean, org.jdesktop.beansbinding.ELProperty.create("${officialArea}"), txtArea, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, cadObjBean, org.jdesktop.beansbinding.ELProperty.create("${officialAreaBD}"), txtArea, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -320,7 +320,7 @@ public class ChangeParcelAttributeForm extends javax.swing.JDialog {
         txtAreaImperial.setFormatterFactory(FormattersFactory.getInstance().getImperialFormatterFactory());
         txtAreaImperial.setText(bundle.getString("ChangeParcelAttributeForm.txtAreaImperial.text")); // NOI18N
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, cadObjBean, org.jdesktop.beansbinding.ELProperty.create("${officialArea}"), txtAreaImperial, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, cadObjBean, org.jdesktop.beansbinding.ELProperty.create("${officialAreaBD}"), txtAreaImperial, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -382,7 +382,7 @@ public class ChangeParcelAttributeForm extends javax.swing.JDialog {
         WindowUtility.commitChanges(pnlMain);
         txtArea.transferFocus();
         changeParceAttributes(this.parcelId, null, null,
-                cadObjBean.getOfficialArea(), false);
+                cadObjBean.getOfficialAreaBD(), false);
     }//GEN-LAST:event_btnChangeAreaActionPerformed
 
     private void btnMakeHistoricActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMakeHistoricActionPerformed

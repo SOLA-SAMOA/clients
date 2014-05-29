@@ -247,7 +247,7 @@
                 </Property>
               </Properties>
               <BindingProperties>
-                <BindingProperty name="value" source="cadObjBean" sourcePath="${officialArea}" target="txtArea" targetPath="value" updateStrategy="0" immediately="false"/>
+                <BindingProperty name="value" source="cadObjBean" sourcePath="${officialAreaBD}" target="txtArea" targetPath="value" updateStrategy="0" immediately="false"/>
               </BindingProperties>
             </Component>
           </SubComponents>
@@ -290,7 +290,7 @@
                 </Property>
               </Properties>
               <BindingProperties>
-                <BindingProperty name="value" source="cadObjBean" sourcePath="${officialArea}" target="txtAreaImperial" targetPath="value" updateStrategy="0" immediately="false"/>
+                <BindingProperty name="value" source="cadObjBean" sourcePath="${officialAreaBD}" target="txtAreaImperial" targetPath="value" updateStrategy="0" immediately="false"/>
               </BindingProperties>
             </Component>
           </SubComponents>
