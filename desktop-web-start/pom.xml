@@ -78,7 +78,7 @@
                 <configuration>
                     <outputDirectoryName>webstart</outputDirectoryName>  
                     <templateDirectory>${project.basedir}/template</templateDirectory>
-                    <updateManifestEntries>
+                     <updateManifestEntries>
                         <Permissions>all-permissions</Permissions>
                         <Codebase>*</Codebase>
                         <Application-Name>SOLA Samoa</Application-Name>
