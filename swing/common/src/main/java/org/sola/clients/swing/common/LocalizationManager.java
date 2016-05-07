@@ -131,17 +131,17 @@ public class LocalizationManager {
         String host = System.getProperty("jnlp.SOLA_WEB_START_HOST");
         LogUtility.log("Host Name = " + (host == null ? "Unknown" : host));
         // If the host variable is not set then this is probably development
-        if (host == null || host.equalsIgnoreCase("mnre-sola02")
-                || host.equals("10.20.1.176")) {
+        if (host == null || host.equalsIgnoreCase("mnre-sola01")
+                || host.equals("10.20.1.34")) {
             result = true;
         }
         return result;
     }
 
     public static String getVersionNumber() {
-        String result = "Training v1601a";
+        String result = "Training v1605a";
         if (isProductionVersion()) {
-            result = "LIVE v1601a";
+            result = "LIVE v1605a";
         }
         return result;
     }
