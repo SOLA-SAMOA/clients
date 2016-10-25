@@ -33,11 +33,11 @@
             <tr>
                 <td width="20%"></td>   
                 <td>     
-                    The  Java SE Runtime Environment 7 is required for the SOLA Web Start applications. Java 7 can be downloaded from <a href="http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html#jre-7u21-oth-JPR" target="_blank" >here</a>.
+                    The  Java SE Runtime Environment 8 is required for the SOLA Web Start applications. Java 8 update 91 can be downloaded from <a href="http://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html#jre-8u91-oth-JPR" target="_blank" >here</a>.
                     <ol>
-                        <li>    You will need to accept the Oracle Binary Code License Agreement for Java SE before downloading Java 7.</li>
+                        <li>    You will need to accept the Oracle Binary Code License Agreement for Java SE before downloading Java 8.</li>
                         <li>    Download the product appropriate for your operating system. Note that the Windows x86 products are for Windows 32bit operating systems and the Windows x64 product is for Windows 64bit operating systems.</li>
-                        <li>    You will require local administration privileges to install Java 7.</li>
+                        <li>    You will require local administration privileges to install Java 8.</li>
                     </ol>
                 </td>
             </tr>
@@ -60,8 +60,8 @@
 
                             String desktopJnlp = "/webstart/sola-desktop-train.jnlp";
                             String adminJnlp = "/webstart/sola-admin-train.jnlp";
-                            if (hostName.equalsIgnoreCase("mnre-sola01") ||
-                                    hostName.equalsIgnoreCase("10.20.1.34")) { // Update hostname and IP as required
+                            if (hostName.equalsIgnoreCase("mnre-sola") ||
+                                    hostName.equalsIgnoreCase("10.20.1.176")) { // Update hostname and IP as required
                                 // This is the production host so use the production
                                 // JNLP files
                                 desktopJnlp = "/webstart/sola-desktop.jnlp";
