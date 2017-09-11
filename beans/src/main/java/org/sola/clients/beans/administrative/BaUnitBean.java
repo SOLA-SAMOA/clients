@@ -877,9 +877,12 @@ public class BaUnitBean extends BaUnitSummaryBean {
                         && !note1.getChangeTime().equals(note2.getChangeTime())) {
                     return note1.getChangeTime().compareTo(note2.getChangeTime());
                 } else {
-                    BigDecimal ref1 = note1 == null || note1.getReferenceNr() == null ? BigDecimal.ZERO
+                    // AM 17 Aug 2017 Added extra check for reference number that is all characters
+                    BigDecimal ref1 = note1 == null || note1.getReferenceNr() == null 
+                            || "".equals(note1.getReferenceNr().replaceAll("[^0-9\\.]", ""))? BigDecimal.ZERO
                             : new BigDecimal(note1.getReferenceNr().replaceAll("[^0-9\\.]", ""));
-                    BigDecimal ref2 = note2 == null || note2.getReferenceNr() == null ? BigDecimal.ZERO
+                    BigDecimal ref2 = note2 == null || note2.getReferenceNr() == null 
+                            || "".equals(note2.getReferenceNr().replaceAll("[^0-9\\.]", "")) ? BigDecimal.ZERO
                             : new BigDecimal(note2.getReferenceNr().replaceAll("[^0-9\\.]", ""));
                     return ref1.compareTo(ref2);
                 }
@@ -992,11 +995,14 @@ public class BaUnitBean extends BaUnitSummaryBean {
                         && !rrr1.getRegistrationExpirationDate().equals(rrr2.getRegistrationExpirationDate())) {
                     return rrr1.getRegistrationExpirationDate().compareTo(rrr2.getRegistrationExpirationDate());
                 } else {
+                    // 17 Aug 2017. Check that the reference is not all characters. 
                     String ref1Str = rrr1 == null || rrr1.getNotation() == null
-                            || rrr1.getNotation().getReferenceNr() == null ? "0"
+                            || rrr1.getNotation().getReferenceNr() == null 
+                            || "".equals(rrr1.getNotation().getReferenceNr().replaceAll("[^0-9\\.]", "")) ? "0"
                             : rrr1.getNotation().getReferenceNr();
                     String ref2Str = rrr2 == null || rrr2.getNotation() == null
-                            || rrr2.getNotation().getReferenceNr() == null ? "0"
+                            || rrr2.getNotation().getReferenceNr() == null 
+                            || "".equals(rrr2.getNotation().getReferenceNr().replaceAll("[^0-9\\.]", "")) ? "0"
                             : rrr2.getNotation().getReferenceNr();
                     BigDecimal ref1 = new BigDecimal(ref1Str.replaceAll("[^0-9\\.]", ""));
                     BigDecimal ref2 = new BigDecimal(ref2Str.replaceAll("[^0-9\\.]", ""));
