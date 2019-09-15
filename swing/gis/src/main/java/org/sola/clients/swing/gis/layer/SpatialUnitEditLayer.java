@@ -87,6 +87,10 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
     public static final String ROAD_LEVEL_NAME = "Roads";
     public static final String VILLAGE_LAYER_NAME = "villages";
     public static final String VILLAGE_LEVEL_NAME = "Villages";
+    public static final String DISTRICT_BOUNDARY_LAYER_NAME = "district_boundary";
+    public static final String DISTRICT_BOUNDARY_LEVEL_NAME = "District Boundary";
+    public static final String TRAVERSE_MARKS_LAYER_NAME = "traverse_marks";
+    public static final String TRAVERSE_MARKS_LEVEL_NAME = "Traverse Marks";
     private SpatialUnitChangeListBean listBean = new SpatialUnitChangeListBean();
     private Map<String, String> layerLevelMapping = new HashMap<String, String>();
 
@@ -107,6 +111,8 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
         layerLevelMapping.put(ROAD_CL_LAYER_NAME, ROAD_CL_LEVEL_NAME);
         layerLevelMapping.put(ROAD_LAYER_NAME, ROAD_LEVEL_NAME);
         layerLevelMapping.put(VILLAGE_LAYER_NAME, VILLAGE_LEVEL_NAME);
+        layerLevelMapping.put(DISTRICT_BOUNDARY_LAYER_NAME, DISTRICT_BOUNDARY_LEVEL_NAME);
+        layerLevelMapping.put(TRAVERSE_MARKS_LAYER_NAME, TRAVERSE_MARKS_LEVEL_NAME);
 
         // Add a listener to process any changes made directly to the layer features in the map. 
         this.getFeatureCollection().addListener(new CollectionListener() {

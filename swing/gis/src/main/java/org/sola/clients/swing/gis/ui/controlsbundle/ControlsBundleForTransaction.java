@@ -265,11 +265,15 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
         ExtendedFeatureLayer roadLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get(SpatialUnitEditLayer.ROAD_LAYER_NAME);
         ExtendedFeatureLayer roadCLLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get(SpatialUnitEditLayer.ROAD_CL_LAYER_NAME);
         ExtendedFeatureLayer villageLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get(SpatialUnitEditLayer.VILLAGE_LAYER_NAME);
+        ExtendedFeatureLayer traverseMarksLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get(SpatialUnitEditLayer.TRAVERSE_MARKS_LAYER_NAME);
+        ExtendedFeatureLayer districtBoundaryLayer = (ExtendedFeatureLayer) this.getMap().getSolaLayers().get(SpatialUnitEditLayer.DISTRICT_BOUNDARY_LAYER_NAME);
         List<ExtendedFeatureLayer> selectionLayers = new ArrayList<ExtendedFeatureLayer>();
         selectionLayers.add(hydroLayer);
         selectionLayers.add(roadLayer);
         selectionLayers.add(roadCLLayer);
         selectionLayers.add(villageLayer);
+        selectionLayers.add(traverseMarksLayer);
+        selectionLayers.add(districtBoundaryLayer);
         this.getMap().addTool(new SelectSpatialUnitTool(selectionLayers, this.spatialUnitEditLayer),
                 this.getToolbar(), true);
 
@@ -279,6 +283,7 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
         editSpatialUnitTool.getTargetSnappingLayers().add(hydroLayer);
         editSpatialUnitTool.getTargetSnappingLayers().add(roadLayer);
         editSpatialUnitTool.getTargetSnappingLayers().add(roadCLLayer);
+        editSpatialUnitTool.getTargetSnappingLayers().add(districtBoundaryLayer);
         this.getMap().addTool(editSpatialUnitTool, this.getToolbar(), true);
 
         // Add additional snapping layers to the boundary edit tool
@@ -314,6 +319,19 @@ public abstract class ControlsBundleForTransaction extends SolaControlsBundle {
         NewSpatialUnitVillageTool addVillageTool = new NewSpatialUnitVillageTool(this.spatialUnitEditLayer,
                 this.spatialUnitEditLayer.mapLayerToLevel(villageLayer.getLayerName()));
         this.getMap().addTool(addVillageTool, this.getToolbar(), true);
+        
+        // v1910a Add Traverse Marks Edit Tool and Distrit Boundaries Edit Tool
+        NewSpatialUnitTraverseMarkTool addTraverseMarksTool = new NewSpatialUnitTraverseMarkTool(this.spatialUnitEditLayer,
+                this.spatialUnitEditLayer.mapLayerToLevel(traverseMarksLayer.getLayerName()));
+        this.getMap().addTool(addTraverseMarksTool, this.getToolbar(), true);
+        
+        NewSpatialUnitDistrictBoundaryTool addDistrictBoundaryTool = new NewSpatialUnitDistrictBoundaryTool(this.spatialUnitEditLayer,
+                this.spatialUnitEditLayer.mapLayerToLevel(districtBoundaryLayer.getLayerName()));
+        addDistrictBoundaryTool.getTargetSnappingLayers().add(roadLayer);
+        addDistrictBoundaryTool.getTargetSnappingLayers().add(parcelsLayer);
+        addDistrictBoundaryTool.getTargetSnappingLayers().add(districtBoundaryLayer);
+        addDistrictBoundaryTool.getTargetSnappingLayers().add(this.spatialUnitEditLayer);
+        this.getMap().addTool(addDistrictBoundaryTool, this.getToolbar(), true);
 
         this.setApplicationId(this.applicationBean.getId());
     }

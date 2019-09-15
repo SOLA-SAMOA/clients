@@ -173,6 +173,41 @@
                         </Fill>
                     </TextSymbolizer>
                 </Rule>
+                <Rule>
+                    <ogc:Filter>
+                        <ogc:PropertyIsEqualTo>
+                            <ogc:PropertyName>levelName</ogc:PropertyName>
+                            <ogc:Literal>District Boundary</ogc:Literal>
+                        </ogc:PropertyIsEqualTo>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#000000</CssParameter>
+                            <CssParameter name="stroke-dasharray">12.0 4.0</CssParameter>
+                            <CssParameter name="stroke-width">2.0</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <ogc:Filter>
+                        <ogc:PropertyIsEqualTo>
+                            <ogc:PropertyName>levelName</ogc:PropertyName>
+                            <ogc:Literal>Traverse Marks</ogc:Literal>
+                        </ogc:PropertyIsEqualTo>
+                    </ogc:Filter>
+                    <PointSymbolizer>
+                        <Graphic>
+                            <Mark>
+                                <WellKnownName>triangle</WellKnownName>
+                                <Fill>
+                                    <CssParameter name="fill">#1F631C</CssParameter>
+                                </Fill>
+                                <Stroke/>
+                            </Mark>
+                            <Size>12.0</Size>
+                        </Graphic>
+                    </PointSymbolizer>                
+                </Rule>
             </FeatureTypeStyle>
         </UserStyle>
     </NamedLayer>
