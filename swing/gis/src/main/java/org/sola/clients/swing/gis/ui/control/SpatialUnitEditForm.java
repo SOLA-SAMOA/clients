@@ -33,7 +33,6 @@ import java.util.List;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.swing.extended.exception.ReadGeometryException;
 import org.geotools.swing.extended.util.GeometryUtility;
-import org.sola.clients.swing.common.controls.JTableWithDefaultStyles;
 import org.sola.clients.swing.gis.beans.SpatialUnitChangeBean;
 import org.sola.clients.swing.gis.beans.SpatialUnitChangeListBean;
 import org.sola.common.logging.LogUtility;
@@ -192,7 +191,7 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
 
         spatialUnitChangeList = createSpatialUnitChangeList();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblSpatialUnitChanges = new JTableWithDefaultStyles();
+        tblSpatialUnitChanges = new SpatialUnitEditFormJTable();
         jToolBar1 = new javax.swing.JToolBar();
         btnClose = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
@@ -230,6 +229,12 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
         columnBinding.setColumnName("New Feature");
         columnBinding.setColumnClass(Boolean.class);
         columnBinding.setEditable(false);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${northing}"));
+        columnBinding.setColumnName("Northing");
+        columnBinding.setColumnClass(Double.class);
+        columnBinding = jTableBinding.addColumnBinding(org.jdesktop.beansbinding.ELProperty.create("${easting}"));
+        columnBinding.setColumnName("Easting");
+        columnBinding.setColumnClass(Double.class);
         bindingGroup.addBinding(jTableBinding);
         jTableBinding.bind();org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, spatialUnitChangeList, org.jdesktop.beansbinding.ELProperty.create("${selectedSpatialUnitChange}"), tblSpatialUnitChanges, org.jdesktop.beansbinding.BeanProperty.create("selectedElement"));
         bindingGroup.addBinding(binding);
@@ -243,6 +248,8 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
             tblSpatialUnitChanges.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title1")); // NOI18N
             tblSpatialUnitChanges.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title2")); // NOI18N
             tblSpatialUnitChanges.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title3_2")); // NOI18N
+            tblSpatialUnitChanges.getColumnModel().getColumn(5).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title5_1")); // NOI18N
+            tblSpatialUnitChanges.getColumnModel().getColumn(6).setHeaderValue(bundle.getString("SpatialUnitEditForm.tblSpatialUnitChanges.columnModel.title6_1")); // NOI18N
         }
 
         jToolBar1.setFloatable(false);
@@ -294,7 +301,7 @@ public class SpatialUnitEditForm extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
                     .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );

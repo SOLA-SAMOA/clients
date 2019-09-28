@@ -27,7 +27,11 @@
  */
 package org.sola.clients.swing.gis.beans;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import org.geotools.geometry.jts.Geometries;
+import org.geotools.swing.extended.exception.ReadGeometryException;
+import org.geotools.swing.extended.util.GeometryUtility;
 import org.sola.clients.beans.AbstractIdBean;
 
 /**
@@ -42,7 +46,9 @@ public class SpatialUnitChangeBean extends AbstractIdBean {
     public static final String SPATIAL_UNIT_ID_PROPERTY = "spatialUnitId";
     public static final String NEW_FEATURE_PROPERTY = "newFeature";
     public static final String SELECTED_PROPERTY = "selected";
-    private byte[] geom;
+    public static final String NORTHING_PROPERTY = "northing";
+    public static final String EASTING_PROPERTY = "easting";
+    private byte[] geom = null;
     private String label;
     private String levelName;
     private boolean deleteOnApproval;
@@ -50,6 +56,10 @@ public class SpatialUnitChangeBean extends AbstractIdBean {
     private boolean newFeature;
     private boolean selected;
     private Geometry mergedGeom;
+    private Double northing = null;
+    private Double easting = null;
+    private Boolean isPoint = null;
+    private Geometry geometry = null;
 
     public SpatialUnitChangeBean() {
         super();
@@ -132,6 +142,67 @@ public class SpatialUnitChangeBean extends AbstractIdBean {
 
     public void setMergedGeom(Geometry mergedGeom) {
         this.mergedGeom = mergedGeom;
+    }
+
+    public Geometry getGeometry() {
+        if (geometry == null && geom != null) {
+            geometry = GeometryUtility.getGeometryFromWkb(geom);
+        }
+        return geometry;
+    }
+
+    public boolean isPoint() {
+        if (isPoint == null) {
+            try {
+                isPoint = geom == null ? false : GeometryUtility.isGeomType(geom, Geometries.POINT);
+            } catch (ReadGeometryException ex) {
+                org.sola.common.logging.LogUtility.log(
+                        "SpatialUnitChangeBean.isPoint - Failed to read geometry", ex);
+                isPoint = false;
+            }
+        }
+        return isPoint;
+    }
+
+    public Double getNorthing() {
+        if (this.isPoint() && northing == null) {
+            northing = getGeometry().getCoordinate().y;
+
+        }
+        return northing;
+    }
+
+    public void setNorthing(Double newValue) {
+        if (this.isPoint()) {
+            Double oldValue = this.northing;
+            this.northing = newValue;
+            if (newValue != null) {
+                geometry = GeometryUtility.getGeometryFactory().createPoint(
+                        new Coordinate(getEasting(), newValue));
+                setGeom(GeometryUtility.getWkbFromGeometry(geometry));
+                propertySupport.firePropertyChange(NORTHING_PROPERTY, oldValue, newValue);
+            }
+        }
+    }
+
+    public Double getEasting() {
+        if (this.isPoint() && easting == null) {
+            easting = getGeometry().getCoordinate().x;
+        }
+        return easting;
+    }
+
+    public void setEasting(Double newValue) {
+        if (this.isPoint()) {
+            Double oldValue = this.easting;
+            this.easting = newValue;
+            if (newValue != null) {
+                geometry = GeometryUtility.getGeometryFactory().createPoint(
+                        new Coordinate(newValue, getNorthing()));
+                setGeom(GeometryUtility.getWkbFromGeometry(geometry));
+                propertySupport.firePropertyChange(EASTING_PROPERTY, oldValue, newValue);
+            }
+        }
     }
 
     @Override

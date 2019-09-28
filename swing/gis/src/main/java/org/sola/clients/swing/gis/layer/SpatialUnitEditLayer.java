@@ -40,6 +40,8 @@ import org.geotools.feature.CollectionListener;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.map.extended.layer.ExtendedLayerEditor;
 import org.geotools.swing.extended.exception.InitializeLayerException;
+import org.geotools.swing.extended.exception.ReadGeometryException;
+import org.geotools.swing.extended.util.GeometryUtility;
 import org.jdesktop.observablecollections.ObservableList;
 import org.jdesktop.observablecollections.ObservableListListener;
 import org.opengis.feature.simple.SimpleFeature;
@@ -59,7 +61,8 @@ import org.sola.webservices.transferobjects.EntityAction;
  * {@linkplain org.sola.clients.swing.gis.tool.EditSpatialUnitTool EditSpatialUnitTool}
  * implements node snapping so that it is possible for adjoining parcels to
  * share coordinates if necessary.
- * <p>This layer is capable of handling multiple types of spatial unit features
+ * <p>
+ * This layer is capable of handling multiple types of spatial unit features
  * including polygon, linestring and point features</p>
  */
 public class SpatialUnitEditLayer extends ExtendedLayerEditor {
@@ -73,9 +76,9 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
      * name>:<data type>. Note that empty string (i.e. "") can be used to indicate the type as
      * string, but specifying the data type is easier to maintain.
      */
-    private static final String LAYER_ATTRIBUTE_DEFINITION =
-            String.format("%s:String,%s:String,%s:Boolean,%s:Boolean",
-            LAYER_FIELD_LEVEL, LAYER_FIELD_LABEL, LAYER_FIELD_NEW_FEATURE, LAYER_FIELD_DELETE);
+    private static final String LAYER_ATTRIBUTE_DEFINITION
+            = String.format("%s:String,%s:String,%s:Boolean,%s:Boolean",
+                    LAYER_FIELD_LEVEL, LAYER_FIELD_LABEL, LAYER_FIELD_NEW_FEATURE, LAYER_FIELD_DELETE);
     private static final String LAYER_NAME = "spatial_unit_edit";
     private static final String LAYER_STYLE_RESOURCE = "samoa_spunit_edit.xml";
     private static final String LAYER_VERTEX_STYLE_RESOURCE = "samoa_spunit_edit_vertices.xml";
@@ -129,6 +132,12 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
                 if (evt.getPropertyName().equals(
                         SpatialUnitChangeListBean.SELECTED_SPATIAL_UNIT_CHANGE_PROPERTY)) {
                     highlightSelectedBean((SpatialUnitChangeBean) evt.getNewValue());
+                    SpatialUnitChangeBean oldbean = (SpatialUnitChangeBean) evt.getOldValue();
+                    if (oldbean != null && oldbean.isPoint()) {
+                        // The user may have changed the point location so reposition
+                        // the point on the map
+                        moveFeature(oldbean);
+                    }
                 }
             }
         });
@@ -162,11 +171,29 @@ public class SpatialUnitEditLayer extends ExtendedLayerEditor {
         });
     }
 
-    ;
+    private void moveFeature(SpatialUnitChangeBean bean) {
+        if (bean != null && bean.getGeometry() != null) {
+            String fid = bean.getSpatialUnitId() == null ? bean.getId() : bean.getSpatialUnitId();
+            SimpleFeature feature = this.getFeatureCollection().getFeature(fid);
+            if (feature != null) {
+                try {
+                    if (!bean.getGeometry().equals((Geometry) feature.getDefaultGeometry())) {
+                        //Geometry has changed, so update it on the map and refresh
+                        feature.setDefaultGeometry(bean.getGeometry());
+                        getMapControl().refresh();
+                    }
+                } catch (ReadGeometryException ex) {
+                    org.sola.common.logging.LogUtility.log(
+                            "SpatialUnitEditLayer.moveFeature - Failed to read geometry", ex);
+                }
+            }
+        }
+        
+    }
 
     /**
-     * Highlights the geometry of the bean on the map to help users identify which feature they are
-     * editing.
+     * Highlights the geometry of the bean on the map to help users identify
+     * which feature they are editing.
      *
      * @param bean The bean to highlight
      */
