@@ -30,6 +30,7 @@ package org.sola.clients.beans.security;
 import java.util.HashMap;
 import org.sola.clients.beans.AbstractBindingBean;
 import org.sola.clients.beans.converters.TypeConverters;
+import org.sola.common.RolesConstants;
 import org.sola.common.SOLAException;
 import org.sola.common.logging.LogUtility;
 import org.sola.common.messaging.ClientMessage;
@@ -41,14 +42,14 @@ import org.sola.services.boundary.wsclients.exception.WebServiceClientException;
  * Provides methods to authenticate user.
  */
 public class SecurityBean extends AbstractBindingBean {
-
+    
     public static final String USER_NAME_PROPERTY = "userName";
     public static final String USER_PASSWORD_PROPERTY = "userPassword";
     public static final Integer WARN_OF_PWORD_EXPIRY = 14;
     private String userName;
     private char[] userPassword;
     private static UserBean currentUser;
-
+    
     public SecurityBean() {
         super();
     }
@@ -73,17 +74,17 @@ public class SecurityBean extends AbstractBindingBean {
             return getCurrentUser().isInRole(roles);
         }
     }
-
+    
     public String getUserName() {
         return userName;
     }
-
+    
     public void setUserName(String value) {
         String oldValue = userName;
         userName = value;
         propertySupport.firePropertyChange(USER_NAME_PROPERTY, oldValue, userName);
     }
-
+    
     public String getUserPassword() {
         String result = null;
         if (userPassword != null) {
@@ -91,7 +92,7 @@ public class SecurityBean extends AbstractBindingBean {
         }
         return result;
     }
-
+    
     public void setUserPassword(String value) {
         char[] oldValue = userPassword;
         userPassword = value.toCharArray();
@@ -181,5 +182,18 @@ public class SecurityBean extends AbstractBindingBean {
             }
         }
         return result;
+    }
+    
+    public static void savePublicUserActivity(String activityType, String comment)
+    {
+        if (isInRole(RolesConstants.ADMIN_PUBLIC_ONLY)) {          
+            PublicUserActivityBean publicUser = new PublicUserActivityBean();
+            publicUser.setReceiptNumber(getCurrentUser().getPublicUserReceiptNumber());
+            publicUser.setActivityType(activityType);
+            publicUser.setComment(comment);
+            publicUser.setPublicUser(getCurrentUser().getUserName());
+            publicUser.save();          
+        }
+        
     }
 }

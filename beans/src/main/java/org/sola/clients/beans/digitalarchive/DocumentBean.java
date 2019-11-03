@@ -198,4 +198,16 @@ public class DocumentBean extends AbstractIdBean {
             FileUtility.openFile(fileName);
         }
     }
+    
+    public static void printDocument(String Id, String fileName) {
+        if (fileName == null || !FileUtility.isCached(fileName)) {
+            DocumentBinaryTO documentBinary = WSManager.getInstance().getDigitalArchive().getDocument(Id);
+            if (documentBinary != null) {
+                fileName = documentBinary.getFileName();
+            } else {
+                throw new SOLAException(ClientMessage.SOURCE_NO_DOCUMENT);
+            }
+        }
+        FileUtility.printFile(fileName);
+    }
 }

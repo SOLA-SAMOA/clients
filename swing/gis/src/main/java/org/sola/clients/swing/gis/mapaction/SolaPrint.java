@@ -39,6 +39,7 @@ import org.geotools.swing.mapaction.extended.Print;
 import org.geotools.swing.mapaction.extended.print.PrintLayout;
 import org.sola.clients.beans.application.ApplicationServiceBean;
 import org.sola.clients.beans.referencedata.RequestTypeBean;
+import org.sola.clients.beans.security.PublicUserActivityBean;
 import org.sola.clients.beans.security.SecurityBean;
 /**
  * This map action extends the Print map action that handles the print of the map according to a
@@ -112,6 +113,9 @@ public class SolaPrint extends Print {
         }
 
         serviceBean.saveInformationService();
+               
+        SecurityBean.savePublicUserActivity(PublicUserActivityBean.MAP_PRINT_ACTIVITY_TYPE, 
+                            ((String)extraFields.getOrDefault("{title}", null)));
 
         return printoutLocation;
     }

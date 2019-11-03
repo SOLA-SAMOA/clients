@@ -115,6 +115,11 @@ public final class CacheManager {
     public static final String BR_VALIDATION_TARGET_TYPE_KEY = BrValidationTargetTypeBean.class.getName() + LIST_POSTFIX;
     /** Cache key of the {@link BaUnitRelTypeBean} collection.*/
     public static final String BA_UNIT_REL_TYPE_KEY = BaUnitRelTypeBean.class.getName() + LIST_POSTFIX;
+    /** Cache key of the code/displayValue map based on {@link PublicUserActivityTypeBean} collection.*/
+    public static final String PUBLIC_USER_ACTIVITY_TYPES_MAP_KEY = PublicUserActivityTypeBean.class.getName() + MAP_POSTFIX;
+     /** Cache key of the {@link PublicUserActivityTypeBean} collection.*/
+    public static final String PUBLIC_USER_ACTIVITY_TYPES_KEY = PublicUserActivityTypeBean.class.getName() + LIST_POSTFIX;
+
     
     private static final String GET_APPLICATION_STATUS_TYPES = "getApplicationStatusTypes";
     private static final String GET_SOURCE_TYPES = "getSourceTypes";
@@ -143,6 +148,7 @@ public final class CacheManager {
     private static final String GET_BR_TECHNICAL_TYPES = "getBrTechnicalTypes";
     private static final String GET_BR_VALIDATION_TARGET_TYPES = "getBrValidationTargetTypes";
     private static final String GET_BA_UNIT_REL_TYPES = "getBaUnitRelTypes";
+    private static final String GET_PUBLIC_USER_ACTIVITY_TYPES = "getPublicUserActivityTypes";
     
     public static List<BrValidationTargetTypeBean> getBrValidationTargetTypes() {
         return getCachedBeanList(BrValidationTargetTypeBean.class,
@@ -347,6 +353,21 @@ public final class CacheManager {
                 GET_REQUEST_TYPES, REQUEST_TYPES_KEY),
                 REQUEST_TYPES_MAP_KEY);
     }
+    
+    public static List<PublicUserActivityTypeBean> getPublicUserActivityTypes() {
+        return getCachedBeanList(PublicUserActivityTypeBean.class,
+                WSManager.getInstance().getReferenceDataService(),
+                GET_PUBLIC_USER_ACTIVITY_TYPES, PUBLIC_USER_ACTIVITY_TYPES_KEY);
+    }
+    
+    public static Map getPublicUserActivityTypesMap() {
+        return getCachedMap(
+                getCachedBeanList(PublicUserActivityTypeBean.class,
+                WSManager.getInstance().getReferenceDataService(),
+                GET_PUBLIC_USER_ACTIVITY_TYPES, PUBLIC_USER_ACTIVITY_TYPES_KEY),
+                PUBLIC_USER_ACTIVITY_TYPES_MAP_KEY);
+    }
+
  
     /** 
      * Generic method to create cached list of the beans, representing reference 

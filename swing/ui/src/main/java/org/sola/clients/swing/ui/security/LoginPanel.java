@@ -38,6 +38,8 @@ import org.sola.clients.swing.common.config.ConfigurationManager;
 import org.sola.clients.swing.common.controls.LanguageCombobox;
 import org.sola.clients.swing.common.tasks.SolaTask;
 import org.sola.clients.swing.common.tasks.TaskManager;
+import org.sola.common.RolesConstants;
+import org.sola.common.StringUtility;
 import org.sola.common.WindowUtility;
 import org.sola.common.messaging.ClientMessage;
 import org.sola.common.messaging.MessageUtility;
@@ -55,7 +57,7 @@ public class LoginPanel extends javax.swing.JPanel {
      * Create combobox with languages
      */
     private LanguageCombobox createLanguageCombobox() {
-            return new LanguageCombobox();
+        return new LanguageCombobox();
     }
 
     /**
@@ -70,7 +72,7 @@ public class LoginPanel extends javax.swing.JPanel {
         lblVersion.setText("SOLA Samoa - " + LocalizationManager.getVersionNumber());
 
         // Make the username sticky
-       // Make the username sticky
+        // Make the username sticky
         if (WindowUtility.hasUserPreferences()) {
             Preferences prefs = WindowUtility.getUserPreferences();
             String userName = prefs.get(USER_NAME, "");
@@ -105,11 +107,27 @@ public class LoginPanel extends javax.swing.JPanel {
 
             @Override
             protected void taskDone() {
-                if (result) {
+                boolean loginSuccess = result;
+                if (loginSuccess) {
                     if (WindowUtility.hasUserPreferences()) {
                         Preferences prefs = WindowUtility.getUserPreferences();
                         prefs.put(USER_NAME, txtUsername.getText());
                     }
+
+                    // 201911a extension for public user activity. Capture the receipt number
+                    // from the user
+                    if (SecurityBean.isInRole(RolesConstants.ADMIN_PUBLIC_ONLY)) {
+                        PublicUserActivityForm displayForm = new PublicUserActivityForm(null, true);
+                        WindowUtility.centerForm(displayForm);
+                        displayForm.setVisible(true);
+                        displayForm.dispose();
+                        // Check if the user has entered a receipt number or not. If not, fail the login and
+                        // return the user to the login panel. 
+                        loginSuccess = !StringUtility.isEmpty(SecurityBean.getCurrentUser().getPublicUserReceiptNumber());
+                    }
+                }
+
+                if (loginSuccess) {
                     SecurityBean.isPasswordChangeReqd(true);
                     fireLoginEvent(true);
                 } else {

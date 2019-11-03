@@ -33,6 +33,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.sola.clients.beans.controls.SolaList;
 import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.clients.beans.validation.Localized;
+import org.sola.common.RolesConstants;
 import org.sola.common.messaging.ClientMessage;
 import org.sola.services.boundary.wsclients.WSManager;
 import org.sola.webservices.transferobjects.EntityAction;
@@ -59,6 +60,7 @@ public class UserBean extends UserSummaryBean {
     private String password;
     private String lastPwordChangeUser;
     private Integer pwordExpiryDays;
+    private String publicUserReceiptNumber; 
 
     public String getPassword() {
         return password;
@@ -127,6 +129,36 @@ public class UserBean extends UserSummaryBean {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    /**
+     * Added for 201911a. Cache the Public Users receipt Number on the User 
+     * @return 
+     */
+    public String getPublicUserReceiptNumber() {
+        return publicUserReceiptNumber;
+    }
+
+    /**
+     * Added for 201911a. Cache the Public Users receipt Number. 
+     * @param publicUserReceiptNumber 
+     */
+    public void setPublicUserReceiptNumber(String publicUserReceiptNumber) {
+        this.publicUserReceiptNumber = publicUserReceiptNumber;
+    }
+    
+    /**
+     * Added for 201911a. Appends a receipt number to the user name for display
+     * on the main Window frame. 
+     * @return 
+     */
+    public String getUserNameForDisplay() {
+        String result = userName;
+        if (isInRole(RolesConstants.ADMIN_PUBLIC_ONLY) &&  publicUserReceiptNumber != null) {
+            result += " (" + publicUserReceiptNumber + ")"; 
+        }
+        return result;
+    }
+    
 
     // Methods
     

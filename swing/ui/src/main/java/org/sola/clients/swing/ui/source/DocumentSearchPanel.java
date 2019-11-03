@@ -35,6 +35,7 @@ import org.sola.clients.beans.application.ApplicationServiceBean;
 import org.sola.clients.beans.digitalarchive.DocumentBean;
 import org.sola.clients.beans.referencedata.RequestTypeBean;
 import org.sola.clients.beans.referencedata.SourceTypeListBean;
+import org.sola.clients.beans.security.PublicUserActivityBean;
 import org.sola.clients.beans.security.SecurityBean;
 import org.sola.clients.beans.source.SourceBean;
 import org.sola.clients.beans.source.SourceSearchParamsBean;
@@ -208,9 +209,33 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
     }
 
     private void print() {
-        if (ApplicationServiceBean.saveInformationService(RequestTypeBean.CODE_DOCUMENT_COPY)) {
-            openDocument();
+        printDocument();
+    }
+    
+    private void printDocument() {
+        if (searchResultsList.getSelectedSource().getArchiveDocumentId() == null
+                || searchResultsList.getSelectedSource().getArchiveDocumentId().isEmpty()) {
+            return;
         }
+
+        SolaTask t = new SolaTask<Void, Void>() {
+
+            @Override
+            public Void doTask() {
+                setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_DOCUMENT_PRINTING));
+                SourceBean selectedSource = SourceBean.getSource(searchResultsList.getSelectedSource().getId());
+                if (selectedSource != null && selectedSource.getArchiveDocument() != null) {
+                    DocumentBean.printDocument(selectedSource.getArchiveDocument().getId(),
+                            selectedSource.getArchiveDocument().getFileName());
+                    SecurityBean.savePublicUserActivity(PublicUserActivityBean.PRINT_DOCUMENT_ACTIVITY_TYPE, 
+                            selectedSource.getLaNr());
+                } else {
+                    throw new SOLAException(ClientMessage.SOURCE_NO_DOCUMENT);
+                }
+                return null;
+            }
+        };
+        TaskManager.getInstance().runTask(t);
     }
 
     private void openDocument() {
@@ -228,6 +253,8 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
                 if (selectedSource != null && selectedSource.getArchiveDocument() != null) {
                     DocumentBean.openDocument(selectedSource.getArchiveDocument().getId(),
                             selectedSource.getArchiveDocument().getFileName());
+                    SecurityBean.savePublicUserActivity(PublicUserActivityBean.VIEW_DOCUMENT_ACTIVITY_TYPE, 
+                            selectedSource.getLaNr());
                 } else {
                     throw new SOLAException(ClientMessage.SOURCE_NO_DOCUMENT);
                 }
