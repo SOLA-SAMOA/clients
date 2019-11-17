@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="46da51a9-9a7a-43b8-ae80-8e97d2f9bb65">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
@@ -310,7 +311,7 @@
 	<background>
 		<band height="802" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="9a6de7d9-6c8b-4fc4-9202-42280991e23c" x="0" y="237" width="555" height="424">
+				<reportElement x="0" y="237" width="555" height="424" uuid="9a6de7d9-6c8b-4fc4-9202-42280991e23c">
 					<printWhenExpression><![CDATA[$P{IS_PRODUCTION}.equals( false )]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
@@ -321,83 +322,83 @@
 		</band>
 	</background>
 	<title>
-		<band height="219" splitType="Stretch">
+		<band height="205" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="1fee818d-327b-4436-8076-c42910878ed8" x="0" y="12" width="555" height="28" forecolor="#000000"/>
+				<reportElement x="0" y="12" width="555" height="28" forecolor="#000000" uuid="1fee818d-327b-4436-8076-c42910878ed8"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="24" isBold="true"/>
 				</textElement>
 				<text><![CDATA[COMPUTER FOLIO CERTIFICATE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="332705c4-5d94-4c6b-adfb-05ea1eddaa00" x="382" y="181" width="65" height="13"/>
+				<reportElement x="382" y="181" width="65" height="13" uuid="332705c4-5d94-4c6b-adfb-05ea1eddaa00"/>
 				<textElement markup="none">
 					<font fontName="Arial Narrow" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Date Issued:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="17073138-55b6-495e-9323-019671d2d168" x="0" y="40" width="555" height="17" forecolor="#000000"/>
+				<reportElement x="0" y="40" width="555" height="17" forecolor="#000000" uuid="17073138-55b6-495e-9323-019671d2d168"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[TUSI FAAMAONIA O LE LAUTUSI FAANUMERAINA I KOMEPIUTA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="da8e8169-de24-40bb-b6f6-9224e5d0c258" x="0" y="56" width="555" height="21" forecolor="#000000"/>
+				<reportElement x="0" y="56" width="555" height="21" forecolor="#000000" uuid="da8e8169-de24-40bb-b6f6-9224e5d0c258"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="18" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[Land Titles Registration Act 2008]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="0dfe57cd-bdc2-4b98-a2ff-47f87a35449b" x="0" y="76" width="555" height="14" forecolor="#000000"/>
+				<reportElement x="0" y="76" width="555" height="14" forecolor="#000000" uuid="0dfe57cd-bdc2-4b98-a2ff-47f87a35449b"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[TULAFONO O LE FAAMAUINA O PULE O FANUA 2008]]></text>
 			</staticText>
 			<image hAlign="Center" isUsingCache="false">
-				<reportElement uuid="8340c99a-ccda-4d06-960d-852e9695dea0" x="247" y="92" width="58" height="58"/>
+				<reportElement x="247" y="92" width="58" height="58" uuid="8340c99a-ccda-4d06-960d-852e9695dea0"/>
 				<imageExpression><![CDATA[$P{SAMOA_EMBLEM}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement uuid="0c37f5d8-3a5d-48af-b0b9-048bb5c6d950" x="212" y="164" width="130" height="14" forecolor="#000000"/>
+				<reportElement x="212" y="164" width="130" height="14" forecolor="#000000" uuid="0c37f5d8-3a5d-48af-b0b9-048bb5c6d950"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[GOVERNMENT OF SAMOA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="bea069e5-2e87-4d1f-af56-ce956b3bc792" x="346" y="128" width="175" height="11" forecolor="#000000"/>
+				<reportElement x="346" y="128" width="175" height="11" forecolor="#000000" uuid="bea069e5-2e87-4d1f-af56-ce956b3bc792"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="9" isBold="false" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[Reference to the Folio of the Register]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="c439aad6-6da9-46bc-812a-e79061560ab3" x="346" y="139" width="175" height="11" forecolor="#000000"/>
+				<reportElement x="346" y="139" width="175" height="11" forecolor="#000000" uuid="c439aad6-6da9-46bc-812a-e79061560ab3"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="9" isBold="false" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[(Numera i luga ole Resitala)]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="63fe1382-cf60-4820-945e-83445c152072" x="346" y="150" width="175" height="15" forecolor="#000000"/>
+				<reportElement x="346" y="150" width="175" height="15" forecolor="#000000" uuid="63fe1382-cf60-4820-945e-83445c152072"/>
 				<textElement textAlignment="Center" markup="none">
 					<font fontName="Arial Narrow" size="13" isBold="true" isItalic="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nameFirstpart} + "/" + $F{nameLastpart}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement uuid="a9d46137-87cd-43eb-be7a-ab2d83fcd728" x="439" y="181" width="53" height="13"/>
+				<reportElement x="439" y="181" width="53" height="13" uuid="a9d46137-87cd-43eb-be7a-ab2d83fcd728"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="9c6340c3-25f2-41ab-bd69-38c3d4b8f6d7" x="346" y="194" width="175" height="11" forecolor="#000000"/>
+				<reportElement x="346" y="194" width="175" height="11" forecolor="#000000" uuid="9c6340c3-25f2-41ab-bd69-38c3d4b8f6d7"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="9" isBold="false" isItalic="true"/>
 				</textElement>
@@ -414,78 +415,78 @@
 	<detail>
 		<band height="204">
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="f15b4225-d811-45bc-975d-bd29cb471cb3" x="55" y="111" width="222" height="14"/>
+				<reportElement x="55" y="111" width="222" height="14" uuid="f15b4225-d811-45bc-975d-bd29cb471cb3"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{estateType}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="5110cd3b-94ea-462a-bb0a-adf33acefa75" x="55" y="1" width="445" height="51" forecolor="#000000"/>
+				<reportElement x="55" y="1" width="445" height="51" forecolor="#000000" uuid="5110cd3b-94ea-462a-bb0a-adf33acefa75"/>
 				<textElement textAlignment="Justified">
 					<font fontName="Arial Narrow" size="11" isBold="false" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[I certify that the person described in the First Schedule is the registered proprietor of land in fee simple (or such other estate or interest as is set forth in that Schedule in the land within described) subject to such exceptions, encumbrances, interests and entries as appear in the Second Schedule and to any additional entries in the Folio of the Register.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="6d533431-abc8-4500-a42d-adc94699134a" x="55" y="52" width="445" height="35" forecolor="#000000"/>
+				<reportElement x="55" y="52" width="445" height="35" forecolor="#000000" uuid="6d533431-abc8-4500-a42d-adc94699134a"/>
 				<textElement textAlignment="Justified" markup="none">
 					<font fontName="Arial Narrow" size="10" isBold="false" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Ou te faamaonia o lē o lo o taua i le Faamatalaga Muamua o le Pule o le Fanua (po o se esetete po o se aia ua mafua      ai e pei ona taua i Faamatalaga Muamua e uiga i lea fanua) e le aofia ai noataga ma aia o lo o faamauina i le  Faamatalaga Lona Lua ma isi faamaumauga e ono tuuina atu i totonu o le Lautusi o le Resitala.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="36d83ca2-d553-4818-a04f-c4f6b71a62dc" x="55" y="98" width="103" height="14" forecolor="#000000"/>
+				<reportElement x="55" y="98" width="103" height="14" forecolor="#000000" uuid="36d83ca2-d553-4818-a04f-c4f6b71a62dc"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[LAND DESCRIPTION/ ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e71c7adb-aa9d-4346-9661-2b97623b5211" x="157" y="100" width="119" height="12" forecolor="#000000"/>
+				<reportElement x="157" y="100" width="119" height="12" forecolor="#000000" uuid="e71c7adb-aa9d-4346-9661-2b97623b5211"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="10" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[FAAMATALAGA O LE FANUA]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="7bf9a871-64f5-4af1-880c-00d32d57f3aa" x="55" y="124" width="222" height="14"/>
+				<reportElement x="55" y="124" width="222" height="14" uuid="7bf9a871-64f5-4af1-880c-00d32d57f3aa"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Lot " + $F{nameFirstpart} + " in Plan " + $F{nameLastpart}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement uuid="1ee1425f-2540-4cb5-9570-443d42873103" x="55" y="138" width="222" height="14"/>
+				<reportElement x="55" y="138" width="222" height="14" uuid="1ee1425f-2540-4cb5-9570-443d42873103"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{calculatedAreaSize} + " square metres"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="e1fdf63e-5cbe-4670-9b58-370ae04f57a1" x="55" y="152" width="222" height="14"/>
+				<reportElement x="55" y="152" width="222" height="14" uuid="e1fdf63e-5cbe-4670-9b58-370ae04f57a1"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["At " + $F{village}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="0bd49551-360f-4c9b-b0b9-3ad7894a092c" x="55" y="165" width="222" height="14"/>
+				<reportElement x="55" y="165" width="222" height="14" uuid="0bd49551-360f-4c9b-b0b9-3ad7894a092c"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["District of " + $F{district}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement uuid="d021a982-7f42-4920-baf4-00ef78b755b1" key="table 4" style="table 6" positionType="Float" x="53" y="179" width="444" height="16" isRemoveLineWhenBlank="true"/>
+				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="179" width="444" height="16" isRemoveLineWhenBlank="true" uuid="d021a982-7f42-4920-baf4-00ef78b755b1"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Notations" uuid="c4b86418-cfd0-4621-af28-43583707ccce">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{easementList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column uuid="9e5f7dd2-2406-4ef3-baa4-0dcbdcfdcb40" width="447">
+					<jr:column width="447" uuid="9e5f7dd2-2406-4ef3-baa4-0dcbdcfdcb40">
 						<jr:detailCell height="16" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="87808fe8-122e-429a-9f06-7897db8c0ba1" x="0" y="0" width="447" height="16"/>
+								<reportElement x="0" y="0" width="447" height="16" uuid="87808fe8-122e-429a-9f06-7897db8c0ba1"/>
 								<box>
 									<pen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -506,15 +507,15 @@
 		</band>
 		<band height="38">
 			<componentElement>
-				<reportElement uuid="92c126bc-44a4-47a6-970d-c607d4aef65a" key="table 3" style="table 6" positionType="Float" x="51" y="13" width="449" height="16" backcolor="#FFFFFF"/>
+				<reportElement key="table 3" style="table 6" positionType="Float" x="51" y="13" width="449" height="16" backcolor="#FFFFFF" uuid="92c126bc-44a4-47a6-970d-c607d4aef65a"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Ownership" uuid="99c0e46a-b593-4b27-8e42-61fc63386f5f">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{currentOwnersList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column uuid="d19c2045-dd81-43a7-9aa0-e127edb4bee9" width="443">
+					<jr:column width="443" uuid="d19c2045-dd81-43a7-9aa0-e127edb4bee9">
 						<jr:detailCell height="16" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="640cb72c-2bc5-428e-83d6-6cc5bb0b3362" x="0" y="0" width="443" height="16"/>
+								<reportElement x="0" y="0" width="443" height="16" uuid="640cb72c-2bc5-428e-83d6-6cc5bb0b3362"/>
 								<box>
 									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -533,14 +534,14 @@
 				</jr:table>
 			</componentElement>
 			<staticText>
-				<reportElement uuid="856d02d4-520c-4b49-9d4a-461fbe36f071" x="55" y="0" width="90" height="14" forecolor="#000000"/>
+				<reportElement x="55" y="0" width="90" height="14" forecolor="#000000" uuid="856d02d4-520c-4b49-9d4a-461fbe36f071"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[FIRST SCHEDULE/]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="fa9f20a8-b6e6-4900-b7e0-895dde3a2ad9" x="145" y="2" width="105" height="12" forecolor="#000000"/>
+				<reportElement x="145" y="2" width="105" height="12" forecolor="#000000" uuid="fa9f20a8-b6e6-4900-b7e0-895dde3a2ad9"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="10" isBold="true" isItalic="true"/>
 				</textElement>
@@ -549,15 +550,15 @@
 		</band>
 		<band height="108">
 			<componentElement>
-				<reportElement uuid="d021a982-7f42-4920-baf4-00ef78b755b1" key="table 4" style="table 6" positionType="Float" x="53" y="83" width="447" height="16"/>
+				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="83" width="447" height="16" uuid="d021a982-7f42-4920-baf4-00ef78b755b1"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Easements" uuid="c4b86418-cfd0-4621-af28-43583707ccce">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{baUnitCurrentNotationList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column uuid="9e5f7dd2-2406-4ef3-baa4-0dcbdcfdcb40" width="447">
+					<jr:column width="447" uuid="9e5f7dd2-2406-4ef3-baa4-0dcbdcfdcb40">
 						<jr:detailCell height="16" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="87808fe8-122e-429a-9f06-7897db8c0ba1" x="0" y="0" width="447" height="16"/>
+								<reportElement x="0" y="0" width="447" height="16" uuid="87808fe8-122e-429a-9f06-7897db8c0ba1"/>
 								<box>
 									<pen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -576,42 +577,42 @@
 				</jr:table>
 			</componentElement>
 			<staticText>
-				<reportElement uuid="8b1b70b8-1584-47f2-bc4c-d8acba2cf4cd" x="160" y="2" width="111" height="12" forecolor="#000000"/>
+				<reportElement x="160" y="2" width="111" height="12" forecolor="#000000" uuid="8b1b70b8-1584-47f2-bc4c-d8acba2cf4cd"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="10" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[FAAMATALAGA LONA LUA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="0e5ffe04-2fa7-450c-9cd9-ffc990398b67" x="55" y="14" width="42" height="13" forecolor="#000000"/>
+				<reportElement x="55" y="14" width="42" height="13" forecolor="#000000" uuid="0e5ffe04-2fa7-450c-9cd9-ffc990398b67"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="11" isBold="false" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[CAUTION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="d20ec8aa-701a-45df-93ac-e93b36ff84e1" x="55" y="26" width="460" height="26" forecolor="#000000"/>
+				<reportElement x="55" y="26" width="460" height="26" forecolor="#000000" uuid="d20ec8aa-701a-45df-93ac-e93b36ff84e1"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="11" isBold="false" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[The land herein may be subject to any existing interests, whether recorded therein or not in accordance with sections 14 and 15 of the Land Titles Registration Act 2008.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="235de4e9-cb9b-4c85-808a-ccf97ef58cd1" x="55" y="50" width="52" height="12" forecolor="#000000"/>
+				<reportElement x="55" y="50" width="52" height="12" forecolor="#000000" uuid="235de4e9-cb9b-4c85-808a-ccf97ef58cd1"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="10" isBold="false" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[LAPATAIGA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="63d3307a-ebef-4aab-aad5-51d2956ecb81" x="55" y="61" width="434" height="23" forecolor="#000000"/>
+				<reportElement x="55" y="61" width="434" height="23" forecolor="#000000" uuid="63d3307a-ebef-4aab-aad5-51d2956ecb81"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="10" isBold="false" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[O le fanua ua faamauina, e ono aofia ai i totonu ni isi aia ua mafua ai,  pe ua faamauina iai i totonu pe leai foi e tusa ma le Fuaiupu 14 ma le 15 o le Tulafono o le Faamauina o Pule o Fanua 2008.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="5d119b70-6a84-4bce-b3f2-a181221591cc" x="55" y="0" width="104" height="14" forecolor="#000000"/>
+				<reportElement x="55" y="0" width="104" height="14" forecolor="#000000" uuid="5d119b70-6a84-4bce-b3f2-a181221591cc"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false"/>
 				</textElement>
@@ -620,38 +621,38 @@
 		</band>
 		<band height="38">
 			<line>
-				<reportElement uuid="f668d4c9-3870-4e77-ac29-dd95036ca899" x="55" y="0" width="445" height="1"/>
+				<reportElement x="55" y="0" width="445" height="1" uuid="f668d4c9-3870-4e77-ac29-dd95036ca899"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement uuid="800fc0ad-6612-460f-818f-fa959bdb129a" x="56" y="2" width="64" height="14" forecolor="#000000"/>
+				<reportElement x="56" y="2" width="64" height="14" forecolor="#000000" uuid="800fc0ad-6612-460f-818f-fa959bdb129a"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[NOTATIONS/]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="ca2c8d00-ee0c-4f97-a849-c8894e521cd6" x="119" y="4" width="51" height="12" forecolor="#000000"/>
+				<reportElement x="119" y="4" width="51" height="12" forecolor="#000000" uuid="ca2c8d00-ee0c-4f97-a849-c8894e521cd6"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="10" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[FAAALIGA]]></text>
 			</staticText>
 			<break>
-				<reportElement uuid="862d1600-517e-4444-8fc5-61f7d6145007" x="0" y="37" width="100" height="1"/>
+				<reportElement x="0" y="37" width="100" height="1" uuid="862d1600-517e-4444-8fc5-61f7d6145007"/>
 			</break>
 			<componentElement>
-				<reportElement uuid="1e93975a-7366-4251-bfd4-adb43f4f0d9b" key="table 4" style="table 6" positionType="Float" x="53" y="15" width="447" height="16"/>
+				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="15" width="447" height="16" uuid="1e93975a-7366-4251-bfd4-adb43f4f0d9b"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="UnregisteredDealings" uuid="ba5a379f-efa3-45ab-abf8-b46c72a9f8f0">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{unregisteredDealings}.toArray())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column uuid="831bb64c-e9dc-4efc-8296-258c552c2aa4" width="444">
+					<jr:column width="444" uuid="831bb64c-e9dc-4efc-8296-258c552c2aa4">
 						<jr:detailCell height="16" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="71459267-d360-4f6f-a7cc-dd09450f1531" x="0" y="0" width="444" height="16"/>
+								<reportElement x="0" y="0" width="444" height="16" uuid="71459267-d360-4f6f-a7cc-dd09450f1531"/>
 								<box>
 									<pen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -672,21 +673,21 @@
 		</band>
 		<band height="399">
 			<staticText>
-				<reportElement uuid="975a09a4-92c4-4096-976a-ebf388f222d6" x="56" y="0" width="74" height="14" forecolor="#000000"/>
+				<reportElement x="56" y="0" width="74" height="14" forecolor="#000000" uuid="975a09a4-92c4-4096-976a-ebf388f222d6"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[LAND IMAGE/]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="f8423e7f-ffcb-4a50-aea5-03abe5fdd4de" x="123" y="2" width="87" height="12" forecolor="#000000"/>
+				<reportElement x="123" y="2" width="87" height="12" forecolor="#000000" uuid="f8423e7f-ffcb-4a50-aea5-03abe5fdd4de"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="10" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[ATA O LE FANUA]]></text>
 			</staticText>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement uuid="943f31e5-c431-4333-954d-fe203c1d5eb9" x="89" y="43" width="400" height="300"/>
+				<reportElement x="89" y="43" width="400" height="300" uuid="943f31e5-c431-4333-954d-fe203c1d5eb9"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="0.0"/>
@@ -701,34 +702,34 @@
 	<pageFooter>
 		<band height="37" splitType="Stretch">
 			<textField>
-				<reportElement uuid="72639409-717f-4ced-9648-5074656c97e1" x="272" y="4" width="118" height="10"/>
+				<reportElement x="272" y="4" width="118" height="10" uuid="72639409-717f-4ced-9648-5074656c97e1"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial Narrow" size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Computer Folio Certificate Generated"]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="55fcdacb-c7e4-4ba7-b0ba-efc02c58af42" x="55" y="3" width="445" height="1"/>
+				<reportElement x="55" y="3" width="445" height="1" uuid="55fcdacb-c7e4-4ba7-b0ba-efc02c58af42"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
 			<textField pattern="dd/MM/yyy hh:mm:ss a">
-				<reportElement uuid="12a1629b-8bbb-4650-9db9-d38a2a86f4db" x="383" y="4" width="80" height="10"/>
+				<reportElement x="383" y="4" width="80" height="10" uuid="12a1629b-8bbb-4650-9db9-d38a2a86f4db"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial Narrow" size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="090fe08f-86e2-4281-a5f5-25caba05d461" x="446" y="4" width="49" height="10"/>
+				<reportElement x="446" y="4" width="49" height="10" uuid="090fe08f-86e2-4281-a5f5-25caba05d461"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial Narrow" size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[", Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="41d8e97f-8b2e-43e9-9db4-304c45eb293e" x="494" y="4" width="16" height="10"/>
+				<reportElement x="494" y="4" width="16" height="10" uuid="41d8e97f-8b2e-43e9-9db4-304c45eb293e"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="8" isItalic="true"/>
 				</textElement>

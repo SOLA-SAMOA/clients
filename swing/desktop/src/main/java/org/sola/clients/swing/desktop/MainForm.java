@@ -57,6 +57,7 @@ import org.sola.clients.swing.desktop.application.ApplicationSearchPanel;
 import org.sola.clients.swing.desktop.cadastre.MapPanelForm;
 import org.sola.clients.swing.desktop.party.PartySearchPanelForm;
 import org.sola.clients.swing.desktop.reports.LodgementReportParamsForm;
+import org.sola.clients.swing.desktop.reports.PublicUserActivityReportParamsForm;
 import org.sola.clients.swing.desktop.source.DocumentSearchForm;
 import org.sola.clients.swing.desktop.source.DocumentViewForm;
 import org.sola.clients.swing.desktop.source.PowerOfAttorneyViewForm;
@@ -145,6 +146,7 @@ public class MainForm extends javax.swing.JFrame {
         menuPersons.setEnabled(btnManageParties.isEnabled());
         menuShowMap.setEnabled(btnOpenMap.isEnabled());
         menuLodgementReport.setEnabled(SecurityBean.isInRole(RolesConstants.REPORTS_VIEW));
+        menuPublicUserActivitySum.setEnabled(SecurityBean.isInRole(RolesConstants.REPORTS_PUBLIC_ACTIVITY));
         
         if (SecurityBean.isPasswordChangeReqd(false)) {
             // Load the user profile page
@@ -511,6 +513,7 @@ public class MainForm extends javax.swing.JFrame {
         menuShowMap = new javax.swing.JMenuItem();
         menuReportsDesktop = new javax.swing.JMenu();
         menuLodgementReport = new javax.swing.JMenuItem();
+        menuPublicUserActivitySum = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         jmiContextHelp = new javax.swing.JMenuItem();
@@ -821,6 +824,14 @@ public class MainForm extends javax.swing.JFrame {
         menuReportsDesktop.add(menuLodgementReport);
         menuLodgementReport.getAccessibleContext().setAccessibleName(bundle.getString("MainForm.menuLodgementReport.AccessibleContext.accessibleName")); // NOI18N
 
+        menuPublicUserActivitySum.setText(bundle.getString("MainForm.menuPublicUserActivitySum.text")); // NOI18N
+        menuPublicUserActivitySum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuPublicUserActivitySumActionPerformed(evt);
+            }
+        });
+        menuReportsDesktop.add(menuPublicUserActivitySum);
+
         menuBar.add(menuReportsDesktop);
 
         helpMenu.setText(bundle.getString("MainForm.helpMenu.text")); // NOI18N
@@ -963,6 +974,11 @@ public class MainForm extends javax.swing.JFrame {
     private void btnSetPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSetPasswordActionPerformed
         editPassword();
     }//GEN-LAST:event_btnSetPasswordActionPerformed
+
+    private void menuPublicUserActivitySumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPublicUserActivitySumActionPerformed
+       PublicUserActivityReportParamsForm rptParamsForm = new PublicUserActivityReportParamsForm(this, true);
+        rptParamsForm.setVisible(true);
+    }//GEN-LAST:event_menuPublicUserActivitySumActionPerformed
     
     private void editPassword() {
         showPasswordPanel();
@@ -1018,6 +1034,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuNewApplication;
     private javax.swing.JMenuItem menuOffLogLevel;
     private javax.swing.JMenuItem menuPersons;
+    private javax.swing.JMenuItem menuPublicUserActivitySum;
     private javax.swing.JMenu menuReportsDesktop;
     private javax.swing.JMenu menuSearch;
     private javax.swing.JMenuItem menuSearchApplication;

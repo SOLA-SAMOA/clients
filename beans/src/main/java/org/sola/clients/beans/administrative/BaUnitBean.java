@@ -377,7 +377,6 @@ public class BaUnitBean extends BaUnitSummaryBean {
             }
         }
 
-
     }
 
     public void removeSelectedRight() {
@@ -392,7 +391,6 @@ public class BaUnitBean extends BaUnitSummaryBean {
             MessageUtility.displayMessage(ClientMessage.CHECK_FIELD_INVALID_LENGTH_PAR, new Object[]{bundle.getString("PropertyPanel.jLabel15.text")});
             return false;
         }
-
 
         BaUnitNotationBean notation = new BaUnitNotationBean();
         notation.setBaUnitId(this.getId());
@@ -540,8 +538,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     public ObservableList<CadastreObjectBean> getSelectedNewCadastreObjects() {
-        ObservableList<CadastreObjectBean> selectedCadastreObjects =
-                ObservableCollections.observableList(new ArrayList<CadastreObjectBean>());
+        ObservableList<CadastreObjectBean> selectedCadastreObjects
+                = ObservableCollections.observableList(new ArrayList<CadastreObjectBean>());
         for (CadastreObjectBean cadastreObject : getNewCadastreObjectList()) {
             if (cadastreObject.isSelected()) {
                 selectedCadastreObjects.add(cadastreObject);
@@ -551,8 +549,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     }
 
     public ObservableList<CadastreObjectBean> getSelectedCadastreObjects() {
-        ObservableList<CadastreObjectBean> selectedCadastreObjects =
-                ObservableCollections.observableList(new ArrayList<CadastreObjectBean>());
+        ObservableList<CadastreObjectBean> selectedCadastreObjects
+                = ObservableCollections.observableList(new ArrayList<CadastreObjectBean>());
         for (CadastreObjectBean cadastreObject : getCadastreObjectFilteredList()) {
             if (cadastreObject.isSelected()) {
                 selectedCadastreObjects.add(cadastreObject);
@@ -568,8 +566,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
      * child objects.
      */
     public ObservableList<RrrBean> getSelectedRrrs(boolean regenerateIds) {
-        ObservableList<RrrBean> selectedRrrs =
-                ObservableCollections.observableList(new ArrayList<RrrBean>());
+        ObservableList<RrrBean> selectedRrrs
+                = ObservableCollections.observableList(new ArrayList<RrrBean>());
         for (RrrBean rrr : getRrrFilteredList()) {
             if (rrr.isSelected()) {
                 if (regenerateIds) {
@@ -688,8 +686,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
         }
         newCadastreObjectList.clear();
         if (getId() != null) {
-            List<SpatialSearchResultTO> searchResults =
-                    WSManager.getInstance().getSearchService().searchSpatialObjects(BAUNIT_ID_SEARCH, getId());
+            List<SpatialSearchResultTO> searchResults
+                    = WSManager.getInstance().getSearchService().searchSpatialObjects(BAUNIT_ID_SEARCH, getId());
             if (searchResults != null && searchResults.size() > 0) {
                 List<String> ids = new ArrayList<String>();
                 for (SpatialSearchResultTO result : searchResults) {
@@ -878,10 +876,10 @@ public class BaUnitBean extends BaUnitSummaryBean {
                     return note1.getChangeTime().compareTo(note2.getChangeTime());
                 } else {
                     // AM 17 Aug 2017 Added extra check for reference number that is all characters
-                    BigDecimal ref1 = note1 == null || note1.getReferenceNr() == null 
-                            || "".equals(note1.getReferenceNr().replaceAll("[^0-9\\.]", ""))? BigDecimal.ZERO
+                    BigDecimal ref1 = note1 == null || note1.getReferenceNr() == null
+                            || "".equals(note1.getReferenceNr().replaceAll("[^0-9\\.]", "")) ? BigDecimal.ZERO
                             : new BigDecimal(note1.getReferenceNr().replaceAll("[^0-9\\.]", ""));
-                    BigDecimal ref2 = note2 == null || note2.getReferenceNr() == null 
+                    BigDecimal ref2 = note2 == null || note2.getReferenceNr() == null
                             || "".equals(note2.getReferenceNr().replaceAll("[^0-9\\.]", "")) ? BigDecimal.ZERO
                             : new BigDecimal(note2.getReferenceNr().replaceAll("[^0-9\\.]", ""));
                     return ref1.compareTo(ref2);
@@ -997,11 +995,11 @@ public class BaUnitBean extends BaUnitSummaryBean {
                 } else {
                     // 17 Aug 2017. Check that the reference is not all characters. 
                     String ref1Str = rrr1 == null || rrr1.getNotation() == null
-                            || rrr1.getNotation().getReferenceNr() == null 
+                            || rrr1.getNotation().getReferenceNr() == null
                             || "".equals(rrr1.getNotation().getReferenceNr().replaceAll("[^0-9\\.]", "")) ? "0"
                             : rrr1.getNotation().getReferenceNr();
                     String ref2Str = rrr2 == null || rrr2.getNotation() == null
-                            || rrr2.getNotation().getReferenceNr() == null 
+                            || rrr2.getNotation().getReferenceNr() == null
                             || "".equals(rrr2.getNotation().getReferenceNr().replaceAll("[^0-9\\.]", "")) ? "0"
                             : rrr2.getNotation().getReferenceNr();
                     BigDecimal ref1 = new BigDecimal(ref1Str.replaceAll("[^0-9\\.]", ""));

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ae929591-1878-491c-b8b1-57e0faebe54c">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="210"/>
 	<property name="ireport.y" value="1355"/>
@@ -174,7 +175,7 @@
 			<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
 		</box>
 	</style>
-	<subDataset name="dataset1">
+	<subDataset name="dataset1" uuid="6230f503-bf13-4bc2-876e-afcccccb1970">
 		<queryString language="SQL">
 			<![CDATA[]]>
 		</queryString>
@@ -194,7 +195,7 @@
 			<fieldDescription><![CDATA[status.displayValue]]></fieldDescription>
 		</field>
 	</subDataset>
-	<subDataset name="Rights">
+	<subDataset name="Rights" uuid="66e47bff-a768-4d43-b431-11faa5953676">
 		<field name="rrrType" class="java.lang.String">
 			<fieldDescription><![CDATA[rrrType.displayValue]]></fieldDescription>
 		</field>
@@ -205,7 +206,7 @@
 			<fieldDescription><![CDATA[status.displayValue]]></fieldDescription>
 		</field>
 	</subDataset>
-	<subDataset name="Ownership">
+	<subDataset name="Ownership" uuid="fc4bd00c-24cd-460c-90fe-349060a468d1">
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
@@ -213,7 +214,7 @@
 			<fieldDescription><![CDATA[fullName]]></fieldDescription>
 		</field>
 	</subDataset>
-	<subDataset name="Notations">
+	<subDataset name="Notations" uuid="12feedf1-d1e6-4ab8-8511-e7edb7a3e79c">
 		<field name="Ref. Number" class="java.lang.String">
 			<fieldDescription><![CDATA[referenceNr]]></fieldDescription>
 		</field>
@@ -285,7 +286,7 @@
 	<background>
 		<band height="802" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="245" width="555" height="316">
+				<reportElement x="0" y="245" width="555" height="316" uuid="d445686f-da3e-4173-bd33-bc5570c992a6">
 					<printWhenExpression><![CDATA[$P{IS_PRODUCTION}.equals( false )]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
@@ -298,81 +299,81 @@
 	<title>
 		<band height="219" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="12" width="555" height="28" forecolor="#000000"/>
+				<reportElement x="0" y="12" width="555" height="28" forecolor="#000000" uuid="fc1ac6a4-bfcc-41db-a5d4-003d278774b8"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="24" isBold="true"/>
 				</textElement>
 				<text><![CDATA[STAFF SEARCH]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="382" y="181" width="65" height="13"/>
+				<reportElement x="382" y="181" width="65" height="13" uuid="d76d5ced-c72e-4d14-aaa8-37ccd0e017ca"/>
 				<textElement markup="none">
 					<font fontName="Arial Narrow" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Date Issued:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="40" width="555" height="17" forecolor="#000000"/>
+				<reportElement x="0" y="40" width="555" height="17" forecolor="#000000" uuid="2e36b65c-e0e9-4c9d-a245-1c3b27ce214a"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="14" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="56" width="555" height="21" forecolor="#000000"/>
+				<reportElement x="0" y="56" width="555" height="21" forecolor="#000000" uuid="a484a06a-326e-41ce-999a-e1a22349dd33"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="18" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[Land Titles Registration Act 2008]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="76" width="555" height="14" forecolor="#000000"/>
+				<reportElement x="0" y="76" width="555" height="14" forecolor="#000000" uuid="5ff32ad9-dc1f-46b5-9b64-8a6e82ece00f"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[TULAFONO O LE FAAMAUINA O PULE O FANUA 2008]]></text>
 			</staticText>
 			<image hAlign="Center" isUsingCache="false">
-				<reportElement x="247" y="92" width="58" height="58"/>
+				<reportElement x="247" y="92" width="58" height="58" uuid="db4b679e-7f6a-4559-a5c9-f94278b062fc"/>
 				<imageExpression><![CDATA[$P{SAMOA_EMBLEM}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="212" y="164" width="130" height="14" forecolor="#000000"/>
+				<reportElement x="212" y="164" width="130" height="14" forecolor="#000000" uuid="9339a54e-22f3-4fdc-ae26-decb21064927"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[GOVERNMENT OF SAMOA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="346" y="128" width="175" height="11" forecolor="#000000"/>
+				<reportElement x="346" y="128" width="175" height="11" forecolor="#000000" uuid="481a475d-473c-4e37-a309-e1a01221d99e"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="9" isBold="false" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[Reference to the Folio of the Register]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="346" y="139" width="175" height="11" forecolor="#000000"/>
+				<reportElement x="346" y="139" width="175" height="11" forecolor="#000000" uuid="98737481-d0d6-42b7-b7f9-93826b5e29fd"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="9" isBold="false" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[(Numera i luga ole Resitala)]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="346" y="150" width="175" height="15" forecolor="#000000"/>
+				<reportElement x="346" y="150" width="175" height="15" forecolor="#000000" uuid="b8393b7e-6073-4b9d-b4ad-29cd527423df"/>
 				<textElement textAlignment="Center" markup="none">
 					<font fontName="Arial Narrow" size="13" isBold="true" isItalic="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nameFirstpart} + "/" + $F{nameLastpart}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="439" y="181" width="53" height="13"/>
+				<reportElement x="439" y="181" width="53" height="13" uuid="bef9ddaa-fd33-4d62-aa46-5dd574f2c129"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="346" y="194" width="175" height="11" forecolor="#000000"/>
+				<reportElement x="346" y="194" width="175" height="11" forecolor="#000000" uuid="99e184bd-ea0e-4758-8a03-fb183544bde7"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial Narrow" size="9" isBold="false" isItalic="true"/>
 				</textElement>
@@ -389,22 +390,22 @@
 	<detail>
 		<band height="134" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="55" y="14" width="222" height="14"/>
+				<reportElement x="55" y="14" width="222" height="14" uuid="bed2e453-6e8f-4f3e-815b-39ca961a4b0b"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{estateType}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement key="table 3" style="table 6" positionType="Float" x="51" y="110" width="195" height="14" backcolor="#FFFFFF"/>
+				<reportElement key="table 3" style="table 6" positionType="Float" x="51" y="110" width="195" height="14" backcolor="#FFFFFF" uuid="a9074b1d-de68-4665-bffd-4c30b3251095"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Ownership">
+					<datasetRun subDataset="Ownership" uuid="d748e163-4156-4fb0-aaa4-daa5cb55050a">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{currentOwnersList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="366">
+					<jr:column width="366" uuid="2e5f247b-de0a-410b-b49e-bf7ea3e2066e">
 						<jr:detailCell height="15" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="366" height="14"/>
+								<reportElement x="0" y="0" width="366" height="14" uuid="415decb1-21c1-4418-9e5b-0dc59301acbe"/>
 								<box>
 									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -423,56 +424,56 @@
 				</jr:table>
 			</componentElement>
 			<staticText>
-				<reportElement x="55" y="1" width="103" height="14" forecolor="#000000"/>
+				<reportElement x="55" y="1" width="103" height="14" forecolor="#000000" uuid="9e9af93b-b57f-4978-ba04-c2d8e01c81a7"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[LAND DESCRIPTION/ ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="157" y="3" width="119" height="12" forecolor="#000000"/>
+				<reportElement x="157" y="3" width="119" height="12" forecolor="#000000" uuid="f19bef87-8f10-4ab5-a581-9ff74c50802f"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="10" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[FAAMATALAGA O LE FANUA]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="55" y="27" width="222" height="14"/>
+				<reportElement x="55" y="27" width="222" height="14" uuid="4fa2ebd3-05dc-4c7f-91dd-0ea65e4fc5ca"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Lot " + $F{nameFirstpart} + " in Plan " + $F{nameLastpart}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="55" y="41" width="222" height="14"/>
+				<reportElement x="55" y="41" width="222" height="14" uuid="b0f5c625-c01b-46f0-9c9a-d98f6b527e01"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{calculatedAreaSize} + " square metres"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="55" y="55" width="222" height="14"/>
+				<reportElement x="55" y="55" width="222" height="14" uuid="cee95eee-5d41-455e-aa1c-b8d0fcaf5be7"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["At " + $F{village}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="55" y="68" width="222" height="14"/>
+				<reportElement x="55" y="68" width="222" height="14" uuid="3768f49c-9311-41a5-b104-87c1b81347fd"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["District of " + $F{district}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="55" y="96" width="90" height="14" forecolor="#000000"/>
+				<reportElement x="55" y="96" width="90" height="14" forecolor="#000000" uuid="a5f254b5-c2f5-4498-8b0b-00321ccd3880"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[OWNER]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="145" y="98" width="105" height="12" forecolor="#000000"/>
+				<reportElement x="145" y="98" width="105" height="12" forecolor="#000000" uuid="ccbc8218-9a43-4dfd-94c4-a57174dfaa77"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="10" isBold="true" isItalic="true"/>
 				</textElement>
@@ -481,15 +482,15 @@
 		</band>
 		<band height="38">
 			<componentElement>
-				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="14" width="195" height="14"/>
+				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="14" width="195" height="14" uuid="54f50cc3-910a-43e8-ba4f-2363054c7f11"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Notations">
+					<datasetRun subDataset="Notations" uuid="49f76fdd-0a28-4a47-af0a-15d99aa20ce3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{baUnitCurrentNotationList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="370">
+					<jr:column width="370" uuid="2feb1163-c3b4-4744-94c1-6ed5ddb739be">
 						<jr:detailCell height="15" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="370" height="14"/>
+								<reportElement x="0" y="0" width="370" height="14" uuid="babac907-7532-4893-ae8b-0cd12e1ac12c"/>
 								<box>
 									<pen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -508,14 +509,14 @@
 				</jr:table>
 			</componentElement>
 			<staticText>
-				<reportElement x="160" y="2" width="111" height="12" forecolor="#000000"/>
+				<reportElement x="160" y="2" width="111" height="12" forecolor="#000000" uuid="e2413e07-541b-417e-ab56-7bacec5c8d61"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="10" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="55" y="0" width="104" height="14" forecolor="#000000"/>
+				<reportElement x="55" y="0" width="104" height="14" forecolor="#000000" uuid="7985262b-99f5-4101-b5bd-3e8362a66375"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false"/>
 				</textElement>
@@ -524,29 +525,29 @@
 		</band>
 		<band height="38">
 			<staticText>
-				<reportElement x="56" y="0" width="64" height="14" forecolor="#000000"/>
+				<reportElement x="56" y="0" width="64" height="14" forecolor="#000000" uuid="695f1c84-0953-4e56-aed3-8ae4578584d7"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="12" isBold="true" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[NOTATIONS/]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="119" y="2" width="51" height="12" forecolor="#000000"/>
+				<reportElement x="119" y="2" width="51" height="12" forecolor="#000000" uuid="3936023b-1c34-4264-a941-254c83db1836"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="10" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="13" width="195" height="14"/>
+				<reportElement key="table 4" style="table 6" positionType="Float" x="53" y="13" width="195" height="14" uuid="0220d053-d46d-4ea4-bb7d-08d8f03de7d8"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Notations">
+					<datasetRun subDataset="Notations" uuid="6cb01b51-2680-4a04-9732-229d10fa0f76">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanArrayDataSource($F{baUnitPendingNotationList}.toArray())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="370">
+					<jr:column width="370" uuid="77c5c6d6-fbf8-4c20-8ea8-757c2ea23e8e">
 						<jr:detailCell height="15" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="370" height="14"/>
+								<reportElement x="0" y="0" width="370" height="14" uuid="73fa0993-d2ba-4931-a5f1-c207770f3129"/>
 								<box>
 									<pen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
@@ -569,34 +570,34 @@
 	<pageFooter>
 		<band height="37" splitType="Stretch">
 			<textField>
-				<reportElement x="272" y="4" width="118" height="10"/>
+				<reportElement x="272" y="4" width="118" height="10" uuid="3f4f2015-7d47-47c8-a69f-e228ee62faab"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial Narrow" size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Staff Search Copy Generated"]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="55" y="3" width="445" height="1"/>
+				<reportElement x="55" y="3" width="445" height="1" uuid="d049c4f4-4b4d-48c5-8475-eeb0842778a5"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
 			<textField pattern="dd/MM/yyy hh:mm:ss a">
-				<reportElement x="383" y="4" width="80" height="10"/>
+				<reportElement x="383" y="4" width="80" height="10" uuid="8db230bb-3c6c-4baf-8004-b388df5defec"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial Narrow" size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="446" y="4" width="49" height="10"/>
+				<reportElement x="446" y="4" width="49" height="10" uuid="ad1ca0c0-9c16-4454-9542-0aceab46892f"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial Narrow" size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[", Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="494" y="4" width="16" height="10"/>
+				<reportElement x="494" y="4" width="16" height="10" uuid="47dbb10b-d763-4698-b7ab-6f402b4c3781"/>
 				<textElement>
 					<font fontName="Arial Narrow" size="8" isItalic="true"/>
 				</textElement>

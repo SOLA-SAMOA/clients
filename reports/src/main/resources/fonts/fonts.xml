@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontFamilies>
+	<fontFamily name="Arial Narrow">
+		<normal><![CDATA[fonts/ArialNarrow/ARIALN.TTF]]></normal>
+		<bold><![CDATA[fonts/ArialNarrow/ARIALNB.TTF]]></bold>
+		<italic><![CDATA[fonts/ArialNarrow/ARIALNI.TTF]]></italic>
+		<bolditalic><![CDATA[fonts/ArialNarrow/ARIALNBI.TTF]]></bolditalic>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts/>
+	</fontFamily>
+        <fontFamily name="Arial">
+		<normal><![CDATA[fonts/Arial/arial.ttf]]></normal>
+		<bold><![CDATA[fonts/Arial/arialbd.ttf]]></bold>
+		<italic><![CDATA[fonts/Arial/ariali.ttf]]></italic>
+		<bolditalic><![CDATA[fonts/Arial/arialbi.ttf]]></bolditalic>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts/>
+	</fontFamily>
+        <fontFamily name="Cambria">
+		<normal><![CDATA[fonts/Cambria/cambria.ttf]]></normal>
+		<bold><![CDATA[fonts/Cambria/cambriab.ttf]]></bold>
+		<italic><![CDATA[fonts/Cambria/cambriai.ttf]]></italic>
+		<bolditalic><![CDATA[fonts/Cambria/cambriaz.ttf]]></bolditalic>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts/>
+	</fontFamily>
+        <fontFamily name="Tahoma">
+		<normal><![CDATA[fonts/Tahoma/tahoma.ttf]]></normal>
+		<bold><![CDATA[fonts/Tahoma/tahomabd.ttf]]></bold>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts/>
+	</fontFamily>
+        <fontFamily name="Times New Roman">
+		<normal><![CDATA[fonts/TimesNewRoman/times.ttf]]></normal>
+		<bold><![CDATA[fonts/TimesNewRoman/timesbd.ttf]]></bold>
+		<italic><![CDATA[fonts/TimesNewRoman/timesi.ttf]]></italic>
+		<bolditalic><![CDATA[fonts/TimesNewRoman/timesbi.ttf]]></bolditalic>
+		<pdfEmbedded><![CDATA[true]]></pdfEmbedded>
+		<exportFonts/>
+	</fontFamily>
+</fontFamilies>

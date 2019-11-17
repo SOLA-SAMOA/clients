@@ -53,6 +53,7 @@ public class ReportViewerForm extends javax.swing.JFrame {
         
         if(reportViewerPanel.getJasperViewer() !=null){
             this.setIconImage(reportViewerPanel.getJasperViewer().getIconImage());
+            
         }
     }
 

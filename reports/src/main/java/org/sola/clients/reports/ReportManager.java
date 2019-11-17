@@ -42,6 +42,7 @@ import org.sola.clients.beans.application.*;
 import org.sola.clients.beans.system.BrReportBean;
 import org.sola.clients.beans.security.SecurityBean;
 import org.sola.clients.beans.system.BrListBean;
+import org.sola.clients.beans.system.PublicUserActivityReportBean;
 import org.sola.clients.beans.unittitle.StrataPropertyReportBean;
 import org.sola.common.logging.LogUtility;
 import org.sola.common.messaging.ClientMessage;
@@ -127,6 +128,35 @@ public class ReportManager {
         try {
             return JasperFillManager.fillReport(
                     ReportManager.class.getResourceAsStream("/reports/BaUnitReport.jasper"),
+                    inputParameters, jds);
+        } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
+            MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
+                    new Object[]{ex.getLocalizedMessage()});
+            return null;
+        }
+    }
+
+    /**
+     * Version 1911a. Generates and displays the <b>Certificate of Title</b>
+     * report.
+     *
+     * @param appBean Application bean containing data for the report.
+     */
+    public static JasperPrint getCoTReport(BaUnitBean baUnitBean, String featureImageFileName,
+            boolean isProduction) {
+        HashMap inputParameters = new HashMap();
+        inputParameters.put("REPORT_LOCALE", Locale.getDefault());
+        inputParameters.put("USER", SecurityBean.getCurrentUser().getFullUserName());
+        inputParameters.put("IS_PRODUCTION", isProduction);
+        BaUnitBean[] beans = new BaUnitBean[1];
+        beans[0] = baUnitBean;
+        JRDataSource jds = new JRBeanArrayDataSource(beans);
+        inputParameters.put("SAMOA_EMBLEM", ReportManager.class.getResourceAsStream("/images/sola/samEmblem.png"));
+        inputParameters.put("MAP_IMAGE", featureImageFileName);
+        try {
+            return JasperFillManager.fillReport(
+                    ReportManager.class.getResourceAsStream("/reports/BaUnitReportSamoaCOT.jasper"),
                     inputParameters, jds);
         } catch (JRException ex) {
             LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
@@ -424,6 +454,36 @@ public class ReportManager {
         try {
             return JasperFillManager.fillReport(
                     ReportManager.class.getResourceAsStream("/reports/UnitTitlesReport.jasper"),
+                    inputParameters, jds);
+        } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
+            MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
+                    new Object[]{ex.getLocalizedMessage()});
+            return null;
+        }
+    }
+
+    /**
+     * Generates and displays <b>Public User Activity</b> report.
+     *
+     *
+     */
+    public static JasperPrint getPublicUserActivitySummaryRpt(PublicUserActivityReportBean rptBean, Date dateFrom, Date dateTo) {
+        HashMap inputParameters = new HashMap();
+        Date currentdate = new Date(System.currentTimeMillis());
+        inputParameters.put("REPORT_LOCALE", Locale.getDefault());
+
+        inputParameters.put("CURRENT_DATE", currentdate);
+
+        inputParameters.put("USER", SecurityBean.getCurrentUser().getFullUserName());
+        inputParameters.put("FROMDATE", dateFrom);
+        inputParameters.put("TODATE", dateTo);
+        PublicUserActivityReportBean[] beans = new PublicUserActivityReportBean[1];
+        beans[0] = rptBean;
+        JRDataSource jds = new JRBeanArrayDataSource(beans);
+        try {
+            return JasperFillManager.fillReport(
+                    ReportManager.class.getResourceAsStream("/reports/PublicUserActivitySummary.jasper"),
                     inputParameters, jds);
         } catch (JRException ex) {
             LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);

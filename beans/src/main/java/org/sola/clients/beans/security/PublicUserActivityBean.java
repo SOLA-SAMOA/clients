@@ -32,6 +32,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.sola.clients.beans.AbstractIdBean;
 import org.sola.clients.beans.converters.TypeConverters;
 import org.sola.clients.beans.validation.Localized;
+import org.sola.common.DateUtility;
 import org.sola.common.messaging.ClientMessage;
 import org.sola.services.boundary.wsclients.WSManager;
 import org.sola.webservices.admin.PublicUserActivityTO;
@@ -115,6 +116,9 @@ public class PublicUserActivityBean extends AbstractIdBean {
     }
 
     public void save() {
+        if (activityTime == null) {
+            activityTime = DateUtility.now(); 
+        }
         PublicUserActivityTO puaTO = TypeConverters.BeanToTrasferObject(this, PublicUserActivityTO.class);
         puaTO = WSManager.getInstance().getAdminService().savePublicUserActivity(puaTO);
         TypeConverters.TransferObjectToBean(puaTO, PublicUserActivityBean.class, this);
