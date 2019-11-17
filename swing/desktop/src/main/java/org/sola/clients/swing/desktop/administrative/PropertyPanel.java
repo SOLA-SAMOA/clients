@@ -345,6 +345,7 @@ public class PropertyPanel extends ContentPanel {
         customizeChildPropertyButtons();
         customizeTerminationButton();
         customizeHistoricRightsViewButton();
+        customiseMakeCurrentButton(true);
 
         if (!SecurityBean.isInRole(RolesConstants.GIS_VIEW_MAP)
                 && tabsMain.indexOfComponent(mapPanel) >= 0) {
@@ -566,10 +567,8 @@ public class PropertyPanel extends ContentPanel {
     private void customizePrintButton() {
         boolean hasPrintRole = SecurityBean.isInRole(RolesConstants.ADMINISTRATIVE_BA_UNIT_PRINT_CERT);
         // #85 Prevent Computer folio being generated for Deeds. 
-        boolean isDeed = false;
-        if (baUnitBean1.getNameFirstpart() != null) {
-            isDeed = baUnitBean1.getNameFirstpart().trim().startsWith("V");
-        }
+        boolean isDeed = baUnitBean1.isDeed();
+
         dBtnPrint.setEnabled(baUnitBean1.getRowVersion() > 0 && hasPrintRole && !isDeed);
         dBtnPrint.setVisible(baUnitBean1.getRowVersion() > 0 && hasPrintRole && !isDeed);
         if (dBtnPrint.isEnabled()) {
@@ -753,6 +752,22 @@ public class PropertyPanel extends ContentPanel {
         menuVaryRight.setEnabled(btnChangeRight.isEnabled());
         menuExtinguishRight.setEnabled(btnExtinguish.isEnabled());
         menuViewRight.setEnabled(btnViewRight.isEnabled());
+    }
+
+    private void customiseMakeCurrentButton(boolean changeVisibility) {
+        // 1911a - Allow the user to make an historic deed current again. 
+        if (SecurityBean.isInRole(RolesConstants.ADMINISTRATIVE_MAKE_PROP_CURRENT)
+                && baUnitBean1.isDeed() && StatusConstants.HISTORIC.equals(baUnitBean1.getStatusCode())) {
+            btnMakeCurrent.setEnabled(true);
+            if (changeVisibility) {
+                btnMakeCurrent.setVisible(true);
+            }
+        } else {
+            btnMakeCurrent.setEnabled(false);
+            if (changeVisibility) {
+                btnMakeCurrent.setVisible(false);
+            }
+        }
     }
 
     /**
@@ -979,7 +994,12 @@ public class PropertyPanel extends ContentPanel {
      * Prints BA unit certificate.
      */
     private void print() {
-        if (!showCertPrintDialog("Folio Certificate")) {
+
+        // 1911a check if the Certificate of Title should be displayed or not
+        final boolean showCoT = WSManager.getInstance().getSearchService().showCoTReport(baUnitBean1.getId(), LocalizationManager.isProductionVersion());
+        String certificateType = showCoT ? "Certificate of Title" : "Folio Certificate";
+        
+        if (!showCertPrintDialog(certificateType)) {
             return;
         }
 
@@ -1025,7 +1045,7 @@ public class PropertyPanel extends ContentPanel {
                 BaUnitBean reportBean = getBaUnit(baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart());
                 reportBean.setCalculatedAreaSize(baUnitAreaBean1.getSize());
                 // 1911a - Check if the CoT report should be displayed for this property
-                if (WSManager.getInstance().getSearchService().showCoTReport(baUnitBean1.getId(), LocalizationManager.isProductionVersion())) {
+                if (showCoT) {
                     showReport(ReportManager.getCoTReport(reportBean, featureImageFileName,
                             LocalizationManager.isProductionVersion()));
                 } else {
@@ -1336,6 +1356,27 @@ public class PropertyPanel extends ContentPanel {
         return true;
     }
 
+    private void makeCurrent() {
+
+        if (MessageUtility.displayMessage(ClientMessage.BAUNIT_CONFIRM_MAKE_CURRENT) == MessageUtility.BUTTON_ONE) {
+            SolaTask t = new SolaTask<Void, Void>() {
+                @Override
+                public Void doTask() {
+                    setMessage(MessageUtility.getLocalizedMessageText(ClientMessage.PROGRESS_MSG_UPDATING_STATUS));
+                    baUnitBean1.makePropertyCurrent();
+                    return null;
+                }
+
+                @Override
+                public void taskDone() {
+                    saveBaUnitState();
+                    customiseMakeCurrentButton(false);
+                }
+            };
+            TaskManager.getInstance().runTask(t);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -1371,6 +1412,7 @@ public class PropertyPanel extends ContentPanel {
         jToolBar5 = new javax.swing.JToolBar();
         btnSave = new javax.swing.JButton();
         btnTerminate = new javax.swing.JButton();
+        btnMakeCurrent = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JToolBar.Separator();
         dBtnPrint = new org.sola.clients.swing.common.controls.DropDownButton();
         btnOpenUnits = new javax.swing.JButton();
@@ -1677,6 +1719,18 @@ public class PropertyPanel extends ContentPanel {
         });
         jToolBar5.add(btnTerminate);
 
+        btnMakeCurrent.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/common/arrow-return.png"))); // NOI18N
+        btnMakeCurrent.setText(bundle.getString("PropertyPanel.btnMakeCurrent.text_1")); // NOI18N
+        btnMakeCurrent.setFocusable(false);
+        btnMakeCurrent.setName("btnMakeCurrent"); // NOI18N
+        btnMakeCurrent.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnMakeCurrent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMakeCurrentActionPerformed(evt);
+            }
+        });
+        jToolBar5.add(btnMakeCurrent);
+
         jSeparator4.setName("jSeparator4"); // NOI18N
         jToolBar5.add(jSeparator4);
 
@@ -1828,6 +1882,7 @@ public class PropertyPanel extends ContentPanel {
         jPanel13.add(jPanel9);
 
         jPanel11.setName("jPanel11"); // NOI18N
+        jPanel11.setPreferredSize(new java.awt.Dimension(105, 71));
 
         jLabel4.setText(bundle.getString("PropertyPanel.jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
@@ -1848,10 +1903,11 @@ public class PropertyPanel extends ContentPanel {
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel11Layout.createSequentialGroup()
-                .add(jLabel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 14, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(1, 1, 1)
+                .add(jLabel4)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(txtEstateType, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel13.add(jPanel11);
@@ -1989,7 +2045,7 @@ public class PropertyPanel extends ContentPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(gpPrintHistory, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(spPrintHistory, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                .add(spPrintHistory, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -3076,6 +3132,11 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     private void btnOpenUnitsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenUnitsActionPerformed
         openUnitParcelPanel();
     }//GEN-LAST:event_btnOpenUnitsActionPerformed
+
+    private void btnMakeCurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMakeCurrentActionPerformed
+        makeCurrent();
+    }//GEN-LAST:event_btnMakeCurrentActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel areaPanel;
     private org.sola.clients.beans.administrative.BaUnitAreaBean baUnitAreaBean1;
@@ -3089,6 +3150,7 @@ private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     private javax.swing.JButton btnEditRight;
     private javax.swing.JButton btnExtinguish;
     private javax.swing.JButton btnLinkPaperTitle;
+    private javax.swing.JButton btnMakeCurrent;
     private javax.swing.JButton btnNext;
     private javax.swing.JButton btnOpenChild;
     private javax.swing.JButton btnOpenParent;

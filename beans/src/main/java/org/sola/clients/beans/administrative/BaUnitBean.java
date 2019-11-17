@@ -1086,4 +1086,23 @@ public class BaUnitBean extends BaUnitSummaryBean {
 
         return easementList;
     }
+
+    public boolean isDeed() {
+        boolean result = false;
+        if (getNameFirstpart() != null) {
+            result = getNameFirstpart().trim().startsWith("V");
+        }
+        return result;
+    }
+    
+    /**
+     * Updates the status of the Bean from historic to current and refreshes
+     * the bean
+     */
+    public void makePropertyCurrent() {
+        WSManager.getInstance().getAdministrative().makePropertyCurrent(getId());
+        BaUnitTO baUnit = WSManager.getInstance().getAdministrative().getBaUnitById(getId());
+        TypeConverters.TransferObjectToBean(baUnit, BaUnitBean.class, this);
+    }
+
 }
