@@ -73,7 +73,7 @@ import org.sola.common.messaging.MessageUtility;
  * Main form of the application.
  */
 public class MainForm extends javax.swing.JFrame {
-    
+
     public static final String MAIN_FORM_HEIGHT = "mainFormHeight";
     public static final String MAIN_FORM_WIDTH = "mainFormWitdh";
     public static final String MAIN_FORM_TOP = "mainFormTop";
@@ -83,7 +83,7 @@ public class MainForm extends javax.swing.JFrame {
      * Private class to hold singleton instance of the MainForm.
      */
     private static class MainFormHolder {
-        
+
         private static final MainForm INSTANCE = new MainForm();
     }
 
@@ -100,16 +100,20 @@ public class MainForm extends javax.swing.JFrame {
     private MainForm() {
         URL imgURL = this.getClass().getResource("/images/sola/logo_icon.jpg");
         this.setIconImage(new ImageIcon(imgURL).getImage());
-        
+
         initComponents();
-        HelpUtility.getInstance().registerHelpMenu(jmiContextHelp, "sola_overview");
-        
+        if (SecurityBean.isInRole(RolesConstants.ADMIN_PUBLIC_ONLY)) {
+            HelpUtility.getInstance().registerHelpMenu(jmiContextHelp, "pau_about");
+        } else {
+            HelpUtility.getInstance().registerHelpMenu(jmiContextHelp, "sola_overview");
+        }
+
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
                 postInit();
             }
-            
+
             @Override
             public void windowClosing(WindowEvent e) {
                 preClose();
@@ -138,7 +142,7 @@ public class MainForm extends javax.swing.JFrame {
         btnDocumentSearch.setEnabled(SecurityBean.isInRole(RolesConstants.SOURCE_SEARCH));
         btnOpenBaUnitSearch.setEnabled(SecurityBean.isInRole(RolesConstants.ADMINISTRATIVE_BA_UNIT_SEARCH));
         btnSetPassword.setEnabled(SecurityBean.isInRole(RolesConstants.ADMIN_MANAGE_USER_PASSWORD));
-        
+
         menuSearchApplication.setEnabled(btnSearchApplications.isEnabled());
         menuNewApplication.setEnabled(btnNewApplication.isEnabled());
         menuBaUnitSearch.setEnabled(btnOpenBaUnitSearch.isEnabled());
@@ -147,13 +151,13 @@ public class MainForm extends javax.swing.JFrame {
         menuShowMap.setEnabled(btnOpenMap.isEnabled());
         menuLodgementReport.setEnabled(SecurityBean.isInRole(RolesConstants.REPORTS_VIEW));
         menuPublicUserActivitySum.setEnabled(SecurityBean.isInRole(RolesConstants.REPORTS_PUBLIC_ACTIVITY));
-        
+
         // Limit the features the public user can see or use. 
         boolean publicUser = SecurityBean.isInRole(RolesConstants.ADMIN_PUBLIC_ONLY);
         menuView.setEnabled(!publicUser);
         menuReportsDesktop.setEnabled(!publicUser);
         menuApplications.setEnabled(!publicUser);
-        
+
         if (SecurityBean.isPasswordChangeReqd(false)) {
             // Load the user profile page
             showPasswordPanel();
@@ -161,7 +165,7 @@ public class MainForm extends javax.swing.JFrame {
             // Load dashboard
             openDashBoard();
         }
-        
+
         txtUserName.setText(SecurityBean.getCurrentUser().getUserNameForDisplay());
     }
 
@@ -170,13 +174,13 @@ public class MainForm extends javax.swing.JFrame {
      * users preferences.
      */
     private void configureForm() {
-        
+
         int height = this.getHeight();
         int width = this.getWidth();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         int x = ((dim.width) / 2) - (width / 2);
         int y = ((dim.height) / 2) - (height / 2);
-        
+
         if (WindowUtility.hasUserPreferences()) {
             // Set the size of the screen
             Preferences prefs = WindowUtility.getUserPreferences();
@@ -217,19 +221,19 @@ public class MainForm extends javax.swing.JFrame {
             prefs.put(MAIN_FORM_LEFT, Integer.toString(this.getX()));
         }
     }
-    
+
     private void setAllLogLevel() {
         LogUtility.setLogLevel(Level.ALL);
     }
-    
+
     private void setDefaultLogLevel() {
         LogUtility.setLogLevel(Level.INFO);
     }
-    
+
     private void setOffLogLevel() {
         LogUtility.setLogLevel(Level.OFF);
     }
-    
+
     private void openMap() {
         SolaTask t = new SolaTask<Void, Void>() {
             @Override
@@ -245,7 +249,7 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-    
+
     private void searchApplications() {
         SolaTask t = new SolaTask<Void, Void>() {
             @Override
@@ -261,7 +265,7 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-    
+
     private void searchBaUnit() {
         SolaTask t = new SolaTask<Void, Void>() {
             @Override
@@ -277,7 +281,7 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-    
+
     private void searchDocuments() {
         SolaTask t = new SolaTask<Void, Void>() {
             @Override
@@ -293,7 +297,7 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-    
+
     private void openSearchParties() {
         SolaTask t = new SolaTask<Void, Void>() {
             @Override
@@ -310,7 +314,7 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-    
+
     private void openDashBoard() {
         if (!pnlContent.isPanelOpened(MainContentPanel.CARD_DASHBOARD)) {
             DashBoardPanel dashBoard = new DashBoardPanel();
@@ -318,17 +322,17 @@ public class MainForm extends javax.swing.JFrame {
         }
         pnlContent.showPanel(MainContentPanel.CARD_DASHBOARD);
     }
-    
+
     public MainContentPanel getMainContentPanel() {
         return pnlContent;
     }
-    
+
     private void showAboutBox() {
         AboutForm aboutBox = new AboutForm(this);
         aboutBox.setLocationRelativeTo(this);
         aboutBox.setVisible(true);
     }
-    
+
     private void setLanguage(String code, String country) {
         LocalizationManager.setLanguage(code, country);
         MessageUtility.displayMessage(ClientMessage.GENERAL_UPDATE_LANG);
@@ -473,7 +477,7 @@ public class MainForm extends javax.swing.JFrame {
         };
         TaskManager.getInstance().runTask(t);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -954,7 +958,7 @@ public class MainForm extends javax.swing.JFrame {
     private void btnOpenBaUnitSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenBaUnitSearchActionPerformed
         searchBaUnit();
     }//GEN-LAST:event_btnOpenBaUnitSearchActionPerformed
-    
+
     private void openLodgementReportParamsForm() {
         LodgementReportParamsForm reportDateChooser = new LodgementReportParamsForm(this, true);
         reportDateChooser.setVisible(true);
@@ -982,10 +986,10 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSetPasswordActionPerformed
 
     private void menuPublicUserActivitySumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPublicUserActivitySumActionPerformed
-       PublicUserActivityReportParamsForm rptParamsForm = new PublicUserActivityReportParamsForm(this, true);
+        PublicUserActivityReportParamsForm rptParamsForm = new PublicUserActivityReportParamsForm(this, true);
         rptParamsForm.setVisible(true);
     }//GEN-LAST:event_menuPublicUserActivitySumActionPerformed
-    
+
     private void editPassword() {
         showPasswordPanel();
     }
