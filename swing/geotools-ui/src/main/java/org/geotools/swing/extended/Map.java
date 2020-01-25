@@ -440,11 +440,11 @@ public class Map extends JMapPane {
      */
     public ExtendedWmsLiteLayer addLayerWms(
             String layerName, String layerTitle, String Url, List<String> layerNames,
-            boolean visible, String version, String format) {
+            boolean visible, String version, String format, String[] creds) {
         ExtendedWmsLiteLayer layer = null;
         try {
             layer = new ExtendedWmsLiteLayer(
-                    layerName, layerTitle, Url, layerNames, this.getSrid(), version, format);
+                    layerName, layerTitle, Url, layerNames, this.getSrid(), version, format, creds);
             layer.setVisible(visible);
             this.addLayer(layer);
             this.getSolaLayers().put(layerName, layer);

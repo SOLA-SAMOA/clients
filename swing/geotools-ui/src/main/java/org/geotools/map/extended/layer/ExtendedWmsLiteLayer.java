@@ -31,10 +31,11 @@ import java.util.List;
 import org.geotools.swing.extended.exception.InitializeLayerException;
 
 /**
- * An extended layer to be used to attach an image in the map control. <br/>It uses the {
+ * An extended layer to be used to attach an image in the map control. <br/>It
+ * uses the {
  *
- * @see org.geotools.map.extended.layer.DirectImageLayer} to load the layer with the image in the
- * map control.
+ * @see org.geotools.map.extended.layer.DirectImageLayer} to load the layer with
+ * the image in the map control.
  * @author Elton Manoku
  */
 public class ExtendedWmsLiteLayer extends ExtendedLayer {
@@ -42,25 +43,26 @@ public class ExtendedWmsLiteLayer extends ExtendedLayer {
     private WmsLiteLayer layer;
 
     /**
-     * Constructor of the layer.
-     * The layer acts as a wrapper of the WmsLiteLayer.
-     * 
+     * Constructor of the layer. The layer acts as a wrapper of the
+     * WmsLiteLayer.
+     *
      * @param name Name of the layer
      * @param title Title of the layer.
      * @param url The Url of the WMS Server without the query
-     * @param layerNames The list of names of the layers in the server 
-     * that will be asked for rendering
+     * @param layerNames The list of names of the layers in the server that will
+     * be asked for rendering
      * @param srid The Srid of the SRS
      * @param version The Version of the WMS that will be used for the requests
      * @param format The format of the output image
      * @throws InitializeLayerException
      */
     public ExtendedWmsLiteLayer(String name, String title, String url,
-            List<String> layerNames, Integer srid, String version, String format)
+            List<String> layerNames, Integer srid, String version, String format,
+             String[] creds)
             throws InitializeLayerException {
         this.setLayerName(name);
         this.setTitle(title);
-        this.layer = new WmsLiteLayer(url, layerNames, version);
+        this.layer = new WmsLiteLayer(url, layerNames, version, creds);
         this.getMapLayers().add(this.layer);
         this.layer.setSrid(srid);
         if (format != null) {

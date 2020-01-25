@@ -148,6 +148,12 @@ public class MainForm extends javax.swing.JFrame {
         menuLodgementReport.setEnabled(SecurityBean.isInRole(RolesConstants.REPORTS_VIEW));
         menuPublicUserActivitySum.setEnabled(SecurityBean.isInRole(RolesConstants.REPORTS_PUBLIC_ACTIVITY));
         
+        // Limit the features the public user can see or use. 
+        boolean publicUser = SecurityBean.isInRole(RolesConstants.ADMIN_PUBLIC_ONLY);
+        menuView.setEnabled(!publicUser);
+        menuReportsDesktop.setEnabled(!publicUser);
+        menuApplications.setEnabled(!publicUser);
+        
         if (SecurityBean.isPasswordChangeReqd(false)) {
             // Load the user profile page
             showPasswordPanel();

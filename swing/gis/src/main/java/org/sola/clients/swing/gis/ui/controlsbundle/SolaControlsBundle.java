@@ -162,15 +162,25 @@ public abstract class SolaControlsBundle extends ControlsBundle {
     public void addLayerConfig(ConfigMapLayerTO configMapLayer)
             throws InitializeLayerException, SchemaException {
         if (configMapLayer.getTypeCode().equals("wms")) {
-            String wmsServerURL = configMapLayer.getUrl();
-            ArrayList<String> wmsLayerNames = new ArrayList<String>();
-            String[] layerNameList = configMapLayer.getWmsLayers().split(";");
-            String wmsVersion = configMapLayer.getWmsVersion();
-            String format = configMapLayer.getWmsFormat();
-            java.util.Collections.addAll(wmsLayerNames, layerNameList);
-            this.getMap().addLayerWms(
-                    configMapLayer.getId(), configMapLayer.getTitle(), wmsServerURL, wmsLayerNames,
-                    configMapLayer.isVisible(), wmsVersion, format);
+
+            boolean addLayer = true;
+            if (configMapLayer.getSecurityUser() != null && configMapLayer.getSecurityPassword() != null) {
+                // v2001a - This layer has security applied. Check if the user has the 
+                // GIS_VIEW_AERIAL_PHOTOS privilege before continuing. 
+                addLayer = SecurityBean.isInRole(RolesConstants.GIS_VIEW_AERIAL_PHOTOS);
+            }
+            if (addLayer) {
+                String wmsServerURL = configMapLayer.getUrl();
+                String[] creds = {configMapLayer.getSecurityUser(), configMapLayer.getSecurityPassword()};
+                ArrayList<String> wmsLayerNames = new ArrayList<String>();
+                String[] layerNameList = configMapLayer.getWmsLayers().split(";");
+                String wmsVersion = configMapLayer.getWmsVersion();
+                String format = configMapLayer.getWmsFormat();
+                java.util.Collections.addAll(wmsLayerNames, layerNameList);
+                this.getMap().addLayerWms(
+                        configMapLayer.getId(), configMapLayer.getTitle(), wmsServerURL, wmsLayerNames,
+                        configMapLayer.isVisible(), wmsVersion, format, creds);
+            }
         } else if (configMapLayer.getTypeCode().equals("shape")) {
             this.getMap().addLayerShapefile(
                     configMapLayer.getId(),

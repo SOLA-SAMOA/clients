@@ -4,12 +4,12 @@
     <parent>
         <artifactId>sola-clients</artifactId>
         <groupId>org.sola</groupId>
-        <version>1609a</version>
+        <version>2001a</version>
     </parent>
 
     <groupId>org.sola.clients</groupId>
     <artifactId>sola-desktop-web-start</artifactId>
-    <version>1609a</version>
+    <version>2001a</version>
     <packaging>war</packaging>
 
     <name>Clients Desktop Web Start</name>
@@ -17,7 +17,7 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <solaVersion>v1609a</solaVersion>
+        <solaVersion>v2001a</solaVersion>
         <webstart.codesigning.keystore>${basedir}/sola.jks</webstart.codesigning.keystore>
         <webstart.codesigning.alias>sola</webstart.codesigning.alias>
         <webstart.codesigning.storepass>FLOSS2011</webstart.codesigning.storepass>
@@ -80,9 +80,9 @@
                     <templateDirectory>${project.basedir}/template</templateDirectory>
                      <updateManifestEntries>
                         <Permissions>all-permissions</Permissions>
-                        <Codebase>*.localhost *.mnre-sola01 *.mnre-sola 127.0.0.1 10.20.1.176 10.20.1.34</Codebase>
+                        <Codebase>*.localhost *.mnre-sola01 *.mnre-sola *.mnre-sola02 *.mnre-sola03 127.0.0.1 10.20.1.176 10.20.1.34 10.20.1.10 10.20.5.110</Codebase>
                         <Application-Name>SOLA Samoa</Application-Name>
-                        <Application-Library-Allowable-Codebase>*.localhost *.mnre-sola01 *.mnre-sola 127.0.0.1 10.20.1.176 10.20.1.34</Application-Library-Allowable-Codebase>
+                        <Application-Library-Allowable-Codebase>*.localhost *.mnre-sola01 *.mnre-sola *.mnre-sola02 *.mnre-sola03 127.0.0.1 10.20.1.176 10.20.1.34 10.20.1.10 10.20.5.110</Application-Library-Allowable-Codebase>
                     </updateManifestEntries>
                     <libPath>lib</libPath>
                     <!-- 1 Feb 2014 - The pack200 option was updated in version 1.0-beta-4 of the

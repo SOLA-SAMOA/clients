@@ -567,17 +567,19 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(tblSearchResults);
-        tblSearchResults.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title5_1_1")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title1_1_1")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("DocumentSearchPanel.tblSearchResults.columnModel.title2_1")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title0_1_1")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title3_1_1")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(5).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title4_1")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(6).setHeaderValue(bundle.getString("DocumentSearchPanel.tblSearchResults.columnModel.title7")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(7).setHeaderValue(bundle.getString("DocumentSearchPanel.tblSearchResults.columnModel.title8")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(8).setPreferredWidth(30);
-        tblSearchResults.getColumnModel().getColumn(8).setHeaderValue(bundle.getString("DocumentSearchPanel.tblSearchResults.columnModel.title6_1")); // NOI18N
-        tblSearchResults.getColumnModel().getColumn(8).setCellRenderer(new AttachedDocumentCellRenderer());
+        if (tblSearchResults.getColumnModel().getColumnCount() > 0) {
+            tblSearchResults.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title5_1_1")); // NOI18N
+            tblSearchResults.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title1_1_1")); // NOI18N
+            tblSearchResults.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("DocumentSearchPanel.tblSearchResults.columnModel.title2_1")); // NOI18N
+            tblSearchResults.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title0_1_1")); // NOI18N
+            tblSearchResults.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title3_1_1")); // NOI18N
+            tblSearchResults.getColumnModel().getColumn(5).setHeaderValue(bundle.getString("DocumentSeachPanel.tblSearchResults.columnModel.title4_1")); // NOI18N
+            tblSearchResults.getColumnModel().getColumn(6).setHeaderValue(bundle.getString("DocumentSearchPanel.tblSearchResults.columnModel.title7")); // NOI18N
+            tblSearchResults.getColumnModel().getColumn(7).setHeaderValue(bundle.getString("DocumentSearchPanel.tblSearchResults.columnModel.title8")); // NOI18N
+            tblSearchResults.getColumnModel().getColumn(8).setPreferredWidth(30);
+            tblSearchResults.getColumnModel().getColumn(8).setHeaderValue(bundle.getString("DocumentSearchPanel.tblSearchResults.columnModel.title6_1")); // NOI18N
+            tblSearchResults.getColumnModel().getColumn(8).setCellRenderer(new AttachedDocumentCellRenderer());
+        }
 
         jPanel9.setName("jPanel9"); // NOI18N
         jPanel9.setLayout(new java.awt.GridLayout(2, 1));
@@ -849,7 +851,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(btnSubmissionDateTo)
                     .addComponent(txtSubmissionDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel11.add(jPanel5);
@@ -894,7 +896,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(btnDateFrom)
                     .addComponent(txtDateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel11.add(jPanel2);
@@ -939,7 +941,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(btnDateTo)
                     .addComponent(txtDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel11.add(jPanel3);
@@ -964,7 +966,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(txtRefNumber, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+            .addComponent(txtRefNumber)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addComponent(jLabel8)
                 .addContainerGap())
@@ -1004,7 +1006,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtLaNr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel10.add(jPanel7);
@@ -1039,7 +1041,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbxSourceType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel8);
@@ -1063,7 +1065,7 @@ public class DocumentSearchPanel extends javax.swing.JPanel {
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
                 .addComponent(jLabel11)
-                .addGap(0, 26, Short.MAX_VALUE))
+                .addGap(0, 83, Short.MAX_VALUE))
             .addComponent(txtOwnerName)
         );
         jPanel15Layout.setVerticalGroup(

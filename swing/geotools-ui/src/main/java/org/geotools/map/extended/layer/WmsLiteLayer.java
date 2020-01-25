@@ -54,11 +54,12 @@ import org.geotools.swing.extended.exception.InitializeLayerException;
 import org.geotools.swing.extended.util.Messaging;
 
 /**
- * This layer acts as a client to a wms server. It relies in the configuration that the user does.
- * If does not consult the WMS server to check if the layer (s) exist and/or supported formats 
- * exist. Not checking the capability file of the WMS Server makes the layer to work fast.
- * 
- * 
+ * This layer acts as a client to a wms server. It relies in the configuration
+ * that the user does. If does not consult the WMS server to check if the layer
+ * (s) exist and/or supported formats exist. Not checking the capability file of
+ * the WMS Server makes the layer to work fast.
+ *
+ *
  * @author Elton Manoku
  */
 public class WmsLiteLayer extends DirectLayer {
@@ -68,17 +69,20 @@ public class WmsLiteLayer extends DirectLayer {
     private org.geotools.data.wms.request.GetMapRequest getMapRequest;
     private Integer srid;
     private String format = "image/png";
+    private String[] credentials;
 
     /**
      * Constructor of the layer.
-     * @param wmsServerUrl the url of the server without the query. If it is added with the query,
-     * the query after ? will be removed.
-     * @param layerNames The list of layernames that will be asked for rendering. The layers has
-     * to be checked with other tools if they exist in the server.
+     *
+     * @param wmsServerUrl the url of the server without the query. If it is
+     * added with the query, the query after ? will be removed.
+     * @param layerNames The list of layernames that will be asked for
+     * rendering. The layers has to be checked with other tools if they exist in
+     * the server.
      * @param version The WMS Version that will be used.
-     * @throws InitializeLayerException 
+     * @throws InitializeLayerException
      */
-    public WmsLiteLayer(String wmsServerUrl, List<String> layerNames, String version)
+    public WmsLiteLayer(String wmsServerUrl, List<String> layerNames, String version, String[] creds)
             throws InitializeLayerException {
         try {
             //Based in the version, the appropriate GetMapRequest is initialized.
@@ -97,6 +101,7 @@ public class WmsLiteLayer extends DirectLayer {
             for (String layerName : layerNames) {
                 getMapRequest.addLayer(layerName, "");
             }
+            credentials = creds;
         } catch (MalformedURLException ex) {
             throw new InitializeLayerException(
                     Messaging.Ids.WMSLAYER_NOT_INITIALIZED_ERROR.toString(), ex);
@@ -105,26 +110,30 @@ public class WmsLiteLayer extends DirectLayer {
 
     /**
      * Sets the srid of the SRS that will be used for the requests.
-     * @param srid 
+     *
+     * @param srid
      */
     public void setSrid(Integer srid) {
         this.srid = srid;
     }
 
     /**
-     * Sets the format of the output. Potential formats are image/jpeg or image/png
-     * @param format 
+     * Sets the format of the output. Potential formats are image/jpeg or
+     * image/png
+     *
+     * @param format
      */
     public void setFormat(String format) {
         this.format = format;
     }
 
     /**
-     * It draws the layer in the map. If the bounds has not changed it reuses the latest image
-     * if that is present.
+     * It draws the layer in the map. If the bounds has not changed it reuses
+     * the latest image if that is present.
+     *
      * @param gd
      * @param mc
-     * @param mv 
+     * @param mv
      */
     @Override
     public void draw(Graphics2D gd, MapContent mc, MapViewport mv) {
@@ -140,16 +149,18 @@ public class WmsLiteLayer extends DirectLayer {
                 getMapRequest.setSRS(String.format("EPSG:%s", this.srid));
                 //The transparency will not work if the format does not support transparency
                 getMapRequest.setTransparent(true);
-                GetMapResponse response =
-                        new GetMapResponse(httpClient.get(getMapRequest.getFinalURL()));
+                if (credentials != null && credentials[0] != null && credentials[1] != null) {
+                    // Use basic auth to access the layer.
+                    httpClient.setUser(credentials[0]);
+                    httpClient.setPassword(credentials[1]);
+                }
+                GetMapResponse response
+                        = new GetMapResponse(httpClient.get(getMapRequest.getFinalURL()));
                 this.image = ImageIO.read(response.getInputStream());
                 response.getInputStream().close();
                 response.dispose();
                 gd.drawImage(this.image, 0, 0, null);
-            } catch (IOException ex) {
-                this.LOGGER.log(Level.SEVERE,
-                        Messaging.Ids.WMSLAYER_LAYER_RENDER_ERROR.toString(), ex);
-            } catch (ServiceException ex) {
+            } catch (Exception ex) {
                 this.LOGGER.log(Level.SEVERE,
                         Messaging.Ids.WMSLAYER_LAYER_RENDER_ERROR.toString(), ex);
             }

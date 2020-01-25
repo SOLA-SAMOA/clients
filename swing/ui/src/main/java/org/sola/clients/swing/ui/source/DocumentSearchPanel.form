@@ -722,7 +722,7 @@
                           <Component id="btnSubmissionDateTo" alignment="2" min="-2" max="-2" attributes="0"/>
                           <Component id="txtSubmissionDateTo" alignment="2" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="12" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -794,7 +794,7 @@
                           <Component id="btnDateFrom" alignment="2" min="-2" max="-2" attributes="0"/>
                           <Component id="txtDateFrom" alignment="2" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="12" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -866,7 +866,7 @@
                           <Component id="btnDateTo" alignment="2" min="-2" max="-2" attributes="0"/>
                           <Component id="txtDateTo" alignment="2" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="12" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -945,7 +945,7 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="txtRefNumber" alignment="0" pref="75" max="32767" attributes="2"/>
+                      <Component id="txtRefNumber" alignment="0" max="32767" attributes="2"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -1005,7 +1005,7 @@
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="txtLaNr" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="12" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1054,7 +1054,7 @@
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cbxSourceType" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="12" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1106,7 +1106,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="26" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="83" max="32767" attributes="0"/>
                   </Group>
                   <Component id="txtOwnerName" max="32767" attributes="0"/>
               </Group>
