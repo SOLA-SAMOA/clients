@@ -48,9 +48,10 @@ import org.geotools.swing.mapaction.extended.ui.IPrintUi;
 import org.geotools.swing.mapaction.extended.ui.PrintForm;
 
 /**
- * Map action used to start up a the printing process of the map. A form starts up where the user
- * can chose a layout and a scale to print in. <br/> This class can be extended to modify the
- * loading of layouts, or calling another print generator.
+ * Map action used to start up a the printing process of the map. A form starts
+ * up where the user can chose a layout and a scale to print in. <br/> This
+ * class can be extended to modify the loading of layouts, or calling another
+ * print generator.
  *
  *
  * @author Elton Manoku
@@ -60,13 +61,13 @@ public class Print extends ExtendedAction {
     private IPrintUi printForm;
     /**
      * The resource location of the layouts.
-     * 
+     *
      */
     protected String layoutLocation = "resources/print/layouts.properties";
 
     /**
      * Creates the print map action.
-     * 
+     *
      * @param mapControl The map control with which the map action will interact
      */
     public Print(Map mapControl) {
@@ -76,8 +77,9 @@ public class Print extends ExtendedAction {
     }
 
     /**
-     * It starts up the printing process. Then after it collects the parameters to print, it uses
-     * the print generator to generate a pdf according to a predefined layout.
+     * It starts up the printing process. Then after it collects the parameters
+     * to print, it uses the print generator to generate a pdf according to a
+     * predefined layout.
      */
     @Override
     public void onClick() {
@@ -104,8 +106,8 @@ public class Print extends ExtendedAction {
     }
 
     /**
-     * Gets the form that is open when the map action is clicked. To get another interface, override
-     * this form.
+     * Gets the form that is open when the map action is clicked. To get another
+     * interface, override this form.
      *
      * @return
      */
@@ -114,9 +116,9 @@ public class Print extends ExtendedAction {
     }
 
     /**
-     * Gets the list of available print layouts. The print layouts are defined in
-     * resources/print/layouts.properties. <br/> If another source of layout has to be defined, this
-     * method has to be overridden.
+     * Gets the list of available print layouts. The print layouts are defined
+     * in resources/print/layouts.properties. <br/> If another source of layout
+     * has to be defined, this method has to be overridden.
      *
      * @return
      */

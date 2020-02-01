@@ -45,9 +45,10 @@ import org.geotools.map.extended.layer.ExtendedLayer;
 import org.geotools.swing.extended.Map;
 
 /**
- * This is the table of contents / layers which can be associated with the map control. It is
- * implemented through a JTree. The root node is hidden from the GUI. Each layer is implemented as a
- * Node with a checkbox. Additionally, the layer node can have one or more Symbology Nodes {
+ * This is the table of contents / layers which can be associated with the map
+ * control. It is implemented through a JTree. The root node is hidden from the
+ * GUI. Each layer is implemented as a Node with a checkbox. Additionally, the
+ * layer node can have one or more Symbology Nodes {
  *
  * @see TocSymbologyNode.java} where the symbology is displayed.
  *
@@ -155,10 +156,27 @@ public class Toc extends JPanel {
     }
 
     /**
-     * It forces the node to change its status (from checked to unchecked and otherway around).
+     * Added for v2001b to check if the Samoa_aerial layer is visible on the map
+     * or not.
+     *
+     * @param layerName
+     * @return
+     */
+    public boolean isTocLayerNodeVisible(String layerName) {
+        boolean result = false;
+        TocLayerNode tocNode = getTocLayerNode(layerName);
+        if (tocNode != null) {
+            result = tocNode.isVisible();
+        }
+        return result;
+    }
+
+    /**
+     * It forces the node to change its status (from checked to unchecked and
+     * otherway around).
      * <br/>
      * If node is not found nothing happen.
-     * 
+     *
      * @param layerName The name of the layer
      */
     public void changeNodeSwitch(String layerName) {
@@ -170,10 +188,13 @@ public class Toc extends JPanel {
     }
 
     /**
-     * It forces the node to change its status (from checked to unchecked and otherway around).
+     * It forces the node to change its status (from checked to unchecked and
+     * otherway around).
      * <br/>
      * If node is not found nothing happen.
-     * @param tocNode The node to change the switch. If the node is null nothing will happen
+     *
+     * @param tocNode The node to change the switch. If the node is null nothing
+     * will happen
      */
     public void changeNodeSwitch(TocLayerNode tocNode) {
         if (tocNode != null) {

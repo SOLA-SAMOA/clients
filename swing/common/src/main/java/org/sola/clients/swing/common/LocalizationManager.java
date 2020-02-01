@@ -139,9 +139,9 @@ public class LocalizationManager {
     }
 
     public static String getVersionNumber() {
-        String result = "Training v2001a";
+        String result = "Training v2001c";
         if (isProductionVersion()) {
-            result = "LIVE v2001a";
+            result = "LIVE v2001c";
         }
         return result;
     }

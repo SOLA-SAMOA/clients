@@ -41,10 +41,12 @@ import org.sola.clients.beans.application.ApplicationServiceBean;
 import org.sola.clients.beans.referencedata.RequestTypeBean;
 import org.sola.clients.beans.security.PublicUserActivityBean;
 import org.sola.clients.beans.security.SecurityBean;
+
 /**
- * This map action extends the Print map action that handles the print of the map according to a
- * layout. The user name and date is added in the layout and also it logs against the application
- * (if the application is present) the action of printing.
+ * This map action extends the Print map action that handles the print of the
+ * map according to a layout. The user name and date is added in the layout and
+ * also it logs against the application (if the application is present) the
+ * action of printing.
  *
  * @author Elton Manoku
  */
@@ -52,21 +54,22 @@ public class SolaPrint extends Print {
 
     private final static String FIELD_USER = "{userName}";
     private final static String FIELD_DATE = "{date}";
-    
+
     private String applicationId;
 
     /**
      * Constructor of the map action.
-     * 
-     * @param map  The map control with which the map action will interact 
+     *
+     * @param map The map control with which the map action will interact
      */
     public SolaPrint(Map map) {
         super(map);
     }
 
     /**
-     * Sets the application id if the map action is found in a bundle where the application is
-     * known. This application id is used to log the action of printing against the application.
+     * Sets the application id if the map action is found in a bundle where the
+     * application is known. This application id is used to log the action of
+     * printing against the application.
      *
      * @param applicationId
      */
@@ -75,22 +78,21 @@ public class SolaPrint extends Print {
     }
 
     /**
-     * This method calls the start screen for the print action. 
-     * If it is needed to completely change the way the print action starts you should rewrite this
-     * method. Checkout super.onClick() for an example how you can rewrite it.
+     * This method calls the start screen for the print action. If it is needed
+     * to completely change the way the print action starts you should rewrite
+     * this method. Checkout super.onClick() for an example how you can rewrite
+     * it.
      */
     @Override
     public void onClick() {
         super.onClick();
     }
 
-    
-    
-    
     /**
-     * Additionally to the standard functionality of printing, it supplies the values of user and
-     * date to the layout so it can print them as well. Also if the print succeeds it logs against
-     * the application the action of printing if the application id is present.
+     * Additionally to the standard functionality of printing, it supplies the
+     * values of user and date to the layout so it can print them as well. Also
+     * if the print succeeds it logs against the application the action of
+     * printing if the application id is present.
      *
      * @param layout
      * @param scale
@@ -105,7 +107,21 @@ public class SolaPrint extends Print {
         extraFields.put(FIELD_USER, SecurityBean.getCurrentUser().getFullUserName());
         extraFields.put(FIELD_DATE,
                 DateFormat.getInstance().format(Calendar.getInstance().getTime()));
+
+        // v2001b - check if the Samoa Aerial layer is displayed and if so, 
+        // hide it from the printout. 
+        boolean hideRasterLayer = false;
+        if (this.getMapControl().getToc().isTocLayerNodeVisible("samoa_aerial")) {
+            this.getMapControl().getToc().changeNodeSwitch("samoa_aerial");
+            hideRasterLayer = true;
+        }
+
         String printoutLocation = super.print(layout, scale, extraFields);
+
+        if (hideRasterLayer) {
+            // Show the raster layer again. 
+            this.getMapControl().getToc().changeNodeSwitch("samoa_aerial");
+        }
         ApplicationServiceBean serviceBean = new ApplicationServiceBean();
         serviceBean.setRequestTypeCode(RequestTypeBean.CODE_CADASTRE_PRINT);
         if (this.applicationId != null) {
@@ -113,9 +129,9 @@ public class SolaPrint extends Print {
         }
 
         serviceBean.saveInformationService();
-               
-        SecurityBean.savePublicUserActivity(PublicUserActivityBean.MAP_PRINT_ACTIVITY_TYPE, 
-                            ((String)extraFields.getOrDefault("{title}", null)));
+
+        SecurityBean.savePublicUserActivity(PublicUserActivityBean.MAP_PRINT_ACTIVITY_TYPE,
+                ((String) extraFields.getOrDefault("{title}", null)));
 
         return printoutLocation;
     }

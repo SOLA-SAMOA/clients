@@ -33,7 +33,7 @@
             <tr>
                 <td width="20%"></td>   
                 <td>     
-                    The  Java SE Runtime Environment 8 is required for the SOLA Web Start applications. Java 8 update 91 can be downloaded from <a href="http://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8-2177648.html#jre-8u91-oth-JPR" target="_blank" >here</a>.
+                    The  Java SE Runtime Environment 8 is required for the SOLA Web Start applications. Java 8 update 221 can be downloaded from <a href="https://www.oracle.com/technetwork/java/javase/downloads/java-archive-javase8u211-later-5573849.html" target="_blank" >here</a>.
                     <ol>
                         <li>    You will need to accept the Oracle Binary Code License Agreement for Java SE before downloading Java 8.</li>
                         <li>    Download the product appropriate for your operating system. Note that the Windows x86 products are for Windows 32bit operating systems and the Windows x64 product is for Windows 64bit operating systems.</li>
@@ -76,14 +76,6 @@
                         <li>When prompted with the digital signature security warning, tick Always trust content from this publisher and choose Run. </li>
                         <li>The web start application you have selected will start automatically. At the login screen, enter your SOLA username and password. </li>
                     </ol>
-                </td>
-            </tr> 
-            <tr>
-                <td width="20%"></td>   
-                <td>
-                    <h2>User Guide</h2>
-                    <br>
-                    The SOLA Samoa User Guide provides detailed information on the installation and use of the SOLA Desktop. The User Guide is available from <a href="help/SOLAUserGuide.pdf" target="_blank" >here</a>.
                 </td>
             </tr> 
         </table>  

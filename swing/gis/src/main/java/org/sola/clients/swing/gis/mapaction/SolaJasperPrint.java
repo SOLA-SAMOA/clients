@@ -44,11 +44,13 @@ import org.sola.clients.beans.application.ApplicationServiceBean;
 import org.sola.clients.beans.referencedata.RequestTypeBean;
 import org.sola.clients.reports.ReportManager;
 import org.sola.clients.swing.gis.ui.control.SolaPrintViewerForm;
+import org.sola.common.logging.LogUtility;
 
 /**
- * This map action extends the Print map action that handles the print of the map according to a
- * layout. The user name and date is added in the layout and also it logs against the application
- * (if the application is present) the action of printing.
+ * This map action extends the Print map action that handles the print of the
+ * map according to a layout. The user name and date is added in the layout and
+ * also it logs against the application (if the application is present) the
+ * action of printing.
  *
  * @author Maria Paola Rizzo
  */
@@ -59,8 +61,8 @@ public class SolaJasperPrint extends Print {
 
     /**
      * Constructor of the jasper based reporting engine print map action.
-     * 
-     * @param map The map control with which the map action will interact 
+     *
+     * @param map The map control with which the map action will interact
      */
     public SolaJasperPrint(Map map) {
         super(map);
@@ -71,8 +73,9 @@ public class SolaJasperPrint extends Print {
     }
 
     /**
-     * Sets the application id if the map action is found in a bundle where the application is
-     * known. This application id is used to log the action of printing against the application.
+     * Sets the application id if the map action is found in a bundle where the
+     * application is known. This application id is used to log the action of
+     * printing against the application.
      *
      * @param applicationId
      */
@@ -81,9 +84,10 @@ public class SolaJasperPrint extends Print {
     }
 
     /**
-     * This method calls the start screen for the print action. If it is needed to completely change
-     * the way the print action starts you should rewrite this method. Checkout super.onClick() for
-     * an example how you can rewrite it.
+     * This method calls the start screen for the print action. If it is needed
+     * to completely change the way the print action starts you should rewrite
+     * this method. Checkout super.onClick() for an example how you can rewrite
+     * it.
      */
     @Override
     public void onClick() {
@@ -105,15 +109,19 @@ public class SolaJasperPrint extends Print {
     }
 
     /**
-     * Additionally to the standard functionality of printing, it supplies the values of user and
-     * date to the layout so it can print them as well. Also if the print succeeds it logs against
-     * the application the action of printing if the application id is present.
+     * Additionally to the standard functionality of printing, it supplies the
+     * values of user and date to the layout so it can print them as well. Also
+     * if the print succeeds it logs against the application the action of
+     * printing if the application id is present.
      *
-     * This method is used to call an alternative print engine which uses Jasper report Tool
+     * This method is used to call an alternative print engine which uses Jasper
+     * report Tool
      *
-     * @param layout A layout identifier. This is used to distinguish between many layouts the user
-     * can choose from and to call the report for that layout
-     * @param scale This is the scale of the map for which the print will be done
+     * @param layout A layout identifier. This is used to distinguish between
+     * many layouts the user can choose from and to call the report for that
+     * layout
+     * @param scale This is the scale of the map for which the print will be
+     * done
      */
     protected void Print(PrintLayout layout, double scale) {
 
@@ -134,6 +142,7 @@ public class SolaJasperPrint extends Print {
         //So in Jasper the width/height of the scalebar is not restricted 
         Double scalebarImageWidth = Double.valueOf(layout.getScalebar().getWidth());
         try {
+           
             MapImageGenerator mapImageGenerator = new MapImageGenerator(this.getMapControl());
             //This gives back the absolute location of the map image. 
             String mapImageLocation = mapImageGenerator.getImageAsFileLocation(
@@ -159,12 +168,13 @@ public class SolaJasperPrint extends Print {
             //   This is to call the report generation         
             SolaPrintViewerForm form = new SolaPrintViewerForm(
                     ReportManager.getSolaPrintReport(
-                    layout.getId(), dataBean, mapImageLocation, scalebarImageLocation));
+                            layout.getId(), dataBean, mapImageLocation, scalebarImageLocation));
             // this is to visualize the generated report            
             form.setVisible(true);
-
+           
 
         } catch (IOException ex) {
+            LogUtility.log("Map Printing Exception:", ex);
         }
     }
 }

@@ -74,6 +74,14 @@ public class TocLayerNode extends AbstractTocNode {
         this.getLayer().setVisible(!currentVisibility);
         this.getVisualisationComponent().setSelected(this.getLayer().isVisible());
     }
+    
+    /**
+     * Indicates if the layer is currently visible on the map or not
+     * @return 
+     */
+    public boolean isVisible() {
+        return this.getLayer().isVisible();
+    }
 
     /**
      * It is called in Node Click. Here the Node Clicked event is catched.

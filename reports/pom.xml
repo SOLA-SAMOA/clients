@@ -5,11 +5,11 @@
     <parent>
         <artifactId>sola-clients</artifactId>
         <groupId>org.sola</groupId>
-        <version>2001a</version>
+        <version>2001c</version>
     </parent>
     <groupId>org.sola.clients</groupId>
     <artifactId>clients-reports</artifactId>
-    <version>2001a</version>
+    <version>2001c</version>
     <name>Clients Reports</name>
     <url>http://maven.apache.org</url>
     <properties>

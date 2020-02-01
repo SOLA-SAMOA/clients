@@ -566,14 +566,29 @@ public class PropertyPanel extends ContentPanel {
      */
     private void customizePrintButton() {
         boolean hasPrintRole = SecurityBean.isInRole(RolesConstants.ADMINISTRATIVE_BA_UNIT_PRINT_CERT);
+        boolean hasStaffSearch = SecurityBean.isInRole(RolesConstants.ADMINISTRATIVE_STAFF_SEARCH_REPORT);
         // #85 Prevent Computer folio being generated for Deeds. 
         boolean isDeed = baUnitBean1.isDeed();
 
-        dBtnPrint.setEnabled(baUnitBean1.getRowVersion() > 0 && hasPrintRole && !isDeed);
-        dBtnPrint.setVisible(baUnitBean1.getRowVersion() > 0 && hasPrintRole && !isDeed);
+        // Allow users with the Staff Search role to print the Staff Search Report
+        if (hasPrintRole || hasStaffSearch) {
+            dBtnPrint.setEnabled(baUnitBean1.getRowVersion() > 0 && !isDeed);
+            dBtnPrint.setVisible(baUnitBean1.getRowVersion() > 0 && !isDeed);
+        } else {
+            dBtnPrint.setEnabled(false);
+            dBtnPrint.setVisible(false);
+        }
+
         if (dBtnPrint.isEnabled()) {
-            menuPrintComputerFolio.setEnabled(StatusConstants.CURRENT.equals(baUnitBean1.getStatusCode()));
-            menuPrintHistoricalSearch.setEnabled(!StatusConstants.PENDING.equals(baUnitBean1.getStatusCode()));
+            if (hasPrintRole) {
+                menuPrintComputerFolio.setEnabled(StatusConstants.CURRENT.equals(baUnitBean1.getStatusCode()));
+                menuPrintHistoricalSearch.setEnabled(!StatusConstants.PENDING.equals(baUnitBean1.getStatusCode()));
+            } else {
+                menuPrintComputerFolio.setEnabled(false);
+                menuPrintComputerFolio.setVisible(false);
+                menuPrintHistoricalSearch.setEnabled(false);
+                menuPrintHistoricalSearch.setVisible(false);
+            }
             menuPrintStaffSearch.setEnabled(StatusConstants.CURRENT.equals(baUnitBean1.getStatusCode()));
         }
 
@@ -998,7 +1013,7 @@ public class PropertyPanel extends ContentPanel {
         // 1911a check if the Certificate of Title should be displayed or not
         final boolean showCoT = WSManager.getInstance().getSearchService().showCoTReport(baUnitBean1.getId(), LocalizationManager.isProductionVersion());
         String certificateType = showCoT ? "Certificate of Title" : "Folio Certificate";
-        
+
         if (!showCertPrintDialog(certificateType)) {
             return;
         }
