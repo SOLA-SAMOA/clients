@@ -35,6 +35,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.validation.Valid;
 import org.jdesktop.observablecollections.ObservableCollections;
 import org.jdesktop.observablecollections.ObservableList;
@@ -51,6 +52,7 @@ import org.sola.clients.beans.referencedata.StatusConstants;
 import org.sola.clients.beans.referencedata.TypeActionBean;
 import org.sola.clients.beans.source.SourceBean;
 import org.sola.clients.beans.utils.RrrComparatorByRegistrationDate;
+import org.sola.common.StringUtility;
 import org.sola.common.messaging.ClientMessage;
 import org.sola.common.messaging.MessageUtility;
 import org.sola.services.boundary.wsclients.WSManager;
@@ -204,7 +206,8 @@ public class BaUnitBean extends BaUnitSummaryBean {
     private ObservableList<BaUnitNotationBean> baUnitCurrentNotationList;
     private ObservableList<BaUnitNotationBean> baUnitPendingNotationList;
     private transient ObservableList<BaUnitNotationBean> easementList;
-    private List<PartySummaryBean> currentOwnersList;
+    private List<PartySummaryBean> currentOwnersList; // Used for reporting
+    private List<PartySummaryBean> customaryOwnersList; // Used for reporting
     private List<UnregisteredDealingBean> unregisteredDealingList;
     private SolaList<CertificatePrintBean> certificatePrintList;
     private transient CadastreObjectBean selectedParcel;
@@ -635,13 +638,29 @@ public class BaUnitBean extends BaUnitSummaryBean {
         estateType = "";
 
         for (RrrBean rrrBean : rrrList.getFilteredList()) {
-            if (rrrBean.isPrimary()) {
+            if (rrrBean.isPrimary() && StatusConstants.CURRENT.equals(rrrBean.getStatusCode())) {
                 estateType = rrrBean.getRrrType().getDisplayValue();
                 break;
             }
         }
         propertySupport.firePropertyChange(ESTATE_TYPE_PROPERTY, oldValue, estateType);
 
+    }
+
+    /**
+     * Checks if the BaUnit is a Customary Type or not
+     *
+     * @return
+     */
+    public boolean isCustomary() {
+        boolean result = false;
+        for (RrrBean rrrBean : rrrList.getFilteredList()) {
+            if (rrrBean.isPrimary() && StatusConstants.CURRENT.equals(rrrBean.getStatusCode())) {
+                result = RrrTypeBean.RRR_TYPE_CODE_CUSTOMARY.equalsIgnoreCase(rrrBean.getRrrType().getCode());
+                break;
+            }
+        }
+        return result;
     }
 
     public SolaList<SourceBean> getSourceList() {
@@ -889,6 +908,21 @@ public class BaUnitBean extends BaUnitSummaryBean {
         return notationsList;
     }
 
+    public List<PartySummaryBean> getCustomaryOwnersList() {
+        List<PartySummaryBean> result = getCurrentOwnersList();
+        String owner = StringUtility.empty(null); 
+        if (result.size() > 0) {
+            owner = result.get(0).getFullName().toLowerCase(); 
+        }
+        if (!StringUtility.isEmpty(owner) && owner.matches(".*customary.*")) {
+            PartySummaryBean defaultCustOwner = new PartySummaryBean();
+            defaultCustOwner.setName("Beneficial Customary Land Owners");
+            result.clear();
+            result.add(defaultCustOwner);
+        }
+         return result;
+    }
+
     /**
      * Retrieves the list of current owners for the ba unit based on the owner
      * details for the primary Rrrs.
@@ -1094,10 +1128,10 @@ public class BaUnitBean extends BaUnitSummaryBean {
         }
         return result;
     }
-    
+
     /**
-     * Updates the status of the Bean from historic to current and refreshes
-     * the bean
+     * Updates the status of the Bean from historic to current and refreshes the
+     * bean
      */
     public void makePropertyCurrent() {
         WSManager.getInstance().getAdministrative().makePropertyCurrent(getId());

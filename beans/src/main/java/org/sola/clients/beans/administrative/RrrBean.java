@@ -104,7 +104,7 @@ public class RrrBean extends AbstractTransactionedBean {
     public static final String SELECTED_PROPERTY = "selected";
     public static final String SELECTED_RIGHTHOLDER_PROPERTY = "selectedRightHolder";
     public static final String UNIT_ENTITLEMENT_PROPERTY = "unitEntitlement";
-    private String baUnitId;
+        private String baUnitId;
     private String nr;
     @Past(message = ClientMessage.CHECK_REGISTRATION_DATE, payload = Localized.class)
     private Date registrationDate;

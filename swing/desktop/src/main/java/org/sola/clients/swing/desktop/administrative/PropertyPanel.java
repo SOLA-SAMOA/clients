@@ -1012,7 +1012,9 @@ public class PropertyPanel extends ContentPanel {
 
         // 1911a check if the Certificate of Title should be displayed or not
         final boolean showCoT = WSManager.getInstance().getSearchService().showCoTReport(baUnitBean1.getId(), LocalizationManager.isProductionVersion());
-        String certificateType = showCoT ? "Certificate of Title" : "Folio Certificate";
+        final boolean isCustomary = baUnitBean1.isCustomary(); 
+        
+        String certificateType = isCustomary ? "Customary Land Certificate" : showCoT ? "Certificate of Title" : "Folio Certificate";
 
         if (!showCertPrintDialog(certificateType)) {
             return;
@@ -1059,8 +1061,13 @@ public class PropertyPanel extends ContentPanel {
                 // Refresh the details of the baUnit to make sure the latest details are used
                 BaUnitBean reportBean = getBaUnit(baUnitBean1.getNameFirstpart(), baUnitBean1.getNameLastpart());
                 reportBean.setCalculatedAreaSize(baUnitAreaBean1.getSize());
+                if (isCustomary){
+                    // 2003a - Show the Customary Land Report
+                    showReport(ReportManager.getCustomaryLandReport(reportBean, featureImageFileName,
+                            LocalizationManager.isProductionVersion()));
+                }
                 // 1911a - Check if the CoT report should be displayed for this property
-                if (showCoT) {
+                else if (showCoT) {
                     showReport(ReportManager.getCoTReport(reportBean, featureImageFileName,
                             LocalizationManager.isProductionVersion()));
                 } else {

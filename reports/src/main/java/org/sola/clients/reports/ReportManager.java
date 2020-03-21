@@ -165,6 +165,34 @@ public class ReportManager {
             return null;
         }
     }
+    
+        /**
+     * Generates and displays <b>Samoa Customary Land</b> report.
+     *
+     * @param appBean Application bean containing data for the report.
+     */
+    public static JasperPrint getCustomaryLandReport(BaUnitBean baUnitBean, String featureImageFileName,
+            boolean isProduction) {
+        HashMap inputParameters = new HashMap();
+        inputParameters.put("REPORT_LOCALE", Locale.getDefault());
+        inputParameters.put("USER", SecurityBean.getCurrentUser().getFullUserName());
+        inputParameters.put("IS_PRODUCTION", isProduction);
+        BaUnitBean[] beans = new BaUnitBean[1];
+        beans[0] = baUnitBean;
+        JRDataSource jds = new JRBeanArrayDataSource(beans);
+        inputParameters.put("SAMOA_EMBLEM", ReportManager.class.getResourceAsStream("/images/sola/samEmblem.png"));
+        inputParameters.put("MAP_IMAGE", featureImageFileName);
+        try {
+            return JasperFillManager.fillReport(
+                    ReportManager.class.getResourceAsStream("/reports/BaUnitReportSamoaCustomary.jasper"),
+                    inputParameters, jds);
+        } catch (JRException ex) {
+            LogUtility.log(LogUtility.getStackTraceAsString(ex), Level.SEVERE);
+            MessageUtility.displayMessage(ClientMessage.REPORT_GENERATION_FAILED,
+                    new Object[]{ex.getLocalizedMessage()});
+            return null;
+        }
+    }
 
     /**
      * Generates and displays <b>Staff Search</b> report.
